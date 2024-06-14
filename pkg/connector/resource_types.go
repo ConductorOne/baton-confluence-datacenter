@@ -9,4 +9,12 @@ var userResourceType = &v2.ResourceType{
 	Id:          "user",
 	DisplayName: "User",
 	Traits:      []v2.ResourceType_Trait{v2.ResourceType_TRAIT_USER},
+	Annotations: annotationsForUserResourceType(),
+}
+
+//nolint:unused // TODO(marcos): Do groups next.
+var groupResourceType = &v2.ResourceType{
+	Id:          "group",
+	DisplayName: "Group",
+	Traits:      []v2.ResourceType_Trait{v2.ResourceType_TRAIT_GROUP},
 }
