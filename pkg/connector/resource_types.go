@@ -12,7 +12,6 @@ var userResourceType = &v2.ResourceType{
 	Annotations: annotationsForUserResourceType(),
 }
 
-//nolint:unused // TODO(marcos): Do groups next.
 var groupResourceType = &v2.ResourceType{
 	Id:          "group",
 	DisplayName: "Group",

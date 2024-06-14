@@ -10,8 +10,6 @@ import (
 	"github.com/conductorone/baton-sdk/pkg/types/resource"
 )
 
-const ResourcesPageSize = 100
-
 func annotationsForUserResourceType() annotations.Annotations {
 	annos := annotations.Annotations{}
 	annos.Update(&v2.SkipEntitlementsAndGrants{})
