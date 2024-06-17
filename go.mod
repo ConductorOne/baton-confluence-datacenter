@@ -3,7 +3,7 @@ module github.com/conductorone/baton-confluence-datacenter
 go 1.22.4
 
 require (
-	github.com/conductorone/baton-sdk v0.1.44
+	github.com/conductorone/baton-sdk v0.1.46
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	go.uber.org/zap v1.27.0
 )
