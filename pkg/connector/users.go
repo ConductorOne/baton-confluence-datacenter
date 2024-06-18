@@ -35,7 +35,7 @@ var MakeGetUsersCall = func(
 	*v2.RateLimitDescription,
 	error,
 ) {
-	return client.GetUsers(ctx, "")
+	return client.GetUsers(ctx, pageToken)
 }
 
 // List returns all the users from the database as resource objects.
@@ -45,7 +45,7 @@ func (o *userBuilder) List(
 	parentResourceID *v2.ResourceId,
 	pToken *pagination.Token,
 ) ([]*v2.Resource, string, annotations.Annotations, error) {
-	users, _, rateLimitData, err := MakeGetUsersCall(ctx, o.client, "")
+	users, _, rateLimitData, err := MakeGetUsersCall(ctx, o.client, pToken.Token)
 	if err != nil {
 		return nil, "", WithRateLimitAnnotations(rateLimitData), err
 	}
