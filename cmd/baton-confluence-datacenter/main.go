@@ -39,7 +39,7 @@ func getConnector(ctx context.Context, cfg *config) (types.ConnectorServer, erro
 	l := ctxzap.Extract(ctx)
 
 	config := connector.Config{
-		Domain:   cfg.DomainUrl,
+		Hostname: cfg.DomainUrl,
 		ApiKey:   cfg.ApiKey,
 		UserName: cfg.Username,
 	}

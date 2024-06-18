@@ -12,28 +12,28 @@ import (
 )
 
 type Config struct {
-	UserName string
 	ApiKey   string
-	Domain   string
+	Hostname string
+	UserName string
 }
 
 type Confluence struct {
 	client   client.ConfluenceClient
-	domain   string
 	apiKey   string
+	hostname string
 	userName string
 }
 
 func New(ctx context.Context, config Config) (*Confluence, error) {
-	confluenceClient, err := client.NewConfluenceClient(ctx, config.UserName, config.ApiKey, config.Domain)
+	confluenceClient, err := client.NewConfluenceClient(ctx, config.UserName, config.ApiKey, config.Hostname)
 	if err != nil {
 		return nil, err
 	}
 	rv := &Confluence{
-		domain:   config.Domain,
 		apiKey:   config.ApiKey,
-		userName: config.UserName,
 		client:   *confluenceClient,
+		hostname: config.Hostname,
+		userName: config.UserName,
 	}
 	return rv, nil
 }
@@ -41,7 +41,7 @@ func New(ctx context.Context, config Config) (*Confluence, error) {
 func (c *Confluence) Metadata(ctx context.Context) (*v2.ConnectorMetadata, error) {
 	var annos annotations.Annotations
 	annos.Update(&v2.ExternalLink{
-		Url: c.domain,
+		Url: c.hostname,
 	})
 
 	return &v2.ConnectorMetadata{
