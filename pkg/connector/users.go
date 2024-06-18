@@ -10,8 +10,6 @@ import (
 	"github.com/conductorone/baton-sdk/pkg/types/resource"
 )
 
-const ResourcesPageSize = 100
-
 func annotationsForUserResourceType() annotations.Annotations {
 	annos := annotations.Annotations{}
 	annos.Update(&v2.SkipEntitlementsAndGrants{})
@@ -31,14 +29,13 @@ var MakeGetUsersCall = func(
 	ctx context.Context,
 	client client.ConfluenceClient,
 	pageToken string,
-	pageSize int,
 ) (
 	[]client.ConfluenceUser,
 	string,
 	*v2.RateLimitDescription,
 	error,
 ) {
-	return client.GetUsers(ctx, "", ResourcesPageSize)
+	return client.GetUsers(ctx, "")
 }
 
 // List returns all the users from the database as resource objects.
@@ -48,7 +45,7 @@ func (o *userBuilder) List(
 	parentResourceID *v2.ResourceId,
 	pToken *pagination.Token,
 ) ([]*v2.Resource, string, annotations.Annotations, error) {
-	users, _, rateLimitData, err := MakeGetUsersCall(ctx, o.client, "", ResourcesPageSize)
+	users, _, rateLimitData, err := MakeGetUsersCall(ctx, o.client, "")
 	if err != nil {
 		return nil, "", WithRateLimitAnnotations(rateLimitData), err
 	}

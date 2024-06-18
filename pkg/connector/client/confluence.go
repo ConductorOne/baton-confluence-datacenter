@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	maxResults               = 50
+	ResourcesPageSize        = 100
 	currentUserUrlPath       = "user/current"
 	groupsListUrlPath        = "group"
 	groupsMembersListUrlPath = "group/member"
@@ -92,14 +92,13 @@ func (c *ConfluenceClient) Verify(ctx context.Context) error {
 func (c *ConfluenceClient) GetUsers(
 	ctx context.Context,
 	pageToken string,
-	pageSize int,
 ) (
 	[]ConfluenceUser,
 	string,
 	*v2.RateLimitDescription,
 	error,
 ) {
-	usersListUrl, err := c.genURL(pageToken, pageSize, usersListUrlPath)
+	usersListUrl, err := c.genURL(pageToken, usersListUrlPath)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -120,9 +119,8 @@ func (c *ConfluenceClient) GetUsers(
 func (c *ConfluenceClient) GetGroups(
 	ctx context.Context,
 	pageToken string,
-	pageSize int,
 ) ([]ConfluenceGroup, string, error) {
-	groupsListUrl, err := c.genURL(pageToken, pageSize, groupsListUrlPath)
+	groupsListUrl, err := c.genURL(pageToken, groupsListUrlPath)
 	if err != nil {
 		return nil, "", err
 	}
@@ -147,12 +145,10 @@ func (c *ConfluenceClient) GetGroups(
 func (c *ConfluenceClient) GetGroupMembers(
 	ctx context.Context,
 	pageToken string,
-	pageSize int,
 	group string,
 ) ([]ConfluenceUser, string, error) {
 	groupMembersUrl, err := c.genURL(
 		pageToken,
-		pageSize,
 		fmt.Sprintf(
 			"%v?name=%v",
 			groupsMembersListUrlPath,
@@ -230,7 +226,7 @@ func (c *ConfluenceClient) genURLNonPaginated(path string) (*url.URL, error) {
 	return u, nil
 }
 
-func (c *ConfluenceClient) genURL(pageToken string, pageSize int, path string) (*url.URL, error) {
+func (c *ConfluenceClient) genURL(pageToken string, path string) (*url.URL, error) {
 	parsed, err := url.Parse(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse request path '%s': %w", path, err)
@@ -238,22 +234,17 @@ func (c *ConfluenceClient) genURL(pageToken string, pageSize int, path string) (
 
 	u := c.apiBase.ResolveReference(parsed)
 
-	maximum := pageSize
-	if maximum == 0 || maximum > maxResults {
-		maximum = maxResults
-	}
-
 	q := u.Query()
 	q.Set("start", pageToken)
-	q.Set("limit", strconv.Itoa(maximum))
+	q.Set("limit", strconv.Itoa(ResourcesPageSize))
 	u.RawQuery = q.Encode()
 
 	return u, nil
 }
 
 func incToken(pageToken string, count int) string {
-	// If we didn't get any users, always assume it was the last page.
-	if count == 0 {
+	// If we didn't get the full amount of users, always assume it was the last page.
+	if count < ResourcesPageSize {
 		return ""
 	}
 

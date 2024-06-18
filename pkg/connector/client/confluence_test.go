@@ -62,10 +62,10 @@ func TestIncToken(t *testing.T) {
 		count         int
 		expected      string
 	}{
-		{"", 1, "1"},
-		{"0", 1, "1"},
-		{"1", 1, "2"},
-		{"x", 1, "1"},
+		{"", 100, "100"},
+		{"0", 100, "100"},
+		{"1", 100, "101"},
+		{"x", 100, "100"},
 		{"", 0, ""},
 		{"0", 0, ""},
 		{"1", 0, ""},
@@ -116,7 +116,7 @@ func TestGetUsersSetsRateLimitData(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			users, _, ratelimitData, err := client.GetUsers(ctx, "", 100)
+			users, _, ratelimitData, err := client.GetUsers(ctx, "")
 
 			if testCase.success {
 				require.Nil(t, err)
@@ -149,7 +149,7 @@ func TestGetUsers(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	users, token, ratelimitData, err := client.GetUsers(ctx, "", 100)
+	users, token, ratelimitData, err := client.GetUsers(ctx, "")
 
 	require.Nil(t, ratelimitData)
 	require.Nil(t, err)
@@ -184,7 +184,7 @@ func TestGetUsersPagination(t *testing.T) {
 	}
 
 	// Setting page size to zero should still work.
-	users, token, ratelimitData, err := client.GetUsers(ctx, "", 0)
+	users, token, ratelimitData, err := client.GetUsers(ctx, "")
 
 	require.Nil(t, ratelimitData)
 	require.Nil(t, err)

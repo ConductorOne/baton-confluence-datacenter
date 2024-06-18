@@ -18,7 +18,6 @@ func TestUsersListGetsRateLimitAnnotations(t *testing.T) {
 		ctx context.Context,
 		confluenceClient client.ConfluenceClient,
 		pageToken string,
-		pageSize int,
 	) (
 		[]client.ConfluenceUser,
 		string,
@@ -57,7 +56,6 @@ func TestUsersListGetsUsers(t *testing.T) {
 		ctx context.Context,
 		confluenceClient client.ConfluenceClient,
 		pageToken string,
-		pageSize int,
 	) (
 		[]client.ConfluenceUser,
 		string,
