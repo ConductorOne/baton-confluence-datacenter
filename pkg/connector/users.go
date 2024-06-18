@@ -26,6 +26,21 @@ func (o *userBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
 	return userResourceType
 }
 
+// MakeGetUsersCall is a hook for mocking the client in tests.
+var MakeGetUsersCall = func(
+	ctx context.Context,
+	client client.ConfluenceClient,
+	pageToken string,
+	pageSize int,
+) (
+	[]client.ConfluenceUser,
+	string,
+	*v2.RateLimitDescription,
+	error,
+) {
+	return client.GetUsers(ctx, "", ResourcesPageSize)
+}
+
 // List returns all the users from the database as resource objects.
 // Users include a UserTrait because they are the 'shape' of a standard user.
 func (o *userBuilder) List(
@@ -33,9 +48,9 @@ func (o *userBuilder) List(
 	parentResourceID *v2.ResourceId,
 	pToken *pagination.Token,
 ) ([]*v2.Resource, string, annotations.Annotations, error) {
-	users, _, err := o.client.GetUsers(ctx, "", ResourcesPageSize)
+	users, _, rateLimitData, err := MakeGetUsersCall(ctx, o.client, "", ResourcesPageSize)
 	if err != nil {
-		return nil, "", nil, err
+		return nil, "", WithRateLimitAnnotations(rateLimitData), err
 	}
 	rv := make([]*v2.Resource, 0)
 	for _, user := range users {
@@ -98,4 +113,15 @@ func userResource(ctx context.Context, user *client.ConfluenceUser) (*v2.Resourc
 	}
 
 	return createdResource, nil
+}
+
+func WithRateLimitAnnotations(
+	ratelimitDescriptionAnnotations ...*v2.RateLimitDescription,
+) annotations.Annotations {
+	outputAnnotations := annotations.Annotations{}
+	for _, annotation := range ratelimitDescriptionAnnotations {
+		outputAnnotations.Append(annotation)
+	}
+
+	return outputAnnotations
 }

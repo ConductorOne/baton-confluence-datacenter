@@ -5,10 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
+	"github.com/conductorone/baton-sdk/pkg/helpers"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/conductorone/baton-sdk/pkg/uhttp"
@@ -20,6 +24,7 @@ const (
 	groupsListUrlPath        = "group"
 	groupsMembersListUrlPath = "group/member"
 	usersListUrlPath         = "users/list"
+	rfc7231RateLimitHeader   = "Retry-After"
 )
 
 type RequestError struct {
@@ -33,14 +38,19 @@ func (r *RequestError) Error() string {
 }
 
 type ConfluenceClient struct {
-	httpClient *http.Client
-	user       string
-	apiKey     string
-	apiBase    *url.URL
+	wrapper *uhttp.BaseHttpClient
+	user    string
+	apiKey  string
+	apiBase *url.URL
 }
 
-func NewConfluenceClient(ctx context.Context, user, apiKey, domain string) (*ConfluenceClient, error) {
-	apiBase, err := url.Parse(fmt.Sprintf("https://%s/rest/api/", domain))
+func NewConfluenceClient(
+	ctx context.Context,
+	user string,
+	apiKey string,
+	hostname string,
+) (*ConfluenceClient, error) {
+	apiBase, err := url.Parse(strings.Trim(hostname, "/") + "/rest/api/")
 	if err != nil {
 		return nil, err
 	}
@@ -51,10 +61,10 @@ func NewConfluenceClient(ctx context.Context, user, apiKey, domain string) (*Con
 	}
 
 	return &ConfluenceClient{
-		httpClient: httpClient,
-		apiBase:    apiBase,
-		user:       user,
-		apiKey:     apiKey,
+		wrapper: uhttp.NewBaseHttpClient(httpClient),
+		apiBase: apiBase,
+		user:    user,
+		apiKey:  apiKey,
 	}, nil
 }
 
@@ -66,7 +76,7 @@ func (c *ConfluenceClient) Verify(ctx context.Context) error {
 	}
 
 	var response *ConfluenceUser
-	if err := c.get(ctx, currentUserUrl, &response); err != nil {
+	if _, err := c.get(ctx, currentUserUrl, &response); err != nil {
 		return err
 	}
 
@@ -83,26 +93,27 @@ func (c *ConfluenceClient) GetUsers(
 	ctx context.Context,
 	pageToken string,
 	pageSize int,
-) ([]ConfluenceUser, string, error) {
+) (
+	[]ConfluenceUser,
+	string,
+	*v2.RateLimitDescription,
+	error,
+) {
 	usersListUrl, err := c.genURL(pageToken, pageSize, usersListUrlPath)
 	if err != nil {
-		return nil, "", err
+		return nil, "", nil, err
 	}
 
 	var response *confluenceUserList
-	if err := c.get(ctx, usersListUrl, &response); err != nil {
-		return nil, "", err
+	ratelimitData, err := c.get(ctx, usersListUrl, &response)
+	if err != nil {
+		return nil, "", ratelimitData, err
 	}
 
 	users := response.Results
-
-	if len(users) == 0 {
-		return users, "", nil
-	}
-
 	nextToken := incToken(pageToken, len(users))
 
-	return users, nextToken, nil
+	return users, nextToken, nil, nil
 }
 
 // GetGroups uses pagination to get a list of groups from the global list.
@@ -117,7 +128,7 @@ func (c *ConfluenceClient) GetGroups(
 	}
 
 	var response *confluenceGroupList
-	if err := c.get(ctx, groupsListUrl, &response); err != nil {
+	if _, err := c.get(ctx, groupsListUrl, &response); err != nil {
 		return nil, "", err
 	}
 
@@ -153,7 +164,7 @@ func (c *ConfluenceClient) GetGroupMembers(
 	}
 
 	var response *confluenceUserList
-	if err := c.get(ctx, groupMembersUrl, &response); err != nil {
+	if _, err := c.get(ctx, groupMembersUrl, &response); err != nil {
 		return nil, "", err
 	}
 
@@ -168,57 +179,46 @@ func (c *ConfluenceClient) GetGroupMembers(
 	return users, nextToken, nil
 }
 
-func (c *ConfluenceClient) get(ctx context.Context, url *url.URL, target interface{}) error {
+// get makes the actual HTTP calls to Confluence. It handles basic status code
+// errors and decodes the response to the passed `target`.
+func (c *ConfluenceClient) get(
+	ctx context.Context,
+	url *url.URL,
+	target interface{},
+) (*v2.RateLimitDescription, error) {
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	request.SetBasicAuth(c.user, c.apiKey)
 
-	for {
-		response, err := c.httpClient.Do(request)
-		if err != nil {
-			return err
-		}
-		defer response.Body.Close()
+	ratelimitData := v2.RateLimitDescription{}
+	response, err := c.wrapper.Do(request, WithConfluenceRatelimitData(&ratelimitData))
+	if err != nil {
+		return &ratelimitData, err
+	}
+	defer response.Body.Close()
 
-		retryAfter := strToInt(response.Header.Get("Retry-After"))
-
-		switch response.StatusCode {
-		case http.StatusOK:
-			if err := json.NewDecoder(response.Body).Decode(target); err != nil {
-				return fmt.Errorf("failed to decode response body for '%s': %w", url, err)
-			}
-			return nil
-		case http.StatusTooManyRequests:
-			if err := wait(ctx, retryAfter); err != nil {
-				return fmt.Errorf("confluence-connector: failed to wait for retry on '%s': %w", url, err)
-			}
-			continue
-		case http.StatusServiceUnavailable:
-			// Per the docs: transient 5XX errors should be treated as 429/too-many-requests if they have a retry header.
-			// 503 errors were the only ones explicitly called out, but I guess it's possible for others too.
-			// https://developer.atlassian.com/cloud/confluence/rate-limiting/
-			if retryAfter != 0 {
-				if err := wait(ctx, retryAfter); err != nil {
-					return fmt.Errorf("confluence-connector: failed to wait for retry on '%s': %w", url, err)
-				}
-				continue
-			}
-		}
-
+	if response.StatusCode != http.StatusOK {
 		body, err := io.ReadAll(response.Body)
 		if err != nil {
-			return fmt.Errorf("error reading non-200 response body: %w", err)
+			return nil, fmt.Errorf("error reading non-200 response body: %w", err)
 		}
 
-		return &RequestError{
-			URL:    url,
-			Status: response.StatusCode,
-			Body:   string(body),
-		}
+		return &ratelimitData,
+			&RequestError{
+				URL:    url,
+				Status: response.StatusCode,
+				Body:   string(body),
+			}
 	}
+
+	if err := json.NewDecoder(response.Body).Decode(target); err != nil {
+		return nil, fmt.Errorf("failed to decode response body for '%s': %w", url, err)
+	}
+
+	return nil, nil
 }
 
 func (c *ConfluenceClient) genURLNonPaginated(path string) (*url.URL, error) {
@@ -252,14 +252,12 @@ func (c *ConfluenceClient) genURL(pageToken string, pageSize int, path string) (
 }
 
 func incToken(pageToken string, count int) string {
-	token := strToInt(pageToken)
-
-	token += count
-	if token == 0 {
+	// If we didn't get any users, always assume it was the last page.
+	if count == 0 {
 		return ""
 	}
 
-	return strconv.Itoa(token)
+	return strconv.Itoa(strToInt(pageToken) + count)
 }
 
 func strToInt(s string) int {
@@ -268,4 +266,36 @@ func strToInt(s string) int {
 		return 0
 	}
 	return i
+}
+
+// WithConfluenceRatelimitData Per the docs: transient 5XX errors should be
+// treated as 429/too-many-requests if they have a retry header. 503 errors were
+// the only ones explicitly called out, but I guess it's possible for others too
+// https://developer.atlassian.com/cloud/confluence/rate-limiting/
+func WithConfluenceRatelimitData(resource *v2.RateLimitDescription) uhttp.DoOption {
+	return func(response *uhttp.WrapperResponse) error {
+		// TODO(marcos): After updating `ExtractRateLimitData()` to look for
+		//  ratelimit header variants, we can remove the overwriting code.
+		rateLimitData, err := helpers.ExtractRateLimitData(response.StatusCode, &response.Header)
+		if err != nil {
+			return err
+		}
+
+		resource.Limit = rateLimitData.Limit
+		resource.Remaining = rateLimitData.Remaining
+		resource.ResetAt = rateLimitData.ResetAt
+
+		// Overwriting the `X-Ratelimit-Reset` header because Confluence uses `Retry-After`.
+		var resetAt time.Time
+		if reset := response.Header.Get(rfc7231RateLimitHeader); reset != "" {
+			resetSeconds, err := strconv.ParseInt(reset, 10, 64)
+			if err != nil {
+				return err
+			}
+
+			resetAt = time.Now().Add(time.Second * time.Duration(resetSeconds))
+			resource.ResetAt = timestamppb.New(resetAt)
+		}
+		return nil
+	}
 }
