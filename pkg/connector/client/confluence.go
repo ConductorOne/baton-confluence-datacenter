@@ -16,8 +16,6 @@ import (
 
 const (
 	maxResults               = 50
-	minRatelimitWait         = 1 * time.Second                        // Minimum time to wait after a request was ratelimited before trying again
-	maxRatelimitWait         = (2 * time.Minute) + (30 * time.Second) // Maximum time to wait after a request was ratelimited before erroring
 	currentUserUrlPath       = "user/current"
 	groupsListUrlPath        = "group"
 	groupsMembersListUrlPath = "group/member"
@@ -251,24 +249,6 @@ func (c *ConfluenceClient) genURL(pageToken string, pageSize int, path string) (
 	u.RawQuery = q.Encode()
 
 	return u, nil
-}
-
-func wait(ctx context.Context, retryAfter int) error {
-	// Wait must be within min/max window
-	duration := min(
-		max(
-			time.Duration(retryAfter)*time.Second,
-			minRatelimitWait,
-		),
-		maxRatelimitWait,
-	)
-
-	select {
-	case <-time.After(duration):
-		return nil
-	case <-ctx.Done():
-		return ctx.Err()
-	}
 }
 
 func incToken(pageToken string, count int) string {
