@@ -12,28 +12,37 @@ import (
 )
 
 type Config struct {
-	ApiKey   string
-	Hostname string
-	UserName string
+	AccessToken string
+	Hostname    string
+	UserName    string
+	Password    string
 }
 
 type Confluence struct {
-	client   client.ConfluenceClient
-	apiKey   string
-	hostname string
-	userName string
+	client      client.ConfluenceClient
+	accessToken string
+	hostname    string
+	password    string
+	userName    string
 }
 
 func New(ctx context.Context, config Config) (*Confluence, error) {
-	confluenceClient, err := client.NewConfluenceClient(ctx, config.UserName, config.ApiKey, config.Hostname)
+	confluenceClient, err := client.NewConfluenceClient(
+		ctx,
+		config.AccessToken,
+		config.Hostname,
+		config.Password,
+		config.UserName,
+	)
 	if err != nil {
 		return nil, err
 	}
 	rv := &Confluence{
-		apiKey:   config.ApiKey,
-		client:   *confluenceClient,
-		hostname: config.Hostname,
-		userName: config.UserName,
+		accessToken: config.AccessToken,
+		client:      *confluenceClient,
+		hostname:    config.Hostname,
+		userName:    config.UserName,
+		password:    config.Password,
 	}
 	return rv, nil
 }
@@ -54,7 +63,8 @@ func (c *Confluence) Metadata(ctx context.Context) (*v2.ConnectorMetadata, error
 func (c *Confluence) Validate(ctx context.Context) (annotations.Annotations, error) {
 	err := c.client.Verify(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("confluence-connector: failed to validate API keys: %w", err)
+		// TODO MARCOS FIRST
+		return nil, fmt.Errorf("confluence-datacenter-connector: failed to validate API keys: %w", err)
 	}
 
 	return nil, nil

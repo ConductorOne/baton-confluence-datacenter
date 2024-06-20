@@ -112,7 +112,13 @@ func TestGetUsersSetsRateLimitData(t *testing.T) {
 			defer server.Close()
 
 			ctx := context.Background()
-			client, err := NewConfluenceClient(ctx, "UserName", "ApiKey", server.URL)
+			client, err := NewConfluenceClient(
+				ctx,
+				"token",
+				server.URL,
+				"admin",
+				"admin",
+			)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -145,7 +151,13 @@ func TestGetUsers(t *testing.T) {
 	defer server.Close()
 
 	ctx := context.Background()
-	client, err := NewConfluenceClient(ctx, "UserName", "ApiKey", server.URL)
+	client, err := NewConfluenceClient(
+		ctx,
+		"token",
+		server.URL,
+		"admin",
+		"admin",
+	)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -182,7 +194,13 @@ func TestGetUsersPagination(t *testing.T) {
 	defer server.Close()
 
 	ctx := context.Background()
-	client, err := NewConfluenceClient(ctx, "UserName", "ApiKey", server.URL)
+	client, err := NewConfluenceClient(
+		ctx,
+		"token",
+		server.URL,
+		"admin",
+		"admin",
+	)
 	if err != nil {
 		t.Fatal(err)
 	}

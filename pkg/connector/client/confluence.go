@@ -35,21 +35,28 @@ type RequestError struct {
 }
 
 func (r *RequestError) Error() string {
-	return fmt.Sprintf("confluence-connector: request error. Status: %d, Url: %s, Body: %s", r.Status, r.URL, r.Body)
+	return fmt.Sprintf(
+		"confluence-datacenter-connector: request error. Status: %d, Url: %s, Body: %s",
+		r.Status,
+		r.URL,
+		r.Body,
+	)
 }
 
 type ConfluenceClient struct {
-	wrapper *uhttp.BaseHttpClient
-	user    string
-	apiKey  string
-	apiBase *url.URL
+	accessToken string
+	apiBase     *url.URL
+	password    string
+	username    string
+	wrapper     *uhttp.BaseHttpClient
 }
 
 func NewConfluenceClient(
 	ctx context.Context,
-	user string,
-	apiKey string,
+	accessToken string,
 	hostname string,
+	password string,
+	username string,
 ) (*ConfluenceClient, error) {
 	apiBase, err := url.Parse(strings.Trim(hostname, "/") + "/rest/api/")
 	if err != nil {
@@ -62,10 +69,11 @@ func NewConfluenceClient(
 	}
 
 	return &ConfluenceClient{
-		wrapper: uhttp.NewBaseHttpClient(httpClient),
-		apiBase: apiBase,
-		user:    user,
-		apiKey:  apiKey,
+		accessToken: accessToken,
+		apiBase:     apiBase,
+		password:    password,
+		username:    username,
+		wrapper:     uhttp.NewBaseHttpClient(httpClient),
 	}, nil
 }
 
@@ -188,7 +196,12 @@ func (c *ConfluenceClient) get(
 		return nil, err
 	}
 
-	request.SetBasicAuth(c.user, c.apiKey)
+	// Auth token has priority.
+	if c.accessToken != "" {
+		request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
+	} else {
+		request.SetBasicAuth(c.username, c.password)
+	}
 
 	ratelimitData := v2.RateLimitDescription{}
 	response, err := c.wrapper.Do(request, WithConfluenceRatelimitData(&ratelimitData))

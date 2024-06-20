@@ -28,6 +28,8 @@ func main() {
 
 	cmd.Version = version
 
+	cmdFlags(cmd)
+
 	err = cmd.Execute()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
@@ -39,9 +41,10 @@ func getConnector(ctx context.Context, cfg *config) (types.ConnectorServer, erro
 	l := ctxzap.Extract(ctx)
 
 	config := connector.Config{
-		Hostname: cfg.DomainUrl,
-		ApiKey:   cfg.ApiKey,
-		UserName: cfg.Username,
+		AccessToken: cfg.AccessToken,
+		Hostname:    cfg.Hostname,
+		UserName:    cfg.Username,
+		Password:    cfg.Password,
 	}
 	cb, err := connector.New(ctx, config)
 	if err != nil {
