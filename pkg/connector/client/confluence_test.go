@@ -165,9 +165,12 @@ func TestGetUsers(t *testing.T) {
 }
 
 func TestGetUsersPagination(t *testing.T) {
+	token := "100"
 	server := httptest.NewServer(
 		http.HandlerFunc(
 			func(writer http.ResponseWriter, request *http.Request) {
+				start := request.URL.Query().Get("start")
+				require.Equal(t, token, start)
 				writer.WriteHeader(http.StatusOK)
 				_, err := writer.Write([]byte(usersNoResults))
 				if err != nil {
@@ -184,17 +187,12 @@ func TestGetUsersPagination(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Setting page size to zero should still work.
-	users, token, ratelimitData, err := client.GetUsers(ctx, "")
+	users, token, ratelimitData, err := client.GetUsers(ctx, token)
 
 	require.Nil(t, ratelimitData)
 	require.Nil(t, err)
 
-	// Expect an empty token because there are no more results.
-	require.Equal(t, "0", token)
-
-	// Expect to see one user.
+	require.Equal(t, "", token)
 	require.NotNil(t, users)
-	require.Len(t, users, 1)
-	require.Equal(t, users[0].UserKey, "2c95808390139223019013bdb7ec0000")
+	require.Len(t, users, 0)
 }
