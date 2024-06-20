@@ -2,18 +2,20 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
 
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 	"github.com/conductorone/baton-sdk/pkg/helpers"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/conductorone/baton-sdk/pkg/uhttp"
@@ -184,6 +186,26 @@ func (c *ConfluenceClient) GetGroupMembers(
 	return users, nextToken, nil
 }
 
+func isRatelimited(
+	ratelimitStatus v2.RateLimitDescription_Status,
+	statusCode int,
+) bool {
+	return slices.Contains(
+		[]v2.RateLimitDescription_Status{
+			v2.RateLimitDescription_STATUS_OVERLIMIT,
+			v2.RateLimitDescription_STATUS_ERROR,
+		},
+		ratelimitStatus,
+	) || slices.Contains(
+		[]int{
+			http.StatusTooManyRequests,
+			http.StatusGatewayTimeout,
+			http.StatusServiceUnavailable,
+		},
+		statusCode,
+	)
+}
+
 // get makes the actual HTTP calls to Confluence. It handles basic status code
 // errors and decodes the response to the passed `target`.
 func (c *ConfluenceClient) get(
@@ -204,31 +226,37 @@ func (c *ConfluenceClient) get(
 	}
 
 	ratelimitData := v2.RateLimitDescription{}
-	response, err := c.wrapper.Do(request, WithConfluenceRatelimitData(&ratelimitData))
+	response, err := c.wrapper.Do(
+		request,
+		WithConfluenceRatelimitData(&ratelimitData),
+		uhttp.WithJSONResponse(target),
+	)
+
+	if err == nil {
+		return &ratelimitData, nil
+	}
+
+	if response == nil {
+		return nil, err
+	}
+
+	// If we get ratelimit data back (e.g. the "Retry-After" header) or a
+	// "ratelimit-like" status code, then return a recoverable gRPC code.
+	if isRatelimited(ratelimitData.Status, response.StatusCode) {
+		return &ratelimitData, status.Error(codes.Unavailable, response.Status)
+	}
+
+	// If it's some other error, it is unrecoverable.
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return &ratelimitData, err
-	}
-	defer response.Body.Close()
-
-	if response.StatusCode != http.StatusOK {
-		body, err := io.ReadAll(response.Body)
-		if err != nil {
-			return nil, fmt.Errorf("error reading non-200 response body: %w", err)
-		}
-
-		return &ratelimitData,
-			&RequestError{
-				URL:    url,
-				Status: response.StatusCode,
-				Body:   string(body),
-			}
+		return nil, err
 	}
 
-	if err := json.NewDecoder(response.Body).Decode(target); err != nil {
-		return nil, fmt.Errorf("failed to decode response body for '%s': %w", url, err)
+	return nil, &RequestError{
+		URL:    url,
+		Status: response.StatusCode,
+		Body:   string(body),
 	}
-
-	return nil, nil
 }
 
 func (c *ConfluenceClient) genURLNonPaginated(path string) (*url.URL, error) {
