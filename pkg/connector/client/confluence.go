@@ -5,15 +5,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
-	"github.com/conductorone/baton-sdk/pkg/helpers"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
+	"github.com/conductorone/baton-sdk/pkg/helpers"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/conductorone/baton-sdk/pkg/uhttp"
 )
