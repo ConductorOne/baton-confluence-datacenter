@@ -66,7 +66,7 @@ func (c *Confluence) Asset(ctx context.Context, asset *v2.AssetRef) (string, io.
 
 func (c *Confluence) ResourceSyncers(ctx context.Context) []connectorbuilder.ResourceSyncer {
 	return []connectorbuilder.ResourceSyncer{
-		// groupBuilder(c.client), // TODO(marcos): Do groups next.
+		newGroupBuilder(c.client),
 		newUserBuilder(c.client),
 	}
 }
