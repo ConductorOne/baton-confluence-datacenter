@@ -3,6 +3,7 @@ package connector
 import (
 	"context"
 	"fmt"
+
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 	"github.com/conductorone/baton-sdk/pkg/annotations"
@@ -31,7 +32,7 @@ func (o *groupBuilder) List(
 	parentResourceID *v2.ResourceId,
 	pToken *pagination.Token,
 ) ([]*v2.Resource, string, annotations.Annotations, error) {
-	groups, _, err := o.client.GetGroups(ctx, "", ResourcesPageSize)
+	groups, _, err := o.client.GetGroups(ctx, "")
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -89,7 +90,7 @@ func (o *groupBuilder) Grants(
 		})
 	}
 
-	users, token, err := o.client.GetGroupMembers(ctx, bag.PageToken(), ResourcesPageSize, resource.DisplayName)
+	users, token, err := o.client.GetGroupMembers(ctx, bag.PageToken(), resource.DisplayName)
 	if err != nil {
 		return nil, "", nil, err
 	}

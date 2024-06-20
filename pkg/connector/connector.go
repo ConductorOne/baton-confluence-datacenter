@@ -63,7 +63,6 @@ func (c *Confluence) Metadata(ctx context.Context) (*v2.ConnectorMetadata, error
 func (c *Confluence) Validate(ctx context.Context) (annotations.Annotations, error) {
 	err := c.client.Verify(ctx)
 	if err != nil {
-		// TODO MARCOS FIRST
 		return nil, fmt.Errorf("confluence-datacenter-connector: failed to validate API keys: %w", err)
 	}
 

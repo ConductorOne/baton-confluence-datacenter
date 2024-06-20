@@ -239,6 +239,7 @@ func (c *ConfluenceClient) get(
 	if response == nil {
 		return nil, err
 	}
+	defer response.Body.Close()
 
 	// If we get ratelimit data back (e.g. the "Retry-After" header) or a
 	// "ratelimit-like" status code, then return a recoverable gRPC code.
