@@ -9,6 +9,7 @@ SHELL=/bin/bash -o pipefail
 DIR = /tmp/libc
 TAR = musl-7ada6dde6f9dc6a2836c3d92c2f762d35fd229e0.tar.gz
 URL = https://git.musl-libc.org/cgit/musl/snapshot/$(TAR)
+MSVCRT = msvcrt_windows_amd64.go
 
 all: editor
 	golint 2>&1
@@ -40,6 +41,75 @@ editor:
 	go test -c -o /dev/null 2>&1 | tee -a log-editor
 	go install -v  2>&1 | tee -a log-editor
 	go build -o /dev/null generator*.go
+
+msvcrt:
+	echo -n > log-generate
+	ccgo -v4 \
+		--cpp=$(shell which x86_64-w64-mingw32-gcc) \
+		--goos=windows \
+		--package-name libc \
+		--prefix-external=X \
+		--prefix-field=F \
+		--prefix-static-internal=_ \
+		--prefix-static-none=_ \
+		--prefix-tagged-struct=T \
+		--prefix-tagged-union=T \
+		--prefix-typename=T \
+		--winapi=string.h \
+		--winapi=wchar.h \
+		-build-lines=" " \
+		-eval-all-macros \
+		-hide __acrt_iob_func \
+		-hide __mingw_vfwprintf \
+		-hide __mingw_vfwscanf \
+		-hide __mingw_vsnwprintf \
+		-hide __mingw_vswscanf \
+		-hide _strdup \
+		-hide _stricmp \
+		-hide _strnicmp \
+		-hide _vsnwprintf \
+		-hide _wcsicmp \
+		-hide _wcsnicmp \
+		-hide _wgetenv \
+		-hide _wputenv \
+		-hide _wtoi \
+		-hide _wunlink \
+		-hide memchr \
+		-hide memcmp \
+		-hide memcpy \
+		-hide memmove \
+		-hide memset \
+		-hide strcasecmp \
+		-hide strcat \
+		-hide strchr \
+		-hide strcmp \
+		-hide strcpy \
+		-hide strcspn \
+		-hide strdup \
+		-hide strerror \
+		-hide strlen \
+		-hide strncmp \
+		-hide strncpy \
+		-hide strpbrk \
+		-hide strrchr \
+		-hide strspn \
+		-hide strstr \
+		-hide wcrtomb \
+		-hide wcschr \
+		-hide wcscmp \
+		-hide wcscpy \
+		-hide wcsicmp \
+		-hide wcslen \
+		-hide wcsncmp \
+		-hide wcsrtombs \
+		-import syscall \
+		-o $(MSVCRT) \
+		libmsvcrt.c \
+		2>&1 | tee -a log-generate
+	sed -i '/"modernc.org\/libc"/d' $(MSVCRT)
+	sed -i 's/\<libc\>\.//g' $(MSVCRT)
+	sed -i 's/\<dll\>\./modcrt./g' $(MSVCRT)
+	GOOS=windows go build -v ./... 2>&1 | tee -a log-generate
 
 generate: download
 	mkdir -p $(DIR) || true
