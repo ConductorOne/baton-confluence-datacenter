@@ -1,10 +1,10 @@
 package client
 
 type ConfluenceUser struct {
-	DisplayName string
-	Type        string
-	UserKey     string
-	Username    string
+	DisplayName string `json:"displayName"`
+	Type        string `json:"type"`
+	UserKey     string `json:"userKey"`
+	Username    string `json:"username"`
 }
 
 type confluenceUserList struct {
@@ -15,9 +15,14 @@ type confluenceUserList struct {
 }
 
 type ConfluenceGroup struct {
-	Type string
-	Name string
-	Id   string
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+type confluenceErrorResponse struct {
+	StatusCode int    `json:"statusCode"`
+	Message    string `json:"message"`
+	Reason     string `json:"reason"`
 }
 
 type confluenceGroupList struct {

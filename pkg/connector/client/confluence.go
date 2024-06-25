@@ -14,20 +14,22 @@ import (
 
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 	"github.com/conductorone/baton-sdk/pkg/helpers"
+	"github.com/conductorone/baton-sdk/pkg/uhttp"
+	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
+	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
-
-	"github.com/conductorone/baton-sdk/pkg/uhttp"
 )
 
 const (
-	ResourcesPageSize        = 100
-	currentUserUrlPath       = "user/current"
-	groupsListUrlPath        = "group"
-	groupsMembersListUrlPath = "group/member"
-	usersListUrlPath         = "users/list"
-	rfc7231RateLimitHeader   = "Retry-After"
+	ResourcesPageSize         = 100
+	currentUserUrlPath        = "user/current"
+	groupsListUrlPath         = "group"
+	groupsMemberUpdateUrlPath = "user/%s/group/%s"
+	groupsMembersListUrlPath  = "group/%s/member"
+	rfc7231RateLimitHeader    = "Retry-After"
+	usersListUrlPath          = "user/list"
 )
 
 type RequestError struct {
@@ -130,26 +132,28 @@ func (c *ConfluenceClient) GetUsers(
 func (c *ConfluenceClient) GetGroups(
 	ctx context.Context,
 	pageToken string,
-) ([]ConfluenceGroup, string, error) {
+) (
+	[]ConfluenceGroup,
+	string,
+	*v2.RateLimitDescription,
+	error,
+) {
 	groupsListUrl, err := c.genURL(pageToken, groupsListUrlPath)
 	if err != nil {
-		return nil, "", err
+		return nil, "", nil, err
 	}
 
 	var response *confluenceGroupList
-	if _, err := c.get(ctx, groupsListUrl, &response); err != nil {
-		return nil, "", err
+	ratelimitData, err := c.get(ctx, groupsListUrl, &response)
+	if err != nil {
+		return nil, "", ratelimitData, err
 	}
 
 	groups := response.Results
 
-	if len(groups) == 0 {
-		return groups, "", nil
-	}
-
 	nextToken := incToken(pageToken, len(groups))
 
-	return groups, nextToken, nil
+	return groups, nextToken, ratelimitData, nil
 }
 
 // GetGroupMembers uses pagination to get a list of users that belong to a given group.
@@ -157,33 +161,72 @@ func (c *ConfluenceClient) GetGroupMembers(
 	ctx context.Context,
 	pageToken string,
 	group string,
-) ([]ConfluenceUser, string, error) {
+) (
+	[]ConfluenceUser,
+	string,
+	*v2.RateLimitDescription,
+	error,
+) {
 	groupMembersUrl, err := c.genURL(
 		pageToken,
-		fmt.Sprintf(
-			"%v?name=%v",
-			groupsMembersListUrlPath,
-			group,
-		),
+		groupsMembersListUrlPath,
+		group,
 	)
 	if err != nil {
-		return nil, "", err
+		return nil, "", nil, err
 	}
 
 	var response *confluenceUserList
-	if _, err := c.get(ctx, groupMembersUrl, &response); err != nil {
-		return nil, "", err
+	ratelimitData, err := c.get(ctx, groupMembersUrl, &response)
+	if err != nil {
+		return nil, "", ratelimitData, err
 	}
 
 	users := response.Results
-
-	if len(users) == 0 {
-		return users, "", nil
-	}
-
 	nextToken := incToken(pageToken, len(users))
 
-	return users, nextToken, nil
+	return users, nextToken, ratelimitData, nil
+}
+
+// AddGroupMember makes an idempotent PUT call.
+func (c *ConfluenceClient) AddGroupMember(
+	ctx context.Context,
+	username string,
+	groupName string,
+) (
+	*v2.RateLimitDescription,
+	error,
+) {
+	addGroupMemberUrl, err := c.genURLNonPaginated(
+		groupsMemberUpdateUrlPath,
+		username,
+		groupName,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.put(ctx, addGroupMemberUrl, nil)
+}
+
+func (c *ConfluenceClient) RemoveGroupMember(
+	ctx context.Context,
+	username string,
+	groupName string,
+) (
+	*v2.RateLimitDescription,
+	error,
+) {
+	removeGroupMemberUrl, err := c.genURLNonPaginated(
+		groupsMemberUpdateUrlPath,
+		username,
+		groupName,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.delete(ctx, removeGroupMemberUrl, nil)
 }
 
 func isRatelimited(
@@ -206,14 +249,27 @@ func isRatelimited(
 	)
 }
 
-// get makes the actual HTTP calls to Confluence. It handles basic status code
-// errors and decodes the response to the passed `target`.
-func (c *ConfluenceClient) get(
+// makeRequest makes the actual HTTP request to Confluence. It handles basic
+// status code errors and decodes the response to the passed `target`.
+func (c *ConfluenceClient) makeRequest(
 	ctx context.Context,
 	url *url.URL,
 	target interface{},
+	method string,
+	requestBody io.Reader,
 ) (*v2.RateLimitDescription, error) {
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	logger := ctxzap.Extract(ctx)
+	logger.Debug(
+		"making request",
+		zap.String("url", url.String()),
+		zap.String("method", method),
+	)
+	request, err := http.NewRequestWithContext(
+		ctx,
+		method,
+		url.String(),
+		requestBody,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -226,11 +282,17 @@ func (c *ConfluenceClient) get(
 	}
 
 	ratelimitData := v2.RateLimitDescription{}
-	response, err := c.wrapper.Do(
-		request,
+
+	doOptions := []uhttp.DoOption{
 		WithConfluenceRatelimitData(&ratelimitData),
-		uhttp.WithJSONResponse(target),
-	)
+	}
+	// If `target` is nil, we expected a "No Content" response and don't want
+	// `WithJSONResponse()` to fail and return an error.
+	if target != nil {
+		doOptions = append(doOptions, uhttp.WithJSONResponse(target))
+	}
+
+	response, err := c.wrapper.Do(request, doOptions...)
 
 	if err == nil {
 		return &ratelimitData, nil
@@ -248,7 +310,7 @@ func (c *ConfluenceClient) get(
 	}
 
 	// If it's some other error, it is unrecoverable.
-	body, err := io.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -256,11 +318,50 @@ func (c *ConfluenceClient) get(
 	return nil, &RequestError{
 		URL:    url,
 		Status: response.StatusCode,
-		Body:   string(body),
+		Body:   string(responseBody),
 	}
 }
 
-func (c *ConfluenceClient) genURLNonPaginated(path string) (*url.URL, error) {
+func (c *ConfluenceClient) get(
+	ctx context.Context,
+	url *url.URL,
+	target interface{},
+) (*v2.RateLimitDescription, error) {
+	return c.makeRequest(ctx, url, target, http.MethodGet, nil)
+}
+
+func (c *ConfluenceClient) post(
+	ctx context.Context,
+	url *url.URL,
+	target interface{},
+	body io.Reader,
+) (*v2.RateLimitDescription, error) {
+	return c.makeRequest(ctx, url, target, http.MethodPost, body)
+}
+
+// put does not take a request body because it is only used for adding a user to
+// a group and that API doesn't take a request body.
+func (c *ConfluenceClient) put(
+	ctx context.Context,
+	url *url.URL,
+	target interface{},
+) (*v2.RateLimitDescription, error) {
+	return c.makeRequest(ctx, url, target, http.MethodPut, nil)
+}
+
+func (c *ConfluenceClient) delete(
+	ctx context.Context,
+	url *url.URL,
+	target interface{},
+) (*v2.RateLimitDescription, error) {
+	return c.makeRequest(ctx, url, target, http.MethodDelete, nil)
+}
+
+func (c *ConfluenceClient) genURLNonPaginated(
+	path string,
+	pathParameters ...any,
+) (*url.URL, error) {
+	path = fmt.Sprintf(path, pathParameters...)
 	parsed, err := url.Parse(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse request path '%s': %w", path, err)
@@ -269,7 +370,12 @@ func (c *ConfluenceClient) genURLNonPaginated(path string) (*url.URL, error) {
 	return u, nil
 }
 
-func (c *ConfluenceClient) genURL(pageToken string, path string) (*url.URL, error) {
+func (c *ConfluenceClient) genURL(
+	pageToken string,
+	path string,
+	pathParameters ...any,
+) (*url.URL, error) {
+	path = fmt.Sprintf(path, pathParameters...)
 	parsed, err := url.Parse(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse request path '%s': %w", path, err)

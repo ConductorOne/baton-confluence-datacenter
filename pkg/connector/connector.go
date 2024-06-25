@@ -54,7 +54,7 @@ func (c *Confluence) Metadata(ctx context.Context) (*v2.ConnectorMetadata, error
 	})
 
 	return &v2.ConnectorMetadata{
-		DisplayName: "Confluence",
+		DisplayName: "Confluence Data Center",
 		Description: "Connector syncing Confluence users and groups to Baton",
 		Annotations: annos,
 	}, nil
@@ -75,7 +75,7 @@ func (c *Confluence) Asset(ctx context.Context, asset *v2.AssetRef) (string, io.
 
 func (c *Confluence) ResourceSyncers(ctx context.Context) []connectorbuilder.ResourceSyncer {
 	return []connectorbuilder.ResourceSyncer{
-		newGroupBuilder(c.client),
 		newUserBuilder(c.client),
+		newGroupBuilder(c.client),
 	}
 }
