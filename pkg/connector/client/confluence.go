@@ -330,15 +330,6 @@ func (c *ConfluenceClient) get(
 	return c.makeRequest(ctx, url, target, http.MethodGet, nil)
 }
 
-func (c *ConfluenceClient) post(
-	ctx context.Context,
-	url *url.URL,
-	target interface{},
-	body io.Reader,
-) (*v2.RateLimitDescription, error) {
-	return c.makeRequest(ctx, url, target, http.MethodPost, body)
-}
-
 // put does not take a request body because it is only used for adding a user to
 // a group and that API doesn't take a request body.
 func (c *ConfluenceClient) put(

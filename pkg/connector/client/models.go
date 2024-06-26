@@ -19,12 +19,6 @@ type ConfluenceGroup struct {
 	Type string `json:"type"`
 }
 
-type confluenceErrorResponse struct {
-	StatusCode int    `json:"statusCode"`
-	Message    string `json:"message"`
-	Reason     string `json:"reason"`
-}
-
 type confluenceGroupList struct {
 	Start   int
 	Limit   int
