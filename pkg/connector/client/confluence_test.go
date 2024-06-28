@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/conductorone/baton-sdk/pkg/uhttp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -101,6 +102,7 @@ func TestGetUsersSetsRateLimitData(t *testing.T) {
 							outputString = usersRateLimit
 							writer.Header().Set(rfc7231RateLimitHeader, "1")
 						}
+						writer.Header().Set(uhttp.ContentType, "application/json")
 						writer.WriteHeader(testCase.statusCode)
 						_, err := writer.Write([]byte(outputString))
 						if err != nil {
@@ -140,6 +142,7 @@ func TestGetUsers(t *testing.T) {
 	server := httptest.NewServer(
 		http.HandlerFunc(
 			func(writer http.ResponseWriter, request *http.Request) {
+				writer.Header().Set(uhttp.ContentType, "application/json")
 				writer.WriteHeader(http.StatusOK)
 				_, err := writer.Write([]byte(usersListResults))
 				if err != nil {
@@ -183,6 +186,7 @@ func TestGetUsersPagination(t *testing.T) {
 			func(writer http.ResponseWriter, request *http.Request) {
 				start := request.URL.Query().Get("start")
 				require.Equal(t, token, start)
+				writer.Header().Set(uhttp.ContentType, "application/json")
 				writer.WriteHeader(http.StatusOK)
 				_, err := writer.Write([]byte(usersNoResults))
 				if err != nil {
