@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 	"github.com/conductorone/baton-sdk/pkg/uhttp"
 	"github.com/stretchr/testify/require"
 )
@@ -58,6 +59,20 @@ const (
 }`
 )
 
+// assertNotRateLimited asserts that ratelimitData is nil or is not a blocking status.
+func assertNotRateLimited(t *testing.T, ratelimitData *v2.RateLimitDescription) {
+	if ratelimitData != nil {
+		require.Contains(
+			t,
+			[]v2.RateLimitDescription_Status{
+				v2.RateLimitDescription_STATUS_UNSPECIFIED,
+				v2.RateLimitDescription_STATUS_OK,
+			},
+			ratelimitData.Status,
+		)
+	}
+}
+
 func TestIncToken(t *testing.T) {
 	testCases := []struct {
 		previousToken string
@@ -104,6 +119,7 @@ func TestGetUsersSetsRateLimitData(t *testing.T) {
 						}
 						writer.Header().Set(uhttp.ContentType, "application/json")
 						writer.WriteHeader(testCase.statusCode)
+
 						_, err := writer.Write([]byte(outputString))
 						if err != nil {
 							return
@@ -128,6 +144,7 @@ func TestGetUsersSetsRateLimitData(t *testing.T) {
 			users, _, ratelimitData, err := client.GetUsers(ctx, "")
 
 			if testCase.success {
+				assertNotRateLimited(t, ratelimitData)
 				require.Nil(t, err)
 				require.NotNil(t, users)
 			} else {
@@ -167,7 +184,7 @@ func TestGetUsers(t *testing.T) {
 
 	users, token, ratelimitData, err := client.GetUsers(ctx, "")
 
-	require.Nil(t, ratelimitData)
+	assertNotRateLimited(t, ratelimitData)
 	require.Nil(t, err)
 
 	// Expect an empty token because there are no more results.
@@ -211,10 +228,47 @@ func TestGetUsersPagination(t *testing.T) {
 
 	users, token, ratelimitData, err := client.GetUsers(ctx, token)
 
-	require.Nil(t, ratelimitData)
+	assertNotRateLimited(t, ratelimitData)
 	require.Nil(t, err)
 
 	require.Equal(t, "", token)
 	require.NotNil(t, users)
 	require.Len(t, users, 0)
+}
+
+func TestRevokeGroup(t *testing.T) {
+	server := httptest.NewServer(
+		http.HandlerFunc(
+			func(writer http.ResponseWriter, request *http.Request) {
+				writer.Header().Set(uhttp.ContentType, "application/json")
+				writer.WriteHeader(http.StatusNoContent)
+				_, err := writer.Write([]byte(""))
+				if err != nil {
+					return
+				}
+			},
+		),
+	)
+	defer server.Close()
+
+	ctx := context.Background()
+	client, err := NewConfluenceClient(
+		ctx,
+		"token",
+		server.URL,
+		"admin",
+		"admin",
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ratelimitData, err := client.RemoveGroupMember(
+		ctx,
+		"admin",
+		"test-group",
+	)
+
+	assertNotRateLimited(t, ratelimitData)
+	require.Nil(t, err)
 }

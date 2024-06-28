@@ -13,7 +13,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func TestUsersList(t *testing.T) {
+func TestGroupsList(t *testing.T) {
 	ctx := context.Background()
 
 	userBuilder := newUserBuilder(client.ConfluenceClient{})
