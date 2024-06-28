@@ -3,41 +3,15 @@ package connector
 import (
 	"context"
 	"fmt"
-	"slices"
 	"testing"
 	"time"
 
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
-	"github.com/conductorone/baton-sdk/pkg/annotations"
 	"github.com/conductorone/baton-sdk/pkg/pagination"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-// assertNotRateLimited asserts that ratelimitData is nil or is not a blocking status.
-func assertNotRateLimited(t *testing.T, actualAnnotations annotations.Annotations) {
-	if actualAnnotations != nil && len(actualAnnotations) == 0 {
-		return
-	}
-
-	for _, annotation := range actualAnnotations {
-		var ratelimitDescription v2.RateLimitDescription
-		err := annotation.UnmarshalTo(&ratelimitDescription)
-		if err != nil {
-			continue
-		}
-		if slices.Contains(
-			[]v2.RateLimitDescription_Status{
-				v2.RateLimitDescription_STATUS_ERROR,
-				v2.RateLimitDescription_STATUS_OVERLIMIT,
-			},
-			ratelimitDescription.Status,
-		) {
-			t.Fatal("request was ratelimited, expected not to be ratelimited")
-		}
-	}
-}
 
 func TestUsersList(t *testing.T) {
 	ctx := context.Background()
@@ -127,7 +101,7 @@ func TestUsersList(t *testing.T) {
 		require.NotEmpty(t, resources[0].Id)
 
 		require.NotNil(t, token)
-		assertNotRateLimited(t, annotations)
+		AssertNoRatelimitAnnotations(t, annotations)
 		require.Nil(t, err)
 	})
 }

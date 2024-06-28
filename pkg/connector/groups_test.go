@@ -101,10 +101,7 @@ func TestGroupsList(t *testing.T) {
 		require.NotEmpty(t, resources[0].Id)
 
 		require.NotNil(t, token)
-		require.Nil(t, annotations)
+		AssertNoRatelimitAnnotations(t, annotations)
 		require.Nil(t, err)
 	})
 }
-
-func TestGroupsEntitlements(t *testing.T) {}
-func TestGroupsGrants(t *testing.T)       {}
