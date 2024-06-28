@@ -77,5 +77,6 @@ func (c *Confluence) ResourceSyncers(ctx context.Context) []connectorbuilder.Res
 	return []connectorbuilder.ResourceSyncer{
 		newUserBuilder(c.client),
 		newGroupBuilder(c.client),
+		newSpaceBuilder(c.client),
 	}
 }

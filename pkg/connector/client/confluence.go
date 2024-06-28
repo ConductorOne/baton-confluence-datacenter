@@ -1,7 +1,9 @@
 package client
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -23,14 +25,129 @@ import (
 )
 
 const (
-	ResourcesPageSize         = 100
-	currentUserUrlPath        = "user/current"
-	groupsListUrlPath         = "group"
-	groupsMemberUpdateUrlPath = "user/%s/group/%s"
-	groupsMembersListUrlPath  = "group/%s/member"
-	rfc7231RateLimitHeader    = "Retry-After"
-	usersListUrlPath          = "user/list"
+	ResourcesPageSize                          = 100
+	spacePermissionsListUrlPath                = "/rpc/json-rpc/confluenceservice-v2/getSpacePermissionSets"
+	spacePermissionsAddUrlPath                 = "/rpc/json-rpc/confluenceservice-v2/addPermissionsToSpace"
+	spacePermissionRemoveUrlPath               = "/rpc/json-rpc/confluenceservice-v2/removePermissionFromSpace"
+	currentUserUrlPath                         = "/rest/api/user/current"
+	groupsListUrlPath                          = "/rest/api/group"
+	groupsMemberUpdateUrlPath                  = "/rest/api/user/%s/group/%s"
+	groupsMembersListUrlPath                   = "/rest/api/group/%s/member"
+	rfc7231RateLimitHeader                     = "Retry-After"
+	spaceUpdateUrlPath                         = "/rest/api/space/%s"
+	spacesListUrlPath                          = "/rest/api/space"
+	usersListUrlPath                           = "/rest/api/user/list"
+	ConfluenceCommentPermissionKey             = "COMMENT"
+	ConfluenceCreateAttachmentPermissionKey    = "CREATEATTACHMENT"
+	ConfluenceEditBlogPermissionKey            = "EDITBLOG"
+	ConfluenceEditSpacePermissionKey           = "EDITSPACE"
+	ConfluenceExportSpacePermissionKey         = "EXPORTSPACE"
+	ConfluenceRemoveAttachmentPermissionKey    = "REMOVEATTACHMENT"
+	ConfluenceRemoveBlogPermissionKey          = "REMOVEBLOG"
+	ConfluenceRemoveCommentPermissionKey       = "REMOVECOMMENT"
+	ConfluenceRemoveMailPermissionKey          = "REMOVEMAIL"
+	ConfluenceRemoveOwnContentPermissionKey    = "REMOVEOWNCONTENT"
+	ConfluenceRemovePagePermissionKey          = "REMOVEPAGE"
+	ConfluenceSetPagePermissionsPermissionKey  = "SETPAGEPERMISSIONS"
+	ConfluenceSetSpacePermissionsPermissionKey = "SETSPACEPERMISSIONS"
+	ConfluenceViewSpacePermissionKey           = "VIEWSPACE"
 )
+
+type ConfluenceSpaceEntitlement struct {
+	DisplayName string
+	Key         string
+	Name        string
+}
+
+// ConfluenceSpaceEntitlements hard-coding the permission types. In the real API
+// the permissions depend on the space.
+var ConfluenceSpaceEntitlements = []ConfluenceSpaceEntitlement{
+	{
+		Key:         ConfluenceCommentPermissionKey,
+		DisplayName: "comment in",
+		Name:        "add-comment",
+	}, {
+		Key:         ConfluenceCreateAttachmentPermissionKey,
+		DisplayName: "create an attachment in",
+		Name:        "add-attachment",
+	}, {
+		Key:         ConfluenceEditBlogPermissionKey,
+		DisplayName: "edit an blog in",
+		Name:        "edit-blog",
+	}, {
+		Key:         ConfluenceEditSpacePermissionKey,
+		DisplayName: "edit",
+		Name:        "edit-space",
+	}, {
+		Key:         ConfluenceExportSpacePermissionKey,
+		DisplayName: "export",
+		Name:        "export-space",
+	}, {
+		Key:         ConfluenceRemoveAttachmentPermissionKey,
+		DisplayName: "remove an attachment from",
+		Name:        "remove-attachment",
+	}, {
+		Key:         ConfluenceRemoveBlogPermissionKey,
+		DisplayName: "remove a blog from",
+		Name:        "remove-blog",
+	}, {
+		Key:         ConfluenceRemoveCommentPermissionKey,
+		DisplayName: "remove a comment from",
+		Name:        "remove-comment",
+	}, {
+		Key:         ConfluenceRemoveMailPermissionKey,
+		DisplayName: "remove mail from",
+		Name:        "remove-mail",
+	}, {
+		Key:         ConfluenceRemoveOwnContentPermissionKey,
+		DisplayName: "remove their own content from",
+		Name:        "remove-own-content",
+	}, {
+		Key:         ConfluenceRemovePagePermissionKey,
+		DisplayName: "remove a page from",
+		Name:        "remove-page",
+	}, {
+		Key:         ConfluenceSetPagePermissionsPermissionKey,
+		DisplayName: "set page permissions for",
+		Name:        "set-page-permissions",
+	}, {
+		Key:         ConfluenceSetSpacePermissionsPermissionKey,
+		DisplayName: "set space permissions for",
+		Name:        "set-space-permissions",
+	}, {
+		Key:         ConfluenceViewSpacePermissionKey,
+		DisplayName: "view",
+		Name:        "view",
+	},
+}
+
+func (c *ConfluenceClient) ConfluenceSpaceEntitlements() []ConfluenceSpaceEntitlement {
+	return ConfluenceSpaceEntitlements
+}
+
+func (c *ConfluenceClient) ConfluenceSpaceEntitlementByKey(key string) (
+	*ConfluenceSpaceEntitlement,
+	bool,
+) {
+	for _, entitlementEntry := range ConfluenceSpaceEntitlements {
+		if entitlementEntry.Key == key {
+			return &entitlementEntry, true
+		}
+	}
+	return nil, false
+}
+
+func (c *ConfluenceClient) ConfluenceSpaceEntitlementByName(name string) (
+	*ConfluenceSpaceEntitlement,
+	bool,
+) {
+	for _, entitlementEntry := range ConfluenceSpaceEntitlements {
+		if entitlementEntry.Name == name {
+			return &entitlementEntry, true
+		}
+	}
+	return nil, false
+}
 
 type RequestError struct {
 	Status int
@@ -62,7 +179,7 @@ func NewConfluenceClient(
 	password string,
 	username string,
 ) (*ConfluenceClient, error) {
-	apiBase, err := url.Parse(strings.Trim(hostname, "/") + "/rest/api/")
+	apiBase, err := url.Parse(strings.Trim(hostname, "/"))
 	if err != nil {
 		return nil, err
 	}
@@ -229,6 +346,198 @@ func (c *ConfluenceClient) RemoveGroupMember(
 	return c.delete(ctx, removeGroupMemberUrl, nil)
 }
 
+// GetSpaces uses pagination to get a list of spaces from the global list.
+func (c *ConfluenceClient) GetSpaces(
+	ctx context.Context,
+	pageToken string,
+) (
+	[]ConfluenceSpace,
+	string,
+	*v2.RateLimitDescription,
+	error,
+) {
+	spacesListUrl, err := c.genURL(pageToken, spacesListUrlPath)
+	if err != nil {
+		return nil, "", nil, err
+	}
+
+	var response *confluenceSpaceList
+	ratelimitData, err := c.get(ctx, spacesListUrl, &response)
+	if err != nil {
+		return nil, "", ratelimitData, err
+	}
+
+	spaces := response.Results
+
+	nextToken := incToken(pageToken, len(spaces))
+
+	return spaces, nextToken, ratelimitData, nil
+}
+
+// AddSpace makes an idempotent PUT call.
+func (c *ConfluenceClient) AddSpace(
+	ctx context.Context,
+	key string,
+	name string,
+	description string,
+) (
+	*v2.RateLimitDescription,
+	error,
+) {
+	addSpaceUrl, err := c.genURLNonPaginated(spaceUpdateUrlPath)
+	if err != nil {
+		return nil, err
+	}
+
+	requestBody, err := json.Marshal(
+		ConfluenceSpace{
+			Key:  key,
+			Name: name,
+			Description: ConfluenceSpaceDescription{
+				Plain: ConfluenceSpaceDescriptionValue{
+					Value:          description,
+					Representation: "plain",
+				},
+			},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	reader := bytes.NewReader(requestBody)
+
+	var response *ConfluenceSpace
+	return c.post(ctx, addSpaceUrl, &response, reader)
+}
+
+func (c *ConfluenceClient) RemoveSpace(
+	ctx context.Context,
+	key string,
+) (
+	*v2.RateLimitDescription,
+	error,
+) {
+	removeGroupMemberUrl, err := c.genURLNonPaginated(
+		spaceUpdateUrlPath,
+		key,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.delete(ctx, removeGroupMemberUrl, nil)
+}
+
+func getParametersListsAsJSONBody(parameters ...interface{}) io.Reader {
+	output, err := json.Marshal(parameters)
+	if err != nil {
+		output = []byte{}
+	}
+	return strings.NewReader(string(output))
+}
+
+// GetSpacePermissions Confluence space permissions are Content Restrictions.
+func (c *ConfluenceClient) GetSpacePermissions(
+	ctx context.Context,
+	spaceName string,
+) (
+	[]ConfluenceSpacePermissionList,
+	*v2.RateLimitDescription,
+	error,
+) {
+	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionsListUrlPath)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	body := getParametersListsAsJSONBody(spaceName)
+
+	var response *[]ConfluenceSpacePermissionList
+	ratelimitData, err := c.post(
+		ctx,
+		spacePermissionsListUrl,
+		&response,
+		body,
+	)
+	if err != nil {
+		return nil, ratelimitData, err
+	}
+
+	spaces := make([]ConfluenceSpacePermissionList, 0)
+	spaces = append(spaces, *response...)
+
+	return spaces, ratelimitData, nil
+}
+
+func (c *ConfluenceClient) AddSpacePermission(
+	ctx context.Context,
+	spaceName string,
+	entityName string,
+	permissionName string,
+) (
+	*v2.RateLimitDescription,
+	error,
+) {
+	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionsAddUrlPath)
+	if err != nil {
+		return nil, err
+	}
+
+	body := getParametersListsAsJSONBody(
+		[]string{permissionName},
+		entityName,
+		spaceName,
+	)
+
+	var response bool
+	ratelimitData, err := c.post(
+		ctx,
+		spacePermissionsListUrl,
+		&response,
+		body,
+	)
+	if err != nil {
+		return ratelimitData, err
+	}
+
+	return ratelimitData, nil
+}
+
+func (c *ConfluenceClient) RemoveSpacePermission(
+	ctx context.Context,
+	spaceName string,
+	entityName string,
+	permissionKey string,
+) (
+	*v2.RateLimitDescription,
+	error,
+) {
+	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionRemoveUrlPath)
+	if err != nil {
+		return nil, err
+	}
+
+	body := getParametersListsAsJSONBody(
+		permissionKey,
+		entityName,
+		spaceName,
+	)
+
+	var response bool
+	ratelimitData, err := c.post(
+		ctx,
+		spacePermissionsListUrl,
+		&response,
+		body,
+	)
+	if err != nil {
+		return ratelimitData, err
+	}
+
+	return ratelimitData, nil
+}
+
 func isRatelimited(
 	ratelimitStatus v2.RateLimitDescription_Status,
 	statusCode int,
@@ -276,7 +585,10 @@ func (c *ConfluenceClient) makeRequest(
 
 	// Auth token has priority.
 	if c.accessToken != "" {
-		request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
+		request.Header.Set(
+			"Authorization",
+			fmt.Sprintf("Bearer %s", c.accessToken),
+		)
 	} else {
 		request.SetBasicAuth(c.username, c.password)
 	}
@@ -291,6 +603,9 @@ func (c *ConfluenceClient) makeRequest(
 	if target != nil {
 		doOptions = append(doOptions, uhttp.WithJSONResponse(target))
 	}
+
+	// This must be explicitly set for the JSON-RPC server to not error.
+	request.Header.Set("Content-Type", "application/json")
 
 	response, err := c.wrapper.Do(request, doOptions...)
 
@@ -328,6 +643,15 @@ func (c *ConfluenceClient) get(
 	target interface{},
 ) (*v2.RateLimitDescription, error) {
 	return c.makeRequest(ctx, url, target, http.MethodGet, nil)
+}
+
+func (c *ConfluenceClient) post(
+	ctx context.Context,
+	url *url.URL,
+	target interface{},
+	body io.Reader,
+) (*v2.RateLimitDescription, error) {
+	return c.makeRequest(ctx, url, target, http.MethodPost, body)
 }
 
 // put does not take a request body because it is only used for adding a user to

@@ -17,3 +17,9 @@ var groupResourceType = &v2.ResourceType{
 	DisplayName: "Group",
 	Traits:      []v2.ResourceType_Trait{v2.ResourceType_TRAIT_GROUP},
 }
+
+var spaceResourceType = &v2.ResourceType{
+	Id:          "space",
+	DisplayName: "Space",
+	Traits:      []v2.ResourceType_Trait{},
+}
