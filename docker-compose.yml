@@ -32,6 +32,7 @@ services:
     image: atlassian/confluence:8.6
     volumes:
       - confluence-data:/var/atlassian/application-data/confluence
+      - ./data:/data
     environment:
       JVM_MINIMUM_MEMORY: 2g
       JVM_MAXIMUM_MEMORY: 4g
@@ -51,6 +52,25 @@ services:
       retries: 3
       start_period: 90s
     restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      data-loader:
+        condition: service_completed_successfully
+    command: /data/entrypoint.sh
+
+  data-loader:
+    image: postgres:15
+    volumes:
+      - ./data:/data
+    networks:
+      - confluence-network
+    environment:
+      PGDATABASE: confluence
+      PGUSER: confluence
+      PGPASSWORD: confluence
+      PGHOST: postgres
+    command: sh ./data/load.sh
     depends_on:
       postgres:
         condition: service_healthy
