@@ -1,8 +1,5 @@
 ![Baton Logo](./docs/images/baton-logo.png)
 
-# baton-confluence-datacenter
-Welcome to your new connector! 
-
 # `baton-confluence-datacenter` [![Go Reference](https://pkg.go.dev/badge/github.com/conductorone/baton-confluence-datacenter.svg)](https://pkg.go.dev/github.com/conductorone/baton-confluence-datacenter) ![main ci](https://github.com/conductorone/baton-confluence-datacenter/actions/workflows/main.yaml/badge.svg)
 
 `baton-confluence-datacenter` is an example connector built using the [Baton SDK](https://github.com/conductorone/baton-sdk). It uses hardcoded data to provide a simple example of how to build your own connector with Baton.
