@@ -32,9 +32,9 @@ var (
 	configurationFields = []field.SchemaField{accessTokenField, hostnameField, passwordField, usernameField}
 	fieldRelationships  = []field.SchemaFieldRelationship{
 		field.FieldsAtLeastOneUsed(accessTokenField, usernameField),
-		field.FieldsDependentOn(
-			[]field.SchemaField{usernameField},
-			[]field.SchemaField{passwordField},
+		field.FieldsRequiredTogether(
+			usernameField,
+			passwordField,
 		),
 	}
 )
