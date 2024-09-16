@@ -3,7 +3,7 @@ module github.com/conductorone/baton-confluence-datacenter
 go 1.22.4
 
 require (
-	github.com/conductorone/baton-sdk v0.1.47
+	github.com/conductorone/baton-sdk v0.2.31
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.9.0
@@ -15,6 +15,7 @@ require (
 require (
 	filippo.io/age v1.1.1 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/allegro/bigcache/v3 v3.1.0 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.27.2 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.2 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.27.18 // indirect
