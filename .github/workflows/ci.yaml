@@ -57,7 +57,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Run Docker Compose as a Daemon (to start postgres and confluence)
-        run: docker-compose -f ./docker-compose.yml up --detach
+        run: docker compose -f ./docker-compose.yml up --detach
       - name: Build baton-confluence-datacenter
         run: go build ./cmd/baton-confluence-datacenter
       - name: Run baton-confluence-datacenter
