@@ -1,6 +1,6 @@
 module github.com/conductorone/baton-confluence-datacenter
 
-go 1.22.4
+go 1.23
 
 require (
 	github.com/conductorone/baton-sdk v0.2.18
