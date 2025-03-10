@@ -26,8 +26,7 @@ import (
 
 const (
 	ResourcesPageSize                          = 100
-	spacePermissionsListUrlPath                = "/rpc/json-rpc/confluenceservice-v2/getSpacePermissionSets"
-	newSpacePermissionsListUrlPath             = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
+	spacePermissionsListUrlPath                = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
 	spacePermissionsAddUrlPath                 = "/rpc/json-rpc/confluenceservice-v2/addPermissionsToSpace"
 	spacePermissionRemoveUrlPath               = "/rpc/json-rpc/confluenceservice-v2/removePermissionFromSpace"
 	currentUserUrlPath                         = "/rest/api/user/current"
@@ -438,39 +437,6 @@ func getParametersListsAsJSONBody(parameters ...interface{}) io.Reader {
 	return strings.NewReader(string(output))
 }
 
-// OldGetSpacePermissions MARKED FOR DELETE
-func (c *ConfluenceClient) OldGetSpacePermissions(
-	ctx context.Context,
-	spaceName string,
-) (
-	[]OldConfluenceSpacePermissionList,
-	*v2.RateLimitDescription,
-	error,
-) {
-	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionsListUrlPath)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	body := getParametersListsAsJSONBody(spaceName)
-
-	var response *[]OldConfluenceSpacePermissionList
-	ratelimitData, err := c.post(
-		ctx,
-		spacePermissionsListUrl,
-		&response,
-		body,
-	)
-	if err != nil {
-		return nil, ratelimitData, err
-	}
-
-	spaces := make([]OldConfluenceSpacePermissionList, 0)
-	spaces = append(spaces, *response...)
-
-	return spaces, ratelimitData, nil
-}
-
 func (c *ConfluenceClient) GetSpacePermissions(
 	ctx context.Context,
 	spaceKey string,
@@ -479,7 +445,7 @@ func (c *ConfluenceClient) GetSpacePermissions(
 	*v2.RateLimitDescription,
 	error,
 ) {
-	spacePermissionsListUrl, err := c.genURLNonPaginated(newSpacePermissionsListUrlPath, spaceKey)
+	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionsListUrlPath, spaceKey)
 	if err != nil {
 		return nil, nil, err
 	}

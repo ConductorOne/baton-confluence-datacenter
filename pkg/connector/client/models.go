@@ -50,19 +50,6 @@ type confluenceSpaceList struct {
 	Results []ConfluenceSpace
 }
 
-// OldConfluenceSpacePermission marked for delete
-type OldConfluenceSpacePermission struct {
-	GroupName string `json:"groupName"`
-	Type      string `json:"type"` // duplicate of the `Type` from above.
-	UserName  string `json:"userName"`
-}
-
-// OldConfluenceSpacePermissionList marked for delete
-type OldConfluenceSpacePermissionList struct {
-	SpacePermissions []OldConfluenceSpacePermission `json:"spacePermissions"`
-	Type             string                         `json:"type"`
-}
-
 type ConfluenceSpacePermission struct {
 	Operation PermissionOperation `json:"operation,omitempty"`
 	Subject   PermissionSubject   `json:"subject,omitempty"`
