@@ -96,11 +96,11 @@ func newUserBuilder(client client.ConfluenceClient) *userBuilder {
 }
 
 // userResource Converts a ConfluenceUser into a ConductorOne Resource.
-func userResource(ctx context.Context, user *client.ConfluenceUser) (*v2.Resource, error) {
+func userResource(_ context.Context, user *client.ConfluenceUser) (*v2.Resource, error) {
 	createdResource, err := resource.NewUserResource(
 		user.DisplayName,
 		userResourceType,
-		user.Username,
+		user.UserKey,
 		[]resource.UserTraitOption{
 			resource.WithUserProfile(
 				map[string]interface{}{
