@@ -3,7 +3,6 @@ package connector
 import (
 	"context"
 	"fmt"
-
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 	"github.com/conductorone/baton-sdk/pkg/annotations"
@@ -11,22 +10,21 @@ import (
 	"github.com/conductorone/baton-sdk/pkg/types/entitlement"
 	"github.com/conductorone/baton-sdk/pkg/types/grant"
 	"github.com/conductorone/baton-sdk/pkg/types/resource"
-	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
-	"go.uber.org/zap"
 )
 
 type spaceBuilder struct {
-	client client.ConfluenceClient
+	client                client.ConfluenceClient
+	SpacePermissionsCache []client.ConfluenceSpacePermission
 }
 
-func (o *spaceBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
+func (o *spaceBuilder) ResourceType(_ context.Context) *v2.ResourceType {
 	return spaceResourceType
 }
 
 // List returns all the spaces from the database as resource objects.
 func (o *spaceBuilder) List(
 	ctx context.Context,
-	parentResourceID *v2.ResourceId,
+	_ *v2.ResourceId,
 	pToken *pagination.Token,
 ) (
 	[]*v2.Resource,
@@ -53,7 +51,6 @@ func (o *spaceBuilder) List(
 	return rv, nextToken, outputAnnotations, nil
 }
 
-// Entitlements each space resource has _fourteen_ entitlements!
 func (o *spaceBuilder) Entitlements(
 	ctx context.Context,
 	resource *v2.Resource,
@@ -64,43 +61,53 @@ func (o *spaceBuilder) Entitlements(
 	annotations.Annotations,
 	error,
 ) {
-	logger := ctxzap.Extract(ctx)
-	logger.Debug(
-		"Starting call to Spaces.Entitlements",
-		zap.String("resource.DisplayName", resource.DisplayName),
-		zap.String("resource.Id.Resource", resource.Id.Resource),
-	)
-	entitlements := make([]*v2.Entitlement, 0)
-	for _, confluenceSpaceEntitlement := range o.client.ConfluenceSpaceEntitlements() {
-		entitlements = append(
-			entitlements,
-			entitlement.NewPermissionEntitlement(
-				resource,
-				confluenceSpaceEntitlement.Name,
-				entitlement.WithGrantableTo(userResourceType),
-				entitlement.WithGrantableTo(groupResourceType),
-				entitlement.WithDisplayName(
-					fmt.Sprintf(
-						"Can %s %s",
-						confluenceSpaceEntitlement.DisplayName,
-						resource.DisplayName,
-					),
-				),
-				entitlement.WithDescription(
-					fmt.Sprintf(
-						"Has permission to %s the %s space in Confluence Data Center",
-						confluenceSpaceEntitlement.DisplayName,
-						resource.DisplayName,
-					),
-				),
-			))
+	var entitlements []*v2.Entitlement
+
+	if len(o.SpacePermissionsCache) == 0 {
+		permissionsList, _, err := o.client.GetSpacePermissions(
+			ctx,
+			resource.Id.Resource,
+		)
+		if err != nil {
+			return nil, "", nil, err
+		}
+
+		o.SpacePermissionsCache = permissionsList
 	}
+
+	for _, permission := range o.SpacePermissionsCache {
+		operation := permission.Operation
+
+		newEntitlement := entitlement.NewPermissionEntitlement(
+			resource,
+			operation.OperationKey+"-"+operation.TargetType,
+			entitlement.WithGrantableTo(userResourceType),
+			entitlement.WithGrantableTo(groupResourceType),
+			entitlement.WithDisplayName(
+				fmt.Sprintf(
+					"Can %s %s",
+					operation.OperationKey,
+					resource.DisplayName,
+				),
+			),
+			entitlement.WithDescription(
+				fmt.Sprintf(
+					"Has permission to %s the %s space in Confluence Data Center",
+					operation.OperationKey,
+					resource.DisplayName,
+				),
+			),
+		)
+
+		entitlements = append(entitlements, newEntitlement)
+	}
+
 	return entitlements, "", nil, nil
 }
 
 // Grants the grants for a given space are the permissions.
 func (o *spaceBuilder) Grants(
-	ctx context.Context,
+	_ context.Context,
 	resource *v2.Resource,
 	_ *pagination.Token,
 ) (
@@ -109,55 +116,39 @@ func (o *spaceBuilder) Grants(
 	annotations.Annotations,
 	error,
 ) {
-	permissionsList, ratelimitData, err := o.client.GetSpacePermissions(
-		ctx,
-		resource.Id.Resource,
-	)
-	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
-	if err != nil {
-		return nil, "", outputAnnotations, err
+	if len(o.SpacePermissionsCache) == 0 {
+		return nil, "", nil, fmt.Errorf("no data of space permissions found. Space permissions cache is empty")
 	}
 
-	var permissions []*v2.Grant
-	for _, permissionsByType := range permissionsList {
-		for _, permission := range permissionsByType.SpacePermissions {
-			permissionType, ok := o.client.ConfluenceSpaceEntitlementByKey(permission.Type)
-			if !ok {
-				// Got an unknown permission type. This can happen because there
-				// are some duplicate permission aliases.
-				continue
-			}
+	var grants []*v2.Grant
+	for _, permission := range o.SpacePermissionsCache {
+		operation := permission.Operation
+		subject := permission.Subject
 
-			var resourceType,
-				resourceName string
-			switch {
-			case permission.UserName != "":
-				resourceType = userResourceType.Id
-				resourceName = permission.UserName
-			case permission.GroupName != "":
-				resourceType = groupResourceType.Id
-				resourceName = permission.GroupName
-			default:
-				// User and group being null mean that there is anonymous access
-				// and _everyone_ has this permission.
-				// TODO(marcos): should we fetch _all_ users and give them each the grant?
-				continue
-			}
-
-			permissions = append(
-				permissions,
-				grant.NewGrant(
-					resource,
-					permissionType.Name,
-					&v2.ResourceId{
-						ResourceType: resourceType,
-						Resource:     resourceName,
-					},
-				))
+		var resourceType, resourceId string
+		switch subject.Type {
+		case "user":
+			resourceType = userResourceType.Id
+			resourceId = subject.UserKey // for users, the user key is used since it's the userResource ID
+		case "group":
+			resourceType = groupResourceType.Id
+			resourceId = subject.Name // for groups, the name is used since it's the groupResource ID
+		default:
+			continue
 		}
+
+		newGrant := grant.NewGrant(
+			resource,
+			operation.OperationKey+"-"+operation.TargetType,
+			&v2.ResourceId{
+				ResourceType: resourceType,
+				Resource:     resourceId,
+			},
+		)
+		grants = append(grants, newGrant)
 	}
 
-	return permissions, "", outputAnnotations, nil
+	return grants, "", nil, nil
 }
 
 func (o *spaceBuilder) Grant(
@@ -205,7 +196,7 @@ func newSpaceBuilder(client client.ConfluenceClient) *spaceBuilder {
 	}
 }
 
-func spaceResource(ctx context.Context, space *client.ConfluenceSpace) (*v2.Resource, error) {
+func spaceResource(_ context.Context, space *client.ConfluenceSpace) (*v2.Resource, error) {
 	createdResource, err := resource.NewResource(
 		space.Name,
 		spaceResourceType,

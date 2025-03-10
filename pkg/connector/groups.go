@@ -23,7 +23,7 @@ type groupBuilder struct {
 	client client.ConfluenceClient
 }
 
-func (o *groupBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
+func (o *groupBuilder) ResourceType(_ context.Context) *v2.ResourceType {
 	return groupResourceType
 }
 
@@ -134,7 +134,7 @@ func (o *groupBuilder) Grants(
 			groupMemberEntitlement,
 			&v2.ResourceId{
 				ResourceType: userResourceType.Id,
-				Resource:     user.Username,
+				Resource:     user.UserKey,
 			},
 		))
 	}

@@ -27,6 +27,7 @@ import (
 const (
 	ResourcesPageSize                          = 100
 	spacePermissionsListUrlPath                = "/rpc/json-rpc/confluenceservice-v2/getSpacePermissionSets"
+	newSpacePermissionsListUrlPath             = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
 	spacePermissionsAddUrlPath                 = "/rpc/json-rpc/confluenceservice-v2/addPermissionsToSpace"
 	spacePermissionRemoveUrlPath               = "/rpc/json-rpc/confluenceservice-v2/removePermissionFromSpace"
 	currentUserUrlPath                         = "/rest/api/user/current"
@@ -437,12 +438,12 @@ func getParametersListsAsJSONBody(parameters ...interface{}) io.Reader {
 	return strings.NewReader(string(output))
 }
 
-// GetSpacePermissions Confluence space permissions are Content Restrictions.
-func (c *ConfluenceClient) GetSpacePermissions(
+// OldGetSpacePermissions MARKED FOR DELETE
+func (c *ConfluenceClient) OldGetSpacePermissions(
 	ctx context.Context,
 	spaceName string,
 ) (
-	[]ConfluenceSpacePermissionList,
+	[]OldConfluenceSpacePermissionList,
 	*v2.RateLimitDescription,
 	error,
 ) {
@@ -453,7 +454,7 @@ func (c *ConfluenceClient) GetSpacePermissions(
 
 	body := getParametersListsAsJSONBody(spaceName)
 
-	var response *[]ConfluenceSpacePermissionList
+	var response *[]OldConfluenceSpacePermissionList
 	ratelimitData, err := c.post(
 		ctx,
 		spacePermissionsListUrl,
@@ -464,10 +465,36 @@ func (c *ConfluenceClient) GetSpacePermissions(
 		return nil, ratelimitData, err
 	}
 
-	spaces := make([]ConfluenceSpacePermissionList, 0)
+	spaces := make([]OldConfluenceSpacePermissionList, 0)
 	spaces = append(spaces, *response...)
 
 	return spaces, ratelimitData, nil
+}
+
+func (c *ConfluenceClient) GetSpacePermissions(
+	ctx context.Context,
+	spaceKey string,
+) (
+	[]ConfluenceSpacePermission,
+	*v2.RateLimitDescription,
+	error,
+) {
+	spacePermissionsListUrl, err := c.genURLNonPaginated(newSpacePermissionsListUrlPath, spaceKey)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var response *[]ConfluenceSpacePermission
+	ratelimitData, err := c.get(
+		ctx,
+		spacePermissionsListUrl,
+		&response,
+	)
+	if err != nil {
+		return nil, ratelimitData, err
+	}
+
+	return *response, ratelimitData, nil
 }
 
 func (c *ConfluenceClient) AddSpacePermission(
