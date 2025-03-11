@@ -27,7 +27,8 @@ import (
 const (
 	ResourcesPageSize                          = 100
 	spacePermissionsListUrlPath                = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
-	spacePermissionsAddUrlPath                 = "/rpc/json-rpc/confluenceservice-v2/addPermissionsToSpace"
+	spacePermissionsAddUrlPath                 = "/rest/api/space/%s/permissions"
+	oldSpacePermissionsAddUrlPath              = "/rpc/json-rpc/confluenceservice-v2/addPermissionsToSpace" // MARKED FOR DELETE
 	spacePermissionRemoveUrlPath               = "/rpc/json-rpc/confluenceservice-v2/removePermissionFromSpace"
 	currentUserUrlPath                         = "/rest/api/user/current"
 	groupsListUrlPath                          = "/rest/api/group"
@@ -61,6 +62,7 @@ type ConfluenceSpaceEntitlement struct {
 
 // ConfluenceSpaceEntitlements hard-coding the permission types. In the real API
 // the permissions depend on the space.
+// MARKED FOR DELETE
 var ConfluenceSpaceEntitlements = []ConfluenceSpaceEntitlement{
 	{
 		Key:         ConfluenceCommentPermissionKey,
@@ -463,7 +465,8 @@ func (c *ConfluenceClient) GetSpacePermissions(
 	return *response, ratelimitData, nil
 }
 
-func (c *ConfluenceClient) AddSpacePermission(
+// OldAddSpacePermission MARKED FOR DELETE
+func (c *ConfluenceClient) OldAddSpacePermission(
 	ctx context.Context,
 	spaceName string,
 	entityName string,
@@ -472,7 +475,7 @@ func (c *ConfluenceClient) AddSpacePermission(
 	*v2.RateLimitDescription,
 	error,
 ) {
-	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionsAddUrlPath)
+	spacePermissionsListUrl, err := c.genURLNonPaginated(oldSpacePermissionsAddUrlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -495,6 +498,43 @@ func (c *ConfluenceClient) AddSpacePermission(
 	}
 
 	return ratelimitData, nil
+}
+
+func (c *ConfluenceClient) AddSpacePermission(ctx context.Context, operation PermissionOperation, spaceKey, userKey, groupName string) (*v2.RateLimitDescription, error) {
+	requestURL, err := c.genURLNonPaginated(spacePermissionsAddUrlPath, spaceKey)
+	if err != nil {
+		return nil, err
+	}
+
+	body := buildBody(operation, userKey, groupName)
+	if body == nil {
+		return nil, fmt.Errorf("failed to build body while trying to add permission")
+	}
+
+	var response bool
+	ratelimitData, err := c.post(ctx, requestURL, &response, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return ratelimitData, nil
+}
+
+func buildBody(operation PermissionOperation, userKey string, groupName string) io.Reader {
+	operations := []PermissionOperation{operation}
+	if userKey != "" {
+		return getParametersListsAsJSONBody(
+			userKey,
+			operations,
+		)
+	} else if groupName != "" {
+		return getParametersListsAsJSONBody(
+			groupName,
+			operations,
+		)
+	}
+
+	return nil
 }
 
 func (c *ConfluenceClient) RemoveSpacePermission(

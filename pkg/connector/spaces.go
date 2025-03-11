@@ -10,6 +10,7 @@ import (
 	"github.com/conductorone/baton-sdk/pkg/types/entitlement"
 	"github.com/conductorone/baton-sdk/pkg/types/grant"
 	"github.com/conductorone/baton-sdk/pkg/types/resource"
+	"strings"
 )
 
 type spaceBuilder struct {
@@ -156,19 +157,51 @@ func (o *spaceBuilder) Grant(
 	principal *v2.Resource,
 	entitlement *v2.Entitlement,
 ) (annotations.Annotations, error) {
-	entitlementEntry, ok := o.client.ConfluenceSpaceEntitlementByName(entitlement.Slug)
-	if !ok {
-		return nil, fmt.Errorf("no confluence space entitlement found for %s", entitlement.Slug)
+	entitlementSegments := strings.Split(entitlement.Id, ":")
+	if len(entitlementSegments) == 0 {
+		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlement.Id)
+	}
+
+	operationData := strings.Split(entitlementSegments[len(entitlementSegments)-1], "-")
+	if len(operationData) != 2 {
+		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlement.Id)
+	}
+
+	operation := client.PermissionOperation{
+		OperationKey: operationData[0],
+		TargetType:   operationData[1],
+	}
+	var userKey, groupName string
+	if principal.Id.ResourceType == userResourceType.Id {
+		userKey = principal.Id.Resource
+	} else if principal.Id.ResourceType == groupResourceType.Id {
+		groupName = principal.Id.Resource
+	}
+
+	spaceKey, err := extractSpaceKeyFromEntitlement(entitlement.Resource.Id.Resource)
+	if err != nil {
+		return nil, err
 	}
 
 	ratelimitData, err := o.client.AddSpacePermission(
 		ctx,
-		entitlement.Resource.Id.Resource,
-		principal.Id.Resource,
-		entitlementEntry.Key,
+		operation,
+		spaceKey,
+		userKey,
+		groupName,
 	)
+
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	return outputAnnotations, err
+}
+
+func extractSpaceKeyFromEntitlement(entitlementID string) (string, error) {
+	entitlementSegments := strings.Split(entitlementID, ":")
+	if len(entitlementSegments) < 2 || entitlementSegments[0] != "space" {
+		return "", fmt.Errorf("couldn't extract the space key from the entitlement %s", entitlementID)
+	}
+
+	return entitlementSegments[1], nil
 }
 
 func (o *spaceBuilder) Revoke(
