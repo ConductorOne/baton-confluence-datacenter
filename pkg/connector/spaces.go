@@ -16,6 +16,7 @@ import (
 type spaceBuilder struct {
 	client                client.ConfluenceClient
 	SpacePermissionsCache []client.ConfluenceSpacePermission
+	SpaceIDsCached        map[string]struct{}
 }
 
 func (o *spaceBuilder) ResourceType(_ context.Context) *v2.ResourceType {
@@ -63,17 +64,11 @@ func (o *spaceBuilder) Entitlements(
 	error,
 ) {
 	var entitlements []*v2.Entitlement
+	spaceKey := resource.Id.Resource
 
-	if len(o.SpacePermissionsCache) == 0 {
-		permissionsList, _, err := o.client.GetSpacePermissions(
-			ctx,
-			resource.Id.Resource,
-		)
-		if err != nil {
-			return nil, "", nil, err
-		}
-
-		o.SpacePermissionsCache = permissionsList
+	err := o.EnsureCacheData(ctx, spaceKey)
+	if err != nil {
+		return nil, "", nil, err
 	}
 
 	for _, permission := range o.SpacePermissionsCache {
@@ -86,8 +81,8 @@ func (o *spaceBuilder) Entitlements(
 			entitlement.WithGrantableTo(groupResourceType),
 			entitlement.WithDisplayName(
 				fmt.Sprintf(
-					"Can %s %s",
-					operation.OperationKey,
+					"Can %s on '%s'",
+					operation.OperationKey+" "+operation.TargetType,
 					resource.DisplayName,
 				),
 			),
@@ -167,10 +162,16 @@ func (o *spaceBuilder) Grant(
 		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlement.Id)
 	}
 
-	operation := client.PermissionOperation{
-		OperationKey: operationData[0],
-		TargetType:   operationData[1],
+	spaceKey, err := extractSpaceKeyFromEntitlement(entitlement.Id)
+	if err != nil {
+		return nil, err
 	}
+
+	err = o.EnsureCacheData(ctx, spaceKey)
+	if err != nil {
+		return nil, err
+	}
+
 	var userKey, groupName string
 	if principal.Id.ResourceType == userResourceType.Id {
 		userKey = principal.Id.Resource
@@ -178,18 +179,30 @@ func (o *spaceBuilder) Grant(
 		groupName = principal.Id.Resource
 	}
 
-	spaceKey, err := extractSpaceKeyFromEntitlement(entitlement.Resource.Id.Resource)
-	if err != nil {
-		return nil, err
+	var currentOperations []client.PermissionOperation
+	for _, operation := range o.SpacePermissionsCache {
+		if (userKey != "" && operation.Subject.UserKey == userKey) || (groupName != "" && operation.Subject.Name == groupName) {
+			currentOperations = append(currentOperations, operation.Operation)
+		}
 	}
+
+	currentOperations = append(currentOperations,
+		client.PermissionOperation{
+			OperationKey: operationData[0],
+			TargetType:   operationData[1],
+		},
+	)
 
 	ratelimitData, err := o.client.AddSpacePermission(
 		ctx,
-		operation,
+		currentOperations,
 		spaceKey,
 		userKey,
 		groupName,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	return outputAnnotations, err
@@ -208,24 +221,44 @@ func (o *spaceBuilder) Revoke(
 	ctx context.Context,
 	grant *v2.Grant,
 ) (annotations.Annotations, error) {
-	entitlementEntry, ok := o.client.ConfluenceSpaceEntitlementByName(grant.Entitlement.Slug)
-	if !ok {
-		return nil, fmt.Errorf("no confluence space entitlement found for %s", grant.Entitlement.Slug)
-	}
+	/*
+		entitlementEntry, ok := o.client.ConfluenceSpaceEntitlementByName(grant.Entitlement.Slug)
+		if !ok {
+			return nil, fmt.Errorf("no confluence space entitlement found for %s", grant.Entitlement.Slug)
+		}
 
-	ratelimitData, err := o.client.RemoveSpacePermission(
-		ctx,
-		grant.Entitlement.Resource.Id.Resource,
-		grant.Principal.Id.Resource,
-		entitlementEntry.Key,
-	)
-	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
-	return outputAnnotations, err
+		ratelimitData, err := o.client.RemoveSpacePermission(
+			ctx,
+			grant.Entitlement.Resource.Id.Resource,
+			grant.Principal.Id.Resource,
+			entitlementEntry.Key,
+		)
+		outputAnnotations := WithRateLimitAnnotations(ratelimitData)
+		return outputAnnotations, err
+	*/
+	return nil, nil
+}
+
+func (o *spaceBuilder) EnsureCacheData(ctx context.Context, spaceKey string) error {
+	if _, exists := o.SpaceIDsCached[spaceKey]; !exists {
+		permissionsList, _, err := o.client.GetSpacePermissions(
+			ctx,
+			spaceKey,
+		)
+		if err != nil {
+			return err
+		}
+
+		o.SpacePermissionsCache = append(o.SpacePermissionsCache, permissionsList...)
+		o.SpaceIDsCached[spaceKey] = struct{}{}
+	}
+	return nil
 }
 
 func newSpaceBuilder(client client.ConfluenceClient) *spaceBuilder {
 	return &spaceBuilder{
-		client: client,
+		client:         client,
+		SpaceIDsCached: make(map[string]struct{}),
 	}
 }
 

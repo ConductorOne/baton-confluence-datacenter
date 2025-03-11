@@ -25,130 +25,24 @@ import (
 )
 
 const (
-	ResourcesPageSize                          = 100
-	spacePermissionsListUrlPath                = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
-	spacePermissionsAddUrlPath                 = "/rest/api/space/%s/permissions"
-	oldSpacePermissionsAddUrlPath              = "/rpc/json-rpc/confluenceservice-v2/addPermissionsToSpace" // MARKED FOR DELETE
-	spacePermissionRemoveUrlPath               = "/rpc/json-rpc/confluenceservice-v2/removePermissionFromSpace"
-	currentUserUrlPath                         = "/rest/api/user/current"
-	groupsListUrlPath                          = "/rest/api/group"
-	groupsMemberUpdateUrlPath                  = "/rest/api/user/%s/group/%s"
-	groupsMembersListUrlPath                   = "/rest/api/group/%s/member"
-	rfc7231RateLimitHeader                     = "Retry-After"
-	spaceUpdateUrlPath                         = "/rest/api/space/%s"
-	spacesListUrlPath                          = "/rest/api/space"
-	usersListUrlPath                           = "/rest/api/user/list"
-	ConfluenceCommentPermissionKey             = "COMMENT"
-	ConfluenceCreateAttachmentPermissionKey    = "CREATEATTACHMENT"
-	ConfluenceEditBlogPermissionKey            = "EDITBLOG"
-	ConfluenceEditSpacePermissionKey           = "EDITSPACE"
-	ConfluenceExportSpacePermissionKey         = "EXPORTSPACE"
-	ConfluenceRemoveAttachmentPermissionKey    = "REMOVEATTACHMENT"
-	ConfluenceRemoveBlogPermissionKey          = "REMOVEBLOG"
-	ConfluenceRemoveCommentPermissionKey       = "REMOVECOMMENT"
-	ConfluenceRemoveMailPermissionKey          = "REMOVEMAIL"
-	ConfluenceRemoveOwnContentPermissionKey    = "REMOVEOWNCONTENT"
-	ConfluenceRemovePagePermissionKey          = "REMOVEPAGE"
-	ConfluenceSetPagePermissionsPermissionKey  = "SETPAGEPERMISSIONS"
-	ConfluenceSetSpacePermissionsPermissionKey = "SETSPACEPERMISSIONS"
-	ConfluenceViewSpacePermissionKey           = "VIEWSPACE"
+	ResourcesPageSize            = 100
+	spacePermissionsListUrlPath  = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
+	spacePermissionsAddUrlPath   = "/rest/api/space/%s/permissions"
+	spacePermissionRemoveUrlPath = "/rpc/json-rpc/confluenceservice-v2/removePermissionFromSpace"
+	currentUserUrlPath           = "/rest/api/user/current"
+	groupsListUrlPath            = "/rest/api/group"
+	groupsMemberUpdateUrlPath    = "/rest/api/user/%s/group/%s"
+	groupsMembersListUrlPath     = "/rest/api/group/%s/member"
+	rfc7231RateLimitHeader       = "Retry-After"
+	spaceUpdateUrlPath           = "/rest/api/space/%s"
+	spacesListUrlPath            = "/rest/api/space"
+	usersListUrlPath             = "/rest/api/user/list"
 )
 
 type ConfluenceSpaceEntitlement struct {
 	DisplayName string
 	Key         string
 	Name        string
-}
-
-// ConfluenceSpaceEntitlements hard-coding the permission types. In the real API
-// the permissions depend on the space.
-// MARKED FOR DELETE
-var ConfluenceSpaceEntitlements = []ConfluenceSpaceEntitlement{
-	{
-		Key:         ConfluenceCommentPermissionKey,
-		DisplayName: "comment in",
-		Name:        "add-comment",
-	}, {
-		Key:         ConfluenceCreateAttachmentPermissionKey,
-		DisplayName: "create an attachment in",
-		Name:        "add-attachment",
-	}, {
-		Key:         ConfluenceEditBlogPermissionKey,
-		DisplayName: "edit an blog in",
-		Name:        "edit-blog",
-	}, {
-		Key:         ConfluenceEditSpacePermissionKey,
-		DisplayName: "edit",
-		Name:        "edit-space",
-	}, {
-		Key:         ConfluenceExportSpacePermissionKey,
-		DisplayName: "export",
-		Name:        "export-space",
-	}, {
-		Key:         ConfluenceRemoveAttachmentPermissionKey,
-		DisplayName: "remove an attachment from",
-		Name:        "remove-attachment",
-	}, {
-		Key:         ConfluenceRemoveBlogPermissionKey,
-		DisplayName: "remove a blog from",
-		Name:        "remove-blog",
-	}, {
-		Key:         ConfluenceRemoveCommentPermissionKey,
-		DisplayName: "remove a comment from",
-		Name:        "remove-comment",
-	}, {
-		Key:         ConfluenceRemoveMailPermissionKey,
-		DisplayName: "remove mail from",
-		Name:        "remove-mail",
-	}, {
-		Key:         ConfluenceRemoveOwnContentPermissionKey,
-		DisplayName: "remove their own content from",
-		Name:        "remove-own-content",
-	}, {
-		Key:         ConfluenceRemovePagePermissionKey,
-		DisplayName: "remove a page from",
-		Name:        "remove-page",
-	}, {
-		Key:         ConfluenceSetPagePermissionsPermissionKey,
-		DisplayName: "set page permissions for",
-		Name:        "set-page-permissions",
-	}, {
-		Key:         ConfluenceSetSpacePermissionsPermissionKey,
-		DisplayName: "set space permissions for",
-		Name:        "set-space-permissions",
-	}, {
-		Key:         ConfluenceViewSpacePermissionKey,
-		DisplayName: "view",
-		Name:        "view",
-	},
-}
-
-func (c *ConfluenceClient) ConfluenceSpaceEntitlements() []ConfluenceSpaceEntitlement {
-	return ConfluenceSpaceEntitlements
-}
-
-func (c *ConfluenceClient) ConfluenceSpaceEntitlementByKey(key string) (
-	*ConfluenceSpaceEntitlement,
-	bool,
-) {
-	for _, entitlementEntry := range ConfluenceSpaceEntitlements {
-		if entitlementEntry.Key == key {
-			return &entitlementEntry, true
-		}
-	}
-	return nil, false
-}
-
-func (c *ConfluenceClient) ConfluenceSpaceEntitlementByName(name string) (
-	*ConfluenceSpaceEntitlement,
-	bool,
-) {
-	for _, entitlementEntry := range ConfluenceSpaceEntitlements {
-		if entitlementEntry.Name == name {
-			return &entitlementEntry, true
-		}
-	}
-	return nil, false
 }
 
 type RequestError struct {
@@ -465,54 +359,30 @@ func (c *ConfluenceClient) GetSpacePermissions(
 	return *response, ratelimitData, nil
 }
 
-// OldAddSpacePermission MARKED FOR DELETE
-func (c *ConfluenceClient) OldAddSpacePermission(
-	ctx context.Context,
-	spaceName string,
-	entityName string,
-	permissionName string,
-) (
-	*v2.RateLimitDescription,
-	error,
-) {
-	spacePermissionsListUrl, err := c.genURLNonPaginated(oldSpacePermissionsAddUrlPath)
-	if err != nil {
-		return nil, err
-	}
-
-	body := getParametersListsAsJSONBody(
-		[]string{permissionName},
-		entityName,
-		spaceName,
-	)
-
-	var response bool
-	ratelimitData, err := c.post(
-		ctx,
-		spacePermissionsListUrl,
-		&response,
-		body,
-	)
-	if err != nil {
-		return ratelimitData, err
-	}
-
-	return ratelimitData, nil
+type AddSpacePermissionUserBody struct {
+	UserKey    string                `json:"userKey"`
+	Operations []PermissionOperation `json:"operations"`
+}
+type AddSpacePermissionGroupBody struct {
+	GroupName  string                `json:"groupName"`
+	Operations []PermissionOperation `json:"operations"`
 }
 
-func (c *ConfluenceClient) AddSpacePermission(ctx context.Context, operation PermissionOperation, spaceKey, userKey, groupName string) (*v2.RateLimitDescription, error) {
+func (c *ConfluenceClient) AddSpacePermission(ctx context.Context, operations []PermissionOperation, spaceKey, userKey, groupName string) (*v2.RateLimitDescription, error) {
 	requestURL, err := c.genURLNonPaginated(spacePermissionsAddUrlPath, spaceKey)
 	if err != nil {
 		return nil, err
 	}
 
-	body := buildBody(operation, userKey, groupName)
-	if body == nil {
-		return nil, fmt.Errorf("failed to build body while trying to add permission")
-	}
+	bodyContent := buildBody(operations, userKey, groupName)
 
-	var response bool
-	ratelimitData, err := c.post(ctx, requestURL, &response, body)
+	requestBody, err := json.Marshal(bodyContent)
+	if err != nil {
+		return nil, err
+	}
+	reader := bytes.NewReader(requestBody)
+
+	ratelimitData, err := c.post(ctx, requestURL, nil, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -520,18 +390,17 @@ func (c *ConfluenceClient) AddSpacePermission(ctx context.Context, operation Per
 	return ratelimitData, nil
 }
 
-func buildBody(operation PermissionOperation, userKey string, groupName string) io.Reader {
-	operations := []PermissionOperation{operation}
+func buildBody(operations []PermissionOperation, userKey string, groupName string) interface{} {
 	if userKey != "" {
-		return getParametersListsAsJSONBody(
-			userKey,
-			operations,
-		)
+		return []AddSpacePermissionUserBody{{
+			UserKey:    userKey,
+			Operations: operations,
+		}}
 	} else if groupName != "" {
-		return getParametersListsAsJSONBody(
-			groupName,
-			operations,
-		)
+		return []AddSpacePermissionGroupBody{{
+			GroupName:  groupName,
+			Operations: operations,
+		}}
 	}
 
 	return nil
