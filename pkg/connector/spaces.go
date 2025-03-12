@@ -16,8 +16,7 @@ import (
 
 type spaceBuilder struct {
 	client                client.ConfluenceClient
-	spaceIDsCached        map[string]struct{}
-	SpacePermissionsCache []client.ConfluenceSpacePermission
+	SpacePermissionsCache map[string][]client.ConfluenceSpacePermission
 }
 
 func (o *spaceBuilder) ResourceType(_ context.Context) *v2.ResourceType {
@@ -72,7 +71,7 @@ func (o *spaceBuilder) Entitlements(
 		return nil, "", nil, err
 	}
 
-	for _, permission := range o.SpacePermissionsCache {
+	for _, permission := range o.SpacePermissionsCache[spaceKey] {
 		operation := permission.Operation
 
 		newEntitlement := entitlement.NewPermissionEntitlement(
@@ -113,21 +112,26 @@ func (o *spaceBuilder) Grants(
 	annotations.Annotations,
 	error,
 ) {
-	if len(o.SpacePermissionsCache) == 0 {
+	spaceKey := resource.Id.Resource
+	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
 		return nil, "", nil, fmt.Errorf("no data of space permissions found. Space permissions cache is empty")
 	}
 
 	var grants []*v2.Grant
-	for _, permission := range o.SpacePermissionsCache {
+	for _, permission := range o.SpacePermissionsCache[spaceKey] {
+		if permission.SpaceKey != resource.Id.Resource {
+			continue
+		}
+
 		operation := permission.Operation
 		subject := permission.Subject
 
 		var resourceType, resourceId string
 		switch subject.Type {
-		case "user":
+		case client.PermissionTypeUser:
 			resourceType = userResourceType.Id
 			resourceId = subject.UserKey // for users, the user key is used since it's the userResource ID
-		case "group":
+		case client.PermissionTypeGroup:
 			resourceType = groupResourceType.Id
 			resourceId = subject.Name // for groups, the name is used since it's the groupResource ID
 		default:
@@ -181,7 +185,7 @@ func (o *spaceBuilder) Grant(
 	}
 
 	var currentOperations []client.PermissionOperation
-	for _, spacePermission := range o.SpacePermissionsCache {
+	for _, spacePermission := range o.SpacePermissionsCache[spaceKey] {
 		if (userKey != "" && spacePermission.Subject.UserKey == userKey) || (groupName != "" && spacePermission.Subject.Name == groupName) {
 			currentOperations = append(currentOperations, spacePermission.Operation)
 		}
@@ -252,7 +256,7 @@ func (o *spaceBuilder) Revoke(
 	}
 
 	var currentOperations []client.PermissionOperation
-	for _, spacePermission := range o.SpacePermissionsCache {
+	for _, spacePermission := range o.SpacePermissionsCache[spaceKey] {
 		if (userKey != "" && spacePermission.Subject.UserKey == userKey) || (groupName != "" && spacePermission.Subject.Name == groupName) {
 			if spacePermission.Operation.OperationKey == operationData[0] && spacePermission.Operation.TargetType == operationData[1] {
 				continue
@@ -277,7 +281,7 @@ func (o *spaceBuilder) Revoke(
 }
 
 func (o *spaceBuilder) EnsureCacheData(ctx context.Context, spaceKey string) error {
-	if _, exists := o.spaceIDsCached[spaceKey]; !exists {
+	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
 		permissionsList, _, err := o.client.GetSpacePermissions(
 			ctx,
 			spaceKey,
@@ -286,16 +290,15 @@ func (o *spaceBuilder) EnsureCacheData(ctx context.Context, spaceKey string) err
 			return err
 		}
 
-		o.SpacePermissionsCache = append(o.SpacePermissionsCache, permissionsList...)
-		o.spaceIDsCached[spaceKey] = struct{}{}
+		o.SpacePermissionsCache[spaceKey] = permissionsList
 	}
 	return nil
 }
 
-func newSpaceBuilder(client client.ConfluenceClient) *spaceBuilder {
+func newSpaceBuilder(c client.ConfluenceClient) *spaceBuilder {
 	return &spaceBuilder{
-		client:         client,
-		spaceIDsCached: make(map[string]struct{}),
+		client:                c,
+		SpacePermissionsCache: make(map[string][]client.ConfluenceSpacePermission),
 	}
 }
 

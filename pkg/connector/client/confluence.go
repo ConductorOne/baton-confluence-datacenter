@@ -378,7 +378,10 @@ func (c *ConfluenceClient) UpdateSpacePermissions(ctx context.Context, operation
 		return nil, err
 	}
 
-	bodyContent := buildBody(operations, userKey, groupName)
+	bodyContent, err := buildBody(operations, userKey, groupName)
+	if err != nil {
+		return nil, err
+	}
 
 	requestBody, err := json.Marshal(bodyContent)
 	if err != nil {
@@ -394,20 +397,20 @@ func (c *ConfluenceClient) UpdateSpacePermissions(ctx context.Context, operation
 	return ratelimitData, nil
 }
 
-func buildBody(operations []PermissionOperation, userKey string, groupName string) interface{} {
+func buildBody(operations []PermissionOperation, userKey string, groupName string) (interface{}, error) {
 	if userKey != "" {
 		return []AddSpacePermissionUserBody{{
 			UserKey:    userKey,
 			Operations: operations,
-		}}
+		}}, nil
 	} else if groupName != "" {
 		return []AddSpacePermissionGroupBody{{
 			GroupName:  groupName,
 			Operations: operations,
-		}}
+		}}, nil
 	}
 
-	return nil
+	return nil, fmt.Errorf("error building the request body. No userKey or groupName was provided")
 }
 
 func isRatelimited(

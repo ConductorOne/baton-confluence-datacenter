@@ -63,7 +63,7 @@ type PermissionOperation struct {
 
 // PermissionSubject can be one of several types of resources. The ones we care about are: user (type: "user") or a group (type: "group").
 type PermissionSubject struct {
-	Type string `json:"type,omitempty"`
+	Type PermissionType `json:"type,omitempty"`
 
 	// For groups:
 	Name string `json:"name,omitempty"`
@@ -74,3 +74,10 @@ type PermissionSubject struct {
 	// For others:
 	DisplayName string `json:"displayName,omitempty"`
 }
+
+type PermissionType string
+
+const (
+	PermissionTypeUser  PermissionType = "user"
+	PermissionTypeGroup PermissionType = "group"
+)
