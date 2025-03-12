@@ -61,11 +61,11 @@ type PermissionOperation struct {
 	OperationKey string `json:"operationKey"`
 }
 
-// PermissionSubject can be one of several types of resources. The ones we care about are: user (type: "user") or a group (type: "group")
+// PermissionSubject can be one of several types of resources. The ones we care about are: user (type: "user") or a group (type: "group").
 type PermissionSubject struct {
 	Type string `json:"type,omitempty"`
 
-	//For groups:
+	// For groups:
 	Name string `json:"name,omitempty"`
 
 	// For users:

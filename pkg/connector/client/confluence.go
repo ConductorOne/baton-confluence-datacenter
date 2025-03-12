@@ -102,7 +102,7 @@ func (c *ConfluenceClient) GetUserByKey(ctx context.Context, userKey string) (*C
 	if _, err := c.get(ctx, requestURL, &response); err != nil {
 		return nil, err
 	}
-	
+
 	return response, nil
 }
 
@@ -335,14 +335,6 @@ func (c *ConfluenceClient) RemoveSpace(
 	}
 
 	return c.delete(ctx, removeGroupMemberUrl, nil)
-}
-
-func getParametersListsAsJSONBody(parameters ...interface{}) io.Reader {
-	output, err := json.Marshal(parameters)
-	if err != nil {
-		output = []byte{}
-	}
-	return strings.NewReader(string(output))
 }
 
 func (c *ConfluenceClient) GetSpacePermissions(
