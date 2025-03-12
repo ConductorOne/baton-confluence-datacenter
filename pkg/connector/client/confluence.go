@@ -25,18 +25,17 @@ import (
 )
 
 const (
-	ResourcesPageSize            = 100
-	spacePermissionsListUrlPath  = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
-	spacePermissionsAddUrlPath   = "/rest/api/space/%s/permissions"
-	spacePermissionRemoveUrlPath = "/rpc/json-rpc/confluenceservice-v2/removePermissionFromSpace"
-	currentUserUrlPath           = "/rest/api/user/current"
-	groupsListUrlPath            = "/rest/api/group"
-	groupsMemberUpdateUrlPath    = "/rest/api/user/%s/group/%s"
-	groupsMembersListUrlPath     = "/rest/api/group/%s/member"
-	rfc7231RateLimitHeader       = "Retry-After"
-	spaceUpdateUrlPath           = "/rest/api/space/%s"
-	spacesListUrlPath            = "/rest/api/space"
-	usersListUrlPath             = "/rest/api/user/list"
+	ResourcesPageSize                 = 100
+	spacePermissionsManagementUrlPath = "/rest/api/space/%s/permissions" // %s is the placeholder for the space KEY, not the name nor the id.
+	currentUserUrlPath                = "/rest/api/user/current"
+	getUserDetailByKeyUrlPath         = "/rest/api/user?key=%s" // %s is the placeholder for the user key. This specific EP won't work with the username
+	groupsListUrlPath                 = "/rest/api/group"
+	groupsMemberUpdateUrlPath         = "/rest/api/user/%s/group/%s"
+	groupsMembersListUrlPath          = "/rest/api/group/%s/member"
+	rfc7231RateLimitHeader            = "Retry-After"
+	spaceUpdateUrlPath                = "/rest/api/space/%s"
+	spacesListUrlPath                 = "/rest/api/space"
+	usersListUrlPath                  = "/rest/api/user/list"
 )
 
 type ConfluenceSpaceEntitlement struct {
@@ -92,6 +91,19 @@ func NewConfluenceClient(
 		username:    username,
 		wrapper:     uhttp.NewBaseHttpClient(httpClient),
 	}, nil
+}
+
+func (c *ConfluenceClient) GetUserByKey(ctx context.Context, userKey string) (*ConfluenceUser, error) {
+	requestURL, err := c.genURLNonPaginated(getUserDetailByKeyUrlPath, userKey)
+	if err != nil {
+		return nil, err
+	}
+	var response *ConfluenceUser
+	if _, err := c.get(ctx, requestURL, &response); err != nil {
+		return nil, err
+	}
+	
+	return response, nil
 }
 
 // Verify returns an error if the current user isn't found.
@@ -341,7 +353,7 @@ func (c *ConfluenceClient) GetSpacePermissions(
 	*v2.RateLimitDescription,
 	error,
 ) {
-	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionsListUrlPath, spaceKey)
+	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionsManagementUrlPath, spaceKey)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -368,8 +380,8 @@ type AddSpacePermissionGroupBody struct {
 	Operations []PermissionOperation `json:"operations"`
 }
 
-func (c *ConfluenceClient) AddSpacePermission(ctx context.Context, operations []PermissionOperation, spaceKey, userKey, groupName string) (*v2.RateLimitDescription, error) {
-	requestURL, err := c.genURLNonPaginated(spacePermissionsAddUrlPath, spaceKey)
+func (c *ConfluenceClient) UpdateSpacePermissions(ctx context.Context, operations []PermissionOperation, spaceKey, userKey, groupName string) (*v2.RateLimitDescription, error) {
+	requestURL, err := c.genURLNonPaginated(spacePermissionsManagementUrlPath, spaceKey)
 	if err != nil {
 		return nil, err
 	}
@@ -404,40 +416,6 @@ func buildBody(operations []PermissionOperation, userKey string, groupName strin
 	}
 
 	return nil
-}
-
-func (c *ConfluenceClient) RemoveSpacePermission(
-	ctx context.Context,
-	spaceName string,
-	entityName string,
-	permissionKey string,
-) (
-	*v2.RateLimitDescription,
-	error,
-) {
-	spacePermissionsListUrl, err := c.genURLNonPaginated(spacePermissionRemoveUrlPath)
-	if err != nil {
-		return nil, err
-	}
-
-	body := getParametersListsAsJSONBody(
-		permissionKey,
-		entityName,
-		spaceName,
-	)
-
-	var response bool
-	ratelimitData, err := c.post(
-		ctx,
-		spacePermissionsListUrl,
-		&response,
-		body,
-	)
-	if err != nil {
-		return ratelimitData, err
-	}
-
-	return ratelimitData, nil
 }
 
 func isRatelimited(
