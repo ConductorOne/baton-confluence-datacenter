@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
@@ -17,6 +18,7 @@ import (
 type spaceBuilder struct {
 	client                client.ConfluenceClient
 	SpacePermissionsCache map[string][]client.ConfluenceSpacePermission
+	SpacePermissionsMutex sync.RWMutex
 }
 
 func (o *spaceBuilder) ResourceType(_ context.Context) *v2.ResourceType {
@@ -281,6 +283,9 @@ func (o *spaceBuilder) Revoke(
 }
 
 func (o *spaceBuilder) EnsureCacheData(ctx context.Context, spaceKey string) error {
+	o.SpacePermissionsMutex.RLock()
+	defer o.SpacePermissionsMutex.RUnlock()
+
 	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
 		permissionsList, _, err := o.client.GetSpacePermissions(
 			ctx,
