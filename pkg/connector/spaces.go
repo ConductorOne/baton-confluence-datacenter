@@ -73,6 +73,8 @@ func (o *spaceBuilder) Entitlements(
 		return nil, "", nil, err
 	}
 
+	o.SpacePermissionsMutex.RLock()
+	defer o.SpacePermissionsMutex.RUnlock()
 	for _, permission := range o.SpacePermissionsCache[spaceKey] {
 		operation := permission.Operation
 
@@ -114,6 +116,9 @@ func (o *spaceBuilder) Grants(
 	annotations.Annotations,
 	error,
 ) {
+	o.SpacePermissionsMutex.RLock()
+	defer o.SpacePermissionsMutex.RUnlock()
+
 	spaceKey := resource.Id.Resource
 	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
 		return nil, "", nil, fmt.Errorf("no data of space permissions found. Space permissions cache is empty")
@@ -159,6 +164,9 @@ func (o *spaceBuilder) Grant(
 	principal *v2.Resource,
 	entitlement *v2.Entitlement,
 ) (annotations.Annotations, error) {
+	o.SpacePermissionsMutex.RLock()
+	defer o.SpacePermissionsMutex.RUnlock()
+
 	entitlementSegments := strings.Split(entitlement.Id, ":")
 	if len(entitlementSegments) == 0 {
 		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlement.Id)
@@ -283,8 +291,8 @@ func (o *spaceBuilder) Revoke(
 }
 
 func (o *spaceBuilder) EnsureCacheData(ctx context.Context, spaceKey string) error {
-	o.SpacePermissionsMutex.RLock()
-	defer o.SpacePermissionsMutex.RUnlock()
+	o.SpacePermissionsMutex.Lock()
+	defer o.SpacePermissionsMutex.Unlock()
 
 	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
 		permissionsList, _, err := o.client.GetSpacePermissions(
