@@ -3,6 +3,8 @@ package connector
 import (
 	"context"
 	"fmt"
+	"strings"
+	"sync"
 
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
@@ -11,22 +13,22 @@ import (
 	"github.com/conductorone/baton-sdk/pkg/types/entitlement"
 	"github.com/conductorone/baton-sdk/pkg/types/grant"
 	"github.com/conductorone/baton-sdk/pkg/types/resource"
-	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
-	"go.uber.org/zap"
 )
 
 type spaceBuilder struct {
-	client client.ConfluenceClient
+	client                client.ConfluenceClient
+	SpacePermissionsCache map[string][]client.ConfluenceSpacePermission
+	SpacePermissionsMutex sync.RWMutex
 }
 
-func (o *spaceBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
+func (o *spaceBuilder) ResourceType(_ context.Context) *v2.ResourceType {
 	return spaceResourceType
 }
 
 // List returns all the spaces from the database as resource objects.
 func (o *spaceBuilder) List(
 	ctx context.Context,
-	parentResourceID *v2.ResourceId,
+	_ *v2.ResourceId,
 	pToken *pagination.Token,
 ) (
 	[]*v2.Resource,
@@ -53,7 +55,6 @@ func (o *spaceBuilder) List(
 	return rv, nextToken, outputAnnotations, nil
 }
 
-// Entitlements each space resource has _fourteen_ entitlements!
 func (o *spaceBuilder) Entitlements(
 	ctx context.Context,
 	resource *v2.Resource,
@@ -64,43 +65,49 @@ func (o *spaceBuilder) Entitlements(
 	annotations.Annotations,
 	error,
 ) {
-	logger := ctxzap.Extract(ctx)
-	logger.Debug(
-		"Starting call to Spaces.Entitlements",
-		zap.String("resource.DisplayName", resource.DisplayName),
-		zap.String("resource.Id.Resource", resource.Id.Resource),
-	)
-	entitlements := make([]*v2.Entitlement, 0)
-	for _, confluenceSpaceEntitlement := range o.client.ConfluenceSpaceEntitlements() {
-		entitlements = append(
-			entitlements,
-			entitlement.NewPermissionEntitlement(
-				resource,
-				confluenceSpaceEntitlement.Name,
-				entitlement.WithGrantableTo(userResourceType),
-				entitlement.WithGrantableTo(groupResourceType),
-				entitlement.WithDisplayName(
-					fmt.Sprintf(
-						"Can %s %s",
-						confluenceSpaceEntitlement.DisplayName,
-						resource.DisplayName,
-					),
-				),
-				entitlement.WithDescription(
-					fmt.Sprintf(
-						"Has permission to %s the %s space in Confluence Data Center",
-						confluenceSpaceEntitlement.DisplayName,
-						resource.DisplayName,
-					),
-				),
-			))
+	var entitlements []*v2.Entitlement
+	spaceKey := resource.Id.Resource
+
+	err := o.EnsureCacheData(ctx, spaceKey)
+	if err != nil {
+		return nil, "", nil, err
 	}
+
+	o.SpacePermissionsMutex.RLock()
+	defer o.SpacePermissionsMutex.RUnlock()
+	for _, permission := range o.SpacePermissionsCache[spaceKey] {
+		operation := permission.Operation
+
+		newEntitlement := entitlement.NewPermissionEntitlement(
+			resource,
+			operation.OperationKey+"-"+operation.TargetType,
+			entitlement.WithGrantableTo(userResourceType),
+			entitlement.WithGrantableTo(groupResourceType),
+			entitlement.WithDisplayName(
+				fmt.Sprintf(
+					"Can %s on '%s'",
+					operation.OperationKey+" "+operation.TargetType,
+					resource.DisplayName,
+				),
+			),
+			entitlement.WithDescription(
+				fmt.Sprintf(
+					"Has permission to %s the %s space in Confluence Data Center",
+					operation.OperationKey,
+					resource.DisplayName,
+				),
+			),
+		)
+
+		entitlements = append(entitlements, newEntitlement)
+	}
+
 	return entitlements, "", nil, nil
 }
 
 // Grants the grants for a given space are the permissions.
 func (o *spaceBuilder) Grants(
-	ctx context.Context,
+	_ context.Context,
 	resource *v2.Resource,
 	_ *pagination.Token,
 ) (
@@ -109,55 +116,47 @@ func (o *spaceBuilder) Grants(
 	annotations.Annotations,
 	error,
 ) {
-	permissionsList, ratelimitData, err := o.client.GetSpacePermissions(
-		ctx,
-		resource.Id.Resource,
-	)
-	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
-	if err != nil {
-		return nil, "", outputAnnotations, err
+	o.SpacePermissionsMutex.RLock()
+	defer o.SpacePermissionsMutex.RUnlock()
+
+	spaceKey := resource.Id.Resource
+	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
+		return nil, "", nil, fmt.Errorf("no data of space permissions found. Space permissions cache is empty")
 	}
 
-	var permissions []*v2.Grant
-	for _, permissionsByType := range permissionsList {
-		for _, permission := range permissionsByType.SpacePermissions {
-			permissionType, ok := o.client.ConfluenceSpaceEntitlementByKey(permission.Type)
-			if !ok {
-				// Got an unknown permission type. This can happen because there
-				// are some duplicate permission aliases.
-				continue
-			}
-
-			var resourceType,
-				resourceName string
-			switch {
-			case permission.UserName != "":
-				resourceType = userResourceType.Id
-				resourceName = permission.UserName
-			case permission.GroupName != "":
-				resourceType = groupResourceType.Id
-				resourceName = permission.GroupName
-			default:
-				// User and group being null mean that there is anonymous access
-				// and _everyone_ has this permission.
-				// TODO(marcos): should we fetch _all_ users and give them each the grant?
-				continue
-			}
-
-			permissions = append(
-				permissions,
-				grant.NewGrant(
-					resource,
-					permissionType.Name,
-					&v2.ResourceId{
-						ResourceType: resourceType,
-						Resource:     resourceName,
-					},
-				))
+	var grants []*v2.Grant
+	for _, permission := range o.SpacePermissionsCache[spaceKey] {
+		if permission.SpaceKey != resource.Id.Resource {
+			continue
 		}
+
+		operation := permission.Operation
+		subject := permission.Subject
+
+		var resourceType, resourceId string
+		switch subject.Type {
+		case client.PermissionTypeUser:
+			resourceType = userResourceType.Id
+			resourceId = subject.UserKey // for users, the user key is used since it's the userResource ID
+		case client.PermissionTypeGroup:
+			resourceType = groupResourceType.Id
+			resourceId = subject.Name // for groups, the name is used since it's the groupResource ID
+		default:
+			continue
+		}
+
+		newGrant := grant.NewGrant(
+			resource,
+			operation.OperationKey+"-"+operation.TargetType,
+			&v2.ResourceId{
+				ResourceType: resourceType,
+				Resource:     resourceId,
+			},
+		)
+		grants = append(grants, newGrant)
 	}
 
-	return permissions, "", outputAnnotations, nil
+	return grants, "", nil, nil
 }
 
 func (o *spaceBuilder) Grant(
@@ -165,47 +164,158 @@ func (o *spaceBuilder) Grant(
 	principal *v2.Resource,
 	entitlement *v2.Entitlement,
 ) (annotations.Annotations, error) {
-	entitlementEntry, ok := o.client.ConfluenceSpaceEntitlementByName(entitlement.Slug)
-	if !ok {
-		return nil, fmt.Errorf("no confluence space entitlement found for %s", entitlement.Slug)
+	o.SpacePermissionsMutex.RLock()
+	defer o.SpacePermissionsMutex.RUnlock()
+
+	entitlementSegments := strings.Split(entitlement.Id, ":")
+	if len(entitlementSegments) == 0 {
+		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlement.Id)
 	}
 
-	ratelimitData, err := o.client.AddSpacePermission(
-		ctx,
-		entitlement.Resource.Id.Resource,
-		principal.Id.Resource,
-		entitlementEntry.Key,
+	operationData := strings.Split(entitlementSegments[len(entitlementSegments)-1], "-")
+	if len(operationData) != 2 {
+		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlement.Id)
+	}
+
+	spaceKey, err := extractSpaceKeyFromEntitlement(entitlement.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	err = o.EnsureCacheData(ctx, spaceKey)
+	if err != nil {
+		return nil, err
+	}
+
+	var userKey, groupName string
+	if principal.Id.ResourceType == userResourceType.Id {
+		userKey = principal.Id.Resource
+	} else if principal.Id.ResourceType == groupResourceType.Id {
+		groupName = principal.Id.Resource
+	}
+
+	var currentOperations []client.PermissionOperation
+	for _, spacePermission := range o.SpacePermissionsCache[spaceKey] {
+		if (userKey != "" && spacePermission.Subject.UserKey == userKey) || (groupName != "" && spacePermission.Subject.Name == groupName) {
+			currentOperations = append(currentOperations, spacePermission.Operation)
+		}
+	}
+
+	currentOperations = append(currentOperations,
+		client.PermissionOperation{
+			OperationKey: operationData[0],
+			TargetType:   operationData[1],
+		},
 	)
+
+	ratelimitData, err := o.client.UpdateSpacePermissions(
+		ctx,
+		currentOperations,
+		spaceKey,
+		userKey,
+		groupName,
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	return outputAnnotations, err
+}
+
+func extractSpaceKeyFromEntitlement(entitlementID string) (string, error) {
+	entitlementSegments := strings.Split(entitlementID, ":")
+	if len(entitlementSegments) < 2 || entitlementSegments[0] != "space" {
+		return "", fmt.Errorf("couldn't extract the space key from the entitlement %s", entitlementID)
+	}
+
+	return entitlementSegments[1], nil
 }
 
 func (o *spaceBuilder) Revoke(
 	ctx context.Context,
 	grant *v2.Grant,
 ) (annotations.Annotations, error) {
-	entitlementEntry, ok := o.client.ConfluenceSpaceEntitlementByName(grant.Entitlement.Slug)
-	if !ok {
-		return nil, fmt.Errorf("no confluence space entitlement found for %s", grant.Entitlement.Slug)
+	entitlementID := grant.Entitlement.Id
+	principal := grant.Principal
+	entitlementSegments := strings.Split(entitlementID, ":")
+	if len(entitlementSegments) == 0 {
+		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlementID)
 	}
 
-	ratelimitData, err := o.client.RemoveSpacePermission(
+	operationData := strings.Split(entitlementSegments[len(entitlementSegments)-1], "-")
+	if len(operationData) != 2 {
+		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlementID)
+	}
+
+	spaceKey, err := extractSpaceKeyFromEntitlement(entitlementID)
+	if err != nil {
+		return nil, err
+	}
+
+	err = o.EnsureCacheData(ctx, spaceKey)
+	if err != nil {
+		return nil, err
+	}
+
+	var userKey, groupName string
+	if principal.Id.ResourceType == userResourceType.Id {
+		userKey = principal.Id.Resource
+	} else if principal.Id.ResourceType == groupResourceType.Id {
+		groupName = principal.Id.Resource
+	}
+
+	var currentOperations []client.PermissionOperation
+	for _, spacePermission := range o.SpacePermissionsCache[spaceKey] {
+		if (userKey != "" && spacePermission.Subject.UserKey == userKey) || (groupName != "" && spacePermission.Subject.Name == groupName) {
+			if spacePermission.Operation.OperationKey == operationData[0] && spacePermission.Operation.TargetType == operationData[1] {
+				continue
+			}
+			currentOperations = append(currentOperations, spacePermission.Operation)
+		}
+	}
+
+	ratelimitData, err := o.client.UpdateSpacePermissions(
 		ctx,
-		grant.Entitlement.Resource.Id.Resource,
-		grant.Principal.Id.Resource,
-		entitlementEntry.Key,
+		currentOperations,
+		spaceKey,
+		userKey,
+		groupName,
 	)
+	if err != nil {
+		return nil, err
+	}
+
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
-	return outputAnnotations, err
+	return outputAnnotations, nil
 }
 
-func newSpaceBuilder(client client.ConfluenceClient) *spaceBuilder {
+func (o *spaceBuilder) EnsureCacheData(ctx context.Context, spaceKey string) error {
+	o.SpacePermissionsMutex.Lock()
+	defer o.SpacePermissionsMutex.Unlock()
+
+	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
+		permissionsList, _, err := o.client.GetSpacePermissions(
+			ctx,
+			spaceKey,
+		)
+		if err != nil {
+			return err
+		}
+
+		o.SpacePermissionsCache[spaceKey] = permissionsList
+	}
+	return nil
+}
+
+func newSpaceBuilder(c client.ConfluenceClient) *spaceBuilder {
 	return &spaceBuilder{
-		client: client,
+		client:                c,
+		SpacePermissionsCache: make(map[string][]client.ConfluenceSpacePermission),
 	}
 }
 
-func spaceResource(ctx context.Context, space *client.ConfluenceSpace) (*v2.Resource, error) {
+func spaceResource(_ context.Context, space *client.ConfluenceSpace) (*v2.Resource, error) {
 	createdResource, err := resource.NewResource(
 		space.Name,
 		spaceResourceType,

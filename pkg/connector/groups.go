@@ -23,7 +23,7 @@ type groupBuilder struct {
 	client client.ConfluenceClient
 }
 
-func (o *groupBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
+func (o *groupBuilder) ResourceType(_ context.Context) *v2.ResourceType {
 	return groupResourceType
 }
 
@@ -31,7 +31,7 @@ func (o *groupBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
 // Groups include a GroupTrait because they are the 'shape' of a standard group.
 func (o *groupBuilder) List(
 	ctx context.Context,
-	parentResourceID *v2.ResourceId,
+	_ *v2.ResourceId,
 	pToken *pagination.Token,
 ) (
 	[]*v2.Resource,
@@ -134,7 +134,7 @@ func (o *groupBuilder) Grants(
 			groupMemberEntitlement,
 			&v2.ResourceId{
 				ResourceType: userResourceType.Id,
-				Resource:     user.Username,
+				Resource:     user.UserKey,
 			},
 		))
 	}
@@ -162,9 +162,14 @@ func (o *groupBuilder) Grant(
 		return nil, fmt.Errorf("baton-confluence-datacenter: only users can be granted group membership")
 	}
 
+	userDetail, err := o.client.GetUserByKey(ctx, principal.Id.Resource)
+	if err != nil {
+		return nil, err
+	}
+
 	ratelimitData, err := o.client.AddGroupMember(
 		ctx,
-		principal.Id.Resource,
+		userDetail.Username,
 		entitlement.Resource.Id.Resource,
 	)
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
@@ -177,7 +182,7 @@ func (o *groupBuilder) Revoke(
 ) (annotations.Annotations, error) {
 	logger := ctxzap.Extract(ctx)
 
-	entitlement := grant.Entitlement
+	ent := grant.Entitlement
 	principal := grant.Principal
 
 	if principal.Id.ResourceType != userResourceType.Id {
@@ -189,10 +194,15 @@ func (o *groupBuilder) Revoke(
 		return nil, fmt.Errorf("baton-confluence-datacenter: only users can have group membership revoked")
 	}
 
+	userDetail, err := o.client.GetUserByKey(ctx, principal.Id.Resource)
+	if err != nil {
+		return nil, err
+	}
+
 	ratelimitData, err := o.client.RemoveGroupMember(
 		ctx,
-		principal.Id.Resource,
-		entitlement.Resource.Id.Resource,
+		userDetail.Username,
+		ent.Resource.Id.Resource,
 	)
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	return outputAnnotations, err
@@ -204,7 +214,7 @@ func newGroupBuilder(client client.ConfluenceClient) *groupBuilder {
 	}
 }
 
-func groupResource(ctx context.Context, group *client.ConfluenceGroup) (*v2.Resource, error) {
+func groupResource(_ context.Context, group *client.ConfluenceGroup) (*v2.Resource, error) {
 	createdResource, err := resource.NewGroupResource(
 		group.Name,
 		groupResourceType,
