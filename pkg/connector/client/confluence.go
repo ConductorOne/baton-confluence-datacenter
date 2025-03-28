@@ -525,7 +525,10 @@ func (c *ConfluenceClient) genURLNonPaginated(
 	path string,
 	pathParameters ...any,
 ) (*url.URL, error) {
-	path = fmt.Sprintf(path, pathParameters...)
+	for _, param := range pathParameters {
+		escaped := url.PathEscape(param.(string))
+		path = strings.Replace(path, "%s", escaped, 1)
+	}
 	parsed, err := url.Parse(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse request path '%s': %w", path, err)
@@ -539,7 +542,10 @@ func (c *ConfluenceClient) genURL(
 	path string,
 	pathParameters ...any,
 ) (*url.URL, error) {
-	path = fmt.Sprintf(path, pathParameters...)
+	for _, param := range pathParameters {
+		escaped := url.PathEscape(param.(string))
+		path = strings.Replace(path, "%s", escaped, 1)
+	}
 	parsed, err := url.Parse(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse request path '%s': %w", path, err)
