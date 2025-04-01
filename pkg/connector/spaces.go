@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"sync"
 
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
@@ -16,9 +15,7 @@ import (
 )
 
 type spaceBuilder struct {
-	client                client.ConfluenceClient
-	SpacePermissionsCache map[string][]client.ConfluenceSpacePermission
-	SpacePermissionsMutex sync.RWMutex
+	client client.ConfluenceClient
 }
 
 func (o *spaceBuilder) ResourceType(_ context.Context) *v2.ResourceType {
@@ -68,14 +65,16 @@ func (o *spaceBuilder) Entitlements(
 	var entitlements []*v2.Entitlement
 	spaceKey := resource.Id.Resource
 
-	err := o.EnsureCacheData(ctx, spaceKey)
+	permissionsList, rlData, err := o.client.GetSpacePermissions(
+		ctx,
+		spaceKey,
+	)
+	outputAnnotations := WithRateLimitAnnotations(rlData)
 	if err != nil {
-		return nil, "", nil, err
+		return nil, "", outputAnnotations, err
 	}
 
-	o.SpacePermissionsMutex.RLock()
-	defer o.SpacePermissionsMutex.RUnlock()
-	for _, permission := range o.SpacePermissionsCache[spaceKey] {
+	for _, permission := range permissionsList {
 		operation := permission.Operation
 
 		newEntitlement := entitlement.NewPermissionEntitlement(
@@ -102,12 +101,12 @@ func (o *spaceBuilder) Entitlements(
 		entitlements = append(entitlements, newEntitlement)
 	}
 
-	return entitlements, "", nil, nil
+	return entitlements, "", outputAnnotations, nil
 }
 
 // Grants the grants for a given space are the permissions.
 func (o *spaceBuilder) Grants(
-	_ context.Context,
+	ctx context.Context,
 	resource *v2.Resource,
 	_ *pagination.Token,
 ) (
@@ -116,16 +115,19 @@ func (o *spaceBuilder) Grants(
 	annotations.Annotations,
 	error,
 ) {
-	o.SpacePermissionsMutex.RLock()
-	defer o.SpacePermissionsMutex.RUnlock()
 
 	spaceKey := resource.Id.Resource
-	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
-		return nil, "", nil, fmt.Errorf("no data of space permissions found. Space permissions cache is empty")
+	permissionsList, rlData, err := o.client.GetSpacePermissions(
+		ctx,
+		spaceKey,
+	)
+	outputAnnotations := WithRateLimitAnnotations(rlData)
+	if err != nil {
+		return nil, "", outputAnnotations, err
 	}
 
 	var grants []*v2.Grant
-	for _, permission := range o.SpacePermissionsCache[spaceKey] {
+	for _, permission := range permissionsList {
 		if permission.SpaceKey != resource.Id.Resource {
 			continue
 		}
@@ -156,7 +158,7 @@ func (o *spaceBuilder) Grants(
 		grants = append(grants, newGrant)
 	}
 
-	return grants, "", nil, nil
+	return grants, "", outputAnnotations, nil
 }
 
 func (o *spaceBuilder) Grant(
@@ -164,8 +166,6 @@ func (o *spaceBuilder) Grant(
 	principal *v2.Resource,
 	entitlement *v2.Entitlement,
 ) (annotations.Annotations, error) {
-	o.SpacePermissionsMutex.RLock()
-	defer o.SpacePermissionsMutex.RUnlock()
 
 	entitlementSegments := strings.Split(entitlement.Id, ":")
 	if len(entitlementSegments) == 0 {
@@ -182,9 +182,13 @@ func (o *spaceBuilder) Grant(
 		return nil, err
 	}
 
-	err = o.EnsureCacheData(ctx, spaceKey)
+	permissionsList, rlData, err := o.client.GetSpacePermissions(
+		ctx,
+		spaceKey,
+	)
+	outputAnnotations := WithRateLimitAnnotations(rlData)
 	if err != nil {
-		return nil, err
+		return outputAnnotations, err
 	}
 
 	var userKey, groupName string
@@ -195,7 +199,7 @@ func (o *spaceBuilder) Grant(
 	}
 
 	var currentOperations []client.PermissionOperation
-	for _, spacePermission := range o.SpacePermissionsCache[spaceKey] {
+	for _, spacePermission := range permissionsList {
 		if (userKey != "" && spacePermission.Subject.UserKey == userKey) || (groupName != "" && spacePermission.Subject.Name == groupName) {
 			currentOperations = append(currentOperations, spacePermission.Operation)
 		}
@@ -219,7 +223,7 @@ func (o *spaceBuilder) Grant(
 		return nil, err
 	}
 
-	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
+	outputAnnotations = WithRateLimitAnnotations(ratelimitData)
 	return outputAnnotations, err
 }
 
@@ -253,9 +257,13 @@ func (o *spaceBuilder) Revoke(
 		return nil, err
 	}
 
-	err = o.EnsureCacheData(ctx, spaceKey)
+	permissionsList, rlData, err := o.client.GetSpacePermissions(
+		ctx,
+		spaceKey,
+	)
+	outputAnnotations := WithRateLimitAnnotations(rlData)
 	if err != nil {
-		return nil, err
+		return outputAnnotations, err
 	}
 
 	var userKey, groupName string
@@ -266,7 +274,7 @@ func (o *spaceBuilder) Revoke(
 	}
 
 	var currentOperations []client.PermissionOperation
-	for _, spacePermission := range o.SpacePermissionsCache[spaceKey] {
+	for _, spacePermission := range permissionsList {
 		if (userKey != "" && spacePermission.Subject.UserKey == userKey) || (groupName != "" && spacePermission.Subject.Name == groupName) {
 			if spacePermission.Operation.OperationKey == operationData[0] && spacePermission.Operation.TargetType == operationData[1] {
 				continue
@@ -286,32 +294,13 @@ func (o *spaceBuilder) Revoke(
 		return nil, err
 	}
 
-	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
+	outputAnnotations = WithRateLimitAnnotations(ratelimitData)
 	return outputAnnotations, nil
-}
-
-func (o *spaceBuilder) EnsureCacheData(ctx context.Context, spaceKey string) error {
-	o.SpacePermissionsMutex.Lock()
-	defer o.SpacePermissionsMutex.Unlock()
-
-	if len(o.SpacePermissionsCache[spaceKey]) == 0 {
-		permissionsList, _, err := o.client.GetSpacePermissions(
-			ctx,
-			spaceKey,
-		)
-		if err != nil {
-			return err
-		}
-
-		o.SpacePermissionsCache[spaceKey] = permissionsList
-	}
-	return nil
 }
 
 func newSpaceBuilder(c client.ConfluenceClient) *spaceBuilder {
 	return &spaceBuilder{
-		client:                c,
-		SpacePermissionsCache: make(map[string][]client.ConfluenceSpacePermission),
+		client: c,
 	}
 }
 
