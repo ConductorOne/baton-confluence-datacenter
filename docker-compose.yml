@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
 
   confluence:
-    image: atlassian/confluence:8.6
+    image: atlassian/confluence:9
     volumes:
       - confluence-data:/var/atlassian/application-data/confluence
       - ./data:/data
