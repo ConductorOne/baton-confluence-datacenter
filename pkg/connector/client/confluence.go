@@ -3,6 +3,7 @@ package client
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -383,13 +384,7 @@ func (c *ConfluenceClient) UpdateSpacePermissions(ctx context.Context, operation
 		return nil, err
 	}
 
-	requestBody, err := json.Marshal(bodyContent)
-	if err != nil {
-		return nil, err
-	}
-	reader := bytes.NewReader(requestBody)
-
-	ratelimitData, err := c.post(ctx, requestURL, nil, reader)
+	ratelimitData, err := c.post(ctx, requestURL, nil, bodyContent)
 	if err != nil {
 		return nil, err
 	}
@@ -440,7 +435,7 @@ func (c *ConfluenceClient) makeRequest(
 	url *url.URL,
 	target interface{},
 	method string,
-	requestBody io.Reader,
+	requestBody interface{},
 ) (*v2.RateLimitDescription, error) {
 	logger := ctxzap.Extract(ctx)
 	logger.Debug(
@@ -448,24 +443,31 @@ func (c *ConfluenceClient) makeRequest(
 		zap.String("url", url.String()),
 		zap.String("method", method),
 	)
-	request, err := http.NewRequestWithContext(
-		ctx,
-		method,
-		url.String(),
-		requestBody,
-	)
-	if err != nil {
-		return nil, err
+	reqOptions := []uhttp.RequestOption{
+		uhttp.WithContentTypeJSONHeader(),
+		uhttp.WithAcceptJSONHeader(),
+	}
+	if requestBody != nil {
+		reqOptions = append(reqOptions, uhttp.WithJSONBody(requestBody))
 	}
 
 	// Auth token has priority.
 	if c.accessToken != "" {
-		request.Header.Set(
-			"Authorization",
-			fmt.Sprintf("Bearer %s", c.accessToken),
-		)
+		reqOptions = append(reqOptions, uhttp.WithBearerToken(c.accessToken))
 	} else {
-		request.SetBasicAuth(c.username, c.password)
+		reqOptions = append(reqOptions,
+			uhttp.WithHeader("Authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(c.username+":"+c.password)))),
+		)
+	}
+
+	request, err := c.wrapper.NewRequest(
+		ctx,
+		method,
+		url,
+		reqOptions...,
+	)
+	if err != nil {
+		return nil, err
 	}
 
 	ratelimitData := v2.RateLimitDescription{}
@@ -479,11 +481,10 @@ func (c *ConfluenceClient) makeRequest(
 		doOptions = append(doOptions, uhttp.WithJSONResponse(target))
 	}
 
-	// This must be explicitly set for the JSON-RPC server to not error.
-	request.Header.Set("Content-Type", "application/json")
-
 	response, err := c.wrapper.Do(request, doOptions...)
-
+	if response != nil && response.Body != nil {
+		defer response.Body.Close()
+	}
 	if err == nil {
 		return &ratelimitData, nil
 	}
@@ -491,7 +492,6 @@ func (c *ConfluenceClient) makeRequest(
 	if response == nil {
 		return nil, err
 	}
-	defer response.Body.Close()
 
 	// If we get ratelimit data back (e.g. the "Retry-After" header) or a
 	// "ratelimit-like" status code, then return a recoverable gRPC code.
@@ -524,7 +524,7 @@ func (c *ConfluenceClient) post(
 	ctx context.Context,
 	url *url.URL,
 	target interface{},
-	body io.Reader,
+	body interface{},
 ) (*v2.RateLimitDescription, error) {
 	return c.makeRequest(ctx, url, target, http.MethodPost, body)
 }
