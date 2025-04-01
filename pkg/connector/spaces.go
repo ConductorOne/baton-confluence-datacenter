@@ -115,7 +115,6 @@ func (o *spaceBuilder) Grants(
 	annotations.Annotations,
 	error,
 ) {
-
 	spaceKey := resource.Id.Resource
 	permissionsList, rlData, err := o.client.GetSpacePermissions(
 		ctx,
@@ -166,7 +165,6 @@ func (o *spaceBuilder) Grant(
 	principal *v2.Resource,
 	entitlement *v2.Entitlement,
 ) (annotations.Annotations, error) {
-
 	entitlementSegments := strings.Split(entitlement.Id, ":")
 	if len(entitlementSegments) == 0 {
 		return nil, fmt.Errorf("wrong format on the entitlement id: %s", entitlement.Id)
