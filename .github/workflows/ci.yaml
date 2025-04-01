@@ -45,9 +45,9 @@ jobs:
       BATON_HOSTNAME: 'http://localhost:8090'
       BATON_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       # The following parameters are passed to grant/revoke commands
-      CONNECTOR_GRANT: 'space:TEST:delete-page:user:admin'
+      CONNECTOR_GRANT: 'space:TEST:delete-page:user:4028408390705fdc01907061af0d0000'
       CONNECTOR_ENTITLEMENT: 'space:TEST:delete-page'
-      CONNECTOR_PRINCIPAL: 'admin'
+      CONNECTOR_PRINCIPAL: '4028408390705fdc01907061af0d0000'
       CONNECTOR_PRINCIPAL_TYPE: 'user'
     steps:
       - name: Install Go
