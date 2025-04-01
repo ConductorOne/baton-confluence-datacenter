@@ -15,7 +15,7 @@ import (
 	"time"
 
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
-	"github.com/conductorone/baton-sdk/pkg/helpers"
+	"github.com/conductorone/baton-sdk/pkg/ratelimit"
 	"github.com/conductorone/baton-sdk/pkg/uhttp"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
 	"go.uber.org/zap"
@@ -604,9 +604,7 @@ func strToInt(s string) int {
 // https://developer.atlassian.com/cloud/confluence/rate-limiting/
 func WithConfluenceRatelimitData(resource *v2.RateLimitDescription) uhttp.DoOption {
 	return func(response *uhttp.WrapperResponse) error {
-		// TODO(marcos): After updating `ExtractRateLimitData()` to look for
-		//  ratelimit header variants, we can remove the overwriting code.
-		rateLimitData, err := helpers.ExtractRateLimitData(response.StatusCode, &response.Header)
+		rateLimitData, err := ratelimit.ExtractRateLimitData(response.StatusCode, &response.Header)
 		if err != nil {
 			return err
 		}
