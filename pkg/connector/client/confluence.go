@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"slices"
@@ -43,21 +42,6 @@ type ConfluenceSpaceEntitlement struct {
 	DisplayName string
 	Key         string
 	Name        string
-}
-
-type RequestError struct {
-	Status int
-	URL    *url.URL
-	Body   string
-}
-
-func (r *RequestError) Error() string {
-	return fmt.Sprintf(
-		"confluence-datacenter-connector: request error. Status: %d, Url: %s, Body: %s",
-		r.Status,
-		r.URL,
-		r.Body,
-	)
 }
 
 type ConfluenceClient struct {
@@ -499,17 +483,7 @@ func (c *ConfluenceClient) makeRequest(
 		return &ratelimitData, status.Error(codes.Unavailable, response.Status)
 	}
 
-	// If it's some other error, it is unrecoverable.
-	responseBody, err := io.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, &RequestError{
-		URL:    url,
-		Status: response.StatusCode,
-		Body:   string(responseBody),
-	}
+	return nil, err
 }
 
 func (c *ConfluenceClient) get(
