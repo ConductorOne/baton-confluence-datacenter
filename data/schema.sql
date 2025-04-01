@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.7 (Debian 15.7-1.pgdg120+1)
--- Dumped by pg_dump version 15.7 (Debian 15.7-1.pgdg120+1)
+-- Dumped from database version 15.12 (Debian 15.12-1.pgdg120+1)
+-- Dumped by pg_dump version 15.12 (Debian 15.12-1.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1112,19 +1112,96 @@ ALTER SEQUENCE public."AO_6384AB_FEATURE_METADATA_AO_ID_seq" OWNED BY public."AO
 
 
 --
+-- Name: AO_6ABCE4_TUNNEL; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_6ABCE4_TUNNEL" (
+    "CLOUD_ORG_NAME" character varying(255) NOT NULL,
+    "CLOUD_PAGE_URL" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "TOKEN" text NOT NULL,
+    "UPSTREAM_DNS_URL" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_6ABCE4_TUNNEL_CONNECTION" (
+    "ID" integer NOT NULL,
+    "NODE_ID" character varying(255) NOT NULL,
+    "RETRY_COUNT" integer DEFAULT 0 NOT NULL,
+    "STATUS" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL_CONNECTION" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq" OWNED BY public."AO_6ABCE4_TUNNEL_CONNECTION"."ID";
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_6ABCE4_TUNNEL_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_6ABCE4_TUNNEL_ID_seq" OWNED BY public."AO_6ABCE4_TUNNEL"."ID";
+
+
+--
 -- Name: AO_723324_CLIENT_CONFIG; Type: TABLE; Schema: public; Owner: confluence
 --
 
 CREATE TABLE public."AO_723324_CLIENT_CONFIG" (
-    "AUTHORIZATION_ENDPOINT" character varying(255) NOT NULL,
+    "AUTHORIZATION_ENDPOINT" character varying(255),
     "CLIENT_ID" character varying(255) NOT NULL,
-    "CLIENT_SECRET" character varying(255) NOT NULL,
+    "CLIENT_SECRET" character varying(255),
     "DESCRIPTION" character varying(255),
     "ID" character varying(255) NOT NULL,
     "NAME" character varying(255) NOT NULL,
     "SCOPES" text NOT NULL,
     "TOKEN_ENDPOINT" character varying(255) NOT NULL,
-    "TYPE" character varying(255) NOT NULL
+    "TYPE" character varying(255) NOT NULL,
+    "CLIENT_CERTIFICATE" text,
+    "CUSTOM_PARAMS" text,
+    "GRANT_TYPE" character varying(255) DEFAULT 'authorization_code'::character varying
 );
 
 
@@ -1144,7 +1221,8 @@ CREATE TABLE public."AO_723324_CLIENT_TOKEN" (
     "REFRESH_COUNT" integer DEFAULT 0,
     "REFRESH_TOKEN" text,
     "REFRESH_TOKEN_EXPIRATION" bigint,
-    "STATUS" character varying(255) NOT NULL
+    "STATUS" character varying(255) NOT NULL,
+    "EXTERNAL_ID" character varying(255)
 );
 
 
@@ -1608,7 +1686,8 @@ CREATE TABLE public."AO_8752F1_DATA_PIPELINE_JOB" (
     "STATUS" character varying(255) NOT NULL,
     "UPDATED" bigint NOT NULL,
     "WARNINGS" text,
-    "WRITTEN_ROWS" integer
+    "WRITTEN_ROWS" integer,
+    "OPTED_OUT_FILE_SCHEMAS" text
 );
 
 
@@ -2334,6 +2413,42 @@ ALTER SEQUENCE public."AO_950DC3_TC_SUBCALS_PROPS_ID_seq" OWNED BY public."AO_95
 
 
 --
+-- Name: AO_954A21_MOBILE_OAUTH2; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_954A21_MOBILE_OAUTH2" (
+    "BROWSER_CACHE_ENABLED" boolean,
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "CONFIGURATION_ID" character varying(255) NOT NULL,
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_954A21_MOBILE_OAUTH2" OWNER TO confluence;
+
+--
+-- Name: AO_954A21_MOBILE_OAUTH2_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_954A21_MOBILE_OAUTH2_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_954A21_MOBILE_OAUTH2_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_954A21_MOBILE_OAUTH2_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_954A21_MOBILE_OAUTH2_ID_seq" OWNED BY public."AO_954A21_MOBILE_OAUTH2"."ID";
+
+
+--
 -- Name: AO_954A21_PUSH_NOTIFICATION_AO; Type: TABLE; Schema: public; Owner: confluence
 --
 
@@ -2391,7 +2506,9 @@ CREATE TABLE public."AO_A0B856_HIST_INVOCATION" (
     "RESULT_DESCRIPTION" character varying(255) NOT NULL,
     "START" bigint DEFAULT 0 NOT NULL,
     "STATUS_CODE" integer,
-    "WEBHOOK_ID" integer DEFAULT 0 NOT NULL
+    "WEBHOOK_ID" integer DEFAULT 0 NOT NULL,
+    "EVENT_SCOPE_ID" character varying(255),
+    "EVENT_SCOPE_TYPE" character varying(255) NOT NULL
 );
 
 
@@ -2409,7 +2526,10 @@ CREATE TABLE public."AO_A0B856_WEBHOOK" (
     "SCOPE_ID" character varying(255),
     "SCOPE_TYPE" character varying(255) NOT NULL,
     "UPDATED" timestamp without time zone NOT NULL,
-    "URL" text NOT NULL
+    "URL" text NOT NULL,
+    "PASSWORD" character varying(255),
+    "SSL_VERIFICATION_REQUIRED" boolean DEFAULT true NOT NULL,
+    "USERNAME" character varying(255)
 );
 
 
@@ -2844,6 +2964,124 @@ ALTER SEQUENCE public."AO_C77861_AUDIT_ENTITY_ID_seq" OWNED BY public."AO_C77861
 
 
 --
+-- Name: AO_CC7F60_SEC_MON_ALERT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_CC7F60_SEC_MON_ALERT" (
+    "ALERT_STATUS" integer DEFAULT 0,
+    "ALERT_TIMESTAMP" bigint DEFAULT 0,
+    "ALERT_TYPE" character varying(255),
+    "EMAIL_STATUS" character varying(255) NOT NULL,
+    "ID" bigint NOT NULL,
+    "QUEUED_TIMESTAMP" bigint,
+    "UUID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_ALERT" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_CC7F60_SEC_MON_ALERT_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_ALERT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_CC7F60_SEC_MON_ALERT_ID_seq" OWNED BY public."AO_CC7F60_SEC_MON_ALERT"."ID";
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" (
+    "ID" bigint NOT NULL,
+    "JOB_KEY" character varying(255),
+    "LAST_SUCCESSFUL_RUN" bigint
+);
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq" OWNED BY public."AO_CC7F60_SEC_MON_SCHEDULE_JOB"."ID";
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_CC7F60_SEC_MON_THREAT_EVENT" (
+    "ACTION_T_KEY" character varying(255) NOT NULL,
+    "ALERT_ID" bigint,
+    "CREATED_TIME" bigint DEFAULT 0 NOT NULL,
+    "EVENT_SOURCE" character varying(255),
+    "EXTRA_ATTRIBUTE_T_KEY_1" character varying(255),
+    "EXTRA_ATTRIBUTE_T_KEY_2" character varying(255),
+    "EXTRA_ATTRIBUTE_T_KEY_3" character varying(255),
+    "EXTRA_ATTRIBUTE_VALUE_COLUMN_1" text,
+    "EXTRA_ATTRIBUTE_VALUE_COLUMN_2" text,
+    "EXTRA_ATTRIBUTE_VALUE_COLUMN_3" text,
+    "ID" bigint NOT NULL,
+    "INSTANCE_BASE_URL" character varying(255),
+    "NODE" character varying(255),
+    "SOURCE_IP" character varying(255),
+    "TRIGGERING_USER_KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_THREAT_EVENT" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq" OWNED BY public."AO_CC7F60_SEC_MON_THREAT_EVENT"."ID";
+
+
+--
 -- Name: AO_DC98AE_AOHELP_TIP; Type: TABLE; Schema: public; Owner: confluence
 --
 
@@ -2936,6 +3174,41 @@ ALTER SEQUENCE public."AO_ED669C_IDP_CONFIG_ID_seq" OWNED BY public."AO_ED669C_I
 
 
 --
+-- Name: AO_ED669C_SEALED_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_SEALED_ENTITY" (
+    "ID" integer NOT NULL,
+    "KEY" character varying(255) NOT NULL,
+    "VALUE" text NOT NULL
+);
+
+
+ALTER TABLE public."AO_ED669C_SEALED_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_ED669C_SEALED_ENTITY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_ED669C_SEALED_ENTITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_ED669C_SEALED_ENTITY_ID_seq" OWNED BY public."AO_ED669C_SEALED_ENTITY"."ID";
+
+
+--
 -- Name: AO_ED669C_SEEN_ASSERTIONS; Type: TABLE; Schema: public; Owner: confluence
 --
 
@@ -2969,6 +3242,57 @@ ALTER TABLE public."AO_ED669C_SEEN_ASSERTIONS_ID_seq" OWNER TO confluence;
 
 ALTER SEQUENCE public."AO_ED669C_SEEN_ASSERTIONS_ID_seq" OWNED BY public."AO_ED669C_SEEN_ASSERTIONS"."ID";
 
+
+--
+-- Name: AO_ED669C_TOTP_CODES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_TOTP_CODES" (
+    "EXPIRY_TIMESTAMP" bigint DEFAULT 0 NOT NULL,
+    "ID" integer NOT NULL,
+    "TOTP_CODE_HASH" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_ED669C_TOTP_CODES" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_TOTP_CODES_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_ED669C_TOTP_CODES_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_ED669C_TOTP_CODES_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_TOTP_CODES_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_ED669C_TOTP_CODES_ID_seq" OWNED BY public."AO_ED669C_TOTP_CODES"."ID";
+
+
+--
+-- Name: AO_ED669C_TOTP_USER_ENROLLMENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_TOTP_USER_ENROLLMENT" (
+    "CREATED_AT" timestamp without time zone NOT NULL,
+    "MODIFIED_AT" timestamp without time zone NOT NULL,
+    "RECOVERY_CODE" character varying(255) NOT NULL,
+    "SECRET" text NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_ED669C_TOTP_USER_ENROLLMENT" OWNER TO confluence;
 
 --
 -- Name: AO_FE1BC5_ACCESS_TOKEN; Type: TABLE; Schema: public; Owner: confluence
@@ -3305,6 +3629,20 @@ CREATE TABLE public.bodycontent (
 
 
 ALTER TABLE public.bodycontent OWNER TO confluence;
+
+--
+-- Name: browser_metrics; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.browser_metrics (
+    id character varying(255) NOT NULL,
+    userkey character varying(255) NOT NULL,
+    createdat bigint NOT NULL,
+    metricsjson character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.browser_metrics OWNER TO confluence;
 
 --
 -- Name: clustersafety; Type: TABLE; Schema: public; Owner: confluence
@@ -4006,7 +4344,9 @@ CREATE TABLE public.gr_response_group (
     jobid character varying(255) NOT NULL,
     nodeid character varying(255) NOT NULL,
     starttimestamp bigint,
-    endtimestamp bigint
+    endtimestamp bigint,
+    responsestatus character varying(255),
+    configjson character varying(255)
 );
 
 
@@ -4024,7 +4364,9 @@ CREATE TABLE public.guardrails_response (
     responsegroupid character varying(255),
     success boolean NOT NULL,
     querycomplexity character varying(255),
-    querystatus character varying(255)
+    querystatus character varying(255),
+    queryduration bigint,
+    querycpuload double precision
 );
 
 
@@ -4054,6 +4396,38 @@ CREATE TABLE public.imagedetails (
 
 
 ALTER TABLE public.imagedetails OWNER TO confluence;
+
+--
+-- Name: incremental_sync_subscription; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.incremental_sync_subscription (
+    id bigint NOT NULL,
+    subscription_creator character varying(255),
+    subscription_context_key character varying(150) NOT NULL,
+    subscription_most_recent_id bigint NOT NULL,
+    subscription_state character varying(50) NOT NULL,
+    subscription_data character varying(2047),
+    subscription_last_access_time timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.incremental_sync_subscription OWNER TO confluence;
+
+--
+-- Name: inst_analysis_ctrl; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.inst_analysis_ctrl (
+    id character varying(255) NOT NULL,
+    analysistype character varying(255) NOT NULL,
+    starttimestamp bigint NOT NULL,
+    endtimestamp bigint,
+    status character varying(255)
+);
+
+
+ALTER TABLE public.inst_analysis_ctrl OWNER TO confluence;
 
 --
 -- Name: journalentry; Type: TABLE; Schema: public; Owner: confluence
@@ -4096,7 +4470,8 @@ CREATE TABLE public.label (
     owner character varying(255),
     namespace character varying(255),
     creationdate timestamp without time zone,
-    lastmoddate timestamp without time zone
+    lastmoddate timestamp without time zone,
+    owner_not_null character varying(255) GENERATED ALWAYS AS (COALESCE(owner, ''::character varying)) STORED
 );
 
 
@@ -4252,7 +4627,8 @@ CREATE TABLE public.mig_cloud_site (
     mediaclientid character varying(255),
     createdtime timestamp without time zone,
     edition character varying(255),
-    cloudtype character varying(20) DEFAULT 'STANDARD'::character varying NOT NULL
+    cloudtype character varying(20) DEFAULT 'STANDARD'::character varying NOT NULL,
+    microsregion character varying(255)
 );
 
 
@@ -4278,6 +4654,26 @@ CREATE TABLE public.mig_config (
 
 
 ALTER TABLE public.mig_config OWNER TO confluence;
+
+--
+-- Name: mig_corrected_email; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_corrected_email (
+    id character varying(255) NOT NULL,
+    userkey character varying(255) NOT NULL,
+    username character varying(255) NOT NULL,
+    type character varying(255),
+    oldemail text,
+    newemail text NOT NULL,
+    tombstone boolean NOT NULL,
+    accounttype character varying(255),
+    udcmode character varying(255) NOT NULL,
+    draft boolean NOT NULL
+);
+
+
+ALTER TABLE public.mig_corrected_email OWNER TO confluence;
 
 --
 -- Name: mig_db_changelog; Type: TABLE; Schema: public; Owner: confluence
@@ -4399,6 +4795,20 @@ CREATE TABLE public.mig_invalid_email_user (
 ALTER TABLE public.mig_invalid_email_user OWNER TO confluence;
 
 --
+-- Name: mig_mapi_artifacts; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_mapi_artifacts (
+    taskid character varying(255) NOT NULL,
+    checkname character varying(255) NOT NULL,
+    artifactname character varying(255),
+    lastupdate timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_mapi_artifacts OWNER TO confluence;
+
+--
 -- Name: mig_mapi_plan_mapping; Type: TABLE; Schema: public; Owner: confluence
 --
 
@@ -4410,6 +4820,23 @@ CREATE TABLE public.mig_mapi_plan_mapping (
 
 
 ALTER TABLE public.mig_mapi_plan_mapping OWNER TO confluence;
+
+--
+-- Name: mig_mapi_task_mapping; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_mapi_task_mapping (
+    taskid character varying(255) NOT NULL,
+    jobid character varying(255) NOT NULL,
+    planid character varying(255),
+    cloudid character varying(255),
+    status character varying(255),
+    commandname character varying(255) NOT NULL,
+    lastupdate timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_mapi_task_mapping OWNER TO confluence;
 
 --
 -- Name: mig_needed_in_cloud_app; Type: TABLE; Schema: public; Owner: confluence
@@ -4447,7 +4874,11 @@ CREATE TABLE public.mig_plan (
     schedulerversion character varying(255),
     migrationtag character varying(255) DEFAULT 'NOT_SPECIFIED'::character varying NOT NULL,
     migrationcreator character varying(5) DEFAULT 'CCMA'::character varying,
-    detailedstatus character varying(255)
+    detailedstatus character varying(255),
+    migrationprotocol character varying(255) DEFAULT 'V2'::character varying NOT NULL,
+    datamovementid character varying(255),
+    infraoptimisationstatus character varying(255) DEFAULT 'NOT_STARTED'::character varying NOT NULL,
+    isshadowmigration boolean DEFAULT false NOT NULL
 );
 
 
@@ -4476,11 +4907,27 @@ CREATE TABLE public.mig_space_statistic (
     attachmentcount bigint NOT NULL,
     estimatedmigrationtime bigint NOT NULL,
     lastupdated timestamp without time zone,
-    lastcalculated timestamp without time zone NOT NULL
+    lastcalculated timestamp without time zone NOT NULL,
+    teamcalendarcount bigint
 );
 
 
 ALTER TABLE public.mig_space_statistic OWNER TO confluence;
+
+--
+-- Name: mig_space_status; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_space_status (
+    spacekey character varying(255) NOT NULL,
+    cloudid character varying(255) NOT NULL,
+    executionstatus character varying(255) NOT NULL,
+    lastupdated timestamp without time zone,
+    planid character varying(255)
+);
+
+
+ALTER TABLE public.mig_space_status OWNER TO confluence;
 
 --
 -- Name: mig_spaces; Type: TABLE; Schema: public; Owner: confluence
@@ -4504,8 +4951,7 @@ CREATE TABLE public.mig_stats (
     stattype character varying(255) NOT NULL,
     statname character varying(255) NOT NULL,
     collectedtime timestamp without time zone NOT NULL,
-    statvalue bigint NOT NULL,
-    planid character varying(255)
+    statvalue bigint NOT NULL
 );
 
 
@@ -4533,11 +4979,25 @@ CREATE TABLE public.mig_step (
     node_execution_id character varying(64),
     execution_state character varying(4000),
     detailedstatus character varying(255),
-    stepsubtype character varying(100)
+    stepsubtype character varying(100),
+    transferid character varying(255),
+    stepmetadata text
 );
 
 
 ALTER TABLE public.mig_step OWNER TO confluence;
+
+--
+-- Name: mig_step_progress_properties; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_step_progress_properties (
+    stepid character varying(255) NOT NULL,
+    progressproperties text
+);
+
+
+ALTER TABLE public.mig_step_progress_properties OWNER TO confluence;
 
 --
 -- Name: mig_task; Type: TABLE; Schema: public; Owner: confluence
@@ -4558,7 +5018,8 @@ CREATE TABLE public.mig_task (
     doneresult character varying(255),
     scoped boolean,
     globalentitytype character varying(100),
-    detailedstatus character varying(255)
+    detailedstatus character varying(255),
+    containerid character varying(255)
 );
 
 
@@ -4638,6 +5099,38 @@ CREATE TABLE public.most_used_labels_cache (
 
 
 ALTER TABLE public.most_used_labels_cache OWNER TO confluence;
+
+--
+-- Name: node_infrastructure; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.node_infrastructure (
+    node_id character varying(255) NOT NULL,
+    ram_mb bigint,
+    cpu_count integer,
+    storage_used_mb bigint,
+    storage_available_mb bigint,
+    operating_system character varying(255)
+);
+
+
+ALTER TABLE public.node_infrastructure OWNER TO confluence;
+
+--
+-- Name: node_network; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.node_network (
+    id character varying(255) NOT NULL,
+    node_id character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    mtu_bps bigint,
+    in_errors_percent double precision,
+    out_errors_percent double precision
+);
+
+
+ALTER TABLE public.node_network OWNER TO confluence;
 
 --
 -- Name: notifications; Type: TABLE; Schema: public; Owner: confluence
@@ -5107,6 +5600,20 @@ ALTER TABLE ONLY public."AO_6384AB_FEATURE_METADATA_AO" ALTER COLUMN "ID" SET DE
 
 
 --
+-- Name: AO_6ABCE4_TUNNEL ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_6ABCE4_TUNNEL_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL_CONNECTION" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq"'::regclass);
+
+
+--
 -- Name: AO_7B47A5_EVENT ID; Type: DEFAULT; Schema: public; Owner: confluence
 --
 
@@ -5310,6 +5817,13 @@ ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_PROPS" ALTER COLUMN "ID" SET DEFAU
 
 
 --
+-- Name: AO_954A21_MOBILE_OAUTH2 ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_954A21_MOBILE_OAUTH2" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_954A21_MOBILE_OAUTH2_ID_seq"'::regclass);
+
+
+--
 -- Name: AO_A0B856_WEBHOOK ID; Type: DEFAULT; Schema: public; Owner: confluence
 --
 
@@ -5380,6 +5894,27 @@ ALTER TABLE ONLY public."AO_C77861_AUDIT_ENTITY" ALTER COLUMN "ID" SET DEFAULT n
 
 
 --
+-- Name: AO_CC7F60_SEC_MON_ALERT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_ALERT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_CC7F60_SEC_MON_ALERT_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_THREAT_EVENT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq"'::regclass);
+
+
+--
 -- Name: AO_DC98AE_AOHELP_TIP ID; Type: DEFAULT; Schema: public; Owner: confluence
 --
 
@@ -5394,10 +5929,24 @@ ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG" ALTER COLUMN "ID" SET DEFAULT nex
 
 
 --
+-- Name: AO_ED669C_SEALED_ENTITY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEALED_ENTITY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_ED669C_SEALED_ENTITY_ID_seq"'::regclass);
+
+
+--
 -- Name: AO_ED669C_SEEN_ASSERTIONS ID; Type: DEFAULT; Schema: public; Owner: confluence
 --
 
 ALTER TABLE ONLY public."AO_ED669C_SEEN_ASSERTIONS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_ED669C_SEEN_ASSERTIONS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_ED669C_TOTP_CODES ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_TOTP_CODES" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_ED669C_TOTP_CODES_ID_seq"'::regclass);
 
 
 --
@@ -5635,6 +6184,22 @@ ALTER TABLE ONLY public."AO_6384AB_DISCOVERED"
 
 ALTER TABLE ONLY public."AO_6384AB_FEATURE_METADATA_AO"
     ADD CONSTRAINT "AO_6384AB_FEATURE_METADATA_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION AO_6ABCE4_TUNNEL_CONNECTION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL_CONNECTION"
+    ADD CONSTRAINT "AO_6ABCE4_TUNNEL_CONNECTION_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL AO_6ABCE4_TUNNEL_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL"
+    ADD CONSTRAINT "AO_6ABCE4_TUNNEL_pkey" PRIMARY KEY ("ID");
 
 
 --
@@ -5918,6 +6483,14 @@ ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS"
 
 
 --
+-- Name: AO_954A21_MOBILE_OAUTH2 AO_954A21_MOBILE_OAUTH2_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_954A21_MOBILE_OAUTH2"
+    ADD CONSTRAINT "AO_954A21_MOBILE_OAUTH2_pkey" PRIMARY KEY ("ID");
+
+
+--
 -- Name: AO_954A21_PUSH_NOTIFICATION_AO AO_954A21_PUSH_NOTIFICATION_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -6046,6 +6619,30 @@ ALTER TABLE ONLY public."AO_C77861_AUDIT_ENTITY"
 
 
 --
+-- Name: AO_CC7F60_SEC_MON_ALERT AO_CC7F60_SEC_MON_ALERT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_ALERT"
+    ADD CONSTRAINT "AO_CC7F60_SEC_MON_ALERT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB AO_CC7F60_SEC_MON_SCHEDULE_JOB_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_SCHEDULE_JOB"
+    ADD CONSTRAINT "AO_CC7F60_SEC_MON_SCHEDULE_JOB_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT AO_CC7F60_SEC_MON_THREAT_EVENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_THREAT_EVENT"
+    ADD CONSTRAINT "AO_CC7F60_SEC_MON_THREAT_EVENT_pkey" PRIMARY KEY ("ID");
+
+
+--
 -- Name: AO_DC98AE_AOHELP_TIP AO_DC98AE_AOHELP_TIP_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -6062,11 +6659,35 @@ ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG"
 
 
 --
+-- Name: AO_ED669C_SEALED_ENTITY AO_ED669C_SEALED_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEALED_ENTITY"
+    ADD CONSTRAINT "AO_ED669C_SEALED_ENTITY_pkey" PRIMARY KEY ("ID");
+
+
+--
 -- Name: AO_ED669C_SEEN_ASSERTIONS AO_ED669C_SEEN_ASSERTIONS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
 ALTER TABLE ONLY public."AO_ED669C_SEEN_ASSERTIONS"
     ADD CONSTRAINT "AO_ED669C_SEEN_ASSERTIONS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_ED669C_TOTP_CODES AO_ED669C_TOTP_CODES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_TOTP_CODES"
+    ADD CONSTRAINT "AO_ED669C_TOTP_CODES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_ED669C_TOTP_USER_ENROLLMENT AO_ED669C_TOTP_USER_ENROLLMENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_TOTP_USER_ENROLLMENT"
+    ADD CONSTRAINT "AO_ED669C_TOTP_USER_ENROLLMENT_pkey" PRIMARY KEY ("USER_KEY");
 
 
 --
@@ -6227,6 +6848,14 @@ ALTER TABLE ONLY public.bandana
 
 ALTER TABLE ONLY public.bodycontent
     ADD CONSTRAINT bodycontent_pkey PRIMARY KEY (bodycontentid);
+
+
+--
+-- Name: browser_metrics browser_metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.browser_metrics
+    ADD CONSTRAINT browser_metrics_pkey PRIMARY KEY (id);
 
 
 --
@@ -6662,6 +7291,22 @@ ALTER TABLE ONLY public.imagedetails
 
 
 --
+-- Name: incremental_sync_subscription incremental_sync_subscription_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.incremental_sync_subscription
+    ADD CONSTRAINT incremental_sync_subscription_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inst_analysis_ctrl inst_analysis_ctrl_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.inst_analysis_ctrl
+    ADD CONSTRAINT inst_analysis_ctrl_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: journalentry journalentry_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -6798,6 +7443,14 @@ ALTER TABLE ONLY public.mig_config
 
 
 --
+-- Name: mig_corrected_email mig_corrected_email_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_corrected_email
+    ADD CONSTRAINT mig_corrected_email_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: mig_db_changelog_lock mig_db_changelog_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -6862,6 +7515,14 @@ ALTER TABLE ONLY public.mig_mapi_plan_mapping
 
 
 --
+-- Name: mig_mapi_task_mapping mig_mapi_task_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_mapi_task_mapping
+    ADD CONSTRAINT mig_mapi_task_mapping_pkey PRIMARY KEY (taskid);
+
+
+--
 -- Name: mig_needed_in_cloud_app mig_needed_in_cloud_app_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -6902,6 +7563,14 @@ ALTER TABLE ONLY public.mig_space_statistic
 
 
 --
+-- Name: mig_space_status mig_space_status_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_space_status
+    ADD CONSTRAINT mig_space_status_pkey PRIMARY KEY (spacekey, cloudid);
+
+
+--
 -- Name: mig_stats mig_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -6915,6 +7584,14 @@ ALTER TABLE ONLY public.mig_stats
 
 ALTER TABLE ONLY public.mig_step
     ADD CONSTRAINT mig_step_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_step_progress_properties mig_step_progress_properties_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_step_progress_properties
+    ADD CONSTRAINT mig_step_progress_properties_pkey PRIMARY KEY (stepid);
 
 
 --
@@ -6974,6 +7651,22 @@ ALTER TABLE ONLY public.most_used_labels_cache
 
 
 --
+-- Name: node_infrastructure node_infrastructure_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.node_infrastructure
+    ADD CONSTRAINT node_infrastructure_pkey PRIMARY KEY (node_id);
+
+
+--
+-- Name: node_network node_network_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.node_network
+    ADD CONSTRAINT node_network_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -6995,6 +7688,14 @@ ALTER TABLE ONLY public.os_propertyentry
 
 ALTER TABLE ONLY public.pagetemplates
     ADD CONSTRAINT pagetemplates_pkey PRIMARY KEY (templateid);
+
+
+--
+-- Name: mig_mapi_artifacts pk_mapi_artifacts; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_mapi_artifacts
+    ADD CONSTRAINT pk_mapi_artifacts PRIMARY KEY (taskid, checkname);
 
 
 --
@@ -7126,6 +7827,22 @@ ALTER TABLE ONLY public."AO_4789DD_TASK_MONITOR"
 
 
 --
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION u_ao_6abce4_tunnel_945247985; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL_CONNECTION"
+    ADD CONSTRAINT u_ao_6abce4_tunnel_945247985 UNIQUE ("NODE_ID");
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL u_ao_6abce4_tunnel_name; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL"
+    ADD CONSTRAINT u_ao_6abce4_tunnel_name UNIQUE ("NAME");
+
+
+--
 -- Name: AO_723324_CLIENT_CONFIG u_ao_723324_client_config_name; Type: CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -7179,6 +7896,14 @@ ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG"
 
 ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG"
     ADD CONSTRAINT u_ao_ed669c_idp_config_name UNIQUE ("NAME");
+
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY u_ao_ed669c_sealed_entity_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEALED_ENTITY"
+    ADD CONSTRAINT u_ao_ed669c_sealed_entity_key UNIQUE ("KEY");
 
 
 --
@@ -7444,6 +8169,13 @@ CREATE INDEX band_context_idx ON public.bandana USING btree (bandanacontext);
 --
 
 CREATE INDEX body_content_idx ON public.bodycontent USING btree (contentid);
+
+
+--
+-- Name: browser_metrics_userkey_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX browser_metrics_userkey_idx ON public.browser_metrics USING btree (userkey);
 
 
 --
@@ -7958,6 +8690,13 @@ CREATE INDEX idx_tombstone_type_timestamp ON public.cwd_tombstone USING btree (t
 
 
 --
+-- Name: idx_unique_label_name_owner_not_null_namespace; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE UNIQUE INDEX idx_unique_label_name_owner_not_null_namespace ON public.label USING btree (name, owner_not_null, namespace);
+
+
+--
 -- Name: idx_user_active; Type: INDEX; Schema: public; Owner: confluence
 --
 
@@ -8032,6 +8771,13 @@ CREATE INDEX idx_user_lower_user_name ON public.cwd_user USING btree (lower_user
 --
 
 CREATE INDEX idx_user_name_dir_id ON public.cwd_user USING btree (directory_id);
+
+
+--
+-- Name: inc_sync_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX inc_sync_creator_idx ON public.incremental_sync_subscription USING btree (subscription_creator);
 
 
 --
@@ -8588,6 +9334,34 @@ CREATE INDEX index_ao_954a21_pus1665669807 ON public."AO_954A21_PUSH_NOTIFICATIO
 
 
 --
+-- Name: index_ao_a0b856_dai694282958; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_dai694282958 ON public."AO_A0B856_DAILY_COUNTS" USING btree ("WEBHOOK_ID", "EVENT_ID");
+
+
+--
+-- Name: index_ao_a0b856_his1962104142; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_his1962104142 ON public."AO_A0B856_HIST_INVOCATION" USING btree ("WEBHOOK_ID", "OUTCOME");
+
+
+--
+-- Name: index_ao_a0b856_his695669752; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_his695669752 ON public."AO_A0B856_HIST_INVOCATION" USING btree ("FINISH");
+
+
+--
+-- Name: index_ao_a0b856_his695685969; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_his695685969 ON public."AO_A0B856_HIST_INVOCATION" USING btree ("WEBHOOK_ID", "EVENT_ID", "OUTCOME");
+
+
+--
 -- Name: index_ao_a0b856_web1050270930; Type: INDEX; Schema: public; Owner: confluence
 --
 
@@ -8756,6 +9530,48 @@ CREATE INDEX index_ao_c77861_aud96775159 ON public."AO_C77861_AUDIT_ENTITY" USIN
 
 
 --
+-- Name: index_ao_cc7f60_sec1333700976; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec1333700976 ON public."AO_CC7F60_SEC_MON_ALERT" USING btree ("ALERT_TIMESTAMP");
+
+
+--
+-- Name: index_ao_cc7f60_sec1518281912; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec1518281912 ON public."AO_CC7F60_SEC_MON_ALERT" USING btree ("ALERT_STATUS");
+
+
+--
+-- Name: index_ao_cc7f60_sec1891279861; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec1891279861 ON public."AO_CC7F60_SEC_MON_THREAT_EVENT" USING btree ("ALERT_ID");
+
+
+--
+-- Name: index_ao_cc7f60_sec498379974; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec498379974 ON public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" USING btree ("JOB_KEY");
+
+
+--
+-- Name: index_ao_cc7f60_sec665389423; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec665389423 ON public."AO_CC7F60_SEC_MON_ALERT" USING btree ("UUID");
+
+
+--
+-- Name: index_ao_cc7f60_sec772108013; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec772108013 ON public."AO_CC7F60_SEC_MON_THREAT_EVENT" USING btree ("TRIGGERING_USER_KEY");
+
+
+--
 -- Name: index_ao_dc98ae_aoh1533992358; Type: INDEX; Schema: public; Owner: confluence
 --
 
@@ -8774,6 +9590,27 @@ CREATE INDEX index_ao_dc98ae_aoh411805038 ON public."AO_DC98AE_AOHELP_TIP" USING
 --
 
 CREATE INDEX index_ao_ed669c_see20117222 ON public."AO_ED669C_SEEN_ASSERTIONS" USING btree ("EXPIRY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_ed669c_tot1573649372; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_ed669c_tot1573649372 ON public."AO_ED669C_TOTP_CODES" USING btree ("TOTP_CODE_HASH", "USER_KEY");
+
+
+--
+-- Name: index_ao_ed669c_tot886769927; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_ed669c_tot886769927 ON public."AO_ED669C_TOTP_CODES" USING btree ("EXPIRY_TIMESTAMP");
+
+
+--
+-- Name: instance_analysis_control_analysis_type_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX instance_analysis_control_analysis_type_idx ON public.inst_analysis_ctrl USING btree (analysistype);
 
 
 --
@@ -8970,6 +9807,13 @@ CREATE INDEX mig_space_statistic_lastupdated_idx ON public.mig_space_statistic U
 --
 
 CREATE INDEX mig_space_statistic_sumofpageblogdraftcount_idx ON public.mig_space_statistic USING btree (sumofpageblogdraftcount);
+
+
+--
+-- Name: mig_space_statistic_teamcalendarcount_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_space_statistic_teamcalendarcount_idx ON public.mig_space_statistic USING btree (teamcalendarcount);
 
 
 --
@@ -9428,6 +10272,13 @@ CREATE INDEX start_time_outcome_idx ON public.scheduler_run_details USING btree 
 
 
 --
+-- Name: sync_context_key_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sync_context_key_idx ON public.incremental_sync_subscription USING btree (subscription_context_key);
+
+
+--
 -- Name: content_perm_set denormalised_content_perm_set_trigger_on_delete; Type: TRIGGER; Schema: public; Owner: confluence
 --
 
@@ -9791,19 +10642,11 @@ ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS"
 
 
 --
--- Name: AO_A0B856_WEBHOOK_CONFIG fk_ao_a0b856_webhook_config_webhookid; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT fk_ao_cc7f60_sec_mon_threat_event_alert_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
 --
 
-ALTER TABLE ONLY public."AO_A0B856_WEBHOOK_CONFIG"
-    ADD CONSTRAINT fk_ao_a0b856_webhook_config_webhookid FOREIGN KEY ("WEBHOOKID") REFERENCES public."AO_A0B856_WEBHOOK"("ID");
-
-
---
--- Name: AO_A0B856_WEBHOOK_EVENT fk_ao_a0b856_webhook_event_webhookid; Type: FK CONSTRAINT; Schema: public; Owner: confluence
---
-
-ALTER TABLE ONLY public."AO_A0B856_WEBHOOK_EVENT"
-    ADD CONSTRAINT fk_ao_a0b856_webhook_event_webhookid FOREIGN KEY ("WEBHOOKID") REFERENCES public."AO_A0B856_WEBHOOK"("ID");
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_THREAT_EVENT"
+    ADD CONSTRAINT fk_ao_cc7f60_sec_mon_threat_event_alert_id FOREIGN KEY ("ALERT_ID") REFERENCES public."AO_CC7F60_SEC_MON_ALERT"("ID");
 
 
 --
@@ -10015,6 +10858,14 @@ ALTER TABLE ONLY public.cwd_group_attribute
 
 
 --
+-- Name: incremental_sync_subscription fk_inc_sync_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.incremental_sync_subscription
+    ADD CONSTRAINT fk_inc_sync_creator FOREIGN KEY (subscription_creator) REFERENCES public.user_mapping(user_key);
+
+
+--
 -- Name: label fk_label_owner; Type: FK CONSTRAINT; Schema: public; Owner: confluence
 --
 
@@ -10052,6 +10903,14 @@ ALTER TABLE ONLY public.links
 
 ALTER TABLE ONLY public.logininfo
     ADD CONSTRAINT fk_logininfo_username FOREIGN KEY (username) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: node_network fk_node_network_node_infrastructure; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.node_network
+    ADD CONSTRAINT fk_node_network_node_infrastructure FOREIGN KEY (node_id) REFERENCES public.node_infrastructure(node_id);
 
 
 --

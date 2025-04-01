@@ -2,10 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.7 (Debian 15.7-1.pgdg120+1)
--- Dumped by pg_dump version 15.7 (Debian 15.7-1.pgdg120+1)
-
-SET session_replication_role = 'replica';
+-- Dumped from database version 15.12 (Debian 15.12-1.pgdg120+1)
+-- Dumped by pg_dump version 15.12 (Debian 15.12-1.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -17,6 +15,5960 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: content_function_for_denormalised_permissions(); Type: FUNCTION; Schema: public; Owner: confluence
+--
+
+CREATE FUNCTION public.content_function_for_denormalised_permissions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN NEW;
+END
+
+$$;
+
+
+ALTER FUNCTION public.content_function_for_denormalised_permissions() OWNER TO confluence;
+
+--
+-- Name: content_perm_set_function_for_denormalised_permissions(); Type: FUNCTION; Schema: public; Owner: confluence
+--
+
+CREATE FUNCTION public.content_perm_set_function_for_denormalised_permissions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN NEW;
+END
+
+$$;
+
+
+ALTER FUNCTION public.content_perm_set_function_for_denormalised_permissions() OWNER TO confluence;
+
+--
+-- Name: content_permission_function_for_denormalised_permissions(); Type: FUNCTION; Schema: public; Owner: confluence
+--
+
+CREATE FUNCTION public.content_permission_function_for_denormalised_permissions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN NEW;
+END
+
+$$;
+
+
+ALTER FUNCTION public.content_permission_function_for_denormalised_permissions() OWNER TO confluence;
+
+--
+-- Name: space_function_for_denormalised_permissions(); Type: FUNCTION; Schema: public; Owner: confluence
+--
+
+CREATE FUNCTION public.space_function_for_denormalised_permissions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN NEW;
+END
+
+$$;
+
+
+ALTER FUNCTION public.space_function_for_denormalised_permissions() OWNER TO confluence;
+
+--
+-- Name: space_permission_function_for_denormalised_permissions(); Type: FUNCTION; Schema: public; Owner: confluence
+--
+
+CREATE FUNCTION public.space_permission_function_for_denormalised_permissions() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  RETURN NEW;
+END
+
+$$;
+
+
+ALTER FUNCTION public.space_permission_function_for_denormalised_permissions() OWNER TO confluence;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: AO_187CCC_SIDEBAR_LINK; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_187CCC_SIDEBAR_LINK" (
+    "CATEGORY" character varying(255),
+    "CUSTOM_ICON_CLASS" character varying(255),
+    "CUSTOM_TITLE" character varying(255),
+    "DEST_PAGE_ID" bigint DEFAULT 0,
+    "HARDCODED_URL" character varying(255),
+    "HIDDEN" boolean,
+    "ID" integer NOT NULL,
+    "POSITION" integer DEFAULT 0,
+    "SPACE_KEY" character varying(255),
+    "TYPE" character varying(255),
+    "WEB_ITEM_KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_187CCC_SIDEBAR_LINK" OWNER TO confluence;
+
+--
+-- Name: AO_187CCC_SIDEBAR_LINK_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_187CCC_SIDEBAR_LINK_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_187CCC_SIDEBAR_LINK_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_187CCC_SIDEBAR_LINK_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_187CCC_SIDEBAR_LINK_ID_seq" OWNED BY public."AO_187CCC_SIDEBAR_LINK"."ID";
+
+
+--
+-- Name: AO_21D670_WHITELIST_RULES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_21D670_WHITELIST_RULES" (
+    "ALLOWINBOUND" boolean,
+    "AUTHENTICATIONREQUIRED" boolean DEFAULT false NOT NULL,
+    "EXPRESSION" text NOT NULL,
+    "ID" integer NOT NULL,
+    "TYPE" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_21D670_WHITELIST_RULES" OWNER TO confluence;
+
+--
+-- Name: AO_21D670_WHITELIST_RULES_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_21D670_WHITELIST_RULES_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_21D670_WHITELIST_RULES_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_21D670_WHITELIST_RULES_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_21D670_WHITELIST_RULES_ID_seq" OWNED BY public."AO_21D670_WHITELIST_RULES"."ID";
+
+
+--
+-- Name: AO_21F425_MESSAGE_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_21F425_MESSAGE_AO" (
+    "CONTENT" text NOT NULL,
+    "ID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_21F425_MESSAGE_AO" OWNER TO confluence;
+
+--
+-- Name: AO_21F425_MESSAGE_MAPPING_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_21F425_MESSAGE_MAPPING_AO" (
+    "ID" integer NOT NULL,
+    "MESSAGE_ID" character varying(255) NOT NULL,
+    "USER_HASH" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_21F425_MESSAGE_MAPPING_AO" OWNER TO confluence;
+
+--
+-- Name: AO_21F425_MESSAGE_MAPPING_AO_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_21F425_MESSAGE_MAPPING_AO_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_21F425_MESSAGE_MAPPING_AO_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_21F425_MESSAGE_MAPPING_AO_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_21F425_MESSAGE_MAPPING_AO_ID_seq" OWNED BY public."AO_21F425_MESSAGE_MAPPING_AO"."ID";
+
+
+--
+-- Name: AO_21F425_USER_PROPERTY_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_21F425_USER_PROPERTY_AO" (
+    "ID" integer NOT NULL,
+    "KEY" character varying(255) NOT NULL,
+    "USER" character varying(255) NOT NULL,
+    "VALUE" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_21F425_USER_PROPERTY_AO" OWNER TO confluence;
+
+--
+-- Name: AO_21F425_USER_PROPERTY_AO_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_21F425_USER_PROPERTY_AO_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_21F425_USER_PROPERTY_AO_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_21F425_USER_PROPERTY_AO_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_21F425_USER_PROPERTY_AO_ID_seq" OWNED BY public."AO_21F425_USER_PROPERTY_AO"."ID";
+
+
+--
+-- Name: AO_32184F_RECONCILIATIONS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_32184F_RECONCILIATIONS" (
+    "ANCESTOR" character varying(255),
+    "CONTENT_ID" bigint DEFAULT 0 NOT NULL,
+    "EVENT_TYPE" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "INSERTED" timestamp without time zone NOT NULL,
+    "REVISION" character varying(255),
+    "TRIGGER" character varying(255)
+);
+
+
+ALTER TABLE public."AO_32184F_RECONCILIATIONS" OWNER TO confluence;
+
+--
+-- Name: AO_32184F_RECONCILIATIONS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_32184F_RECONCILIATIONS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_32184F_RECONCILIATIONS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_32184F_RECONCILIATIONS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_32184F_RECONCILIATIONS_ID_seq" OWNED BY public."AO_32184F_RECONCILIATIONS"."ID";
+
+
+--
+-- Name: AO_32184F_SYNCHRONY_REQUESTS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_32184F_SYNCHRONY_REQUESTS" (
+    "CONTENT_ID" bigint DEFAULT 0 NOT NULL,
+    "ID" integer NOT NULL,
+    "INSERTED" timestamp without time zone NOT NULL,
+    "PAYLOAD" character varying(255),
+    "SUCCESSFUL" boolean,
+    "TYPE" character varying(255),
+    "URL" character varying(255)
+);
+
+
+ALTER TABLE public."AO_32184F_SYNCHRONY_REQUESTS" OWNER TO confluence;
+
+--
+-- Name: AO_32184F_SYNCHRONY_REQUESTS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_32184F_SYNCHRONY_REQUESTS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_32184F_SYNCHRONY_REQUESTS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_32184F_SYNCHRONY_REQUESTS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_32184F_SYNCHRONY_REQUESTS_ID_seq" OWNED BY public."AO_32184F_SYNCHRONY_REQUESTS"."ID";
+
+
+--
+-- Name: AO_38321B_CUSTOM_CONTENT_LINK; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_38321B_CUSTOM_CONTENT_LINK" (
+    "CONTENT_KEY" character varying(255),
+    "ID" integer NOT NULL,
+    "LINK_LABEL" character varying(255),
+    "LINK_URL" character varying(255),
+    "SEQUENCE" integer DEFAULT 0
+);
+
+
+ALTER TABLE public."AO_38321B_CUSTOM_CONTENT_LINK" OWNER TO confluence;
+
+--
+-- Name: AO_38321B_CUSTOM_CONTENT_LINK_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_38321B_CUSTOM_CONTENT_LINK_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_38321B_CUSTOM_CONTENT_LINK_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_38321B_CUSTOM_CONTENT_LINK_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_38321B_CUSTOM_CONTENT_LINK_ID_seq" OWNED BY public."AO_38321B_CUSTOM_CONTENT_LINK"."ID";
+
+
+--
+-- Name: AO_4789DD_DISABLED_CHECKS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_4789DD_DISABLED_CHECKS" (
+    "HEALTH_CHECK_KEY" character varying(255) NOT NULL,
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_4789DD_DISABLED_CHECKS" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_DISABLED_CHECKS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_4789DD_DISABLED_CHECKS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_4789DD_DISABLED_CHECKS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_DISABLED_CHECKS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_4789DD_DISABLED_CHECKS_ID_seq" OWNED BY public."AO_4789DD_DISABLED_CHECKS"."ID";
+
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_STATUS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_4789DD_HEALTH_CHECK_STATUS" (
+    "APPLICATION_NAME" character varying(255),
+    "COMPLETE_KEY" character varying(255),
+    "DESCRIPTION" text,
+    "FAILED_DATE" timestamp without time zone,
+    "FAILURE_REASON" text,
+    "ID" integer NOT NULL,
+    "IS_HEALTHY" boolean,
+    "IS_RESOLVED" boolean,
+    "NODE_ID" character varying(255),
+    "RESOLVED_DATE" timestamp without time zone,
+    "SEVERITY" character varying(255),
+    "STATUS_NAME" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_4789DD_HEALTH_CHECK_STATUS" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_STATUS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_4789DD_HEALTH_CHECK_STATUS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_4789DD_HEALTH_CHECK_STATUS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_STATUS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_4789DD_HEALTH_CHECK_STATUS_ID_seq" OWNED BY public."AO_4789DD_HEALTH_CHECK_STATUS"."ID";
+
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_WATCHER; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_4789DD_HEALTH_CHECK_WATCHER" (
+    "ID" integer NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_4789DD_HEALTH_CHECK_WATCHER" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_WATCHER_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_4789DD_HEALTH_CHECK_WATCHER_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_4789DD_HEALTH_CHECK_WATCHER_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_WATCHER_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_4789DD_HEALTH_CHECK_WATCHER_ID_seq" OWNED BY public."AO_4789DD_HEALTH_CHECK_WATCHER"."ID";
+
+
+--
+-- Name: AO_4789DD_PROPERTIES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_4789DD_PROPERTIES" (
+    "ID" integer NOT NULL,
+    "PROPERTY_NAME" character varying(255) NOT NULL,
+    "PROPERTY_VALUE" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_4789DD_PROPERTIES" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_PROPERTIES_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_4789DD_PROPERTIES_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_4789DD_PROPERTIES_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_PROPERTIES_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_4789DD_PROPERTIES_ID_seq" OWNED BY public."AO_4789DD_PROPERTIES"."ID";
+
+
+--
+-- Name: AO_4789DD_READ_NOTIFICATIONS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_4789DD_READ_NOTIFICATIONS" (
+    "ID" integer NOT NULL,
+    "IS_SNOOZED" boolean,
+    "NOTIFICATION_ID" integer NOT NULL,
+    "SNOOZE_COUNT" integer,
+    "SNOOZE_DATE" timestamp without time zone,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_4789DD_READ_NOTIFICATIONS" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_READ_NOTIFICATIONS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_4789DD_READ_NOTIFICATIONS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_4789DD_READ_NOTIFICATIONS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_READ_NOTIFICATIONS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_4789DD_READ_NOTIFICATIONS_ID_seq" OWNED BY public."AO_4789DD_READ_NOTIFICATIONS"."ID";
+
+
+--
+-- Name: AO_4789DD_SHORTENED_KEY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_4789DD_SHORTENED_KEY" (
+    "ID" integer NOT NULL,
+    "KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_4789DD_SHORTENED_KEY" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_SHORTENED_KEY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_4789DD_SHORTENED_KEY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_4789DD_SHORTENED_KEY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_SHORTENED_KEY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_4789DD_SHORTENED_KEY_ID_seq" OWNED BY public."AO_4789DD_SHORTENED_KEY"."ID";
+
+
+--
+-- Name: AO_4789DD_TASK_MONITOR; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_4789DD_TASK_MONITOR" (
+    "CLUSTERED_TASK_ID" character varying(255),
+    "CREATED_TIMESTAMP" bigint DEFAULT 0,
+    "ID" integer NOT NULL,
+    "NODE_ID" character varying(255),
+    "PROGRESS_MESSAGE" text,
+    "PROGRESS_PERCENTAGE" integer,
+    "SERIALIZED_ERRORS" text,
+    "SERIALIZED_WARNINGS" text,
+    "TASK_ID" character varying(255) NOT NULL,
+    "TASK_MONITOR_KIND" character varying(255),
+    "TASK_STATUS" text
+);
+
+
+ALTER TABLE public."AO_4789DD_TASK_MONITOR" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_TASK_MONITOR_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_4789DD_TASK_MONITOR_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_4789DD_TASK_MONITOR_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_4789DD_TASK_MONITOR_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_4789DD_TASK_MONITOR_ID_seq" OWNED BY public."AO_4789DD_TASK_MONITOR"."ID";
+
+
+--
+-- Name: AO_54C900_CONTENT_BLUEPRINT_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_54C900_CONTENT_BLUEPRINT_AO" (
+    "CREATE_RESULT" character varying(255),
+    "HOW_TO_USE_TEMPLATE" character varying(255),
+    "ID" integer NOT NULL,
+    "INDEX_DISABLED" boolean,
+    "INDEX_KEY" character varying(255),
+    "INDEX_TITLE_I18N_KEY" character varying(255),
+    "NAME" character varying(255),
+    "PLUGIN_CLONE" boolean,
+    "PLUGIN_MODULE_KEY" character varying(255),
+    "SPACE_KEY" character varying(255),
+    "UUID" character varying(255)
+);
+
+
+ALTER TABLE public."AO_54C900_CONTENT_BLUEPRINT_AO" OWNER TO confluence;
+
+--
+-- Name: AO_54C900_CONTENT_BLUEPRINT_AO_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_54C900_CONTENT_BLUEPRINT_AO_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_54C900_CONTENT_BLUEPRINT_AO_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_54C900_CONTENT_BLUEPRINT_AO_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_54C900_CONTENT_BLUEPRINT_AO_ID_seq" OWNED BY public."AO_54C900_CONTENT_BLUEPRINT_AO"."ID";
+
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_54C900_C_TEMPLATE_REF" (
+    "CB_INDEX_PARENTID" integer,
+    "CB_PARENTID" integer,
+    "ID" integer NOT NULL,
+    "NAME" character varying(255),
+    "PARENT_ID" integer,
+    "PLUGIN_CLONE" boolean,
+    "PLUGIN_MODULE_KEY" character varying(255),
+    "TEMPLATE_ID" bigint DEFAULT 0,
+    "UUID" character varying(255)
+);
+
+
+ALTER TABLE public."AO_54C900_C_TEMPLATE_REF" OWNER TO confluence;
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_54C900_C_TEMPLATE_REF_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_54C900_C_TEMPLATE_REF_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_54C900_C_TEMPLATE_REF_ID_seq" OWNED BY public."AO_54C900_C_TEMPLATE_REF"."ID";
+
+
+--
+-- Name: AO_54C900_SPACE_BLUEPRINT_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_54C900_SPACE_BLUEPRINT_AO" (
+    "CATEGORY" character varying(255),
+    "HOME_PAGE_ID" integer,
+    "ID" integer NOT NULL,
+    "NAME" character varying(255),
+    "PLUGIN_CLONE" boolean,
+    "PLUGIN_MODULE_KEY" character varying(255),
+    "PROMOTED_BPS" text,
+    "UUID" character varying(255)
+);
+
+
+ALTER TABLE public."AO_54C900_SPACE_BLUEPRINT_AO" OWNER TO confluence;
+
+--
+-- Name: AO_54C900_SPACE_BLUEPRINT_AO_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_54C900_SPACE_BLUEPRINT_AO_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_54C900_SPACE_BLUEPRINT_AO_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_54C900_SPACE_BLUEPRINT_AO_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_54C900_SPACE_BLUEPRINT_AO_ID_seq" OWNED BY public."AO_54C900_SPACE_BLUEPRINT_AO"."ID";
+
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_563AEE_ACTIVITY_ENTITY" (
+    "ACTIVITY_ID" bigint NOT NULL,
+    "ACTOR_ID" integer,
+    "CONTENT" text,
+    "GENERATOR_DISPLAY_NAME" character varying(255),
+    "GENERATOR_ID" character varying(450),
+    "ICON_ID" integer,
+    "ID" character varying(450),
+    "ISSUE_KEY" character varying(255),
+    "OBJECT_ID" integer,
+    "POSTER" character varying(255),
+    "PROJECT_KEY" character varying(255),
+    "PUBLISHED" timestamp without time zone,
+    "TARGET_ID" integer,
+    "TITLE" character varying(255),
+    "URL" character varying(450),
+    "USERNAME" character varying(255),
+    "VERB" character varying(450)
+);
+
+
+ALTER TABLE public."AO_563AEE_ACTIVITY_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY_ACTIVITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_563AEE_ACTIVITY_ENTITY_ACTIVITY_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_563AEE_ACTIVITY_ENTITY_ACTIVITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY_ACTIVITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_563AEE_ACTIVITY_ENTITY_ACTIVITY_ID_seq" OWNED BY public."AO_563AEE_ACTIVITY_ENTITY"."ACTIVITY_ID";
+
+
+--
+-- Name: AO_563AEE_ACTOR_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_563AEE_ACTOR_ENTITY" (
+    "FULL_NAME" character varying(255),
+    "ID" integer NOT NULL,
+    "PROFILE_PAGE_URI" character varying(450),
+    "PROFILE_PICTURE_URI" character varying(450),
+    "USERNAME" character varying(255)
+);
+
+
+ALTER TABLE public."AO_563AEE_ACTOR_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_ACTOR_ENTITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_563AEE_ACTOR_ENTITY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_563AEE_ACTOR_ENTITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_ACTOR_ENTITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_563AEE_ACTOR_ENTITY_ID_seq" OWNED BY public."AO_563AEE_ACTOR_ENTITY"."ID";
+
+
+--
+-- Name: AO_563AEE_MEDIA_LINK_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_563AEE_MEDIA_LINK_ENTITY" (
+    "DURATION" integer,
+    "HEIGHT" integer,
+    "ID" integer NOT NULL,
+    "URL" character varying(450),
+    "WIDTH" integer
+);
+
+
+ALTER TABLE public."AO_563AEE_MEDIA_LINK_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_MEDIA_LINK_ENTITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_563AEE_MEDIA_LINK_ENTITY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_563AEE_MEDIA_LINK_ENTITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_MEDIA_LINK_ENTITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_563AEE_MEDIA_LINK_ENTITY_ID_seq" OWNED BY public."AO_563AEE_MEDIA_LINK_ENTITY"."ID";
+
+
+--
+-- Name: AO_563AEE_OBJECT_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_563AEE_OBJECT_ENTITY" (
+    "CONTENT" character varying(255),
+    "DISPLAY_NAME" character varying(255),
+    "ID" integer NOT NULL,
+    "IMAGE_ID" integer,
+    "OBJECT_ID" character varying(450),
+    "OBJECT_TYPE" character varying(450),
+    "SUMMARY" character varying(255),
+    "URL" character varying(450)
+);
+
+
+ALTER TABLE public."AO_563AEE_OBJECT_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_OBJECT_ENTITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_563AEE_OBJECT_ENTITY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_563AEE_OBJECT_ENTITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_OBJECT_ENTITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_563AEE_OBJECT_ENTITY_ID_seq" OWNED BY public."AO_563AEE_OBJECT_ENTITY"."ID";
+
+
+--
+-- Name: AO_563AEE_TARGET_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_563AEE_TARGET_ENTITY" (
+    "CONTENT" character varying(255),
+    "DISPLAY_NAME" character varying(255),
+    "ID" integer NOT NULL,
+    "IMAGE_ID" integer,
+    "OBJECT_ID" character varying(450),
+    "OBJECT_TYPE" character varying(450),
+    "SUMMARY" character varying(255),
+    "URL" character varying(450)
+);
+
+
+ALTER TABLE public."AO_563AEE_TARGET_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_TARGET_ENTITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_563AEE_TARGET_ENTITY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_563AEE_TARGET_ENTITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_563AEE_TARGET_ENTITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_563AEE_TARGET_ENTITY_ID_seq" OWNED BY public."AO_563AEE_TARGET_ENTITY"."ID";
+
+
+--
+-- Name: AO_59F889_ZDU_CLUSTER_NODES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_59F889_ZDU_CLUSTER_NODES" (
+    "ID" integer NOT NULL,
+    "IP_ADDRESS" character varying(255) NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "NODE_ID" character varying(255) NOT NULL,
+    "PORT_NUMBER" integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public."AO_59F889_ZDU_CLUSTER_NODES" OWNER TO confluence;
+
+--
+-- Name: AO_59F889_ZDU_CLUSTER_NODES_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_59F889_ZDU_CLUSTER_NODES_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_59F889_ZDU_CLUSTER_NODES_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_59F889_ZDU_CLUSTER_NODES_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_59F889_ZDU_CLUSTER_NODES_ID_seq" OWNED BY public."AO_59F889_ZDU_CLUSTER_NODES"."ID";
+
+
+--
+-- Name: AO_5F3884_FEATURE_DISCOVERY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_5F3884_FEATURE_DISCOVERY" (
+    "DISCOVERED" boolean,
+    "ID" integer NOT NULL,
+    "USER_KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_5F3884_FEATURE_DISCOVERY" OWNER TO confluence;
+
+--
+-- Name: AO_5F3884_FEATURE_DISCOVERY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_5F3884_FEATURE_DISCOVERY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_5F3884_FEATURE_DISCOVERY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_5F3884_FEATURE_DISCOVERY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_5F3884_FEATURE_DISCOVERY_ID_seq" OWNED BY public."AO_5F3884_FEATURE_DISCOVERY"."ID";
+
+
+--
+-- Name: AO_6384AB_DISCOVERED; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_6384AB_DISCOVERED" (
+    "DATE" timestamp without time zone,
+    "ID" integer NOT NULL,
+    "KEY" character varying(255),
+    "PLUGIN_KEY" character varying(255),
+    "USER_KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_6384AB_DISCOVERED" OWNER TO confluence;
+
+--
+-- Name: AO_6384AB_DISCOVERED_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_6384AB_DISCOVERED_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_6384AB_DISCOVERED_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_6384AB_DISCOVERED_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_6384AB_DISCOVERED_ID_seq" OWNED BY public."AO_6384AB_DISCOVERED"."ID";
+
+
+--
+-- Name: AO_6384AB_FEATURE_METADATA_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_6384AB_FEATURE_METADATA_AO" (
+    "CONTEXT" character varying(255),
+    "ID" integer NOT NULL,
+    "INSTALLATION_DATE" timestamp without time zone,
+    "KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_6384AB_FEATURE_METADATA_AO" OWNER TO confluence;
+
+--
+-- Name: AO_6384AB_FEATURE_METADATA_AO_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_6384AB_FEATURE_METADATA_AO_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_6384AB_FEATURE_METADATA_AO_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_6384AB_FEATURE_METADATA_AO_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_6384AB_FEATURE_METADATA_AO_ID_seq" OWNED BY public."AO_6384AB_FEATURE_METADATA_AO"."ID";
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_6ABCE4_TUNNEL" (
+    "CLOUD_ORG_NAME" character varying(255) NOT NULL,
+    "CLOUD_PAGE_URL" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "TOKEN" text NOT NULL,
+    "UPSTREAM_DNS_URL" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_6ABCE4_TUNNEL_CONNECTION" (
+    "ID" integer NOT NULL,
+    "NODE_ID" character varying(255) NOT NULL,
+    "RETRY_COUNT" integer DEFAULT 0 NOT NULL,
+    "STATUS" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL_CONNECTION" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq" OWNED BY public."AO_6ABCE4_TUNNEL_CONNECTION"."ID";
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_6ABCE4_TUNNEL_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_6ABCE4_TUNNEL_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_6ABCE4_TUNNEL_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_6ABCE4_TUNNEL_ID_seq" OWNED BY public."AO_6ABCE4_TUNNEL"."ID";
+
+
+--
+-- Name: AO_723324_CLIENT_CONFIG; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_723324_CLIENT_CONFIG" (
+    "AUTHORIZATION_ENDPOINT" character varying(255),
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "CLIENT_SECRET" character varying(255),
+    "DESCRIPTION" character varying(255),
+    "ID" character varying(255) NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "SCOPES" text NOT NULL,
+    "TOKEN_ENDPOINT" character varying(255) NOT NULL,
+    "TYPE" character varying(255) NOT NULL,
+    "CLIENT_CERTIFICATE" text,
+    "CUSTOM_PARAMS" text,
+    "GRANT_TYPE" character varying(255) DEFAULT 'authorization_code'::character varying
+);
+
+
+ALTER TABLE public."AO_723324_CLIENT_CONFIG" OWNER TO confluence;
+
+--
+-- Name: AO_723324_CLIENT_TOKEN; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_723324_CLIENT_TOKEN" (
+    "ACCESS_TOKEN" text NOT NULL,
+    "ACCESS_TOKEN_EXPIRATION" bigint DEFAULT 0 NOT NULL,
+    "CONFIG_ID" character varying(255) NOT NULL,
+    "ID" character varying(255) NOT NULL,
+    "LAST_REFRESHED" bigint,
+    "LAST_STATUS_UPDATED" bigint NOT NULL,
+    "REFRESH_COUNT" integer DEFAULT 0,
+    "REFRESH_TOKEN" text,
+    "REFRESH_TOKEN_EXPIRATION" bigint,
+    "STATUS" character varying(255) NOT NULL,
+    "EXTERNAL_ID" character varying(255)
+);
+
+
+ALTER TABLE public."AO_723324_CLIENT_TOKEN" OWNER TO confluence;
+
+--
+-- Name: AO_7B47A5_EVENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7B47A5_EVENT" (
+    "CONTAINER_ID" bigint DEFAULT 0,
+    "CONTENT_ID" bigint,
+    "EVENT_AT" bigint DEFAULT 0 NOT NULL,
+    "ID" bigint NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "SPACE_KEY" character varying(255),
+    "USER_KEY" character varying(255),
+    "VERSION_MODIFICATION_DATE" bigint
+);
+
+
+ALTER TABLE public."AO_7B47A5_EVENT" OWNER TO confluence;
+
+--
+-- Name: AO_7B47A5_EVENT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7B47A5_EVENT_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7B47A5_EVENT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7B47A5_EVENT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7B47A5_EVENT_ID_seq" OWNED BY public."AO_7B47A5_EVENT"."ID";
+
+
+--
+-- Name: AO_7B47A5_SETTINGS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7B47A5_SETTINGS" (
+    "CREATED_AT" bigint DEFAULT 0 NOT NULL,
+    "ID" bigint NOT NULL,
+    "KEY" character varying(255) NOT NULL,
+    "UPDATED_AT" bigint DEFAULT 0 NOT NULL,
+    "VALUE" text NOT NULL
+);
+
+
+ALTER TABLE public."AO_7B47A5_SETTINGS" OWNER TO confluence;
+
+--
+-- Name: AO_7B47A5_SETTINGS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7B47A5_SETTINGS_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7B47A5_SETTINGS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7B47A5_SETTINGS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7B47A5_SETTINGS_ID_seq" OWNED BY public."AO_7B47A5_SETTINGS"."ID";
+
+
+--
+-- Name: AO_7CDE43_EVENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7CDE43_EVENT" (
+    "EVENT_KEY" character varying(255),
+    "ID" integer NOT NULL,
+    "NOTIFICATION_ID" integer
+);
+
+
+ALTER TABLE public."AO_7CDE43_EVENT" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_EVENT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7CDE43_EVENT_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7CDE43_EVENT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_EVENT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7CDE43_EVENT_ID_seq" OWNED BY public."AO_7CDE43_EVENT"."ID";
+
+
+--
+-- Name: AO_7CDE43_FILTER_PARAM; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7CDE43_FILTER_PARAM" (
+    "ID" integer NOT NULL,
+    "NOTIFICATION_ID" integer,
+    "PARAM_KEY" character varying(255),
+    "PARAM_VALUE" text
+);
+
+
+ALTER TABLE public."AO_7CDE43_FILTER_PARAM" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_FILTER_PARAM_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7CDE43_FILTER_PARAM_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7CDE43_FILTER_PARAM_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_FILTER_PARAM_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7CDE43_FILTER_PARAM_ID_seq" OWNED BY public."AO_7CDE43_FILTER_PARAM"."ID";
+
+
+--
+-- Name: AO_7CDE43_NOTIFICATION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7CDE43_NOTIFICATION" (
+    "ID" integer NOT NULL,
+    "NOTIFICATION_SCHEME_ID" integer
+);
+
+
+ALTER TABLE public."AO_7CDE43_NOTIFICATION" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_NOTIFICATION_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7CDE43_NOTIFICATION_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7CDE43_NOTIFICATION_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_NOTIFICATION_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7CDE43_NOTIFICATION_ID_seq" OWNED BY public."AO_7CDE43_NOTIFICATION"."ID";
+
+
+--
+-- Name: AO_7CDE43_NOTIFICATION_SCHEME; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7CDE43_NOTIFICATION_SCHEME" (
+    "DESCRIPTION" text,
+    "ID" integer NOT NULL,
+    "SCHEME_NAME" character varying(255)
+);
+
+
+ALTER TABLE public."AO_7CDE43_NOTIFICATION_SCHEME" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_NOTIFICATION_SCHEME_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7CDE43_NOTIFICATION_SCHEME_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7CDE43_NOTIFICATION_SCHEME_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_NOTIFICATION_SCHEME_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7CDE43_NOTIFICATION_SCHEME_ID_seq" OWNED BY public."AO_7CDE43_NOTIFICATION_SCHEME"."ID";
+
+
+--
+-- Name: AO_7CDE43_RECIPIENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7CDE43_RECIPIENT" (
+    "ID" integer NOT NULL,
+    "INDIVIDUAL" boolean,
+    "NOTIFICATION_ID" integer,
+    "PARAM_DISPLAY" text,
+    "PARAM_VALUE" text,
+    "SERVER_ID" integer DEFAULT 0,
+    "TYPE" character varying(255)
+);
+
+
+ALTER TABLE public."AO_7CDE43_RECIPIENT" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_RECIPIENT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7CDE43_RECIPIENT_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7CDE43_RECIPIENT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_RECIPIENT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7CDE43_RECIPIENT_ID_seq" OWNED BY public."AO_7CDE43_RECIPIENT"."ID";
+
+
+--
+-- Name: AO_7CDE43_SERVER_CONFIG; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7CDE43_SERVER_CONFIG" (
+    "CUSTOM_TEMPLATE_PATH" text,
+    "DEFAULT_USER_ID_TEMPLATE" character varying(255),
+    "ENABLED_FOR_ALL_USERS" boolean,
+    "GROUPS_WITH_ACCESS" text,
+    "ID" integer NOT NULL,
+    "NOTIFICATION_MEDIUM_KEY" character varying(255),
+    "SERVER_NAME" character varying(255)
+);
+
+
+ALTER TABLE public."AO_7CDE43_SERVER_CONFIG" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_SERVER_CONFIG_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7CDE43_SERVER_CONFIG_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7CDE43_SERVER_CONFIG_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_SERVER_CONFIG_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7CDE43_SERVER_CONFIG_ID_seq" OWNED BY public."AO_7CDE43_SERVER_CONFIG"."ID";
+
+
+--
+-- Name: AO_7CDE43_SERVER_PARAM; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_7CDE43_SERVER_PARAM" (
+    "ID" integer NOT NULL,
+    "PARAM_KEY" character varying(255),
+    "PARAM_VALUE" text,
+    "SERVER_CONFIG_ID" integer
+);
+
+
+ALTER TABLE public."AO_7CDE43_SERVER_PARAM" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_SERVER_PARAM_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_7CDE43_SERVER_PARAM_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_7CDE43_SERVER_PARAM_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_7CDE43_SERVER_PARAM_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_7CDE43_SERVER_PARAM_ID_seq" OWNED BY public."AO_7CDE43_SERVER_PARAM"."ID";
+
+
+--
+-- Name: AO_81F455_PERSONAL_TOKEN; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_81F455_PERSONAL_TOKEN" (
+    "CREATED_AT" timestamp without time zone NOT NULL,
+    "EXPIRING_AT" timestamp without time zone NOT NULL,
+    "HASHED_TOKEN" character varying(255) NOT NULL,
+    "ID" bigint NOT NULL,
+    "LAST_ACCESSED_AT" timestamp without time zone,
+    "NAME" character varying(255) NOT NULL,
+    "NOTIFICATION_STATE" character varying(255) NOT NULL,
+    "TOKEN_ID" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_81F455_PERSONAL_TOKEN" OWNER TO confluence;
+
+--
+-- Name: AO_81F455_PERSONAL_TOKEN_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_81F455_PERSONAL_TOKEN_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_81F455_PERSONAL_TOKEN_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_81F455_PERSONAL_TOKEN_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_81F455_PERSONAL_TOKEN_ID_seq" OWNED BY public."AO_81F455_PERSONAL_TOKEN"."ID";
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_CONFIG; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_8752F1_DATA_PIPELINE_CONFIG" (
+    "ID" integer NOT NULL,
+    "KEY" character varying(250) NOT NULL,
+    "VALUE" text
+);
+
+
+ALTER TABLE public."AO_8752F1_DATA_PIPELINE_CONFIG" OWNER TO confluence;
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_CONFIG_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_8752F1_DATA_PIPELINE_CONFIG_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_8752F1_DATA_PIPELINE_CONFIG_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_CONFIG_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_8752F1_DATA_PIPELINE_CONFIG_ID_seq" OWNED BY public."AO_8752F1_DATA_PIPELINE_CONFIG"."ID";
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_EOO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_8752F1_DATA_PIPELINE_EOO" (
+    "ENTITY_IDENTIFIER" character varying(255) NOT NULL,
+    "ENTITY_TYPE" character varying(255) NOT NULL,
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_8752F1_DATA_PIPELINE_EOO" OWNER TO confluence;
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_EOO_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_8752F1_DATA_PIPELINE_EOO_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_8752F1_DATA_PIPELINE_EOO_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_EOO_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_8752F1_DATA_PIPELINE_EOO_ID_seq" OWNED BY public."AO_8752F1_DATA_PIPELINE_EOO"."ID";
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_JOB; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_8752F1_DATA_PIPELINE_JOB" (
+    "CREATED" bigint NOT NULL,
+    "ERRORS" text,
+    "EXPORTED_ENTITIES" integer,
+    "EXPORT_FORCED" boolean,
+    "EXPORT_FROM" bigint NOT NULL,
+    "EXPORT_PATH" text,
+    "ID" integer NOT NULL,
+    "METADATA" character varying(255),
+    "OPTED_OUT_ENTITY_IDENTIFIERS" text,
+    "ROOT_EXPORT_PATH" character varying(255),
+    "SCHEMA_VERSION" integer DEFAULT 0 NOT NULL,
+    "STATUS" character varying(255) NOT NULL,
+    "UPDATED" bigint NOT NULL,
+    "WARNINGS" text,
+    "WRITTEN_ROWS" integer,
+    "OPTED_OUT_FILE_SCHEMAS" text
+);
+
+
+ALTER TABLE public."AO_8752F1_DATA_PIPELINE_JOB" OWNER TO confluence;
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_JOB_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_8752F1_DATA_PIPELINE_JOB_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_8752F1_DATA_PIPELINE_JOB_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_JOB_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_8752F1_DATA_PIPELINE_JOB_ID_seq" OWNED BY public."AO_8752F1_DATA_PIPELINE_JOB"."ID";
+
+
+--
+-- Name: AO_88BB94_BATCH_NOTIFICATION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_88BB94_BATCH_NOTIFICATION" (
+    "BATCHING_COLUMN" character varying(255) NOT NULL,
+    "CONTENT_TYPE" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "NOTIFICATION_KEY" character varying(255) NOT NULL,
+    "PAYLOAD" text NOT NULL
+);
+
+
+ALTER TABLE public."AO_88BB94_BATCH_NOTIFICATION" OWNER TO confluence;
+
+--
+-- Name: AO_88BB94_BATCH_NOTIFICATION_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_88BB94_BATCH_NOTIFICATION_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_88BB94_BATCH_NOTIFICATION_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_88BB94_BATCH_NOTIFICATION_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_88BB94_BATCH_NOTIFICATION_ID_seq" OWNED BY public."AO_88BB94_BATCH_NOTIFICATION"."ID";
+
+
+--
+-- Name: AO_92296B_AORECENTLY_VIEWED; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_92296B_AORECENTLY_VIEWED" (
+    "CONTENT_ID" bigint,
+    "CONTENT_TYPE" character varying(255),
+    "ID" bigint NOT NULL,
+    "LAST_VIEW_DATE" timestamp without time zone,
+    "SPACE_KEY" character varying(255),
+    "USER_KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_92296B_AORECENTLY_VIEWED" OWNER TO confluence;
+
+--
+-- Name: AO_92296B_AORECENTLY_VIEWED_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_92296B_AORECENTLY_VIEWED_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_92296B_AORECENTLY_VIEWED_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_92296B_AORECENTLY_VIEWED_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_92296B_AORECENTLY_VIEWED_ID_seq" OWNED BY public."AO_92296B_AORECENTLY_VIEWED"."ID";
+
+
+--
+-- Name: AO_9412A1_AONOTIFICATION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_9412A1_AONOTIFICATION" (
+    "ACTION" character varying(255),
+    "ACTION_ICON_URL" text,
+    "APPLICATION" character varying(255),
+    "APPLICATION_LINK_ID" character varying(255),
+    "CREATED" timestamp without time zone,
+    "DESCRIPTION" text,
+    "ENTITY" character varying(255),
+    "GLOBAL_ID" character varying(255),
+    "GROUPING_ID" character varying(255),
+    "ICON_URL" text,
+    "ID" bigint NOT NULL,
+    "ITEM_ICON_URL" text,
+    "ITEM_TITLE" text,
+    "ITEM_URL" text,
+    "METADATA" text,
+    "PINNED" boolean DEFAULT false,
+    "READ" boolean DEFAULT false,
+    "STATUS" character varying(255),
+    "TITLE" text,
+    "UPDATED" timestamp without time zone,
+    "URL" text,
+    "USER" character varying(255)
+);
+
+
+ALTER TABLE public."AO_9412A1_AONOTIFICATION" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_AONOTIFICATION_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_9412A1_AONOTIFICATION_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_9412A1_AONOTIFICATION_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_AONOTIFICATION_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_9412A1_AONOTIFICATION_ID_seq" OWNED BY public."AO_9412A1_AONOTIFICATION"."ID";
+
+
+--
+-- Name: AO_9412A1_AOREGISTRATION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_9412A1_AOREGISTRATION" (
+    "DATA" text,
+    "ID" character varying(255) NOT NULL,
+    "UPDATED" timestamp without time zone
+);
+
+
+ALTER TABLE public."AO_9412A1_AOREGISTRATION" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_AOTASK; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_9412A1_AOTASK" (
+    "APPLICATION" character varying(255),
+    "APPLICATION_LINK_ID" character varying(255),
+    "CREATED" timestamp without time zone,
+    "DESCRIPTION" text,
+    "ENTITY" character varying(255),
+    "GLOBAL_ID" character varying(255),
+    "ID" bigint NOT NULL,
+    "ITEM_ICON_URL" text,
+    "ITEM_TITLE" text,
+    "METADATA" text,
+    "STATUS" character varying(255),
+    "TITLE" text,
+    "UPDATED" timestamp without time zone,
+    "URL" text,
+    "USER" character varying(255)
+);
+
+
+ALTER TABLE public."AO_9412A1_AOTASK" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_AOTASK_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_9412A1_AOTASK_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_9412A1_AOTASK_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_AOTASK_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_9412A1_AOTASK_ID_seq" OWNED BY public."AO_9412A1_AOTASK"."ID";
+
+
+--
+-- Name: AO_9412A1_AOUSER; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_9412A1_AOUSER" (
+    "CREATED" timestamp without time zone,
+    "ID" bigint NOT NULL,
+    "LAST_READ_NOTIFICATION_ID" bigint DEFAULT 0,
+    "TASK_ORDERING" text,
+    "UPDATED" timestamp without time zone,
+    "USERNAME" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_9412A1_AOUSER" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_AOUSER_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_9412A1_AOUSER_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_9412A1_AOUSER_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_AOUSER_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_9412A1_AOUSER_ID_seq" OWNED BY public."AO_9412A1_AOUSER"."ID";
+
+
+--
+-- Name: AO_9412A1_USER_APP_LINK; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_9412A1_USER_APP_LINK" (
+    "APPLICATION_LINK_ID" character varying(255),
+    "AUTH_VERIFIED" boolean,
+    "CREATED" timestamp without time zone,
+    "ID" bigint NOT NULL,
+    "UPDATED" timestamp without time zone,
+    "USER_ID" bigint
+);
+
+
+ALTER TABLE public."AO_9412A1_USER_APP_LINK" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_USER_APP_LINK_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_9412A1_USER_APP_LINK_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_9412A1_USER_APP_LINK_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_9412A1_USER_APP_LINK_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_9412A1_USER_APP_LINK_ID_seq" OWNED BY public."AO_9412A1_USER_APP_LINK"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_CUSTOM_EV_TYPES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_CUSTOM_EV_TYPES" (
+    "BELONG_SUB_CALENDAR_ID" character varying(255),
+    "CREATED" character varying(255),
+    "ICON" character varying(255) NOT NULL,
+    "ID" character varying(255) NOT NULL,
+    "TITLE" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_CUSTOM_EV_TYPES" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_DISABLE_EV_TYPES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_DISABLE_EV_TYPES" (
+    "EVENT_KEY" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_DISABLE_EV_TYPES" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_DISABLE_EV_TYPES_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_DISABLE_EV_TYPES_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_DISABLE_EV_TYPES_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_DISABLE_EV_TYPES_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_DISABLE_EV_TYPES_ID_seq" OWNED BY public."AO_950DC3_TC_DISABLE_EV_TYPES"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_EVENTS" (
+    "ALL_DAY" boolean NOT NULL,
+    "CREATED" bigint DEFAULT 0 NOT NULL,
+    "DESCRIPTION" text,
+    "END" bigint DEFAULT 0 NOT NULL,
+    "ID" integer NOT NULL,
+    "LAST_MODIFIED" bigint DEFAULT 0,
+    "LOCATION" text,
+    "ORGANISER" character varying(255),
+    "RECURRENCE_ID_TIMESTAMP" bigint,
+    "RECURRENCE_RULE" character varying(255),
+    "REMINDER_SETTING_ID" character varying(255),
+    "SEQUENCE" integer DEFAULT 0 NOT NULL,
+    "START" bigint DEFAULT 0 NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL,
+    "SUMMARY" text,
+    "URL" text,
+    "UTC_END" bigint DEFAULT 0,
+    "UTC_START" bigint DEFAULT 0,
+    "VEVENT_UID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_EVENTS" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_EVENTS_EXCL; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_EVENTS_EXCL" (
+    "ALL_DAY" boolean NOT NULL,
+    "EVENT_ID" integer NOT NULL,
+    "EXCLUSION" bigint DEFAULT 0 NOT NULL,
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_EVENTS_EXCL" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_EVENTS_EXCL_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_EVENTS_EXCL_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_EVENTS_EXCL_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_EVENTS_EXCL_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_EVENTS_EXCL_ID_seq" OWNED BY public."AO_950DC3_TC_EVENTS_EXCL"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_EVENTS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_EVENTS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_EVENTS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_EVENTS_ID_seq" OWNED BY public."AO_950DC3_TC_EVENTS"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS_INVITEES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_EVENTS_INVITEES" (
+    "EVENT_ID" integer NOT NULL,
+    "ID" integer NOT NULL,
+    "INVITEE_ID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_EVENTS_INVITEES" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_EVENTS_INVITEES_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_EVENTS_INVITEES_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_EVENTS_INVITEES_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_EVENTS_INVITEES_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_EVENTS_INVITEES_ID_seq" OWNED BY public."AO_950DC3_TC_EVENTS_INVITEES"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_JIRA_REMI_EVENTS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_JIRA_REMI_EVENTS" (
+    "ALL_DAY" boolean DEFAULT false NOT NULL,
+    "ASSIGNEE" character varying(255),
+    "DESCRIPTION" text,
+    "EVENT_TYPE" character varying(255),
+    "ID" integer NOT NULL,
+    "ISSUE_ICON_URL" character varying(255),
+    "ISSUE_LINK" character varying(255),
+    "JQL" character varying(255),
+    "KEY_ID" character varying(255) NOT NULL,
+    "STATUS" character varying(255),
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL,
+    "TICKET_ID" character varying(255),
+    "TITLE" character varying(255),
+    "USER_ID" character varying(255),
+    "UTC_END" bigint DEFAULT 0,
+    "UTC_START" bigint DEFAULT 0
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_JIRA_REMI_EVENTS" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_JIRA_REMI_EVENTS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_JIRA_REMI_EVENTS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_JIRA_REMI_EVENTS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_JIRA_REMI_EVENTS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_JIRA_REMI_EVENTS_ID_seq" OWNED BY public."AO_950DC3_TC_JIRA_REMI_EVENTS"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_REMINDER_SETTINGS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_REMINDER_SETTINGS" (
+    "CUSTOM_EVENT_TYPE_ID" character varying(255),
+    "ID" character varying(255) NOT NULL,
+    "LAST_MODIFIER" character varying(255),
+    "PERIOD" bigint DEFAULT 0 NOT NULL,
+    "STORE_KEY" character varying(255) NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_REMINDER_SETTINGS" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_REMINDER_USERS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_REMINDER_USERS" (
+    "ID" integer NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_REMINDER_USERS" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_REMINDER_USERS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_REMINDER_USERS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_REMINDER_USERS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_REMINDER_USERS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_REMINDER_USERS_ID_seq" OWNED BY public."AO_950DC3_TC_REMINDER_USERS"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_SUBCALS" (
+    "COLOUR" character varying(255),
+    "CREATED" bigint DEFAULT 0,
+    "CREATOR" character varying(255),
+    "DESCRIPTION" text,
+    "ID" character varying(255) NOT NULL,
+    "LAST_MODIFIED" bigint DEFAULT 0,
+    "NAME" text NOT NULL,
+    "PARENT_ID" character varying(255),
+    "SPACE_KEY" character varying(255),
+    "STORE_KEY" character varying(255) NOT NULL,
+    "SUBSCRIPTION_ID" character varying(255),
+    "TIME_ZONE_ID" character varying(255),
+    "USING_CUSTOM_EVENT_TYPE_ID" character varying(255)
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_IN_SPACE; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_SUBCALS_IN_SPACE" (
+    "ID" integer NOT NULL,
+    "SPACE_KEY" character varying(255) NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_IN_SPACE" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_IN_SPACE_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_SUBCALS_IN_SPACE_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_IN_SPACE_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_IN_SPACE_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_SUBCALS_IN_SPACE_ID_seq" OWNED BY public."AO_950DC3_TC_SUBCALS_IN_SPACE"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_GRP; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_SUBCALS_PRIV_GRP" (
+    "GROUP_NAME" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL,
+    "TYPE" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_PRIV_GRP" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_GRP_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_SUBCALS_PRIV_GRP_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_PRIV_GRP_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_GRP_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_SUBCALS_PRIV_GRP_ID_seq" OWNED BY public."AO_950DC3_TC_SUBCALS_PRIV_GRP"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_USR; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_SUBCALS_PRIV_USR" (
+    "ID" integer NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL,
+    "TYPE" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_PRIV_USR" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_USR_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_SUBCALS_PRIV_USR_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_PRIV_USR_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_USR_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_SUBCALS_PRIV_USR_ID_seq" OWNED BY public."AO_950DC3_TC_SUBCALS_PRIV_USR"."ID";
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PROPS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_950DC3_TC_SUBCALS_PROPS" (
+    "ID" integer NOT NULL,
+    "KEY" character varying(255) NOT NULL,
+    "SUB_CALENDAR_ID" character varying(255) NOT NULL,
+    "VALUE" text NOT NULL
+);
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_PROPS" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PROPS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_950DC3_TC_SUBCALS_PROPS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_950DC3_TC_SUBCALS_PROPS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PROPS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_950DC3_TC_SUBCALS_PROPS_ID_seq" OWNED BY public."AO_950DC3_TC_SUBCALS_PROPS"."ID";
+
+
+--
+-- Name: AO_954A21_MOBILE_OAUTH2; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_954A21_MOBILE_OAUTH2" (
+    "BROWSER_CACHE_ENABLED" boolean,
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "CONFIGURATION_ID" character varying(255) NOT NULL,
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_954A21_MOBILE_OAUTH2" OWNER TO confluence;
+
+--
+-- Name: AO_954A21_MOBILE_OAUTH2_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_954A21_MOBILE_OAUTH2_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_954A21_MOBILE_OAUTH2_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_954A21_MOBILE_OAUTH2_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_954A21_MOBILE_OAUTH2_ID_seq" OWNED BY public."AO_954A21_MOBILE_OAUTH2"."ID";
+
+
+--
+-- Name: AO_954A21_PUSH_NOTIFICATION_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_954A21_PUSH_NOTIFICATION_AO" (
+    "ACTIVE" boolean,
+    "APP_NAME" character varying(255) NOT NULL,
+    "BUILD" character varying(255),
+    "CUSTOM_SETTING" character varying(255),
+    "DEVICE_ID" character varying(255),
+    "ENDPOINT" character varying(255),
+    "GROUP_SETTING" character varying(255),
+    "ID" character varying(255) NOT NULL,
+    "STATUS_UPDATED_TIME" bigint,
+    "TOKEN" character varying(255),
+    "USER_NAME" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_954A21_PUSH_NOTIFICATION_AO" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_DAILY_COUNTS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_A0B856_DAILY_COUNTS" (
+    "DAY_SINCE_EPOCH" bigint DEFAULT 0 NOT NULL,
+    "ERRORS" integer DEFAULT 0 NOT NULL,
+    "EVENT_ID" character varying(64) NOT NULL,
+    "FAILURES" integer DEFAULT 0 NOT NULL,
+    "ID" character varying(88) NOT NULL,
+    "SUCCESSES" integer DEFAULT 0 NOT NULL,
+    "WEBHOOK_ID" integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public."AO_A0B856_DAILY_COUNTS" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_HIST_INVOCATION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_A0B856_HIST_INVOCATION" (
+    "ERROR_CONTENT" text,
+    "EVENT_ID" character varying(64) NOT NULL,
+    "FINISH" bigint DEFAULT 0 NOT NULL,
+    "ID" character varying(77) NOT NULL,
+    "OUTCOME" character varying(255) NOT NULL,
+    "REQUEST_BODY" text,
+    "REQUEST_HEADERS" text,
+    "REQUEST_ID" character varying(64) NOT NULL,
+    "REQUEST_METHOD" character varying(16) NOT NULL,
+    "REQUEST_URL" character varying(255) NOT NULL,
+    "RESPONSE_BODY" text,
+    "RESPONSE_HEADERS" text,
+    "RESULT_DESCRIPTION" character varying(255) NOT NULL,
+    "START" bigint DEFAULT 0 NOT NULL,
+    "STATUS_CODE" integer,
+    "WEBHOOK_ID" integer DEFAULT 0 NOT NULL,
+    "EVENT_SCOPE_ID" character varying(255),
+    "EVENT_SCOPE_TYPE" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_A0B856_HIST_INVOCATION" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEBHOOK; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_A0B856_WEBHOOK" (
+    "ACTIVE" boolean,
+    "CREATED" timestamp without time zone NOT NULL,
+    "ID" integer NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "SCOPE_ID" character varying(255),
+    "SCOPE_TYPE" character varying(255) NOT NULL,
+    "UPDATED" timestamp without time zone NOT NULL,
+    "URL" text NOT NULL,
+    "PASSWORD" character varying(255),
+    "SSL_VERIFICATION_REQUIRED" boolean DEFAULT true NOT NULL,
+    "USERNAME" character varying(255)
+);
+
+
+ALTER TABLE public."AO_A0B856_WEBHOOK" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEBHOOK_CONFIG; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_A0B856_WEBHOOK_CONFIG" (
+    "ID" integer NOT NULL,
+    "KEY" character varying(255) NOT NULL,
+    "VALUE" character varying(255) NOT NULL,
+    "WEBHOOKID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_A0B856_WEBHOOK_CONFIG" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEBHOOK_CONFIG_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_A0B856_WEBHOOK_CONFIG_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_A0B856_WEBHOOK_CONFIG_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEBHOOK_CONFIG_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_A0B856_WEBHOOK_CONFIG_ID_seq" OWNED BY public."AO_A0B856_WEBHOOK_CONFIG"."ID";
+
+
+--
+-- Name: AO_A0B856_WEBHOOK_EVENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_A0B856_WEBHOOK_EVENT" (
+    "EVENT_ID" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "WEBHOOKID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_A0B856_WEBHOOK_EVENT" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEBHOOK_EVENT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_A0B856_WEBHOOK_EVENT_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_A0B856_WEBHOOK_EVENT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEBHOOK_EVENT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_A0B856_WEBHOOK_EVENT_ID_seq" OWNED BY public."AO_A0B856_WEBHOOK_EVENT"."ID";
+
+
+--
+-- Name: AO_A0B856_WEBHOOK_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_A0B856_WEBHOOK_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_A0B856_WEBHOOK_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEBHOOK_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_A0B856_WEBHOOK_ID_seq" OWNED BY public."AO_A0B856_WEBHOOK"."ID";
+
+
+--
+-- Name: AO_A0B856_WEB_HOOK_LISTENER_AO; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_A0B856_WEB_HOOK_LISTENER_AO" (
+    "DESCRIPTION" text,
+    "ENABLED" boolean,
+    "EVENTS" text,
+    "EXCLUDE_BODY" boolean,
+    "FILTERS" text,
+    "ID" integer NOT NULL,
+    "LAST_UPDATED" timestamp without time zone NOT NULL,
+    "LAST_UPDATED_USER" character varying(255),
+    "NAME" text NOT NULL,
+    "PARAMETERS" text,
+    "REGISTRATION_METHOD" character varying(255) NOT NULL,
+    "URL" text NOT NULL
+);
+
+
+ALTER TABLE public."AO_A0B856_WEB_HOOK_LISTENER_AO" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEB_HOOK_LISTENER_AO_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_A0B856_WEB_HOOK_LISTENER_AO_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_A0B856_WEB_HOOK_LISTENER_AO_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_A0B856_WEB_HOOK_LISTENER_AO_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_A0B856_WEB_HOOK_LISTENER_AO_ID_seq" OWNED BY public."AO_A0B856_WEB_HOOK_LISTENER_AO"."ID";
+
+
+--
+-- Name: AO_AC3877_RL_USER_COUNTER; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_AC3877_RL_USER_COUNTER" (
+    "ID" bigint NOT NULL,
+    "INTERVAL_START" timestamp without time zone NOT NULL,
+    "NODE_ID" character varying(255) NOT NULL,
+    "REJECT_COUNT" bigint DEFAULT 0 NOT NULL,
+    "USER_ID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_AC3877_RL_USER_COUNTER" OWNER TO confluence;
+
+--
+-- Name: AO_AC3877_RL_USER_COUNTER_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_AC3877_RL_USER_COUNTER_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_AC3877_RL_USER_COUNTER_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_AC3877_RL_USER_COUNTER_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_AC3877_RL_USER_COUNTER_ID_seq" OWNED BY public."AO_AC3877_RL_USER_COUNTER"."ID";
+
+
+--
+-- Name: AO_AC3877_SETTINGS_VERSION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_AC3877_SETTINGS_VERSION" (
+    "TYPE" character varying(255) NOT NULL,
+    "VERSION" bigint NOT NULL
+);
+
+
+ALTER TABLE public."AO_AC3877_SETTINGS_VERSION" OWNER TO confluence;
+
+--
+-- Name: AO_AC3877_SYSTEM_RL_SETTINGS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_AC3877_SYSTEM_RL_SETTINGS" (
+    "CAPACITY" integer DEFAULT 0 NOT NULL,
+    "CLEAN_JOB_DURATION" character varying(255) NOT NULL,
+    "FILL_RATE" integer DEFAULT 0 NOT NULL,
+    "FLUSH_JOB_DURATION" character varying(255) NOT NULL,
+    "INTERVAL_FREQUENCY" integer DEFAULT 0 NOT NULL,
+    "INTERVAL_TIME_UNIT" character varying(255) NOT NULL,
+    "MODE" character varying(255) NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "REAPER_JOB_DURATION" character varying(255) NOT NULL,
+    "RETENTION_PERIOD_DURATION" character varying(255) NOT NULL,
+    "SETTINGS_RELOAD_JOB_DURATION" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_AC3877_SYSTEM_RL_SETTINGS" OWNER TO confluence;
+
+--
+-- Name: AO_AC3877_USER_RL_SETTINGS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_AC3877_USER_RL_SETTINGS" (
+    "CAPACITY" integer DEFAULT 0 NOT NULL,
+    "FILL_RATE" integer DEFAULT 0 NOT NULL,
+    "INTERVAL_FREQUENCY" integer DEFAULT 0 NOT NULL,
+    "INTERVAL_TIME_UNIT" character varying(255) NOT NULL,
+    "USER_ID" character varying(255) NOT NULL,
+    "WHITELISTED" boolean NOT NULL
+);
+
+
+ALTER TABLE public."AO_AC3877_USER_RL_SETTINGS" OWNER TO confluence;
+
+--
+-- Name: AO_BAF3AA_AOINLINE_TASK; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_BAF3AA_AOINLINE_TASK" (
+    "ASSIGNEE_USER_KEY" character varying(255),
+    "BODY" text,
+    "COMPLETE_DATE" timestamp without time zone,
+    "COMPLETE_USER_KEY" character varying(255),
+    "CONTENT_ID" bigint DEFAULT 0,
+    "CREATE_DATE" timestamp without time zone,
+    "CREATOR_USER_KEY" character varying(255),
+    "DUE_DATE" timestamp without time zone,
+    "GLOBAL_ID" bigint NOT NULL,
+    "ID" bigint DEFAULT 0,
+    "TASK_STATUS" character varying(255),
+    "UPDATE_DATE" timestamp without time zone
+);
+
+
+ALTER TABLE public."AO_BAF3AA_AOINLINE_TASK" OWNER TO confluence;
+
+--
+-- Name: AO_BAF3AA_AOINLINE_TASK_GLOBAL_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_BAF3AA_AOINLINE_TASK_GLOBAL_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_BAF3AA_AOINLINE_TASK_GLOBAL_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_BAF3AA_AOINLINE_TASK_GLOBAL_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_BAF3AA_AOINLINE_TASK_GLOBAL_ID_seq" OWNED BY public."AO_BAF3AA_AOINLINE_TASK"."GLOBAL_ID";
+
+
+--
+-- Name: AO_C77861_AUDIT_ACTION_CACHE; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_C77861_AUDIT_ACTION_CACHE" (
+    "ACTION" character varying(255) NOT NULL,
+    "ACTION_T_KEY" character varying(255),
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_C77861_AUDIT_ACTION_CACHE" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_ACTION_CACHE_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_C77861_AUDIT_ACTION_CACHE_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_C77861_AUDIT_ACTION_CACHE_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_ACTION_CACHE_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_C77861_AUDIT_ACTION_CACHE_ID_seq" OWNED BY public."AO_C77861_AUDIT_ACTION_CACHE"."ID";
+
+
+--
+-- Name: AO_C77861_AUDIT_CATEGORY_CACHE; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_C77861_AUDIT_CATEGORY_CACHE" (
+    "CATEGORY" character varying(255) NOT NULL,
+    "CATEGORY_T_KEY" character varying(255),
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_C77861_AUDIT_CATEGORY_CACHE" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq" OWNED BY public."AO_C77861_AUDIT_CATEGORY_CACHE"."ID";
+
+
+--
+-- Name: AO_C77861_AUDIT_DENY_LISTED; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_C77861_AUDIT_DENY_LISTED" (
+    "ACTION" character varying(255),
+    "ID" bigint NOT NULL
+);
+
+
+ALTER TABLE public."AO_C77861_AUDIT_DENY_LISTED" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_DENY_LISTED_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_C77861_AUDIT_DENY_LISTED_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_C77861_AUDIT_DENY_LISTED_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_DENY_LISTED_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_C77861_AUDIT_DENY_LISTED_ID_seq" OWNED BY public."AO_C77861_AUDIT_DENY_LISTED"."ID";
+
+
+--
+-- Name: AO_C77861_AUDIT_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_C77861_AUDIT_ENTITY" (
+    "ACTION" character varying(255) NOT NULL,
+    "ACTION_T_KEY" character varying(255),
+    "AREA" character varying(255) NOT NULL,
+    "ATTRIBUTES" text,
+    "CATEGORY" character varying(255),
+    "CATEGORY_T_KEY" character varying(255),
+    "CHANGE_VALUES" text,
+    "ENTITY_TIMESTAMP" bigint NOT NULL,
+    "ID" bigint NOT NULL,
+    "LEVEL" character varying(255) NOT NULL,
+    "METHOD" character varying(255),
+    "NODE" character varying(255),
+    "PRIMARY_RESOURCE_ID" character varying(255),
+    "PRIMARY_RESOURCE_TYPE" character varying(255),
+    "RESOURCES" text,
+    "RESOURCE_ID_3" character varying(255),
+    "RESOURCE_ID_4" character varying(255),
+    "RESOURCE_ID_5" character varying(255),
+    "RESOURCE_TYPE_3" character varying(255),
+    "RESOURCE_TYPE_4" character varying(255),
+    "RESOURCE_TYPE_5" character varying(255),
+    "SEARCH_STRING" text,
+    "SECONDARY_RESOURCE_ID" character varying(255),
+    "SECONDARY_RESOURCE_TYPE" character varying(255),
+    "SOURCE" character varying(255),
+    "SYSTEM_INFO" character varying(255),
+    "USER_ID" character varying(255),
+    "USER_NAME" character varying(255),
+    "USER_TYPE" character varying(255)
+);
+
+
+ALTER TABLE public."AO_C77861_AUDIT_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_ENTITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_C77861_AUDIT_ENTITY_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_C77861_AUDIT_ENTITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_C77861_AUDIT_ENTITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_C77861_AUDIT_ENTITY_ID_seq" OWNED BY public."AO_C77861_AUDIT_ENTITY"."ID";
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_CC7F60_SEC_MON_ALERT" (
+    "ALERT_STATUS" integer DEFAULT 0,
+    "ALERT_TIMESTAMP" bigint DEFAULT 0,
+    "ALERT_TYPE" character varying(255),
+    "EMAIL_STATUS" character varying(255) NOT NULL,
+    "ID" bigint NOT NULL,
+    "QUEUED_TIMESTAMP" bigint,
+    "UUID" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_ALERT" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_CC7F60_SEC_MON_ALERT_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_ALERT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_CC7F60_SEC_MON_ALERT_ID_seq" OWNED BY public."AO_CC7F60_SEC_MON_ALERT"."ID";
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" (
+    "ID" bigint NOT NULL,
+    "JOB_KEY" character varying(255),
+    "LAST_SUCCESSFUL_RUN" bigint
+);
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq" OWNED BY public."AO_CC7F60_SEC_MON_SCHEDULE_JOB"."ID";
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_CC7F60_SEC_MON_THREAT_EVENT" (
+    "ACTION_T_KEY" character varying(255) NOT NULL,
+    "ALERT_ID" bigint,
+    "CREATED_TIME" bigint DEFAULT 0 NOT NULL,
+    "EVENT_SOURCE" character varying(255),
+    "EXTRA_ATTRIBUTE_T_KEY_1" character varying(255),
+    "EXTRA_ATTRIBUTE_T_KEY_2" character varying(255),
+    "EXTRA_ATTRIBUTE_T_KEY_3" character varying(255),
+    "EXTRA_ATTRIBUTE_VALUE_COLUMN_1" text,
+    "EXTRA_ATTRIBUTE_VALUE_COLUMN_2" text,
+    "EXTRA_ATTRIBUTE_VALUE_COLUMN_3" text,
+    "ID" bigint NOT NULL,
+    "INSTANCE_BASE_URL" character varying(255),
+    "NODE" character varying(255),
+    "SOURCE_IP" character varying(255),
+    "TRIGGERING_USER_KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_THREAT_EVENT" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq" OWNED BY public."AO_CC7F60_SEC_MON_THREAT_EVENT"."ID";
+
+
+--
+-- Name: AO_DC98AE_AOHELP_TIP; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_DC98AE_AOHELP_TIP" (
+    "DISMISSED_HELP_TIP" character varying(255),
+    "ID" integer NOT NULL,
+    "USER_KEY" character varying(255)
+);
+
+
+ALTER TABLE public."AO_DC98AE_AOHELP_TIP" OWNER TO confluence;
+
+--
+-- Name: AO_DC98AE_AOHELP_TIP_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_DC98AE_AOHELP_TIP_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_DC98AE_AOHELP_TIP_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_DC98AE_AOHELP_TIP_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_DC98AE_AOHELP_TIP_ID_seq" OWNED BY public."AO_DC98AE_AOHELP_TIP"."ID";
+
+
+--
+-- Name: AO_ED669C_IDP_CONFIG; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_IDP_CONFIG" (
+    "ADDITIONAL_JIT_SCOPES" text,
+    "ADDITIONAL_SCOPES" text,
+    "AUTHORIZATION_ENDPOINT" character varying(255),
+    "BUTTON_TEXT" character varying(255) NOT NULL,
+    "CLIENT_ID" character varying(255),
+    "CLIENT_SECRET" character varying(255),
+    "ENABLED" boolean NOT NULL,
+    "ENABLE_REMEMBER_ME" boolean,
+    "ID" bigint NOT NULL,
+    "INCLUDE_CUSTOMER_LOGINS" boolean,
+    "ISSUER" character varying(255) NOT NULL,
+    "LAST_UPDATED" timestamp without time zone,
+    "MAPPING_DISPLAYNAME" character varying(255),
+    "MAPPING_EMAIL" character varying(255),
+    "MAPPING_GROUPS" character varying(255),
+    "NAME" character varying(255) NOT NULL,
+    "SAML_IDP_TYPE" character varying(255),
+    "SIGNING_CERT" text,
+    "SSO_TYPE" character varying(255),
+    "SSO_URL" character varying(255),
+    "TOKEN_ENDPOINT" character varying(255),
+    "USERNAME_ATTRIBUTE" character varying(255),
+    "USERNAME_CLAIM" character varying(255),
+    "USER_INFO_ENDPOINT" character varying(255),
+    "USER_PROVISIONING_ENABLED" boolean,
+    "USE_DISCOVERY" boolean
+);
+
+
+ALTER TABLE public."AO_ED669C_IDP_CONFIG" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_IDP_CONFIG_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_ED669C_IDP_CONFIG_ID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_ED669C_IDP_CONFIG_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_IDP_CONFIG_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_ED669C_IDP_CONFIG_ID_seq" OWNED BY public."AO_ED669C_IDP_CONFIG"."ID";
+
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_SEALED_ENTITY" (
+    "ID" integer NOT NULL,
+    "KEY" character varying(255) NOT NULL,
+    "VALUE" text NOT NULL
+);
+
+
+ALTER TABLE public."AO_ED669C_SEALED_ENTITY" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_ED669C_SEALED_ENTITY_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_ED669C_SEALED_ENTITY_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_ED669C_SEALED_ENTITY_ID_seq" OWNED BY public."AO_ED669C_SEALED_ENTITY"."ID";
+
+
+--
+-- Name: AO_ED669C_SEEN_ASSERTIONS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_SEEN_ASSERTIONS" (
+    "ASSERTION_ID" character varying(255) NOT NULL,
+    "EXPIRY_TIMESTAMP" bigint DEFAULT 0 NOT NULL,
+    "ID" integer NOT NULL
+);
+
+
+ALTER TABLE public."AO_ED669C_SEEN_ASSERTIONS" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_SEEN_ASSERTIONS_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_ED669C_SEEN_ASSERTIONS_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_ED669C_SEEN_ASSERTIONS_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_SEEN_ASSERTIONS_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_ED669C_SEEN_ASSERTIONS_ID_seq" OWNED BY public."AO_ED669C_SEEN_ASSERTIONS"."ID";
+
+
+--
+-- Name: AO_ED669C_TOTP_CODES; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_TOTP_CODES" (
+    "EXPIRY_TIMESTAMP" bigint DEFAULT 0 NOT NULL,
+    "ID" integer NOT NULL,
+    "TOTP_CODE_HASH" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_ED669C_TOTP_CODES" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_TOTP_CODES_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_ED669C_TOTP_CODES_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_ED669C_TOTP_CODES_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_ED669C_TOTP_CODES_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_ED669C_TOTP_CODES_ID_seq" OWNED BY public."AO_ED669C_TOTP_CODES"."ID";
+
+
+--
+-- Name: AO_ED669C_TOTP_USER_ENROLLMENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_ED669C_TOTP_USER_ENROLLMENT" (
+    "CREATED_AT" timestamp without time zone NOT NULL,
+    "MODIFIED_AT" timestamp without time zone NOT NULL,
+    "RECOVERY_CODE" character varying(255) NOT NULL,
+    "SECRET" text NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_ED669C_TOTP_USER_ENROLLMENT" OWNER TO confluence;
+
+--
+-- Name: AO_FE1BC5_ACCESS_TOKEN; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_FE1BC5_ACCESS_TOKEN" (
+    "AUTHORIZATION_CODE" character varying(255) NOT NULL,
+    "AUTHORIZATION_DATE" bigint NOT NULL,
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "CREATED_AT" bigint NOT NULL,
+    "ID" character varying(255) NOT NULL,
+    "LAST_ACCESSED" bigint,
+    "SCOPE" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_FE1BC5_ACCESS_TOKEN" OWNER TO confluence;
+
+--
+-- Name: AO_FE1BC5_AUTHORIZATION; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_FE1BC5_AUTHORIZATION" (
+    "AUTHORIZATION_CODE" character varying(255) NOT NULL,
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "CODE_CHALLENGE" character varying(255),
+    "CODE_CHALLENGE_METHOD" character varying(255),
+    "CREATED_AT" bigint NOT NULL,
+    "REDIRECT_URI" character varying(255) NOT NULL,
+    "SCOPE" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_FE1BC5_AUTHORIZATION" OWNER TO confluence;
+
+--
+-- Name: AO_FE1BC5_CLIENT; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_FE1BC5_CLIENT" (
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "CLIENT_SECRET" character varying(255) NOT NULL,
+    "ID" character varying(255) NOT NULL,
+    "NAME" character varying(255) NOT NULL,
+    "SCOPE" character varying(255),
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_FE1BC5_CLIENT" OWNER TO confluence;
+
+--
+-- Name: AO_FE1BC5_REDIRECT_URI; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_FE1BC5_REDIRECT_URI" (
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "ID" integer NOT NULL,
+    "URI" character varying(450) NOT NULL
+);
+
+
+ALTER TABLE public."AO_FE1BC5_REDIRECT_URI" OWNER TO confluence;
+
+--
+-- Name: AO_FE1BC5_REDIRECT_URI_ID_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public."AO_FE1BC5_REDIRECT_URI_ID_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."AO_FE1BC5_REDIRECT_URI_ID_seq" OWNER TO confluence;
+
+--
+-- Name: AO_FE1BC5_REDIRECT_URI_ID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public."AO_FE1BC5_REDIRECT_URI_ID_seq" OWNED BY public."AO_FE1BC5_REDIRECT_URI"."ID";
+
+
+--
+-- Name: AO_FE1BC5_REFRESH_TOKEN; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."AO_FE1BC5_REFRESH_TOKEN" (
+    "ACCESS_TOKEN_ID" character varying(255),
+    "AUTHORIZATION_CODE" character varying(255) NOT NULL,
+    "AUTHORIZATION_DATE" bigint NOT NULL,
+    "CLIENT_ID" character varying(255) NOT NULL,
+    "CREATED_AT" bigint NOT NULL,
+    "ID" character varying(255) NOT NULL,
+    "REFRESH_COUNT" integer,
+    "SCOPE" character varying(255) NOT NULL,
+    "USER_KEY" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."AO_FE1BC5_REFRESH_TOKEN" OWNER TO confluence;
+
+--
+-- Name: EVENTS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."EVENTS" (
+    rev character varying(255) NOT NULL,
+    history character varying(255) NOT NULL,
+    partition integer NOT NULL,
+    sequence integer NOT NULL,
+    event bytea,
+    contentid bigint NOT NULL,
+    inserted timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public."EVENTS" OWNER TO confluence;
+
+--
+-- Name: SECRETS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."SECRETS" (
+    key character varying(255) NOT NULL,
+    value character varying(256) NOT NULL
+);
+
+
+ALTER TABLE public."SECRETS" OWNER TO confluence;
+
+--
+-- Name: SNAPSHOTS; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public."SNAPSHOTS" (
+    key character varying(255) NOT NULL,
+    value bytea NOT NULL,
+    contentid bigint NOT NULL,
+    inserted timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public."SNAPSHOTS" OWNER TO confluence;
+
+--
+-- Name: attachmentdata; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.attachmentdata (
+    attachmentdataid bigint NOT NULL,
+    hibernateversion integer DEFAULT 0 NOT NULL,
+    attversion integer NOT NULL,
+    data bytea,
+    attachmentid bigint NOT NULL
+);
+
+
+ALTER TABLE public.attachmentdata OWNER TO confluence;
+
+--
+-- Name: audit_affected_object; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.audit_affected_object (
+    id bigint NOT NULL,
+    name character varying(255),
+    type character varying(255),
+    auditrecordid bigint
+);
+
+
+ALTER TABLE public.audit_affected_object OWNER TO confluence;
+
+--
+-- Name: audit_changed_value; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.audit_changed_value (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    oldvalue character varying(255),
+    newvalue character varying(255),
+    auditrecordid bigint
+);
+
+
+ALTER TABLE public.audit_changed_value OWNER TO confluence;
+
+--
+-- Name: auditrecord; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.auditrecord (
+    auditrecordid bigint NOT NULL,
+    summary character varying(255),
+    description character varying(255),
+    category character varying(255),
+    address character varying(255),
+    sysamdin boolean NOT NULL,
+    authorname character varying(255),
+    authorfullname character varying(255),
+    authorkey character varying(255),
+    objectname character varying(255),
+    objecttype character varying(255),
+    searchstring character varying(4000),
+    creationdate bigint NOT NULL
+);
+
+
+ALTER TABLE public.auditrecord OWNER TO confluence;
+
+--
+-- Name: background_job; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.background_job (
+    id bigint NOT NULL,
+    type character varying(100),
+    owner character varying(255),
+    description character varying(1000),
+    run_at timestamp without time zone NOT NULL,
+    iteration_number integer NOT NULL,
+    number_of_failures integer NOT NULL,
+    creation_time timestamp without time zone NOT NULL,
+    last_touch_time timestamp without time zone NOT NULL,
+    duration_ms bigint NOT NULL,
+    parameters text
+);
+
+
+ALTER TABLE public.background_job OWNER TO confluence;
+
+--
+-- Name: background_job_archived; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.background_job_archived (
+    id bigint NOT NULL,
+    type character varying(100),
+    owner character varying(255),
+    description character varying(1000),
+    error_message text,
+    iteration_number integer NOT NULL,
+    number_of_failures integer NOT NULL,
+    creation_time timestamp without time zone NOT NULL,
+    completion_time timestamp without time zone NOT NULL,
+    duration_ms bigint NOT NULL,
+    state character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.background_job_archived OWNER TO confluence;
+
+--
+-- Name: backup_restore_job_details; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.backup_restore_job_details (
+    id bigint NOT NULL,
+    operation character varying(255) NOT NULL,
+    scope character varying(20) NOT NULL,
+    state character varying(20) NOT NULL,
+    create_time timestamp without time zone NOT NULL,
+    start_processing_time timestamp without time zone,
+    finish_processing_time timestamp without time zone,
+    error_message character varying(1000),
+    owner character varying(255),
+    terminator character varying(255),
+    cancel_time timestamp without time zone,
+    filename character varying(1000),
+    single_space_key character varying(255),
+    space_keys character varying(1000),
+    file_delete_time timestamp without time zone,
+    file_exists boolean
+);
+
+
+ALTER TABLE public.backup_restore_job_details OWNER TO confluence;
+
+--
+-- Name: backup_restore_job_settings; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.backup_restore_job_settings (
+    id bigint NOT NULL,
+    settings text
+);
+
+
+ALTER TABLE public.backup_restore_job_settings OWNER TO confluence;
+
+--
+-- Name: backup_restore_job_statistics; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.backup_restore_job_statistics (
+    id bigint NOT NULL,
+    job_statistics text
+);
+
+
+ALTER TABLE public.backup_restore_job_statistics OWNER TO confluence;
+
+--
+-- Name: bandana; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.bandana (
+    bandanaid bigint NOT NULL,
+    bandanacontext character varying(255) NOT NULL,
+    bandanakey character varying(100) NOT NULL,
+    bandanavalue text
+);
+
+
+ALTER TABLE public.bandana OWNER TO confluence;
+
+--
+-- Name: bodycontent; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.bodycontent (
+    bodycontentid bigint NOT NULL,
+    body text,
+    contentid bigint,
+    bodytypeid smallint
+);
+
+
+ALTER TABLE public.bodycontent OWNER TO confluence;
+
+--
+-- Name: browser_metrics; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.browser_metrics (
+    id character varying(255) NOT NULL,
+    userkey character varying(255) NOT NULL,
+    createdat bigint NOT NULL,
+    metricsjson character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.browser_metrics OWNER TO confluence;
+
+--
+-- Name: clustersafety; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.clustersafety (
+    clustersafetyid bigint NOT NULL,
+    safetynumber integer
+);
+
+
+ALTER TABLE public.clustersafety OWNER TO confluence;
+
+--
+-- Name: confancestors; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.confancestors (
+    descendentid bigint NOT NULL,
+    ancestorposition integer NOT NULL,
+    ancestorid bigint NOT NULL
+);
+
+
+ALTER TABLE public.confancestors OWNER TO confluence;
+
+--
+-- Name: confversion; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.confversion (
+    confversionid bigint NOT NULL,
+    buildnumber integer NOT NULL,
+    installdate timestamp without time zone,
+    versiontag character varying(255),
+    finalized character(1) DEFAULT 'N'::bpchar NOT NULL,
+    creationdate timestamp without time zone,
+    lastmoddate timestamp without time zone
+);
+
+
+ALTER TABLE public.confversion OWNER TO confluence;
+
+--
+-- Name: confzdu; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.confzdu (
+    confzduid bigint NOT NULL,
+    state character varying(255) NOT NULL,
+    orig_ver character varying(255) NOT NULL,
+    orig_build_number integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.confzdu OWNER TO confluence;
+
+--
+-- Name: content; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.content (
+    contentid bigint NOT NULL,
+    hibernateversion integer DEFAULT 0 NOT NULL,
+    contenttype character varying(255) NOT NULL,
+    title character varying(255),
+    lowertitle character varying(255),
+    version integer,
+    creator character varying(255),
+    creationdate timestamp without time zone,
+    lastmodifier character varying(255),
+    lastmoddate timestamp without time zone,
+    versioncomment text,
+    prevver bigint,
+    content_status character varying(255),
+    pageid bigint,
+    spaceid bigint,
+    child_position integer,
+    parentid bigint,
+    pluginkey character varying(255),
+    pluginver character varying(255),
+    parentccid bigint,
+    draftpageid character varying(255),
+    draftspacekey character varying(255),
+    drafttype character varying(255),
+    draftpageversion integer,
+    parentcommentid bigint,
+    username character varying(255)
+);
+
+
+ALTER TABLE public.content OWNER TO confluence;
+
+--
+-- Name: content_label; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.content_label (
+    id bigint NOT NULL,
+    labelid bigint NOT NULL,
+    contentid bigint,
+    pagetemplateid bigint,
+    owner character varying(255),
+    creationdate timestamp without time zone,
+    lastmoddate timestamp without time zone,
+    labelableid bigint,
+    labelabletype character varying(255)
+);
+
+
+ALTER TABLE public.content_label OWNER TO confluence;
+
+--
+-- Name: content_perm; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.content_perm (
+    id bigint NOT NULL,
+    cp_type character varying(10) NOT NULL,
+    username character varying(255),
+    groupname character varying(255),
+    cps_id bigint NOT NULL,
+    creator character varying(255),
+    creationdate timestamp without time zone,
+    lastmodifier character varying(255),
+    lastmoddate timestamp without time zone
+);
+
+
+ALTER TABLE public.content_perm OWNER TO confluence;
+
+--
+-- Name: content_perm_set; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.content_perm_set (
+    id bigint NOT NULL,
+    cont_perm_type character varying(10) NOT NULL,
+    content_id bigint NOT NULL,
+    creationdate timestamp without time zone,
+    lastmoddate timestamp without time zone
+);
+
+
+ALTER TABLE public.content_perm_set OWNER TO confluence;
+
+--
+-- Name: content_relation; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.content_relation (
+    relationid bigint NOT NULL,
+    targetcontentid bigint NOT NULL,
+    sourcecontentid bigint NOT NULL,
+    targettype character varying(255) NOT NULL,
+    sourcetype character varying(255) NOT NULL,
+    relationname character varying(255) NOT NULL,
+    creationdate timestamp without time zone NOT NULL,
+    lastmoddate timestamp without time zone NOT NULL,
+    creator character varying(255) NOT NULL,
+    lastmodifier character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.content_relation OWNER TO confluence;
+
+--
+-- Name: contentproperties; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.contentproperties (
+    propertyid bigint NOT NULL,
+    propertyname character varying(255) NOT NULL,
+    stringval character varying(255),
+    longval bigint,
+    dateval timestamp without time zone,
+    contentid bigint
+);
+
+
+ALTER TABLE public.contentproperties OWNER TO confluence;
+
+--
+-- Name: cwd_app_dir_group_mapping; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_app_dir_group_mapping (
+    id bigint NOT NULL,
+    app_dir_mapping_id bigint NOT NULL,
+    application_id bigint NOT NULL,
+    directory_id bigint NOT NULL,
+    group_name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.cwd_app_dir_group_mapping OWNER TO confluence;
+
+--
+-- Name: cwd_app_dir_mapping; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_app_dir_mapping (
+    id bigint NOT NULL,
+    application_id bigint,
+    directory_id bigint NOT NULL,
+    allow_all character(1) NOT NULL,
+    list_index integer
+);
+
+
+ALTER TABLE public.cwd_app_dir_mapping OWNER TO confluence;
+
+--
+-- Name: cwd_app_dir_operation; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_app_dir_operation (
+    app_dir_mapping_id bigint NOT NULL,
+    operation_type character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.cwd_app_dir_operation OWNER TO confluence;
+
+--
+-- Name: cwd_application; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_application (
+    id bigint NOT NULL,
+    application_name character varying(255) NOT NULL,
+    lower_application_name character varying(255) NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    updated_date timestamp without time zone NOT NULL,
+    active character(1) NOT NULL,
+    description character varying(255),
+    application_type character varying(32) NOT NULL,
+    credential character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.cwd_application OWNER TO confluence;
+
+--
+-- Name: cwd_application_address; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_application_address (
+    application_id bigint NOT NULL,
+    remote_address character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.cwd_application_address OWNER TO confluence;
+
+--
+-- Name: cwd_application_attribute; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_application_attribute (
+    application_id bigint NOT NULL,
+    attribute_name character varying(255) NOT NULL,
+    attribute_value character varying(4000)
+);
+
+
+ALTER TABLE public.cwd_application_attribute OWNER TO confluence;
+
+--
+-- Name: cwd_directory; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_directory (
+    id bigint NOT NULL,
+    directory_name character varying(255) NOT NULL,
+    lower_directory_name character varying(255) NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    updated_date timestamp without time zone NOT NULL,
+    active character(1) NOT NULL,
+    description character varying(255),
+    impl_class character varying(255) NOT NULL,
+    lower_impl_class character varying(255) NOT NULL,
+    directory_type character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.cwd_directory OWNER TO confluence;
+
+--
+-- Name: cwd_directory_attribute; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_directory_attribute (
+    directory_id bigint NOT NULL,
+    attribute_name character varying(255) NOT NULL,
+    attribute_value character varying(4000)
+);
+
+
+ALTER TABLE public.cwd_directory_attribute OWNER TO confluence;
+
+--
+-- Name: cwd_directory_operation; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_directory_operation (
+    directory_id bigint NOT NULL,
+    operation_type character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.cwd_directory_operation OWNER TO confluence;
+
+--
+-- Name: cwd_group; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_group (
+    id bigint NOT NULL,
+    group_name character varying(255) NOT NULL,
+    lower_group_name character varying(255) NOT NULL,
+    active character(1) NOT NULL,
+    local character(1) NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    updated_date timestamp without time zone NOT NULL,
+    description character varying(255),
+    group_type character varying(32) NOT NULL,
+    directory_id bigint NOT NULL,
+    external_id character varying(255)
+);
+
+
+ALTER TABLE public.cwd_group OWNER TO confluence;
+
+--
+-- Name: cwd_group_attribute; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_group_attribute (
+    id bigint NOT NULL,
+    group_id bigint NOT NULL,
+    directory_id bigint NOT NULL,
+    attribute_name character varying(255) NOT NULL,
+    attribute_value character varying(255),
+    attribute_lower_value character varying(255)
+);
+
+
+ALTER TABLE public.cwd_group_attribute OWNER TO confluence;
+
+--
+-- Name: cwd_membership; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_membership (
+    id bigint NOT NULL,
+    parent_id bigint NOT NULL,
+    child_group_id bigint,
+    child_user_id bigint
+);
+
+
+ALTER TABLE public.cwd_membership OWNER TO confluence;
+
+--
+-- Name: cwd_synchronisation_status; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_synchronisation_status (
+    id integer NOT NULL,
+    directory_id bigint NOT NULL,
+    node_id character varying(36),
+    node_name character varying(255),
+    sync_start bigint NOT NULL,
+    sync_end bigint,
+    status character varying(32) NOT NULL,
+    status_parameters text,
+    incremental_sync_error text,
+    full_sync_error text
+);
+
+
+ALTER TABLE public.cwd_synchronisation_status OWNER TO confluence;
+
+--
+-- Name: cwd_synchronisation_token; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_synchronisation_token (
+    directory_id bigint NOT NULL,
+    sync_status_token text
+);
+
+
+ALTER TABLE public.cwd_synchronisation_token OWNER TO confluence;
+
+--
+-- Name: cwd_tombstone; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_tombstone (
+    id bigint NOT NULL,
+    tombstone_type character varying(255) NOT NULL,
+    tombstone_timestamp bigint NOT NULL,
+    entity_name character varying(255),
+    directory_id bigint,
+    parent character varying(255),
+    application_id bigint
+);
+
+
+ALTER TABLE public.cwd_tombstone OWNER TO confluence;
+
+--
+-- Name: cwd_user; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_user (
+    id bigint NOT NULL,
+    user_name character varying(255) NOT NULL,
+    lower_user_name character varying(255) NOT NULL,
+    active character(1) NOT NULL,
+    created_date timestamp without time zone NOT NULL,
+    updated_date timestamp without time zone NOT NULL,
+    first_name character varying(255),
+    lower_first_name character varying(255),
+    last_name character varying(255),
+    lower_last_name character varying(255),
+    display_name character varying(255),
+    lower_display_name character varying(255),
+    email_address character varying(255),
+    lower_email_address character varying(255),
+    external_id character varying(255),
+    directory_id bigint NOT NULL,
+    credential character varying(255)
+);
+
+
+ALTER TABLE public.cwd_user OWNER TO confluence;
+
+--
+-- Name: cwd_user_attribute; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_user_attribute (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    directory_id bigint NOT NULL,
+    attribute_name character varying(255) NOT NULL,
+    attribute_value character varying(255),
+    attribute_lower_value character varying(255)
+);
+
+
+ALTER TABLE public.cwd_user_attribute OWNER TO confluence;
+
+--
+-- Name: cwd_user_credential_record; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.cwd_user_credential_record (
+    id bigint NOT NULL,
+    user_id bigint,
+    password_hash character varying(255) NOT NULL,
+    list_index integer
+);
+
+
+ALTER TABLE public.cwd_user_credential_record OWNER TO confluence;
+
+--
+-- Name: decorator; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.decorator (
+    decoratorid bigint NOT NULL,
+    spacekey character varying(255),
+    decoratorname character varying(255),
+    body text,
+    lastmoddate timestamp without time zone
+);
+
+
+ALTER TABLE public.decorator OWNER TO confluence;
+
+--
+-- Name: denormalised_content; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_content (
+    id bigint NOT NULL,
+    space_id bigint,
+    parent_id bigint,
+    title character varying(255),
+    "position" integer,
+    status integer NOT NULL,
+    creation_date timestamp without time zone,
+    last_modification_date timestamp without time zone
+);
+
+
+ALTER TABLE public.denormalised_content OWNER TO confluence;
+
+--
+-- Name: denormalised_content_change_log; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_content_change_log (
+    id bigint NOT NULL,
+    content_id bigint,
+    cps_id bigint
+);
+
+
+ALTER TABLE public.denormalised_content_change_log OWNER TO confluence;
+
+--
+-- Name: denormalised_content_change_log_id_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public.denormalised_content_change_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.denormalised_content_change_log_id_seq OWNER TO confluence;
+
+--
+-- Name: denormalised_content_change_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public.denormalised_content_change_log_id_seq OWNED BY public.denormalised_content_change_log.id;
+
+
+--
+-- Name: denormalised_content_view_permissions; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_content_view_permissions (
+    sid_id bigint NOT NULL,
+    content_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.denormalised_content_view_permissions OWNER TO confluence;
+
+--
+-- Name: denormalised_service_lock; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_service_lock (
+    lock_name character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.denormalised_service_lock OWNER TO confluence;
+
+--
+-- Name: denormalised_sid; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_sid (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    type integer NOT NULL
+);
+
+
+ALTER TABLE public.denormalised_sid OWNER TO confluence;
+
+--
+-- Name: denormalised_space_change_log; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_space_change_log (
+    id bigint NOT NULL,
+    space_id bigint
+);
+
+
+ALTER TABLE public.denormalised_space_change_log OWNER TO confluence;
+
+--
+-- Name: denormalised_space_change_log_id_seq; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public.denormalised_space_change_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.denormalised_space_change_log_id_seq OWNER TO confluence;
+
+--
+-- Name: denormalised_space_change_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: confluence
+--
+
+ALTER SEQUENCE public.denormalised_space_change_log_id_seq OWNED BY public.denormalised_space_change_log.id;
+
+
+--
+-- Name: denormalised_space_edit_permissions; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_space_edit_permissions (
+    sid_id bigint NOT NULL,
+    space_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.denormalised_space_edit_permissions OWNER TO confluence;
+
+--
+-- Name: denormalised_space_view_permissions; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_space_view_permissions (
+    sid_id bigint NOT NULL,
+    space_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.denormalised_space_view_permissions OWNER TO confluence;
+
+--
+-- Name: denormalised_state; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_state (
+    service_type character varying(255) NOT NULL,
+    state character varying(255),
+    last_up_to_date_timestamp bigint
+);
+
+
+ALTER TABLE public.denormalised_state OWNER TO confluence;
+
+--
+-- Name: denormalised_state_change_log; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.denormalised_state_change_log (
+    id bigint NOT NULL,
+    message character varying(1023),
+    message_level character varying(255),
+    "timestamp" bigint
+);
+
+
+ALTER TABLE public.denormalised_state_change_log OWNER TO confluence;
+
+--
+-- Name: diagnostics_alerts; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.diagnostics_alerts (
+    id bigint NOT NULL,
+    details_json text,
+    issue_component_id character varying(255) NOT NULL,
+    issue_id character varying(255) NOT NULL,
+    issue_severity integer NOT NULL,
+    node_name character varying(255) NOT NULL,
+    node_name_lower character varying(255) NOT NULL,
+    "timestamp" bigint NOT NULL,
+    trigger_module character varying(255),
+    trigger_plugin_key character varying(255),
+    trigger_plugin_key_lower character varying(255),
+    trigger_plugin_version character varying(255)
+);
+
+
+ALTER TABLE public.diagnostics_alerts OWNER TO confluence;
+
+--
+-- Name: follow_connections; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.follow_connections (
+    connectionid bigint NOT NULL,
+    follower character varying(255),
+    followee character varying(255)
+);
+
+
+ALTER TABLE public.follow_connections OWNER TO confluence;
+
+--
+-- Name: gr_response_group; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.gr_response_group (
+    id character varying(255) NOT NULL,
+    jobid character varying(255) NOT NULL,
+    nodeid character varying(255) NOT NULL,
+    starttimestamp bigint,
+    endtimestamp bigint,
+    responsestatus character varying(255),
+    configjson character varying(255)
+);
+
+
+ALTER TABLE public.gr_response_group OWNER TO confluence;
+
+--
+-- Name: guardrails_response; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.guardrails_response (
+    id character varying(255) NOT NULL,
+    guardrailsresponse text,
+    guardrailsresponsetype character varying(255),
+    queryid character varying(255) NOT NULL,
+    responsegroupid character varying(255),
+    success boolean NOT NULL,
+    querycomplexity character varying(255),
+    querystatus character varying(255),
+    queryduration bigint,
+    querycpuload double precision
+);
+
+
+ALTER TABLE public.guardrails_response OWNER TO confluence;
+
+--
+-- Name: hibernate_unique_key; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.hibernate_unique_key (
+    next_hi bigint
+);
+
+
+ALTER TABLE public.hibernate_unique_key OWNER TO confluence;
+
+--
+-- Name: imagedetails; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.imagedetails (
+    attachmentid bigint NOT NULL,
+    height integer,
+    width integer,
+    mimetype character varying(30)
+);
+
+
+ALTER TABLE public.imagedetails OWNER TO confluence;
+
+--
+-- Name: incremental_sync_subscription; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.incremental_sync_subscription (
+    id bigint NOT NULL,
+    subscription_creator character varying(255),
+    subscription_context_key character varying(150) NOT NULL,
+    subscription_most_recent_id bigint NOT NULL,
+    subscription_state character varying(50) NOT NULL,
+    subscription_data character varying(2047),
+    subscription_last_access_time timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.incremental_sync_subscription OWNER TO confluence;
+
+--
+-- Name: inst_analysis_ctrl; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.inst_analysis_ctrl (
+    id character varying(255) NOT NULL,
+    analysistype character varying(255) NOT NULL,
+    starttimestamp bigint NOT NULL,
+    endtimestamp bigint,
+    status character varying(255)
+);
+
+
+ALTER TABLE public.inst_analysis_ctrl OWNER TO confluence;
+
+--
+-- Name: journalentry; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.journalentry (
+    entry_id bigint NOT NULL,
+    journal_name character varying(255),
+    creationdate timestamp without time zone,
+    type character varying(255),
+    message character varying(2047),
+    triedtimes integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.journalentry OWNER TO confluence;
+
+--
+-- Name: keystore; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.keystore (
+    keyid bigint NOT NULL,
+    alias character varying(255) NOT NULL,
+    type character varying(32) NOT NULL,
+    algorithm character varying(32) NOT NULL,
+    keyspec text NOT NULL
+);
+
+
+ALTER TABLE public.keystore OWNER TO confluence;
+
+--
+-- Name: label; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.label (
+    labelid bigint NOT NULL,
+    name character varying(255),
+    owner character varying(255),
+    namespace character varying(255),
+    creationdate timestamp without time zone,
+    lastmoddate timestamp without time zone,
+    owner_not_null character varying(255) GENERATED ALWAYS AS (COALESCE(owner, ''::character varying)) STORED
+);
+
+
+ALTER TABLE public.label OWNER TO confluence;
+
+--
+-- Name: likes; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.likes (
+    id bigint NOT NULL,
+    contentid bigint NOT NULL,
+    username character varying(255) NOT NULL,
+    creationdate timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.likes OWNER TO confluence;
+
+--
+-- Name: links; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.links (
+    linkid bigint NOT NULL,
+    destpagetitle character varying(255),
+    lowerdestpagetitle character varying(255),
+    destspacekey character varying(255) NOT NULL,
+    lowerdestspacekey character varying(255),
+    contentid bigint NOT NULL,
+    creator character varying(255),
+    creationdate timestamp without time zone,
+    lastmodifier character varying(255),
+    lastmoddate timestamp without time zone
+);
+
+
+ALTER TABLE public.links OWNER TO confluence;
+
+--
+-- Name: logininfo; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.logininfo (
+    id bigint NOT NULL,
+    curfailed integer,
+    totalfailed integer,
+    successdate timestamp without time zone,
+    prevsuccessdate timestamp without time zone,
+    faileddate timestamp without time zone,
+    username character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.logininfo OWNER TO confluence;
+
+--
+-- Name: mig_analytics_event; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_analytics_event (
+    id character varying(255) NOT NULL,
+    eventtimestamp bigint NOT NULL,
+    eventtype character varying(255) NOT NULL,
+    event text NOT NULL
+);
+
+
+ALTER TABLE public.mig_analytics_event OWNER TO confluence;
+
+--
+-- Name: mig_app_access_scope; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_app_access_scope (
+    serverappkey character varying(255) NOT NULL,
+    accessscope character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.mig_app_access_scope OWNER TO confluence;
+
+--
+-- Name: mig_app_assessment_info; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_app_assessment_info (
+    appkey character varying(255) NOT NULL,
+    assessmentstatus character varying(100) NOT NULL,
+    notes text,
+    alternativeapp character varying(255),
+    consent character varying(100) DEFAULT 'NotGiven'::character varying NOT NULL
+);
+
+
+ALTER TABLE public.mig_app_assessment_info OWNER TO confluence;
+
+--
+-- Name: mig_attachment; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_attachment (
+    cloudid character varying(255) NOT NULL,
+    attachmentid bigint NOT NULL,
+    mediaid character varying(255),
+    version integer NOT NULL
+);
+
+
+ALTER TABLE public.mig_attachment OWNER TO confluence;
+
+--
+-- Name: mig_check_override; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_check_override (
+    id character varying(255) NOT NULL,
+    executionid character varying(255) NOT NULL,
+    checktype character varying(255) NOT NULL,
+    created timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_check_override OWNER TO confluence;
+
+--
+-- Name: mig_check_result; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_check_result (
+    id character varying(255) NOT NULL,
+    executionid character varying(255) NOT NULL,
+    checktype character varying(255) NOT NULL,
+    created timestamp without time zone NOT NULL,
+    lastupdated timestamp without time zone NOT NULL,
+    details character varying(255),
+    status character varying(255) NOT NULL,
+    lastexecutiontime timestamp without time zone
+);
+
+
+ALTER TABLE public.mig_check_result OWNER TO confluence;
+
+--
+-- Name: mig_cloud_site; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_cloud_site (
+    cloudid character varying(255) NOT NULL,
+    cloudurl character varying(255) NOT NULL,
+    containertoken character varying(420) NOT NULL,
+    isfailing boolean,
+    mediaclientid character varying(255),
+    createdtime timestamp without time zone,
+    edition character varying(255),
+    cloudtype character varying(20) DEFAULT 'STANDARD'::character varying NOT NULL,
+    microsregion character varying(255)
+);
+
+
+ALTER TABLE public.mig_cloud_site OWNER TO confluence;
+
+--
+-- Name: mig_config; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_config (
+    id integer NOT NULL,
+    exportconcurrencyclustermax integer,
+    exportconcurrencynodemax integer,
+    lastupdate timestamp without time zone NOT NULL,
+    attachmentconcurrencyclustermax integer,
+    attachmentconcurrencynodemax integer,
+    importconcurrencyclustermax integer,
+    importconcurrencynodemax integer,
+    uploadconcurrencyclustermax integer,
+    uploadconcurrencynodemax integer,
+    attachmentuploadconcurrency integer
+);
+
+
+ALTER TABLE public.mig_config OWNER TO confluence;
+
+--
+-- Name: mig_corrected_email; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_corrected_email (
+    id character varying(255) NOT NULL,
+    userkey character varying(255) NOT NULL,
+    username character varying(255) NOT NULL,
+    type character varying(255),
+    oldemail text,
+    newemail text NOT NULL,
+    tombstone boolean NOT NULL,
+    accounttype character varying(255),
+    udcmode character varying(255) NOT NULL,
+    draft boolean NOT NULL
+);
+
+
+ALTER TABLE public.mig_corrected_email OWNER TO confluence;
+
+--
+-- Name: mig_db_changelog; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_db_changelog (
+    id character varying(255) NOT NULL,
+    author character varying(255) NOT NULL,
+    filename character varying(255) NOT NULL,
+    dateexecuted timestamp without time zone NOT NULL,
+    orderexecuted integer NOT NULL,
+    exectype character varying(10) NOT NULL,
+    md5sum character varying(35),
+    description character varying(255),
+    comments character varying(255),
+    tag character varying(255),
+    liquibase character varying(20),
+    contexts character varying(255),
+    labels character varying(255),
+    deployment_id character varying(10)
+);
+
+
+ALTER TABLE public.mig_db_changelog OWNER TO confluence;
+
+--
+-- Name: mig_db_changelog_lock; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_db_changelog_lock (
+    id integer NOT NULL,
+    locked boolean NOT NULL,
+    lockgranted timestamp without time zone,
+    lockedby character varying(255)
+);
+
+
+ALTER TABLE public.mig_db_changelog_lock OWNER TO confluence;
+
+--
+-- Name: mig_detected_event_log; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_detected_event_log (
+    cloudid character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    created timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_detected_event_log OWNER TO confluence;
+
+--
+-- Name: mig_exclude_app; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_exclude_app (
+    id character varying(255) NOT NULL,
+    taskid character varying(255) NOT NULL,
+    appkey character varying(255) NOT NULL,
+    created timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_exclude_app OWNER TO confluence;
+
+--
+-- Name: mig_export_cache; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_export_cache (
+    id character varying(255) NOT NULL,
+    snapshottime bigint NOT NULL,
+    exporttype character varying(255) DEFAULT 'ORIGINAL'::character varying NOT NULL,
+    spacekey character varying(255) NOT NULL,
+    cloudid character varying(255) NOT NULL,
+    containsusermigrationtask boolean,
+    filepath character varying(1024) NOT NULL,
+    bandanahash character varying(1024) NOT NULL,
+    ospropertyentryhash character varying(1024) NOT NULL,
+    usermappinghash character varying(1024) NOT NULL
+);
+
+
+ALTER TABLE public.mig_export_cache OWNER TO confluence;
+
+--
+-- Name: mig_incorrect_email; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_incorrect_email (
+    id character varying(255) NOT NULL,
+    username character varying(255) NOT NULL,
+    email character varying(255),
+    checktype character varying(255) NOT NULL,
+    created timestamp without time zone NOT NULL,
+    scanid character varying(255) NOT NULL,
+    directoryid bigint NOT NULL,
+    directoryname character varying(255) NOT NULL,
+    lastauthenticated bigint,
+    newemail character varying(255),
+    userkey character varying(255)
+);
+
+
+ALTER TABLE public.mig_incorrect_email OWNER TO confluence;
+
+--
+-- Name: mig_invalid_email_user; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_invalid_email_user (
+    username character varying(255) NOT NULL,
+    email character varying(255),
+    created timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_invalid_email_user OWNER TO confluence;
+
+--
+-- Name: mig_mapi_artifacts; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_mapi_artifacts (
+    taskid character varying(255) NOT NULL,
+    checkname character varying(255) NOT NULL,
+    artifactname character varying(255),
+    lastupdate timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_mapi_artifacts OWNER TO confluence;
+
+--
+-- Name: mig_mapi_plan_mapping; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_mapi_plan_mapping (
+    jobid character varying(255) NOT NULL,
+    planid character varying(255) NOT NULL,
+    migrationid character varying(255)
+);
+
+
+ALTER TABLE public.mig_mapi_plan_mapping OWNER TO confluence;
+
+--
+-- Name: mig_mapi_task_mapping; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_mapi_task_mapping (
+    taskid character varying(255) NOT NULL,
+    jobid character varying(255) NOT NULL,
+    planid character varying(255),
+    cloudid character varying(255),
+    status character varying(255),
+    commandname character varying(255) NOT NULL,
+    lastupdate timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_mapi_task_mapping OWNER TO confluence;
+
+--
+-- Name: mig_needed_in_cloud_app; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_needed_in_cloud_app (
+    id character varying(255) NOT NULL,
+    taskid character varying(255) NOT NULL,
+    appkey character varying(255) NOT NULL,
+    created timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_needed_in_cloud_app OWNER TO confluence;
+
+--
+-- Name: mig_plan; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_plan (
+    id character varying(255) NOT NULL,
+    cloudid character varying(255) NOT NULL,
+    planname character varying(255) NOT NULL,
+    createdtime timestamp without time zone NOT NULL,
+    lastupdate timestamp without time zone NOT NULL,
+    starttime timestamp without time zone,
+    endtime timestamp without time zone,
+    executionstatus character varying(255) DEFAULT 'CREATED'::character varying NOT NULL,
+    message character varying(2000),
+    completionpercent integer DEFAULT 0 NOT NULL,
+    doneresult character varying(255),
+    migrationid character varying(255),
+    migrationscopeid character varying(255),
+    activestatus character varying(255) DEFAULT 'ACTIVE'::character varying NOT NULL,
+    schedulerversion character varying(255),
+    migrationtag character varying(255) DEFAULT 'NOT_SPECIFIED'::character varying NOT NULL,
+    migrationcreator character varying(5) DEFAULT 'CCMA'::character varying,
+    detailedstatus character varying(255),
+    migrationprotocol character varying(255) DEFAULT 'V2'::character varying NOT NULL,
+    datamovementid character varying(255),
+    infraoptimisationstatus character varying(255) DEFAULT 'NOT_STARTED'::character varying NOT NULL,
+    isshadowmigration boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.mig_plan OWNER TO confluence;
+
+--
+-- Name: mig_sequences; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_sequences (
+    sequence_name character varying(255) NOT NULL,
+    next_val bigint NOT NULL
+);
+
+
+ALTER TABLE public.mig_sequences OWNER TO confluence;
+
+--
+-- Name: mig_space_statistic; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_space_statistic (
+    spaceid bigint NOT NULL,
+    sumofpageblogdraftcount bigint NOT NULL,
+    attachmentsize bigint NOT NULL,
+    attachmentcount bigint NOT NULL,
+    estimatedmigrationtime bigint NOT NULL,
+    lastupdated timestamp without time zone,
+    lastcalculated timestamp without time zone NOT NULL,
+    teamcalendarcount bigint
+);
+
+
+ALTER TABLE public.mig_space_statistic OWNER TO confluence;
+
+--
+-- Name: mig_space_status; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_space_status (
+    spacekey character varying(255) NOT NULL,
+    cloudid character varying(255) NOT NULL,
+    executionstatus character varying(255) NOT NULL,
+    lastupdated timestamp without time zone,
+    planid character varying(255)
+);
+
+
+ALTER TABLE public.mig_space_status OWNER TO confluence;
+
+--
+-- Name: mig_spaces; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_spaces (
+    spaceid bigint NOT NULL,
+    spacename character varying(255) NOT NULL,
+    spacekey character varying(255) NOT NULL,
+    cloud character varying(255)
+);
+
+
+ALTER TABLE public.mig_spaces OWNER TO confluence;
+
+--
+-- Name: mig_stats; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_stats (
+    stattype character varying(255) NOT NULL,
+    statname character varying(255) NOT NULL,
+    collectedtime timestamp without time zone NOT NULL,
+    statvalue bigint NOT NULL
+);
+
+
+ALTER TABLE public.mig_stats OWNER TO confluence;
+
+--
+-- Name: mig_step; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_step (
+    id character varying(255) NOT NULL,
+    planid character varying(255) NOT NULL,
+    taskid character varying(255) NOT NULL,
+    stepindex integer DEFAULT 0 NOT NULL,
+    steptype character varying(255) NOT NULL,
+    stepconfig character varying(4000),
+    starttime timestamp without time zone,
+    endtime timestamp without time zone,
+    executionstatus character varying(255) DEFAULT 'CREATED'::character varying NOT NULL,
+    message character varying(2000),
+    completionpercent integer DEFAULT 0 NOT NULL,
+    doneresult character varying(4000),
+    node_id character varying(255),
+    node_heartbeat timestamp without time zone,
+    node_execution_id character varying(64),
+    execution_state character varying(4000),
+    detailedstatus character varying(255),
+    stepsubtype character varying(100),
+    transferid character varying(255),
+    stepmetadata text
+);
+
+
+ALTER TABLE public.mig_step OWNER TO confluence;
+
+--
+-- Name: mig_step_progress_properties; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_step_progress_properties (
+    stepid character varying(255) NOT NULL,
+    progressproperties text
+);
+
+
+ALTER TABLE public.mig_step_progress_properties OWNER TO confluence;
+
+--
+-- Name: mig_task; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_task (
+    id character varying(255) NOT NULL,
+    planid character varying(255) NOT NULL,
+    tasktype character varying(255) NOT NULL,
+    taskindex integer DEFAULT 0 NOT NULL,
+    weight integer DEFAULT 1 NOT NULL,
+    spacekey character varying(255),
+    starttime timestamp without time zone,
+    endtime timestamp without time zone,
+    executionstatus character varying(255) DEFAULT 'CREATED'::character varying NOT NULL,
+    message character varying(2000),
+    completionpercent integer DEFAULT 0 NOT NULL,
+    doneresult character varying(255),
+    scoped boolean,
+    globalentitytype character varying(100),
+    detailedstatus character varying(255),
+    containerid character varying(255)
+);
+
+
+ALTER TABLE public.mig_task OWNER TO confluence;
+
+--
+-- Name: mig_tombstone_account; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_tombstone_account (
+    id character varying(255) NOT NULL,
+    userkey character varying(255) NOT NULL,
+    aaid character varying(128) NOT NULL
+);
+
+
+ALTER TABLE public.mig_tombstone_account OWNER TO confluence;
+
+--
+-- Name: mig_user_domain_rules; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_user_domain_rules (
+    domain_name character varying(255) NOT NULL,
+    rule_behaviour character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.mig_user_domain_rules OWNER TO confluence;
+
+--
+-- Name: mig_userbase_scan; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_userbase_scan (
+    id character varying(255) NOT NULL,
+    status character varying(255) NOT NULL,
+    invalidusers bigint NOT NULL,
+    duplicateusers bigint NOT NULL,
+    started timestamp without time zone NOT NULL,
+    finished timestamp without time zone,
+    created timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mig_userbase_scan OWNER TO confluence;
+
+--
+-- Name: mig_work_item; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.mig_work_item (
+    itemid bigint NOT NULL,
+    refid character varying(255) NOT NULL,
+    retrycount integer NOT NULL,
+    itemtype character varying(255) NOT NULL,
+    itemstatus character varying(255) NOT NULL,
+    jobid character varying(255),
+    groupid character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.mig_work_item OWNER TO confluence;
+
+--
+-- Name: most_used_labels_cache; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.most_used_labels_cache (
+    spaceid bigint NOT NULL,
+    request_ts bigint,
+    expiration_ts bigint,
+    request_limit integer,
+    labels text,
+    version integer
+);
+
+
+ALTER TABLE public.most_used_labels_cache OWNER TO confluence;
+
+--
+-- Name: node_infrastructure; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.node_infrastructure (
+    node_id character varying(255) NOT NULL,
+    ram_mb bigint,
+    cpu_count integer,
+    storage_used_mb bigint,
+    storage_available_mb bigint,
+    operating_system character varying(255)
+);
+
+
+ALTER TABLE public.node_infrastructure OWNER TO confluence;
+
+--
+-- Name: node_network; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.node_network (
+    id character varying(255) NOT NULL,
+    node_id character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    mtu_bps bigint,
+    in_errors_percent double precision,
+    out_errors_percent double precision
+);
+
+
+ALTER TABLE public.node_network OWNER TO confluence;
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.notifications (
+    notificationid bigint NOT NULL,
+    contentid bigint,
+    labelid bigint,
+    spaceid bigint,
+    username character varying(255) NOT NULL,
+    creator character varying(255),
+    creationdate timestamp without time zone,
+    lastmodifier character varying(255),
+    lastmoddate timestamp without time zone,
+    digest boolean,
+    network boolean,
+    contenttype character varying(255)
+);
+
+
+ALTER TABLE public.notifications OWNER TO confluence;
+
+--
+-- Name: os_propertyentry; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.os_propertyentry (
+    entity_name character varying(125) NOT NULL,
+    entity_id bigint NOT NULL,
+    entity_key character varying(200) NOT NULL,
+    key_type integer,
+    boolean_val boolean,
+    double_val double precision,
+    string_val character varying(255),
+    text_val text,
+    long_val bigint,
+    int_val integer,
+    date_val timestamp without time zone
+);
+
+
+ALTER TABLE public.os_propertyentry OWNER TO confluence;
+
+--
+-- Name: pagetemplates; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.pagetemplates (
+    templateid bigint NOT NULL,
+    hibernateversion integer DEFAULT 0 NOT NULL,
+    templatename character varying(255) NOT NULL,
+    templatedesc character varying(255),
+    pluginkey character varying(255),
+    modulekey character varying(255),
+    refpluginkey character varying(255),
+    refmodulekey character varying(255),
+    content text,
+    spaceid bigint,
+    prevver bigint,
+    version integer NOT NULL,
+    creator character varying(255),
+    creationdate timestamp without time zone,
+    lastmodifier character varying(255),
+    lastmoddate timestamp without time zone,
+    bodytypeid smallint
+);
+
+
+ALTER TABLE public.pagetemplates OWNER TO confluence;
+
+--
+-- Name: plugindata; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.plugindata (
+    plugindataid bigint NOT NULL,
+    pluginkey character varying(255) NOT NULL,
+    filename character varying(255) NOT NULL,
+    lastmoddate timestamp without time zone,
+    data bytea
+);
+
+
+ALTER TABLE public.plugindata OWNER TO confluence;
+
+--
+-- Name: remembermetoken; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.remembermetoken (
+    id bigint NOT NULL,
+    username character varying(255) NOT NULL,
+    created bigint NOT NULL,
+    token character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.remembermetoken OWNER TO confluence;
+
+--
+-- Name: scheduler_clustered_jobs; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.scheduler_clustered_jobs (
+    id bigint NOT NULL,
+    job_id character varying(255),
+    next_run_time timestamp without time zone,
+    version bigint,
+    job_runner_key character varying(255),
+    raw_parameters bytea,
+    sched_type character(1),
+    cron_expression character varying(255),
+    cron_time_zone character varying(60),
+    interval_first_run_time timestamp without time zone,
+    interval_millis bigint
+);
+
+
+ALTER TABLE public.scheduler_clustered_jobs OWNER TO confluence;
+
+--
+-- Name: scheduler_run_details; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.scheduler_run_details (
+    id bigint NOT NULL,
+    job_id character varying(255),
+    start_time timestamp without time zone,
+    duration bigint,
+    outcome character(1),
+    message character varying(255)
+);
+
+
+ALTER TABLE public.scheduler_run_details OWNER TO confluence;
+
+--
+-- Name: seq_journal_entry_id; Type: SEQUENCE; Schema: public; Owner: confluence
+--
+
+CREATE SEQUENCE public.seq_journal_entry_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_journal_entry_id OWNER TO confluence;
+
+--
+-- Name: spacepermissions; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.spacepermissions (
+    permid bigint NOT NULL,
+    spaceid bigint,
+    permtype character varying(255) NOT NULL,
+    permgroupname character varying(255),
+    permusername character varying(255),
+    permalluserssubject character varying(255),
+    creator character varying(255),
+    creationdate timestamp without time zone,
+    lastmodifier character varying(255),
+    lastmoddate timestamp without time zone
+);
+
+
+ALTER TABLE public.spacepermissions OWNER TO confluence;
+
+--
+-- Name: spaces; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.spaces (
+    spaceid bigint NOT NULL,
+    spacename character varying(255),
+    spacekey character varying(255) NOT NULL,
+    lowerspacekey character varying(255) NOT NULL,
+    spacedescid bigint,
+    homepage bigint,
+    creator character varying(255),
+    creationdate timestamp without time zone,
+    lastmodifier character varying(255),
+    lastmoddate timestamp without time zone,
+    spacetype character varying(255),
+    spacestatus character varying(255)
+);
+
+
+ALTER TABLE public.spaces OWNER TO confluence;
+
+--
+-- Name: thiswillnotbecreated; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.thiswillnotbecreated (
+    keyid bigint NOT NULL,
+    alias character varying(255) NOT NULL,
+    type character varying(32) NOT NULL,
+    algorithm character varying(32) NOT NULL,
+    keyspec text NOT NULL
+);
+
+
+ALTER TABLE public.thiswillnotbecreated OWNER TO confluence;
+
+--
+-- Name: trustedapp; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.trustedapp (
+    trustedappid bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    timeout integer NOT NULL,
+    public_key_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.trustedapp OWNER TO confluence;
+
+--
+-- Name: trustedapprestriction; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.trustedapprestriction (
+    trustedapprestrictionid bigint NOT NULL,
+    type character varying(32) NOT NULL,
+    restriction character varying(255),
+    trustedappid bigint
+);
+
+
+ALTER TABLE public.trustedapprestriction OWNER TO confluence;
+
+--
+-- Name: user_mapping; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.user_mapping (
+    user_key character varying(255) NOT NULL,
+    username character varying(255) NOT NULL,
+    lower_username character varying(255)
+);
+
+
+ALTER TABLE public.user_mapping OWNER TO confluence;
+
+--
+-- Name: user_relation; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.user_relation (
+    relationid bigint NOT NULL,
+    sourceuser character varying(255) NOT NULL,
+    targetuser character varying(255) NOT NULL,
+    relationname character varying(255) NOT NULL,
+    creationdate timestamp without time zone NOT NULL,
+    lastmoddate timestamp without time zone NOT NULL,
+    creator character varying(255) NOT NULL,
+    lastmodifier character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.user_relation OWNER TO confluence;
+
+--
+-- Name: usercontent_relation; Type: TABLE; Schema: public; Owner: confluence
+--
+
+CREATE TABLE public.usercontent_relation (
+    relationid bigint NOT NULL,
+    targetcontentid bigint NOT NULL,
+    sourceuser character varying(255) NOT NULL,
+    targettype character varying(255) NOT NULL,
+    relationname character varying(255) NOT NULL,
+    creationdate timestamp without time zone NOT NULL,
+    lastmoddate timestamp without time zone NOT NULL,
+    creator character varying(255) NOT NULL,
+    lastmodifier character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.usercontent_relation OWNER TO confluence;
+
+--
+-- Name: AO_187CCC_SIDEBAR_LINK ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_187CCC_SIDEBAR_LINK" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_187CCC_SIDEBAR_LINK_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_21D670_WHITELIST_RULES ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_21D670_WHITELIST_RULES" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_21D670_WHITELIST_RULES_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_21F425_MESSAGE_MAPPING_AO ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_21F425_MESSAGE_MAPPING_AO" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_21F425_MESSAGE_MAPPING_AO_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_21F425_USER_PROPERTY_AO ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_21F425_USER_PROPERTY_AO" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_21F425_USER_PROPERTY_AO_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_32184F_RECONCILIATIONS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_32184F_RECONCILIATIONS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_32184F_RECONCILIATIONS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_32184F_SYNCHRONY_REQUESTS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_32184F_SYNCHRONY_REQUESTS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_32184F_SYNCHRONY_REQUESTS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_38321B_CUSTOM_CONTENT_LINK ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_38321B_CUSTOM_CONTENT_LINK" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_38321B_CUSTOM_CONTENT_LINK_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_4789DD_DISABLED_CHECKS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_DISABLED_CHECKS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_4789DD_DISABLED_CHECKS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_STATUS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_HEALTH_CHECK_STATUS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_4789DD_HEALTH_CHECK_STATUS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_WATCHER ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_HEALTH_CHECK_WATCHER" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_4789DD_HEALTH_CHECK_WATCHER_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_4789DD_PROPERTIES ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_PROPERTIES" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_4789DD_PROPERTIES_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_4789DD_READ_NOTIFICATIONS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_READ_NOTIFICATIONS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_4789DD_READ_NOTIFICATIONS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_4789DD_SHORTENED_KEY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_SHORTENED_KEY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_4789DD_SHORTENED_KEY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_4789DD_TASK_MONITOR ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_TASK_MONITOR" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_4789DD_TASK_MONITOR_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_54C900_CONTENT_BLUEPRINT_AO ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_CONTENT_BLUEPRINT_AO" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_54C900_CONTENT_BLUEPRINT_AO_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_C_TEMPLATE_REF" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_54C900_C_TEMPLATE_REF_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_54C900_SPACE_BLUEPRINT_AO ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_SPACE_BLUEPRINT_AO" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_54C900_SPACE_BLUEPRINT_AO_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY ACTIVITY_ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTIVITY_ENTITY" ALTER COLUMN "ACTIVITY_ID" SET DEFAULT nextval('public."AO_563AEE_ACTIVITY_ENTITY_ACTIVITY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_563AEE_ACTOR_ENTITY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTOR_ENTITY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_563AEE_ACTOR_ENTITY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_563AEE_MEDIA_LINK_ENTITY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_MEDIA_LINK_ENTITY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_563AEE_MEDIA_LINK_ENTITY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_563AEE_OBJECT_ENTITY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_OBJECT_ENTITY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_563AEE_OBJECT_ENTITY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_563AEE_TARGET_ENTITY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_TARGET_ENTITY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_563AEE_TARGET_ENTITY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_59F889_ZDU_CLUSTER_NODES ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_59F889_ZDU_CLUSTER_NODES" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_59F889_ZDU_CLUSTER_NODES_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_5F3884_FEATURE_DISCOVERY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_5F3884_FEATURE_DISCOVERY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_5F3884_FEATURE_DISCOVERY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_6384AB_DISCOVERED ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6384AB_DISCOVERED" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_6384AB_DISCOVERED_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_6384AB_FEATURE_METADATA_AO ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6384AB_FEATURE_METADATA_AO" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_6384AB_FEATURE_METADATA_AO_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_6ABCE4_TUNNEL_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL_CONNECTION" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7B47A5_EVENT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7B47A5_EVENT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7B47A5_EVENT_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7B47A5_SETTINGS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7B47A5_SETTINGS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7B47A5_SETTINGS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7CDE43_EVENT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_EVENT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7CDE43_EVENT_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7CDE43_FILTER_PARAM ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_FILTER_PARAM" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7CDE43_FILTER_PARAM_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7CDE43_NOTIFICATION ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_NOTIFICATION" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7CDE43_NOTIFICATION_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7CDE43_NOTIFICATION_SCHEME ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_NOTIFICATION_SCHEME" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7CDE43_NOTIFICATION_SCHEME_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7CDE43_RECIPIENT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_RECIPIENT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7CDE43_RECIPIENT_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7CDE43_SERVER_CONFIG ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_SERVER_CONFIG" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7CDE43_SERVER_CONFIG_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_7CDE43_SERVER_PARAM ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_SERVER_PARAM" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_7CDE43_SERVER_PARAM_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_81F455_PERSONAL_TOKEN ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_81F455_PERSONAL_TOKEN" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_81F455_PERSONAL_TOKEN_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_CONFIG ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_8752F1_DATA_PIPELINE_CONFIG" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_8752F1_DATA_PIPELINE_CONFIG_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_EOO ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_8752F1_DATA_PIPELINE_EOO" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_8752F1_DATA_PIPELINE_EOO_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_JOB ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_8752F1_DATA_PIPELINE_JOB" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_8752F1_DATA_PIPELINE_JOB_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_88BB94_BATCH_NOTIFICATION ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_88BB94_BATCH_NOTIFICATION" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_88BB94_BATCH_NOTIFICATION_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_92296B_AORECENTLY_VIEWED ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_92296B_AORECENTLY_VIEWED" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_92296B_AORECENTLY_VIEWED_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_9412A1_AONOTIFICATION ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AONOTIFICATION" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_9412A1_AONOTIFICATION_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_9412A1_AOTASK ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AOTASK" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_9412A1_AOTASK_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_9412A1_AOUSER ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AOUSER" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_9412A1_AOUSER_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_9412A1_USER_APP_LINK ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_USER_APP_LINK" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_9412A1_USER_APP_LINK_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_DISABLE_EV_TYPES ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_DISABLE_EV_TYPES" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_DISABLE_EV_TYPES_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_EVENTS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_EVENTS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS_EXCL ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_EVENTS_EXCL" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_EVENTS_EXCL_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS_INVITEES ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_EVENTS_INVITEES" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_EVENTS_INVITEES_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_JIRA_REMI_EVENTS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_JIRA_REMI_EVENTS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_JIRA_REMI_EVENTS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_REMINDER_USERS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_REMINDER_USERS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_REMINDER_USERS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_IN_SPACE ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_IN_SPACE" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_SUBCALS_IN_SPACE_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_GRP ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_PRIV_GRP" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_SUBCALS_PRIV_GRP_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_USR ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_PRIV_USR" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_SUBCALS_PRIV_USR_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PROPS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_PROPS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_950DC3_TC_SUBCALS_PROPS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_954A21_MOBILE_OAUTH2 ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_954A21_MOBILE_OAUTH2" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_954A21_MOBILE_OAUTH2_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_A0B856_WEBHOOK ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEBHOOK" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_A0B856_WEBHOOK_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_A0B856_WEBHOOK_CONFIG ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEBHOOK_CONFIG" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_A0B856_WEBHOOK_CONFIG_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_A0B856_WEBHOOK_EVENT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEBHOOK_EVENT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_A0B856_WEBHOOK_EVENT_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_A0B856_WEB_HOOK_LISTENER_AO ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEB_HOOK_LISTENER_AO" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_A0B856_WEB_HOOK_LISTENER_AO_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_AC3877_RL_USER_COUNTER ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_AC3877_RL_USER_COUNTER" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_AC3877_RL_USER_COUNTER_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_BAF3AA_AOINLINE_TASK GLOBAL_ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_BAF3AA_AOINLINE_TASK" ALTER COLUMN "GLOBAL_ID" SET DEFAULT nextval('public."AO_BAF3AA_AOINLINE_TASK_GLOBAL_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_C77861_AUDIT_ACTION_CACHE ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_ACTION_CACHE" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_C77861_AUDIT_ACTION_CACHE_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_C77861_AUDIT_CATEGORY_CACHE ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_CATEGORY_CACHE" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_C77861_AUDIT_DENY_LISTED ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_DENY_LISTED" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_C77861_AUDIT_DENY_LISTED_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_C77861_AUDIT_ENTITY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_ENTITY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_C77861_AUDIT_ENTITY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_ALERT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_CC7F60_SEC_MON_ALERT_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_THREAT_EVENT" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_DC98AE_AOHELP_TIP ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_DC98AE_AOHELP_TIP" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_DC98AE_AOHELP_TIP_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_ED669C_IDP_CONFIG ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_ED669C_IDP_CONFIG_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEALED_ENTITY" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_ED669C_SEALED_ENTITY_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_ED669C_SEEN_ASSERTIONS ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEEN_ASSERTIONS" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_ED669C_SEEN_ASSERTIONS_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_ED669C_TOTP_CODES ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_TOTP_CODES" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_ED669C_TOTP_CODES_ID_seq"'::regclass);
+
+
+--
+-- Name: AO_FE1BC5_REDIRECT_URI ID; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_REDIRECT_URI" ALTER COLUMN "ID" SET DEFAULT nextval('public."AO_FE1BC5_REDIRECT_URI_ID_seq"'::regclass);
+
+
+--
+-- Name: denormalised_content_change_log id; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_content_change_log ALTER COLUMN id SET DEFAULT nextval('public.denormalised_content_change_log_id_seq'::regclass);
+
+
+--
+-- Name: denormalised_space_change_log id; Type: DEFAULT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_space_change_log ALTER COLUMN id SET DEFAULT nextval('public.denormalised_space_change_log_id_seq'::regclass);
+
 
 --
 -- Name: 18892; Type: BLOB; Schema: -; Owner: confluence
@@ -35,6 +5987,15 @@ SELECT pg_catalog.lo_create('18948');
 
 
 ALTER LARGE OBJECT 18948 OWNER TO confluence;
+
+--
+-- Name: 19099; Type: BLOB; Schema: -; Owner: confluence
+--
+
+SELECT pg_catalog.lo_create('19099');
+
+
+ALTER LARGE OBJECT 19099 OWNER TO confluence;
 
 --
 -- Data for Name: AO_187CCC_SIDEBAR_LINK; Type: TABLE DATA; Schema: public; Owner: confluence
@@ -118,6 +6079,7 @@ COPY public."AO_4789DD_DISABLED_CHECKS" ("HEALTH_CHECK_KEY", "ID") FROM stdin;
 --
 
 COPY public."AO_4789DD_HEALTH_CHECK_STATUS" ("APPLICATION_NAME", "COMPLETE_KEY", "DESCRIPTION", "FAILED_DATE", "FAILURE_REASON", "ID", "IS_HEALTHY", "IS_RESOLVED", "NODE_ID", "RESOLVED_DATE", "SEVERITY", "STATUS_NAME") FROM stdin;
+Confluence	com.atlassian.troubleshooting.plugin-confluence:licenseHealthCheck	Checks if the software maintenance included with your license has expired. Your maintenance entitles you to support and upgrades. For Data Center licenses, maintenance is included with your subscription. When your Data Center subscription expires, your site will become read-only.	2025-04-01 21:42:26.109	Your subscription expired on 24 Jul 2024. This site is now read-only. Renew your subscription to keep using Confluence.	1	f	f	\N	\N	MAJOR	License Expiry
 \.
 
 
@@ -134,7 +6096,7 @@ COPY public."AO_4789DD_HEALTH_CHECK_WATCHER" ("ID", "USER_KEY") FROM stdin;
 --
 
 COPY public."AO_4789DD_PROPERTIES" ("ID", "PROPERTY_NAME", "PROPERTY_VALUE") FROM stdin;
-1	last-run	1719939542022
+1	last-run	1743543746133
 \.
 
 
@@ -143,6 +6105,7 @@ COPY public."AO_4789DD_PROPERTIES" ("ID", "PROPERTY_NAME", "PROPERTY_VALUE") FRO
 --
 
 COPY public."AO_4789DD_READ_NOTIFICATIONS" ("ID", "IS_SNOOZED", "NOTIFICATION_ID", "SNOOZE_COUNT", "SNOOZE_DATE", "USER_KEY") FROM stdin;
+1	t	1	1	2025-04-01 21:42:31.387	4028408390705fdc01907061af0d0000
 \.
 
 
@@ -177,9 +6140,6 @@ COPY public."AO_54C900_CONTENT_BLUEPRINT_AO" ("CREATE_RESULT", "HOW_TO_USE_TEMPL
 COPY public."AO_54C900_C_TEMPLATE_REF" ("CB_INDEX_PARENTID", "CB_PARENTID", "ID", "NAME", "PARENT_ID", "PLUGIN_CLONE", "PLUGIN_MODULE_KEY", "TEMPLATE_ID", "UUID") FROM stdin;
 \N	\N	12	Homepage	\N	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-homepage-template	0	2d094fb4-5b47-44f5-9a41-970447207d41
 \N	\N	13	Meeting notes	12	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-meeting-notes-template	0	3111cb56-d103-48c9-b729-02fddbe2e2af
-\N	\N	7	confluence.blueprints.space.kb.home.name	\N	t	com.atlassian.confluence.plugins.confluence-knowledge-base:kb-space-homepage-template	0	7e569ac1-f49f-475e-8ecf-23708fa766f6
-\N	\N	8	confluence.blueprints.space.team.homepage.name	\N	t	com.atlassian.confluence.plugins.confluence-space-blueprints:team-space-homepage-template	0	9a2286ce-ddee-413d-acb0-6a2e2c9cf79d
-\N	\N	10	confluence.blueprints.space.documentation.getting-started.name	9	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-getting-started-template	0	cc20d52b-4c55-46e7-89ac-e03712c40c84
 \N	\N	19	Team space homepage template	\N	t	com.atlassian.confluence.plugins.confluence-space-blueprints:team-space-homepage-template	0	6e4e66b7-5ea1-4bff-8333-f21cdc0fc378
 \N	\N	20	Documentation space homepage	\N	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-homepage-template	0	c6bf1c5b-4317-4f5a-ab20-8a0b5e45ff1b
 \N	\N	14	Product requirements	12	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-product-requirements-template	0	06bd659d-a83a-42de-bef5-01ac95310eeb
@@ -189,14 +6149,17 @@ COPY public."AO_54C900_C_TEMPLATE_REF" ("CB_INDEX_PARENTID", "CB_PARENTID", "ID"
 \N	\N	18	Homepage	\N	t	com.atlassian.confluence.plugins.confluence-knowledge-base:kb-space-homepage-template	0	21a9180d-6922-4847-91fc-4c973d89e277
 \N	\N	22	Making a template	21	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-making-a-template-template	0	f28ce088-28c5-4d00-8e9b-e3418cb042ac
 \N	\N	21	Getting started	20	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-getting-started-template	0	de7a1dfe-80b9-4f4f-935e-7c22ad91e4ed
-\N	\N	11	confluence.blueprints.space.documentation.making-a-template.name	10	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-making-a-template-template	0	b2c14ab5-7fff-4d4f-b568-3ed8cb7ed69b
-\N	\N	9	confluence.blueprints.space.documentation.homepage.name	\N	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-homepage-template	0	cdbae045-de4a-4f97-86af-e6638d70052e
+\N	\N	7	confluence.blueprints.space.kb.home.name	\N	t	com.atlassian.confluence.plugins.confluence-knowledge-base:kb-space-homepage-template	0	7e569ac1-f49f-475e-8ecf-23708fa766f6
+\N	\N	8	confluence.blueprints.space.team.homepage.name	\N	t	com.atlassian.confluence.plugins.confluence-space-blueprints:team-space-homepage-template	0	9a2286ce-ddee-413d-acb0-6a2e2c9cf79d
 \N	\N	2	confluence.blueprints.space.sp.meeting-notes.name	1	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-meeting-notes-template	0	16f9e9f4-2c9a-4f08-9eaa-8dcf69f5aa2d
 \N	\N	3	confluence.blueprints.space.sp.product-requirements.name	1	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-product-requirements-template	0	d4382e50-bca2-4b37-9346-18f4ffa4ece0
 \N	\N	4	confluence.blueprints.space.sp.file-lists.name	1	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-file-lists-template	0	3439c8ea-00b5-408d-9a89-4a11c9b51c95
 \N	\N	5	confluence.blueprints.space.sp.decisions.name	1	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-decisions-template	0	617e274d-ee35-41d1-8389-1ab5e8c2cab1
 \N	\N	6	confluence.blueprints.space.sp.retrospectives.name	1	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-retrospectives-template	0	3bd57e5a-c402-4570-a030-0411a075631d
 \N	\N	1	confluence.blueprints.space.sp.home.name	\N	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-homepage-template	0	c99b15db-9e36-407a-8590-ba9600615f3e
+\N	\N	10	confluence.blueprints.space.documentation.getting-started.name	9	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-getting-started-template	0	cc20d52b-4c55-46e7-89ac-e03712c40c84
+\N	\N	11	confluence.blueprints.space.documentation.making-a-template.name	10	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-making-a-template-template	0	b2c14ab5-7fff-4d4f-b568-3ed8cb7ed69b
+\N	\N	9	confluence.blueprints.space.documentation.homepage.name	\N	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-homepage-template	0	cdbae045-de4a-4f97-86af-e6638d70052e
 \.
 
 
@@ -205,12 +6168,20 @@ COPY public."AO_54C900_C_TEMPLATE_REF" ("CB_INDEX_PARENTID", "CB_PARENTID", "ID"
 --
 
 COPY public."AO_54C900_SPACE_BLUEPRINT_AO" ("CATEGORY", "HOME_PAGE_ID", "ID", "NAME", "PLUGIN_CLONE", "PLUGIN_MODULE_KEY", "PROMOTED_BPS", "UUID") FROM stdin;
-knowledge-bases	7	2	confluence.blueprints.space.kb.name	t	com.atlassian.confluence.plugins.confluence-knowledge-base:kb-blueprint	com.atlassian.confluence.plugins.confluence-knowledge-base:kb-how-to-article-blueprint,com.atlassian.confluence.plugins.confluence-knowledge-base:kb-troubleshooting-article-blueprint	407401c4-f8e8-4b82-9a46-897b28fe39dc
 \N	\N	5	Blank space Blueprint	t	com.atlassian.confluence.plugins.confluence-create-content-plugin:create-blank-space-blueprint	\N	2dbb21d4-6582-4a4a-907e-2421a13dd80a
 \N	\N	6	Personal space Blueprint	t	com.atlassian.confluence.plugins.confluence-create-content-plugin:create-personal-space-blueprint	\N	3e9daea6-a9b9-41c7-a6af-2d5db10c65bd
 software-project	1	1	confluence.blueprints.space.sp.name	t	com.atlassian.confluence.plugins.confluence-software-project:sp-space-blueprint	com.atlassian.confluence.plugins.confluence-software-blueprints:requirements-blueprint,com.atlassian.confluence.plugins.confluence-business-blueprints:meeting-notes-blueprint,com.atlassian.confluence.plugins.confluence-business-blueprints:file-list-blueprint,com.atlassian.confluence.plugins.confluence-software-blueprints:decisions-blueprint,com.atlassian.confluence.plugins.confluence-software-blueprints:retrospectives-blueprint,com.atlassian.confluence.plugins.confluence-software-blueprints:jira-sprints-blueprint	414df151-5504-4ad2-888c-28eb66e07396
+knowledge-bases	7	2	confluence.blueprints.space.kb.name	t	com.atlassian.confluence.plugins.confluence-knowledge-base:kb-blueprint	com.atlassian.confluence.plugins.confluence-knowledge-base:kb-how-to-article-blueprint,com.atlassian.confluence.plugins.confluence-knowledge-base:kb-troubleshooting-article-blueprint	407401c4-f8e8-4b82-9a46-897b28fe39dc
 teams	8	3	confluence.blueprints.space.team.name	t	com.atlassian.confluence.plugins.confluence-space-blueprints:team-space-blueprint	com.atlassian.confluence.plugins.confluence-business-blueprints:file-list-blueprint,com.atlassian.confluence.plugins.confluence-business-blueprints:meeting-notes-blueprint,com.atlassian.confluence.plugins.confluence-business-blueprints:decisions-blueprint,com.atlassian.confluence.plugins.confluence-business-blueprints:sharelinks-blueprint,com.atlassian.confluence.plugins.confluence-create-content-plugin:create-blank-page,com.atlassian.confluence.plugins.confluence-create-content-plugin:create-blog-post	3350ef94-42c6-4c67-ad20-345719a2f0b6
 documentation	9	4	confluence.blueprints.space.documentation.name	t	com.atlassian.confluence.plugins.confluence-space-blueprints:documentation-space-blueprint	com.atlassian.confluence.plugins.confluence-create-content-plugin:create-blank-page	afd5468d-7ab9-42c4-b6d4-7fd65f9fd1f8
+\.
+
+
+--
+-- Data for Name: AO_563AEE_ACTIVITY_ENTITY; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_563AEE_ACTIVITY_ENTITY" ("ACTIVITY_ID", "ACTOR_ID", "CONTENT", "GENERATOR_DISPLAY_NAME", "GENERATOR_ID", "ICON_ID", "ID", "ISSUE_KEY", "OBJECT_ID", "POSTER", "PROJECT_KEY", "PUBLISHED", "TARGET_ID", "TITLE", "URL", "USERNAME", "VERB") FROM stdin;
 \.
 
 
@@ -247,14 +6218,6 @@ COPY public."AO_563AEE_TARGET_ENTITY" ("CONTENT", "DISPLAY_NAME", "ID", "IMAGE_I
 
 
 --
--- Data for Name: AO_563AEE_ACTIVITY_ENTITY; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public."AO_563AEE_ACTIVITY_ENTITY" ("ACTIVITY_ID", "ACTOR_ID", "CONTENT", "GENERATOR_DISPLAY_NAME", "GENERATOR_ID", "ICON_ID", "ID", "ISSUE_KEY", "OBJECT_ID", "POSTER", "PROJECT_KEY", "PUBLISHED", "TARGET_ID", "TITLE", "URL", "USERNAME", "VERB") FROM stdin;
-\.
-
-
---
 -- Data for Name: AO_59F889_ZDU_CLUSTER_NODES; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -276,6 +6239,10 @@ COPY public."AO_5F3884_FEATURE_DISCOVERY" ("DISCOVERED", "ID", "USER_KEY") FROM 
 
 COPY public."AO_6384AB_DISCOVERED" ("DATE", "ID", "KEY", "PLUGIN_KEY", "USER_KEY") FROM stdin;
 2024-07-02 16:43:29.623	1	transition-saved-for-later	com.atlassian.confluence.plugins.confluence-dashboard	4028408390705fdc01907061af0d0000
+2025-04-01 21:41:56.992	3	editor-word-count	com.atlassian.confluence.plugins.confluence-editor-plugin	4028408390705fdc01907061af0d0000
+2025-04-01 21:41:56.992	2	convert-page-to-blogpost	com.atlassian.confluence.plugins.confluence-frontend	4028408390705fdc01907061af0d0000
+2025-04-01 21:41:56.993	4	copy-heading-link	com.atlassian.confluence.plugins.confluence-frontend	4028408390705fdc01907061af0d0000
+2025-04-01 21:41:56.995	5	dark-theme	com.atlassian.confluence.plugins.confluence-frontend	4028408390705fdc01907061af0d0000
 \.
 
 
@@ -4123,6 +10090,7 @@ com.atlassian.troubleshooting.plugin-confluence	3836	2024-07-01 22:17:45.988	tom
 confluence.extractors.core	3837	2024-07-01 22:17:45.988	addressableChangeExtractor
 confluence.web.resources	3838	2024-07-01 22:17:45.988	view-my-favourites
 com.atlassian.applinks.applinks-plugin	3839	2024-07-01 22:17:45.988	babel-polyfill
+com.atlassian.auiplugin	5331	2025-04-01 21:41:30.629	split_aui.splitchunk.d9c35205a2
 com.atlassian.confluence.plugins.view-source	3840	2024-07-01 22:17:45.988	confluence-view-source-api-rest-filter
 com.atlassian.confluence.plugins.confluence-previews	3841	2024-07-01 22:17:45.988	mediaviewer-core
 com.atlassian.streams.confluence	3842	2024-07-01 22:17:45.988	date-en-US
@@ -5591,6 +11559,781 @@ com.atlassian.confluence.plugins.confluence-dashboard	5304	2024-07-01 22:17:45.9
 com.atlassian.applinks.applinks-oauth-plugin	5305	2024-07-01 22:17:45.988	applinks-oauth-ui
 com.atlassian.integration.jira.jira-integration-plugin	5306	2024-07-01 22:17:45.988	i18nResolver
 com.atlassian.confluence.keyboardshortcuts	5307	2024-07-01 22:17:45.988	tinymce.p
+com.atlassian.mywork.mywork-common-plugin	5308	2025-04-01 21:41:30.629	Workbox - Common Plugin-rest-migration
+com.atlassian.auiplugin	5309	2025-04-01 21:41:30.629	split_aui.splitchunk.480d8aa1d1
+com.atlassian.auiplugin	5310	2025-04-01 21:41:30.629	split_aui.splitchunk.02009f6265
+com.atlassian.confluence.plugins.confluence-space-directory	5311	2025-04-01 21:41:30.629	Confluence Space Directory-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5312	2025-04-01 21:41:30.629	captcha-handler
+com.atlassian.plugins.atlassian-nav-links-plugin	5313	2025-04-01 21:41:30.629	velocity-allowlist-nav-links
+com.atlassian.confluence.plugins.confluence-frontend	5314	2025-04-01 21:41:30.629	defaults
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5315	2025-04-01 21:41:30.629	assets-7dcaf3d6-3141-4e04-9723-a14b94a692b8
+com.atlassian.confluence.plugins.confluence-frontend	5316	2025-04-01 21:41:30.629	split_theme-switcher-component
+com.atlassian.confluence.editor	5317	2025-04-01 21:41:30.629	Confluence TinyMCE Rest API-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5318	2025-04-01 21:41:30.629	split_vendors-node_modules_atlassian_date-time_dist_index_js
+com.atlassian.auiplugin	5319	2025-04-01 21:41:30.629	split_aui.splitchunk.02143d3841
+com.atlassian.auiplugin	5320	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--4a3ab9ef75
+com.atlassian.securetunnel.client.tunnel-client-plugin	5321	2025-04-01 21:41:30.629	tunnel-client-ao
+com.atlassian.confluence.plugins.confluence-schedule-admin	5322	2025-04-01 21:41:30.629	view-scheduled-jobs-templates
+com.atlassian.confluence.plugins.confluence-frontend	5323	2025-04-01 21:41:30.629	event
+com.atlassian.confluence.plugins.confluence-rest-resources	5324	2025-04-01 21:41:30.629	Confluence REST API Resources-rest-migration
+com.atlassian.plugins.document-conversion-library	5325	2025-04-01 21:41:30.629	vel-allowlist-doc-conv-lib
+com.atlassian.confluence.plugins.confluence-frontend	5326	2025-04-01 21:41:30.629	view-user-profile
+com.atlassian.auiplugin	5327	2025-04-01 21:41:30.629	split_aui.splitchunk.11fa269f31
+com.atlassian.confluence.plugins.confluence-embedded-crowd-spi-impl	5328	2025-04-01 21:41:30.629	confluence-internal-directory-options
+com.atlassian.auiplugin	5329	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--5393460ace
+com.atlassian.confluence.plugins.confluence-frontend	5330	2025-04-01 21:41:30.629	split_copy-heading-link
+com.atlassian.confluence.plugins.confluence-frontend	5332	2025-04-01 21:41:30.629	vendors-node_modules_atlaskit_button_dist_esm_new-button_variants_default_button_js-node_modu-1d0c63
+com.atlassian.auiplugin	5333	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--45b9bd6d27
+com.atlassian.plugins.rest.atlassian-rest-v2-plugin	5334	2025-04-01 21:41:30.629	rest-servlet-container
+com.atlassian.theme.atlassian-theme-plugin	5335	2025-04-01 21:41:30.629	rest-api
+com.atlassian.troubleshooting.plugin-confluence	5336	2025-04-01 21:41:30.629	ldapAuthenticationCheck
+com.atlassian.auiplugin	5337	2025-04-01 21:41:30.629	592
+com.atlassian.secrets.atlassian-secrets-manager	5338	2025-04-01 21:41:30.629	secrets-rest-filter
+com.atlassian.plugins.atlassian-whitelist-ui-plugin	5339	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-maintenance	5340	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-maintenance
+com.atlassian.confluence.plugins.confluence-frontend	5341	2025-04-01 21:41:30.629	constants
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5342	2025-04-01 21:41:30.629	gadgetUser2SVConfiguration
+com.atlassian.confluence.plugins.soy	5343	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-soy
+com.atlassian.applinks.applinks-plugin	5344	2025-04-01 21:41:30.629	split_atlassian-oauth2-ui-page-init~entitylink-page-init
+com.atlassian.confluence.plugins.confluence-frontend	5345	2025-04-01 21:41:30.629	space-permissions-form
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5346	2025-04-01 21:41:30.629	velocity-allowlist-upm
+com.atlassian.streams.streams-thirdparty-plugin	5347	2025-04-01 21:41:30.629	velocity-allowlist-streams-3rd-party
+com.atlassian.applinks.applinks-oauth-plugin	5348	2025-04-01 21:41:30.629	ThreeLeggedOAuth2AuthenticatorProviderPluginModule
+com.atlassian.confluence.plugins.confluence-frontend	5349	2025-04-01 21:41:30.629	common-header-resources
+com.atlassian.troubleshooting.plugin-confluence	5350	2025-04-01 21:41:30.629	licenseUserLimitCheck
+com.atlassian.auiplugin	5351	2025-04-01 21:41:30.629	split_aui.splitchunk.ddc81f48ae
+com.atlassian.confluence.plugins.confluence-user-profile	5352	2025-04-01 21:41:30.629	userProfileAnalyticsWhitelist
+com.atlassian.confluence.plugins.confluence-rebuild-index	5353	2025-04-01 21:41:30.629	assets-b79a1c11-f826-4101-82a4-0e0823464447
+com.atlassian.confluence.plugins.confluence-denormalised-permissions	5354	2025-04-01 21:41:30.629	Confluence Denormalised Permissions-rest-migration
+com.atlassian.auiplugin	5355	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--6951252c72
+com.atlassian.confluence.plugins.confluence-frontend	5356	2025-04-01 21:41:30.629	split_src_packages_locale_api_ts
+com.atlassian.confluence.plugins.confluence-frontend	5357	2025-04-01 21:41:30.629	content-styles-for-email-notifications
+com.atlassian.mywork.mywork-confluence-host-plugin	5358	2025-04-01 21:41:30.629	Workbox - Host Plugin-rest-migration
+com.atlassian.auiplugin	5359	2025-04-01 21:41:30.629	split_aui.splitchunk.44a664103a
+com.atlassian.auiplugin	5360	2025-04-01 21:41:30.629	split_aui.splitchunk.d0d7f0c206
+com.atlassian.confluence.plugins.confluence-frontend	5361	2025-04-01 21:41:30.629	split_confluence_web_resources_constants_require_confluence_api_constants_
+com.atlassian.confluence.plugins.confluence-super-batch	5362	2025-04-01 21:41:30.629	split_vendors~amd~core-js~react-dom~react-dom-client
+com.atlassian.auiplugin	5363	2025-04-01 21:41:30.629	split_aui.splitchunk.bb9d7904fa
+com.atlassian.confluence.ext.newcode-macro-plugin	5364	2025-04-01 21:41:30.629	assets-964b9a29-4a8b-40e1-8c6e-0d82203ab537
+com.atlassian.confluence.plugins.pagetree	5365	2025-04-01 21:41:30.629	pageTreeMappingsProvider
+com.atlassian.auiplugin	5366	2025-04-01 21:41:30.629	split_aui.splitchunk.5c751fd12b
+com.atlassian.confluence.plugins.confluence-frontend	5367	2025-04-01 21:41:30.629	groups-autocomplete-helper
+com.atlassian.crowd.embedded.admin	5368	2025-04-01 21:41:30.629	configure-password-policy-scripts
+com.atlassian.auiplugin	5369	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--4f601bad99
+com.atlassian.confluence.plugins.confluence-editor-plugin	5370	2025-04-01 21:41:30.629	sort-handler
+com.atlassian.securetunnel.client.tunnel-client-plugin	5371	2025-04-01 21:41:30.629	tunnel-client-rest-filter
+com.atlassian.integration.jira.jira-integration-plugin	5372	2025-04-01 21:41:30.629	lodash-AMD
+com.atlassian.auiplugin	5373	2025-04-01 21:41:30.629	2735
+com.atlassian.auiplugin	5374	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--2a44ce3699
+com.atlassian.confluence.contributors	5375	2025-04-01 21:41:30.629	Confluence Contributors Plugin-rest-migration
+com.atlassian.auiplugin	5376	2025-04-01 21:41:30.629	split_aui.page.design-tokens-base-themes-css
+com.atlassian.confluence.plugins.confluence-frontend	5377	2025-04-01 21:41:30.629	module-exporter
+com.atlassian.confluence.plugins.confluence-create-content-plugin	5378	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-create-content-plugin
+com.atlassian.auiplugin	5379	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--32141df649
+com.atlassian.oauth2.oauth2-provider-plugin	5380	2025-04-01 21:41:30.629	assets-f75dd750-d619-41b0-822b-61bb605e99bd
+com.atlassian.confluence.plugins.confluence-frontend	5381	2025-04-01 21:41:30.629	split_vendors-node_modules_backbone_backbone_js
+com.atlassian.plugins.shortcuts.atlassian-shortcuts-plugin	5382	2025-04-01 21:41:30.629	keyboard-shortcuts-rest-v2-migration
+com.atlassian.confluence.plugins.confluence-frontend	5383	2025-04-01 21:41:30.629	underscore
+com.atlassian.auiplugin	5384	2025-04-01 21:41:30.629	split_aui.splitchunk.3c42e7d257
+com.atlassian.confluence.plugins.confluence-dashboard	5385	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-frontend	5386	2025-04-01 21:41:30.629	date-picker
+com.atlassian.auiplugin	5387	2025-04-01 21:41:30.629	split_aui.splitchunk.08ea57a952
+com.atlassian.confluence.extra.team-calendars	5388	2025-04-01 21:41:30.629	calendar-add-dropdown
+com.addonengine.analytics	5389	2025-04-01 21:41:30.629	assets-c881338f-3366-4f9e-866a-fd47eae4634d
+com.atlassian.confluence.plugins.confluence-frontend	5390	2025-04-01 21:41:30.629	dashboard-resources
+com.atlassian.confluence.plugins.xmlrpc.bloggingrpc.bloggingrpc	5391	2025-04-01 21:41:30.629	metaWeblog-xmlrpc
+com.atlassian.confluence.keyboardshortcuts	5392	2025-04-01 21:41:30.629	tinymce.table.insert.row.above
+com.atlassian.confluence.plugins.confluence-page-hierarchy-plugin	5393	2025-04-01 21:41:30.629	page-hierarchy-rest-filter
+com.atlassian.confluence.plugins.confluence-frontend	5394	2025-04-01 21:41:30.629	pagination-styles
+com.atlassian.confluence.plugins.confluence-frontend	5395	2025-04-01 21:41:30.629	setup-select-install-type
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5396	2025-04-01 21:41:30.629	rest-migration-key1
+com.atlassian.confluence.plugins.confluence-frontend	5397	2025-04-01 21:41:30.629	confFrontendAnalyticsWhitelist
+com.atlassian.auiplugin	5398	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--702a95f3b7
+com.atlassian.confluence.plugins.confluence-frontend	5399	2025-04-01 21:41:30.629	split_vendors-node_modules_atlaskit_button_dist_esm_new-button_variants_default_button_js-node_modu-1d0c63
+com.atlassian.applinks.applinks-plugin	5400	2025-04-01 21:41:30.629	split_atlassian-oauth2-ui-page-init
+com.atlassian.confluence.plugins.confluence-frontend	5401	2025-04-01 21:41:30.629	split_vendors-node_modules_when-dom-ready_dist_index_es2015_js
+com.atlassian.confluence.plugins.confluence-like	5402	2025-04-01 21:41:30.629	Confluence Like Plugin-rest-migration
+com.atlassian.auiplugin	5403	2025-04-01 21:41:30.629	split_aui.splitchunk.4e3616a7eb
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5404	2025-04-01 21:41:30.629	split_844
+com.atlassian.confluence.plugins.confluence-frontend	5405	2025-04-01 21:41:30.629	vendors-node_modules_emotion_react_dist_emotion-react_browser_esm_js-node_modules_babel_runti-e67b97
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5406	2025-04-01 21:41:30.629	assets-40b338a9-dd69-47ba-bf5b-d3b35700d9b8
+com.atlassian.auiplugin	5407	2025-04-01 21:41:30.629	split_aui.splitchunk.71f913d481
+com.atlassian.confluence.plugins.confluence-frontend	5408	2025-04-01 21:41:30.629	language-picker
+com.atlassian.confluence.plugins.confluence-edge-index	5409	2025-04-01 21:41:30.629	reindexListener
+com.atlassian.confluence.plugins.confluence-frontend	5410	2025-04-01 21:41:30.629	jira-controls
+com.atlassian.confluence.plugins.confluence-inline-comments	5411	2025-04-01 21:41:30.629	Confluence Inline Comments-rest-migration
+com.atlassian.auiplugin	5412	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--be0ceb5b96
+com.atlassian.plugin.notifications.notifications-module	5413	2025-04-01 21:41:30.629	vel-allowlist-notif-module
+confluence.web.resources	5414	2025-04-01 21:41:30.629	email-templates
+com.atlassian.confluence.plugins.confluence-space-directory	5415	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-space-directory
+com.atlassian.auiplugin	5416	2025-04-01 21:41:30.629	7498
+com.atlassian.confluence.plugins.confluence-frontend	5417	2025-04-01 21:41:30.629	atlassian-effects
+confluence.extra.chart	5418	2025-04-01 21:41:30.629	chart-macro-resources
+com.atlassian.confluence.plugins.confluence-frontend	5419	2025-04-01 21:41:30.629	setup-select-database-type
+com.atlassian.securetunnel.client.tunnel-client-plugin	5420	2025-04-01 21:41:30.629	tunnel-client-rest
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5421	2025-04-01 21:41:30.629	split_254
+com.atlassian.securetunnel.client.tunnel-client-plugin	5422	2025-04-01 21:41:30.629	tunnelClientAnalyticsWhitelist
+com.atlassian.theme.atlassian-theme-plugin	5423	2025-04-01 21:41:30.629	rest-api-filter
+com.atlassian.confluence.plugins.confluence-rebuild-index	5424	2025-04-01 21:41:30.629	confluence-rebuild-index-rest-migration
+com.atlassian.auiplugin	5425	2025-04-01 21:41:30.629	split_aui.splitchunk.871e90a3b7
+com.atlassian.confluence.plugins.confluence-ui-rest	5426	2025-04-01 21:41:30.629	Confluence UI REST-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5427	2025-04-01 21:41:30.629	search-results-grid
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5428	2025-04-01 21:41:30.629	confluence-language-support-filter
+com.atlassian.auiplugin	5429	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--a94d4220ac
+com.atlassian.troubleshooting.plugin-confluence	5430	2025-04-01 21:41:30.629	synchronyConnectivityCheck
+com.atlassian.confluence.plugins.confluence-frontend	5431	2025-04-01 21:41:30.629	core
+com.atlassian.securetunnel.client.tunnel-client-plugin	5432	2025-04-01 21:41:30.629	confluence-menu-item
+com.atlassian.auiplugin	5433	2025-04-01 21:41:30.629	split_aui.splitchunk.0bd4341e97
+confluence.web.resources	5434	2025-04-01 21:41:30.629	editor-templates
+com.atlassian.confluence.plugins.confluence-super-batch	5435	2025-04-01 21:41:30.629	split_vendors~amd
+com.addonengine.analytics	5436	2025-04-01 21:41:30.629	velocity-allowlist-afc
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5437	2025-04-01 21:41:30.629	soy-templates
+com.atlassian.confluence.plugins.confluence-frontend	5438	2025-04-01 21:41:30.629	custom-page-content-resources
+com.atlassian.confluence.extra.flyingpdf	5439	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.extra.confluence-flyingpdf-plugin
+com.atlassian.confluence.plugins.confluence-frontend	5440	2025-04-01 21:41:30.629	macro-js-overrides
+com.atlassian.confluence.plugins.confluence-sal-plugin	5441	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.sal.confluence
+com.atlassian.confluence.plugins.confluence-frontend	5442	2025-04-01 21:41:30.629	signup
+com.atlassian.soy.soy-template-plugin	5443	2025-04-01 21:41:30.629	soy-vel-allowlist
+com.atlassian.confluence.plugins.soy	5444	2025-04-01 21:41:30.629	soy-get-display-name-soy-function
+com.atlassian.confluence.plugins.search.confluence-search	5445	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.search.confluence-search
+com.atlassian.confluence.plugins.confluence-frontend	5446	2025-04-01 21:41:30.629	fancy-box
+com.atlassian.confluence.plugins.confluence-frontend	5447	2025-04-01 21:41:30.629	page-analytics
+com.atlassian.applinks.applinks-oauth-plugin	5448	2025-04-01 21:41:30.629	confluence-inbound-two-legged-oauth2
+com.atlassian.confluence.plugins.confluence-frontend	5449	2025-04-01 21:41:30.629	safe-ajax
+com.atlassian.confluence.plugins.confluence-private-rest-resources	5450	2025-04-01 21:41:30.629	private-rest-api
+com.atlassian.streams.streams-thirdparty-plugin	5451	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.auiplugin	5452	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--205ddc970a
+com.atlassian.confluence.plugins.confluence-frontend	5453	2025-04-01 21:41:30.629	aui-forms
+com.atlassian.confluence.plugins.confluence-frontend	5454	2025-04-01 21:41:30.629	select-all-row
+com.atlassian.confluence.plugins.confluence-frontend	5455	2025-04-01 21:41:30.629	view-my-favourites
+com.atlassian.confluence.plugins.confluence-frontend	5456	2025-04-01 21:41:30.629	marionette
+com.atlassian.confluence.plugins.xmlrpc.bloggingrpc.bloggingrpc	5457	2025-04-01 21:41:30.629	applicationProperties
+com.atlassian.auiplugin	5458	2025-04-01 21:41:30.629	split_aui.splitchunk.d3ca746d44
+com.atlassian.confluence.plugins.confluence-mentions-plugin	5459	2025-04-01 21:41:30.629	mention-rest-migration-key
+com.atlassian.confluence.plugins.confluence-email-resources	5460	2025-04-01 21:41:30.629	vel-allowlist-email-notifs
+com.atlassian.auiplugin	5461	2025-04-01 21:41:30.629	design-tokens-api-full
+com.atlassian.auiplugin	5462	2025-04-01 21:41:30.629	split_aui.splitchunk.1d1867466a
+com.atlassian.audit.atlassian-audit-plugin	5463	2025-04-01 21:41:30.629	assets-4d0fe7c4-91f4-4fb5-83b0-306a5ac241f9
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5464	2025-04-01 21:41:30.629	tsv-rest
+com.atlassian.confluence.keyboardshortcuts	5465	2025-04-01 21:41:30.629	Confluence Keyboard Shortcuts Plugin-rest-migration
+com.atlassian.applinks.applinks-oauth-plugin	5466	2025-04-01 21:41:30.629	ouath2-flow-request-initiator
+com.atlassian.confluence.plugins.confluence-frontend	5467	2025-04-01 21:41:30.629	theme-switcher
+com.atlassian.confluence.plugins.confluence-frontend	5468	2025-04-01 21:41:30.629	userlink
+com.atlassian.zdu.confluence-zdu-plugin	5469	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.auiplugin	5470	2025-04-01 21:41:30.629	split_aui.splitchunk.fc7962e097
+com.atlassian.audit.atlassian-audit-plugin	5471	2025-04-01 21:41:30.629	atlassian-audit-plugin-migration-key
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5472	2025-04-01 21:41:30.629	analytics
+com.atlassian.confluence.plugins.confluence-frontend	5473	2025-04-01 21:41:30.629	view-comment
+com.atlassian.auiplugin	5474	2025-04-01 21:41:30.629	split_aui.splitchunk.6cf0c96ecb
+com.atlassian.confluence.plugins.confluence-editor-plugin	5475	2025-04-01 21:41:30.629	assets-d329e0b7-d8a6-43b6-84c8-a1c8ee44d959
+com.atlassian.confluence.plugins.atlassian-clientside-extensions-discovery	5476	2025-04-01 21:41:30.629	assets-9dccc2a4-66a9-4e00-8ce8-a48271b4dc08
+com.addonengine.analytics	5477	2025-04-01 21:41:30.629	vendor
+confluence.extra.jira	5478	2025-04-01 21:41:30.629	jirachart-placeholders
+com.atlassian.auiplugin	5479	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--daaf07b325
+com.atlassian.confluence.plugins.confluence-frontend	5480	2025-04-01 21:41:30.629	breadcrumbs
+com.atlassian.confluence.plugins.confluence-frontend	5481	2025-04-01 21:41:30.629	split_deprecated-dialog
+com.atlassian.confluence.plugins.confluence-frontend	5482	2025-04-01 21:41:30.629	browsegroupmembers
+com.atlassian.auiplugin	5483	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--177522ba92
+com.atlassian.confluence.extra.team-calendars	5484	2025-04-01 21:41:30.629	Team Calendars-rest-migration
+com.atlassian.auiplugin	5485	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--6f40529244
+com.atlassian.confluence.plugins.confluence-frontend	5486	2025-04-01 21:41:30.629	wrm
+com.atlassian.plugins.cleanup-hub-plugin	5487	2025-04-01 21:41:30.629	assets-e7eac30a-7a7f-4f92-834e-f5c60dc347cb
+com.atlassian.confluence.plugins.confluence-frontend	5488	2025-04-01 21:41:30.629	window
+com.atlassian.confluence.plugins.confluence-frontend	5489	2025-04-01 21:41:30.629	pages-dirview
+com.atlassian.confluence.plugins.confluence-frontend	5490	2025-04-01 21:41:30.629	page-intrash-resources
+com.atlassian.confluence.plugins.confluence-frontend	5491	2025-04-01 21:41:30.629	login-templates
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5492	2025-04-01 21:41:30.629	lighthouse-bitbucket-admin-ui-menu-link
+com.atlassian.confluence.plugins.confluence-frontend	5493	2025-04-01 21:41:30.629	type-helpers
+com.atlassian.confluence.plugins.confluence-frontend	5494	2025-04-01 21:41:30.629	people-directory
+confluence.macros.advanced	5495	2025-04-01 21:41:30.629	children-macro-browser-resource
+com.atlassian.securetunnel.client.tunnel-client-plugin	5496	2025-04-01 21:41:30.629	tunnel-client-plugin-rest-v2-migration
+com.atlassian.securetunnel.client.tunnel-client-plugin	5497	2025-04-01 21:41:30.629	tunnel-client-soy-resources
+com.atlassian.streams.confluence	5498	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-frontend	5499	2025-04-01 21:41:30.629	editor-templates
+com.atlassian.auiplugin	5500	2025-04-01 21:41:30.629	5177
+com.atlassian.confluence.plugins.confluence-mobile	5501	2025-04-01 21:41:30.629	Confluence Mobile Web Plugin-rest-migration
+com.addonengine.analytics	5502	2025-04-01 21:41:30.629	Analytics for Confluence - Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5503	2025-04-01 21:41:30.629	setup-success
+com.atlassian.confluence.plugins.confluence-frontend	5504	2025-04-01 21:41:30.629	dialog2-warning
+com.atlassian.confluence.plugins.confluence-frontend	5505	2025-04-01 21:41:30.629	vendors-node_modules_atlaskit_button_dist_esm_old-button_button_js-node_modules_atlaskit_icon-6b40cb
+com.atlassian.confluence.extra.officeconnector	5506	2025-04-01 21:41:30.629	Office Connector confluence plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-license-banner	5507	2025-04-01 21:41:30.629	Confluence License Banner-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5508	2025-04-01 21:41:30.629	syntaxhighlighter-java
+com.atlassian.confluence.plugins.pagetree	5509	2025-04-01 21:41:30.629	velocity-allowlist-pagetree
+com.atlassian.confluence.plugins.confluence-frontend	5510	2025-04-01 21:41:30.629	tooltip
+com.atlassian.troubleshooting.plugin-confluence	5511	2025-04-01 21:41:30.629	mailQueueCheck
+com.atlassian.confluence.plugins.confluence-frontend	5512	2025-04-01 21:41:30.629	inline-dialog
+com.atlassian.confluence.plugins.confluence-frontend	5513	2025-04-01 21:41:30.629	help-content-resources
+com.atlassian.confluence.keyboardshortcuts	5514	2025-04-01 21:41:30.629	tinymce.table.insert.row.below
+com.atlassian.auiplugin	5515	2025-04-01 21:41:30.629	split_aui.splitchunk.532dee4ffd
+com.atlassian.confluence.keyboardshortcuts	5516	2025-04-01 21:41:30.629	tinymce.subscript
+com.atlassian.confluence.plugins.confluence-business-blueprints	5517	2025-04-01 21:41:30.629	Confluence Business Blueprints - Plugin-rest-migration
+confluence.extractors.core	5518	2025-04-01 21:41:30.629	contentIndexCoreMappings
+com.atlassian.auiplugin	5519	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--e78b1959c2
+com.atlassian.integration.jira.jira-integration-plugin	5520	2025-04-01 21:41:30.629	Jira Integration :: Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-roadmap-plugin	5521	2025-04-01 21:41:30.629	Confluence Roadmap Planner-rest-migration
+com.atlassian.secrets.atlassian-secrets-manager	5522	2025-04-01 21:41:30.629	secrets-rest
+com.atlassian.auiplugin	5523	2025-04-01 21:41:30.629	split_aui.splitchunk.6baeae3f03
+com.atlassian.confluence.plugins.confluence-document-conversion-library	5524	2025-04-01 21:41:30.629	Confluence Document Conversion Library-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5525	2025-04-01 21:41:30.629	edit-user-profile
+com.atlassian.confluence.plugins.confluence-webhooks	5526	2025-04-01 21:41:30.629	vendors~@atlaskit-internal_dynamic-table
+com.atlassian.auiplugin	5527	2025-04-01 21:41:30.629	split_aui.splitchunk.ce4a1e45e0
+com.atlassian.confluence.plugins.confluence-private-rest-resources	5528	2025-04-01 21:41:30.629	confluenceCoreAnalyticsWhitelist
+com.atlassian.confluence.plugins.confluence-frontend	5529	2025-04-01 21:41:30.629	split_confluence_web_resources_event_require_confluence_api_event_
+com.atlassian.confluence.plugins.confluence-darkfeatures-rest	5530	2025-04-01 21:41:30.629	Confluence Dark Features REST endpoint-rest-migration
+com.atlassian.confluence.plugins.confluence-private-rest-resources	5531	2025-04-01 21:41:30.629	Confluence private REST API Resources-rest-migration
+confluence.extractors.core	5532	2025-04-01 21:41:30.629	atlassianContentDocumentBuilderMappings
+com.atlassian.confluence.plugins.confluence-frontend	5533	2025-04-01 21:41:30.629	support-utility
+com.atlassian.confluence.plugins.collaborative-editing-feedback-plugin	5534	2025-04-01 21:41:30.629	assets-a2265b23-da68-4da2-8dbf-05760e55b82d
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5535	2025-04-01 21:41:30.629	refimpl-upm-certificates-menu
+com.atlassian.confluence.plugins.confluence-frontend	5536	2025-04-01 21:41:30.629	default-theme-styles
+com.atlassian.confluence.extra.officeconnector	5537	2025-04-01 21:41:30.629	placeholder-css
+com.atlassian.confluence.plugins.confluence-frontend	5538	2025-04-01 21:41:30.629	dictionary
+com.atlassian.confluence.restplugin	5539	2025-04-01 21:41:30.629	rest-jackson2-filter
+com.atlassian.confluence.plugins.confluence-daily-summary-email	5540	2025-04-01 21:41:30.629	velocity-allowlist-daily-summary-email
+com.atlassian.auiplugin	5541	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--38baed5f09
+com.atlassian.confluence.plugins.confluence-frontend	5542	2025-04-01 21:41:30.629	page-location
+com.atlassian.applinks.applinks-plugin	5543	2025-04-01 21:41:30.629	split_vendors~atlassian-oauth2-ui-page-init~entitylink-page-init
+com.atlassian.confluence.plugins.confluence-inline-comments	5544	2025-04-01 21:41:30.629	vendors~EditorContextInit~loader
+com.atlassian.confluence.plugins.confluence-rebuild-index	5545	2025-04-01 21:41:30.629	vendors~@atlaskit-internal_dynamic-table
+com.atlassian.confluence.plugins.confluence-frontend	5546	2025-04-01 21:41:30.629	follow-list-resources
+com.atlassian.confluence.plugins.confluence-frontend	5547	2025-04-01 21:41:30.629	regexes
+com.atlassian.streams.confluence	5548	2025-04-01 21:41:30.629	velocity-allowlist-streams-conf
+com.atlassian.confluence.plugins.confluence-rest-enrichment	5549	2025-04-01 21:41:30.629	Confluence REST Enrichment-rest-migration
+confluence.sections.settings.edit	5550	2025-04-01 21:41:30.629	gadget-user-settings
+com.atlassian.confluence.plugins.confluence-frontend	5551	2025-04-01 21:41:30.629	avataror
+com.atlassian.auiplugin	5552	2025-04-01 21:41:30.629	aui-design-tokens-compatibility-themes
+com.atlassian.streams	5553	2025-04-01 21:41:30.629	auth-completion-resources
+com.atlassian.confluence.plugins.confluence-backup-and-restore-ui	5554	2025-04-01 21:41:30.629	assets-034931aa-a52f-4792-b289-9cee1d8132a6
+com.atlassian.confluence.plugins.confluence-onboarding	5555	2025-04-01 21:41:30.629	confluence-onboarding-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5556	2025-04-01 21:41:30.629	confluence_web_resources_event_require_confluence_api_event_
+com.atlassian.confluence.plugins.confluence-feature-discovery-plugin	5557	2025-04-01 21:41:30.629	confluence-feature-discovery-plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5558	2025-04-01 21:41:30.629	split_src_export-as-amd_ts
+com.atlassian.auiplugin	5559	2025-04-01 21:41:30.629	split_aui.page.design-tokens-api
+com.atlassian.auiplugin	5560	2025-04-01 21:41:30.629	design-tokens-api
+com.atlassian.confluence.plugins.confluence-frontend	5561	2025-04-01 21:41:30.629	setup-cluster
+com.atlassian.auiplugin	5562	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--7a9616a1ab
+com.atlassian.streams.streams-thirdparty-plugin	5563	2025-04-01 21:41:30.629	dataSourceProvider
+com.atlassian.querylang.confluence-cql-plugin	5564	2025-04-01 21:41:30.629	cqlMappingsProvider
+com.atlassian.streams	5565	2025-04-01 21:41:30.629	webResourceUrlProvider
+com.atlassian.confluence.plugins.confluence-frontend	5566	2025-04-01 21:41:30.629	color-scheme-doc-link-templates
+com.atlassian.confluence.plugins.confluence-frontend	5567	2025-04-01 21:41:30.629	general-analytics-bindings
+com.atlassian.confluence.plugins.confluence-graphql-module	5568	2025-04-01 21:41:30.629	Confluence GraphQL API Module-rest-migration
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5569	2025-04-01 21:41:30.629	232
+com.atlassian.auiplugin	5570	2025-04-01 21:41:30.629	split_aui.deprecated.behaviour.jquery-tipsy
+com.atlassian.confluence.plugins.confluence-frontend	5571	2025-04-01 21:41:30.629	setup-language-picker-resources
+com.atlassian.confluence.plugins.confluence-frontend	5572	2025-04-01 21:41:30.629	property-panel-css
+com.atlassian.auiplugin	5573	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--d30d262cc0
+com.atlassian.confluence.plugins.confluence-frontend	5574	2025-04-01 21:41:30.629	syntaxhighlighter-xml
+com.atlassian.confluence.plugins.confluence-like	5575	2025-04-01 21:41:30.629	metadata-provider
+com.atlassian.auiplugin	5576	2025-04-01 21:41:30.629	split_aui.component.avatar-group
+com.atlassian.auiplugin	5577	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--3442b04575
+com.atlassian.confluence.plugins.confluence-frontend	5578	2025-04-01 21:41:30.629	theme-switcher-listener
+com.atlassian.confluence.plugins.confluence-frontend	5579	2025-04-01 21:41:30.629	print-styles
+com.atlassian.confluence.plugins.confluence-retention-rules	5580	2025-04-01 21:41:30.629	vendors~@atlaskit-internal_dynamic-table
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5581	2025-04-01 21:41:30.629	confluence-upm-certificates-menu
+com.atlassian.confluence.plugins.confluence-frontend	5582	2025-04-01 21:41:30.629	error-page-styles
+confluence.web.resources	5583	2025-04-01 21:41:30.629	aui-select
+com.atlassian.securetunnel.client.tunnel-client-plugin	5584	2025-04-01 21:41:30.629	entrypoint-com.atlassian.securetunnel.client.tunnel-client-plugin
+com.atlassian.confluence.plugins.soy	5585	2025-04-01 21:41:30.629	soy-action-message-i18n-function
+com.atlassian.cluster.monitoring.cluster-monitoring-plugin	5586	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.auiplugin	5587	2025-04-01 21:41:30.629	split_aui.page.design-tokens-base-themes
+com.atlassian.auiplugin	5588	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--51bd201801
+com.atlassian.plugins.static-assets-url	5589	2025-04-01 21:41:30.629	assets-68cf1b53-546e-40b2-8668-dceba89d97e1
+com.atlassian.confluence.plugins.confluence-labels	5590	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-labels
+com.atlassian.confluence.plugins.confluence-frontend	5591	2025-04-01 21:41:30.629	info-dense-form
+com.atlassian.applinks.applinks-oauth-plugin	5592	2025-04-01 21:41:30.629	confluence-inbound-three-legged-oauth2
+com.atlassian.confluence.plugins.confluence-frontend	5593	2025-04-01 21:41:30.629	setup
+com.atlassian.confluence.plugins.confluence-files	5594	2025-04-01 21:41:30.629	confluence-files-rest-migration
+com.atlassian.auiplugin	5595	2025-04-01 21:41:30.629	split_aui.splitchunk.a07d2669ba
+com.atlassian.auiplugin	5596	2025-04-01 21:41:30.629	split_aui.page.focus
+com.atlassian.troubleshooting.plugin-confluence	5597	2025-04-01 21:41:30.629	sso-info
+com.atlassian.auiplugin	5598	2025-04-01 21:41:30.629	split_aui.splitchunk.a092119004
+com.atlassian.auiplugin	5599	2025-04-01 21:41:30.629	split_aui.splitchunk.1d4ad5f4b8
+com.atlassian.confluence.plugins.confluence-frontend	5600	2025-04-01 21:41:30.629	floating-scrollbar
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5601	2025-04-01 21:41:30.629	autoUrlModeItem
+com.atlassian.auiplugin	5602	2025-04-01 21:41:30.629	split_aui.splitchunk.7386883120
+com.atlassian.confluence.plugins.confluence-frontend	5603	2025-04-01 21:41:30.629	master-scripts
+com.atlassian.auiplugin	5604	2025-04-01 21:41:30.629	split_aui.splitchunk.e1516f437c
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5605	2025-04-01 21:41:30.629	plugin-certificate-servlet
+com.atlassian.confluence.plugins.confluence-frontend	5606	2025-04-01 21:41:30.629	jquery-autocomplete
+com.atlassian.confluence.plugins.xmlrpc.bloggingrpc.bloggingrpc	5607	2025-04-01 21:41:30.629	transactionTemplate
+com.atlassian.auiplugin	5608	2025-04-01 21:41:30.629	aui-design-tokens-base-themes
+com.atlassian.auiplugin	5609	2025-04-01 21:41:30.629	split_aui.splitchunk.5e80a25b41
+com.atlassian.confluence.ext.newcode-macro-plugin	5610	2025-04-01 21:41:30.629	view
+com.atlassian.confluence.ext.newcode-macro-plugin	5611	2025-04-01 21:41:30.629	newcodeMacroAnalyticsWhitelist
+com.atlassian.confluence.plugins.confluence-frontend	5612	2025-04-01 21:41:30.629	create-personal-space
+com.atlassian.auiplugin	5613	2025-04-01 21:41:30.629	aui-design-tokens-themes
+com.atlassian.auiplugin	5614	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--901bedc195
+com.atlassian.confluence.plugins.confluence-cache-management-plugin	5615	2025-04-01 21:41:30.629	Confluence Cache Management Plugin-rest-migration
+com.atlassian.secrets.atlassian-secrets-manager	5616	2025-04-01 21:41:30.629	analytics-allowlist
+com.atlassian.plugins.atlassian-nav-links-plugin	5617	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-jira-content	5618	2025-04-01 21:41:30.629	Confluence and Jira Content Connector-rest-migration
+com.atlassian.confluence.extra.officeconnector	5619	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.officeconnector.OfficeConnector
+com.atlassian.streams	5620	2025-04-01 21:41:30.629	soyTemplateRenderer
+com.atlassian.auiplugin	5621	2025-04-01 21:41:30.629	split_aui.splitchunk.a94d4220ac
+com.atlassian.confluence.plugins.confluence-request-access-plugin	5622	2025-04-01 21:41:30.629	Confluence Request Access Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5623	2025-04-01 21:41:30.629	view-content
+com.atlassian.confluence.plugins.confluence-easyuser-admin	5624	2025-04-01 21:41:30.629	Confluence Easy-User Admin-rest-migration
+com.atlassian.confluence.plugins.confluence-emoticons-plugin	5625	2025-04-01 21:41:30.629	vendors~@atlaskit-internal_dynamic-table
+com.atlassian.troubleshooting.plugin-confluence	5626	2025-04-01 21:41:30.629	crowdAuthenticationCheck
+com.atlassian.confluence.plugins.confluence-frontend	5627	2025-04-01 21:41:30.629	aui-messages
+com.atlassian.confluence.plugins.confluence-frontend	5628	2025-04-01 21:41:30.629	aui-tooltip
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5629	2025-04-01 21:41:30.629	entrypoint-admin-entrypoint
+com.atlassian.confluence.plugins.confluence-frontend	5630	2025-04-01 21:41:30.629	browsegroups
+com.atlassian.analytics.analytics-client	5631	2025-04-01 21:41:30.629	velocity-allowlist-analytics
+com.atlassian.troubleshooting.plugin-confluence	5632	2025-04-01 21:41:30.629	assets-993cf467-6c8a-4c70-b430-ebae891b3782
+com.atlassian.confluence.plugins.confluence-frontend	5633	2025-04-01 21:41:30.629	benefits
+com.atlassian.confluence.plugins.confluence-frontend	5634	2025-04-01 21:41:30.629	setup-db
+com.atlassian.confluence.plugins.confluence-daily-summary-email	5635	2025-04-01 21:41:30.629	Confluence daily summary email-rest-migration
+com.atlassian.auiplugin	5636	2025-04-01 21:41:30.629	split_aui.splitchunk.f7ba736494
+com.atlassian.troubleshooting.plugin-confluence	5637	2025-04-01 21:41:30.629	atst-license-limit-healthchecks-config
+com.atlassian.plugins.shortcuts.atlassian-shortcuts-plugin	5638	2025-04-01 21:41:30.629	vel-allowlist-aks
+com.atlassian.auiplugin	5639	2025-04-01 21:41:30.629	split_aui.splitchunk.7a6058a025
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5640	2025-04-01 21:41:30.629	split_183
+com.atlassian.confluence.plugins.confluence-user-profile	5641	2025-04-01 21:41:30.629	Confluence User Avatar Uploader Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5642	2025-04-01 21:41:30.629	split_color-scheme
+com.atlassian.confluence.plugins.confluence-emoticons-plugin	5643	2025-04-01 21:41:30.629	Confluence Emoticons Plugin-rest-migration
+com.atlassian.analytics.analytics-client	5644	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5645	2025-04-01 21:41:30.629	admin-ui-templates
+com.atlassian.confluence.plugins.confluence-frontend	5646	2025-04-01 21:41:30.629	network-resources
+confluence.content.action.menu	5647	2025-04-01 21:41:30.629	convert-to-blogpost
+com.atlassian.auiplugin	5648	2025-04-01 21:41:30.629	split_aui.splitchunk.778837af2c
+com.atlassian.confluence.plugins.soy	5649	2025-04-01 21:41:30.629	soy-get-page-diff-soy-function
+com.atlassian.confluence.plugins.confluence-frontend	5650	2025-04-01 21:41:30.629	aui-select
+com.atlassian.confluence.plugins.confluence-editor-plugin	5651	2025-04-01 21:41:30.629	vendors~confluencewordcount
+confluence.listeners.core	5652	2025-04-01 21:41:30.629	secretAuditListener
+com.atlassian.plugins.atlassian-project-creation-plugin	5653	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-frontend	5654	2025-04-01 21:41:30.629	document
+com.atlassian.confluence.plugins.confluence-page-hierarchy-plugin	5655	2025-04-01 21:41:30.629	page-hierarchy-rest
+com.atlassian.confluence.plugins.confluence-collaborative-editor-plugin	5656	2025-04-01 21:41:30.629	confluence-collaborative-api-rest-migration-key
+com.atlassian.auiplugin	5657	2025-04-01 21:41:30.629	split_aui.splitchunk.361829ca76
+com.atlassian.confluence.plugins.confluence-frontend	5658	2025-04-01 21:41:30.629	syntaxhighlighter-core
+confluence.listeners.core	5659	2025-04-01 21:41:30.629	confluenceSpringLdapPoolClearingClusterMessageListener
+com.atlassian.confluence.plugins.confluence-frontend	5660	2025-04-01 21:41:30.629	url
+com.atlassian.confluence.plugins.confluence-graphql-providers	5661	2025-04-01 21:41:30.629	Confluence GraphQL Providers-rest-migration
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5662	2025-04-01 21:41:30.629	confluence-manage-two-step-verification
+com.atlassian.securetunnel.client.tunnel-client-plugin	5663	2025-04-01 21:41:30.629	assets-6e004057-8c84-4d1e-b4e7-d9be328af8ac
+confluence.web.resources	5664	2025-04-01 21:41:30.629	aui-tooltip
+com.atlassian.confluence.plugins.confluence-rest-resources	5665	2025-04-01 21:41:30.629	routing-display
+com.atlassian.auiplugin	5666	2025-04-01 21:41:30.629	split_aui.splitchunk.e13f04fa37
+com.atlassian.confluence.plugins.confluence-frontend	5667	2025-04-01 21:41:30.629	legacy-editor-global-AVOID-IF-POSSIBLE
+com.atlassian.confluence.keyboardshortcuts	5668	2025-04-01 21:41:30.629	tinymce.clear.format
+com.atlassian.confluence.plugins.confluence-frontend	5669	2025-04-01 21:41:30.629	view-follow-resources
+com.atlassian.auiplugin	5670	2025-04-01 21:41:30.629	internal-deprecated-jquery-tipsy
+com.atlassian.auiplugin	5671	2025-04-01 21:41:30.629	split_aui.splitchunk.b3f8cd7728
+com.atlassian.confluence.plugins.confluence-space-ia	5672	2025-04-01 21:41:30.629	Confluence Space IA Plugin-rest-migration
+com.atlassian.troubleshooting.plugin-confluence	5673	2025-04-01 21:41:30.629	mailErrorQueueCheck
+com.atlassian.applinks.applinks-plugin	5674	2025-04-01 21:41:30.629	assets-ab00ad7c-219b-42aa-9152-a71204954609
+com.atlassian.confluence.extra.team-calendars	5675	2025-04-01 21:41:30.629	assets-10777f5a-f664-4602-bded-c3e1cfb95568
+com.atlassian.confluence.extra.team-calendars	5676	2025-04-01 21:41:30.629	rrule_lib
+com.atlassian.confluence.plugins.confluence-frontend	5677	2025-04-01 21:41:30.629	almond
+com.atlassian.oauth2.oauth2-client-plugin	5678	2025-04-01 21:41:30.629	assets-6338109d-7be7-44c9-9f3f-5a00b6545e35
+com.atlassian.confluence.plugins.confluence-frontend	5679	2025-04-01 21:41:30.629	color-scheme
+com.atlassian.confluence.plugins.confluence-frontend	5680	2025-04-01 21:41:30.629	network-resources-css
+com.atlassian.confluence.plugins.gatekeeper.gatekeeper-plugin	5681	2025-04-01 21:41:30.629	assets-5ddac5b1-79cc-46ab-8919-0a7adc4ebdeb
+com.atlassian.auiplugin	5682	2025-04-01 21:41:30.629	split_aui.splitchunk.2b8638947e
+com.atlassian.confluence.plugins.confluence-frontend	5683	2025-04-01 21:41:30.629	legacy-scroll-to-hash-anchors
+com.atlassian.confluence.plugins.confluence-quicknav	5684	2025-04-01 21:41:30.629	Confluence Quicknav-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5685	2025-04-01 21:41:30.629	admin-tasklist
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5686	2025-04-01 21:41:30.629	lighthouse-ao
+com.atlassian.plugins.atlassian-clientside-extensions-page-bootstrapper	5687	2025-04-01 21:41:30.629	assets-6b904250-fbbf-401f-9c52-719d79f085e0
+com.atlassian.migration.agent	5688	2025-04-01 21:41:30.629	browser-metrics-client
+confluence.macros.advanced	5689	2025-04-01 21:41:30.629	confluence-advanced-macros-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5690	2025-04-01 21:41:30.629	global-permissions-inline-dialog
+com.atlassian.confluence.plugins.confluence-highlight-actions	5691	2025-04-01 21:41:30.629	Page Highlight Actions - Plugin-rest-migration
+com.atlassian.applinks.applinks-oauth-plugin	5692	2025-04-01 21:41:30.629	TwoLeggedOAuth2AuthenticatorProviderPluginModule
+com.atlassian.troubleshooting.plugin-confluence	5693	2025-04-01 21:41:30.629	localBackupsCheck
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5694	2025-04-01 21:41:30.629	lighthouse-logo-resources
+com.atlassian.confluence.plugins.confluence-page-hierarchy-plugin	5695	2025-04-01 21:41:30.629	confluence-page-hierarchy-plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5696	2025-04-01 21:41:30.629	admin-upgrade-resources
+com.atlassian.confluence.plugins.confluence-frontend	5697	2025-04-01 21:41:30.629	jquery-json
+com.atlassian.confluence.plugins.xmlrpc.bloggingrpc.bloggingrpc	5698	2025-04-01 21:41:30.629	bloggingUtils
+com.atlassian.securetunnel.client.tunnel-client-plugin	5699	2025-04-01 21:41:30.629	1
+com.atlassian.auiplugin	5700	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--252a940369
+com.atlassian.confluence.plugins.confluence-frontend	5701	2025-04-01 21:41:30.629	setup-select-database-choice
+com.atlassian.auiplugin	5702	2025-04-01 21:41:30.629	split_aui.splitchunk.b31d61f755
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5703	2025-04-01 21:41:30.629	entrypoint-manage-two-step-verification
+com.atlassian.confluence.plugins.confluence-frontend	5704	2025-04-01 21:41:30.629	shared-templates
+com.atlassian.securetunnel.client.tunnel-client-plugin	5705	2025-04-01 21:41:30.629	tunnel-client-servlet
+com.atlassian.confluence.plugins.confluence-denormalised-permissions	5706	2025-04-01 21:41:30.629	vendors~@atlaskit-internal_dynamic-table
+com.atlassian.auiplugin	5707	2025-04-01 21:41:30.629	7995
+com.atlassian.confluence.plugins.confluence-frontend	5708	2025-04-01 21:41:30.629	deprecated-dialog
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5709	2025-04-01 21:41:30.629	split_334
+com.atlassian.confluence.plugins.confluence-frontend	5710	2025-04-01 21:41:30.629	search
+com.atlassian.confluence.plugin.copyspace	5711	2025-04-01 21:41:30.629	Confluence Copy Space Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5712	2025-04-01 21:41:30.629	browseusers
+com.atlassian.plugins.jquery	5713	2025-04-01 21:41:30.629	jquery-migrate-lib
+com.atlassian.crowd.embedded.admin	5714	2025-04-01 21:41:30.629	embedded-crowd-whitelist
+com.atlassian.auiplugin	5715	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--bd42b7a168
+com.atlassian.confluence.plugins.confluence-frontend	5716	2025-04-01 21:41:30.629	vendors-node_modules_react-dom_client_js
+com.atlassian.confluence.plugins.confluence-frontend	5717	2025-04-01 21:41:30.629	syntaxhighlighter-all
+com.atlassian.migration.agent	5718	2025-04-01 21:41:30.629	velocity-allowlist-confluence-migration-assistant-agent
+com.atlassian.confluence.plugins.confluence-periodic-analytics-events	5719	2025-04-01 21:41:30.629	CountEntitiesByTwoKeyAndStringValCombinations
+com.atlassian.confluence.plugins.confluence-frontend	5720	2025-04-01 21:41:30.629	macro-browser-sprites
+com.atlassian.confluence.plugins.confluence-frontend	5721	2025-04-01 21:41:30.629	memoir
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5722	2025-04-01 21:41:30.629	lighthouse-jira-admin-ui-menu-link
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5723	2025-04-01 21:41:30.629	policyEnforcerContextItem
+com.atlassian.auiplugin	5724	2025-04-01 21:41:30.629	split_aui.splitchunk.b1e13b7559
+com.atlassian.confluence.plugins.confluence-frontend	5725	2025-04-01 21:41:30.629	left-nav-panel-resources
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5726	2025-04-01 21:41:30.629	entrypoint-jsm-user-profile-2sv-panel
+com.atlassian.confluence.restplugin	5727	2025-04-01 21:41:30.629	Confluence old Prototype REST API-rest-migration
+com.atlassian.auiplugin	5728	2025-04-01 21:41:30.629	split_aui.splitchunk.0e8e0008dd
+com.atlassian.secrets.atlassian-secrets-manager	5729	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.oauth.serviceprovider	5730	2025-04-01 21:41:30.629	oauth-velocity-allowlist
+com.atlassian.confluence.plugins.confluence-frontend	5731	2025-04-01 21:41:30.629	page-message
+com.atlassian.confluence.plugins.confluence-frontend	5732	2025-04-01 21:41:30.629	core-backbone
+confluence.extra.dynamictasklist2	5733	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.extra.dynamictasklist2
+com.atlassian.ratelimiting.rate-limiting-plugin	5734	2025-04-01 21:41:30.629	rest-migration-key
+confluence.web.resources	5735	2025-04-01 21:41:30.629	shared-icons
+com.atlassian.confluence.plugins.confluence-frontend	5736	2025-04-01 21:41:30.629	theme-styles
+crowd.system.passwordencoders	5737	2025-04-01 21:41:30.629	argon2
+com.atlassian.applinks.applinks-plugin	5738	2025-04-01 21:41:30.629	applinks-atlassian-oauth2-ui
+com.atlassian.confluence.plugins.confluence-inline-comments	5739	2025-04-01 21:41:30.629	assets-d7606104-affd-4d07-9e2c-a3907d799ed4
+com.atlassian.confluence.extra.team-calendars	5740	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.extra.team-calendars
+com.atlassian.confluence.plugins.confluence-frontend	5741	2025-04-01 21:41:30.629	colorscheme-template
+com.atlassian.confluence.plugins.confluence-frontend	5742	2025-04-01 21:41:30.629	theme-switcher-loader
+com.atlassian.confluence.plugins.confluence-frontend	5743	2025-04-01 21:41:30.629	license-check-failed
+com.atlassian.confluence.plugins.confluence-remote-page-view-plugin	5744	2025-04-01 21:41:30.629	assets-c883fde3-3ae2-43a8-a56b-74c856c9a852
+com.atlassian.applinks.applinks-plugin	5745	2025-04-01 21:41:30.629	split_vendors~atlassian-oauth2-ui-page-init
+com.atlassian.confluence.plugins.confluence-post-upgrade-landing-page-plugin	5746	2025-04-01 21:41:30.629	assets-7f56add9-fd0d-4343-b4df-f17e3e2e3475
+confluence.extra.masterdetail	5747	2025-04-01 21:41:30.629	Page Properties Macros - Plugin-rest-migration
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5748	2025-04-01 21:41:30.629	tsv-rest-filter
+com.atlassian.auiplugin	5749	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--d2f414644b
+com.atlassian.querylang.confluence-cql-plugin	5750	2025-04-01 21:41:30.629	Confluence CQL plugin-rest-migration
+com.atlassian.auiplugin	5751	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--1d1867466a
+com.atlassian.confluence.plugins.confluence-editor-plugin	5752	2025-04-01 21:41:30.629	confluencewordcount
+com.atlassian.confluence.plugins.confluence-schedule-admin	5753	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-schedule-admin
+com.atlassian.confluence.plugins.confluence-frontend	5754	2025-04-01 21:41:30.629	space-admin
+com.atlassian.confluence.plugins.confluence-frontend	5755	2025-04-01 21:41:30.629	copy-heading-link
+com.atlassian.confluence.plugins.confluence-lookandfeel	5756	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-lookandfeel
+com.atlassian.securetunnel.client.tunnel-client-plugin	5757	2025-04-01 21:41:30.629	split_vendors~com.atlassian.securetunnel.client.tunnel-client-plugin
+com.atlassian.confluence.plugins.confluence-frontend	5758	2025-04-01 21:41:30.629	breadcrumbs-jquery
+com.atlassian.confluence.plugins.confluence-notifications-spi-plugin	5759	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-notifications-spi-plugin
+com.atlassian.confluence.plugins.confluence-notifications-spi-plugin	5760	2025-04-01 21:41:30.629	Confluence Notifications SPI Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5761	2025-04-01 21:41:30.629	admin
+com.atlassian.confluence.plugins.confluence-inline-tasks	5762	2025-04-01 21:41:30.629	inlineTaskMappingsProvider
+com.atlassian.crowd.embedded.admin	5763	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-frontend	5764	2025-04-01 21:41:30.629	split_vendors-node_modules_window-or-global_lib_index_js
+com.atlassian.confluence.plugins.confluence-frontend	5765	2025-04-01 21:41:30.629	about
+com.atlassian.plugins.atlassian-whitelist-ui-plugin	5766	2025-04-01 21:41:30.629	whitelist-ajs-backbone
+com.atlassian.business.insights.core-plugin	5767	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.auiplugin	5768	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--63663d47e2
+com.atlassian.auiplugin	5769	2025-04-01 21:41:30.629	jquery-tipsy
+com.atlassian.confluence.plugins.quickedit	5770	2025-04-01 21:41:30.629	comment-display-manager
+com.atlassian.confluence.plugins.confluence-frontend	5771	2025-04-01 21:41:30.629	render-benefits-modal
+com.atlassian.confluence.plugins.confluence-frontend	5772	2025-04-01 21:41:30.629	rss-feed-builder
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5773	2025-04-01 21:41:30.629	lighthouse-rest
+com.atlassian.auiplugin	5774	2025-04-01 21:41:30.629	split_aui.splitchunk.49995219e2
+com.atlassian.streams.streams-api	5775	2025-04-01 21:41:30.629	velocity-allowlist-streams-api
+com.atlassian.confluence.plugins.confluence-frontend	5776	2025-04-01 21:41:30.629	view-my-drafts
+com.atlassian.confluence.plugins.confluence-frontend	5777	2025-04-01 21:41:30.629	ajs
+com.atlassian.confluence.plugins.confluence-frontend	5778	2025-04-01 21:41:30.629	user-macro-admin
+com.atlassian.confluence.plugins.confluence-previews	5779	2025-04-01 21:41:30.629	Confluence Previews-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5780	2025-04-01 21:41:30.629	confluence
+com.atlassian.confluence.plugins.confluence-frontend	5781	2025-04-01 21:41:30.629	js-reporting
+com.atlassian.confluence.plugins.confluence-frontend	5782	2025-04-01 21:41:30.629	split_vendors-node_modules_atlassian_dc-theme-switcher_utils_index_js
+com.atlassian.confluence.plugins.confluence-frontend	5783	2025-04-01 21:41:30.629	split_vendors-node_modules_atlaskit_button_dist_esm_containers_button-group_js-node_modules_atlaski-b92eb5
+com.atlassian.troubleshooting.plugin-confluence	5836	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.collaborative-editing-feedback-plugin	5784	2025-04-01 21:41:30.629	collaborativeEditingFB-rest-migration-key
+com.atlassian.plugins.rest.atlassian-rest-v2-plugin	5785	2025-04-01 21:41:30.629	rest-servlet-filter
+com.atlassian.auiplugin	5786	2025-04-01 21:41:30.629	aui-avatar-group
+com.atlassian.auiplugin	5787	2025-04-01 21:41:30.629	split_aui.splitchunk.8fd6a41d13
+com.atlassian.auiplugin	5788	2025-04-01 21:41:30.629	split_aui.splitchunk.a61395d23c
+com.atlassian.auiplugin	5789	2025-04-01 21:41:30.629	aui-design-tokens-base-themes-css
+com.atlassian.confluence.plugins.confluence-create-content-plugin	5790	2025-04-01 21:41:30.629	Confluence Create Content Plugin-rest-migration
+com.atlassian.auiplugin	5791	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--370ef9fb90
+com.atlassian.whisper.atlassian-whisper-plugin	5792	2025-04-01 21:41:30.629	whisper-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5793	2025-04-01 21:41:30.629	userpicker
+com.atlassian.confluence.plugins.confluence-private-rest-resources	5794	2025-04-01 21:41:30.629	private-rest-api-filter
+com.atlassian.confluence.plugins.confluence-frontend	5795	2025-04-01 21:41:30.629	dom-filter-field
+com.atlassian.confluence.plugins.confluence-jira-metadata	5796	2025-04-01 21:41:30.629	Confluence Jira Metadata Plugin-rest-migration
+com.atlassian.confluence.plugins.synchrony-interop	5797	2025-04-01 21:41:30.629	Synchrony Interop Bootstrap Plugin-rest-migration
+com.atlassian.confluence.plugins.soy	5798	2025-04-01 21:41:30.629	soy-is-contains-soy-function
+com.atlassian.auiplugin	5799	2025-04-01 21:41:30.629	split_aui.splitchunk.86545eac2d
+com.atlassian.confluence.plugins.confluence-frontend	5800	2025-04-01 21:41:30.629	email-templates
+com.atlassian.confluence.plugins.confluence-editor-plugin	5801	2025-04-01 21:41:30.629	split_editor-content-loader
+com.atlassian.confluence.plugins.confluence-paste	5802	2025-04-01 21:41:30.629	confluence-paste-rest-migration
+com.atlassian.business.insights.core-plugin	5803	2025-04-01 21:41:30.629	assets-8a46e97c-5587-44ba-80e3-cf49ffbfbe2f
+com.atlassian.auiplugin	5804	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--2c9afa705d
+com.atlassian.confluence.plugins.confluence-frontend	5805	2025-04-01 21:41:30.629	convert-page-to-blogpost-dialog-resources
+com.atlassian.troubleshooting.plugin-confluence	5806	2025-04-01 21:41:30.629	atst-lib
+com.atlassian.confluence.plugins.search.confluence-search	5807	2025-04-01 21:41:30.629	Confluence Search Plugin-rest-migration
+com.atlassian.auiplugin	5808	2025-04-01 21:41:30.629	2186
+com.atlassian.streams	5809	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-frontend	5810	2025-04-01 21:41:30.629	contentnamesearch
+com.atlassian.confluence.plugins.confluence-webhooks	5811	2025-04-01 21:41:30.629	assets-0c54225c-9e01-4b0e-bcf4-09536c8da22f
+com.atlassian.confluence.plugins.confluence-frontend	5812	2025-04-01 21:41:30.629	space-permissions-table
+com.atlassian.confluence.plugins.confluence-frontend	5813	2025-04-01 21:41:30.629	setup-license
+com.atlassian.auiplugin	5814	2025-04-01 21:41:30.629	split_aui.component.avatar
+com.atlassian.confluence.plugins.confluence-frontend	5815	2025-04-01 21:41:30.629	attachments
+com.atlassian.securetunnel.client.tunnel-client-plugin	5816	2025-04-01 21:41:30.629	tunnelDiagnosticFilter
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5817	2025-04-01 21:41:30.629	split_74
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5818	2025-04-01 21:41:30.629	upm-certificates
+com.atlassian.confluence.plugins.confluence-frontend	5819	2025-04-01 21:41:30.629	admin-indexing-resources
+com.atlassian.auiplugin	5820	2025-04-01 21:41:30.629	split_aui.splitchunk.16d1263174
+com.atlassian.auiplugin	5821	2025-04-01 21:41:30.629	split_aui.splitchunk.cc38daf88a
+com.atlassian.auiplugin	5822	2025-04-01 21:41:30.629	split_aui.splitchunk.eb92b2ea3e
+com.atlassian.confluence.contributors	5823	2025-04-01 21:41:30.629	contributorsExtractorMappingsProvider
+com.atlassian.auiplugin	5824	2025-04-01 21:41:30.629	6567
+com.atlassian.confluence.plugins.confluence-frontend	5825	2025-04-01 21:41:30.629	property-panel-js
+confluence.extractors.core	5826	2025-04-01 21:41:30.629	changeExtractorMappings
+com.atlassian.confluence.plugins.confluence-frontend	5827	2025-04-01 21:41:30.629	page-diffs
+com.atlassian.confluence.plugins.confluence-frontend	5828	2025-04-01 21:41:30.629	split_vendors-node_modules_react-dom_client_js
+com.atlassian.confluence.plugins.confluence-frontend	5829	2025-04-01 21:41:30.629	master-styles
+com.atlassian.confluence.plugins.confluence-frontend	5830	2025-04-01 21:41:30.629	page-ordering-tree
+com.atlassian.confluence.plugins.confluence-frontend	5831	2025-04-01 21:41:30.629	split_benefits
+com.atlassian.confluence.plugins.confluence-frontend	5832	2025-04-01 21:41:30.629	ajs-namespace-global
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5833	2025-04-01 21:41:30.629	two-step-verification-soy-template
+com.atlassian.auiplugin	5834	2025-04-01 21:41:30.629	split_aui.splitchunk.19472d705a
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5835	2025-04-01 21:41:30.629	upm-certificates-templates
+com.atlassian.theme.atlassian-theme-plugin	5837	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.pats.pats-plugin	5838	2025-04-01 21:41:30.629	assets-57272554-b1bc-4fd4-8547-8e2dacfca759
+com.atlassian.auiplugin	5839	2025-04-01 21:41:30.629	split_aui.splitchunk.00e959c498
+com.atlassian.auiplugin	5840	2025-04-01 21:41:30.629	split_aui.splitchunk.caeac40c12
+com.atlassian.confluence.plugins.soy	5841	2025-04-01 21:41:30.629	soy-get-Editor-WebPanels-soy-function
+com.atlassian.confluence.plugins.confluence-mobile	5842	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-mobile
+com.atlassian.confluence.plugins.confluence-license-rest	5843	2025-04-01 21:41:30.629	License REST plugin for Confluence-rest-migration
+com.atlassian.plugin.notifications.notifications-module	5844	2025-04-01 21:41:30.629	Atlassian Notifications SPI Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5845	2025-04-01 21:41:30.629	profile-styles
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5846	2025-04-01 21:41:30.629	split_386
+com.atlassian.auiplugin	5847	2025-04-01 21:41:30.629	split_aui.splitchunk.4f601bad99
+com.atlassian.confluence.plugins.confluence-frontend	5848	2025-04-01 21:41:30.629	querystring
+com.atlassian.confluence.plugins.confluence-editor-plugin	5849	2025-04-01 21:41:30.629	resize-image
+com.atlassian.oauth2.oauth2-client-plugin	5850	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.streams.streams-thirdparty-plugin	5851	2025-04-01 21:41:30.629	webResourceUrlProvider
+com.atlassian.confluence.plugins.confluence-frontend	5852	2025-04-01 21:41:30.629	content-styles
+com.atlassian.upm.atlassian-universal-plugin-manager-plugin	5853	2025-04-01 21:41:30.629	upm-certificates-resources
+com.atlassian.confluence.plugins.dialog-wizard	5854	2025-04-01 21:41:30.629	Dialog Wizard-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5855	2025-04-01 21:41:30.629	split_cookie-overrides
+com.atlassian.auiplugin	5856	2025-04-01 21:41:30.629	split_aui.splitchunk.766101891a
+com.atlassian.auiplugin	5857	2025-04-01 21:41:30.629	split_aui.splitchunk.f07f5b4ca0
+com.atlassian.confluence.plugins.confluence-rest-jersey-jackson2	5858	2025-04-01 21:41:30.629	Confluence JERSEY REST-rest-migration
+com.atlassian.plugins.atlassian-clientside-extensions-runtime	5859	2025-04-01 21:41:30.629	assets-2afbe63a-4d83-44a2-bb39-31c162d2952b
+com.atlassian.ratelimiting.rate-limiting-plugin	5860	2025-04-01 21:41:30.629	0
+com.atlassian.confluence.plugins.confluence-editor-plugin	5861	2025-04-01 21:41:30.629	split_vendors~core~editor-content-loader~page-layout
+com.atlassian.auiplugin	5862	2025-04-01 21:41:30.629	split_aui.page.design-tokens-compatibility-themes
+com.atlassian.ratelimiting.rate-limiting-plugin	5863	2025-04-01 21:41:30.629	1
+com.atlassian.confluence.plugins.confluence-frontend	5864	2025-04-01 21:41:30.629	draft-changes-css
+com.atlassian.confluence.plugins.confluence-frontend	5865	2025-04-01 21:41:30.629	login-styles
+com.atlassian.auiplugin	5866	2025-04-01 21:41:30.629	split_aui.splitchunk.ae2ebdffe7
+com.atlassian.auiplugin	5867	2025-04-01 21:41:30.629	915
+confluence.macros.advanced	5868	2025-04-01 21:41:30.629	children-macro-resource
+com.atlassian.auiplugin	5869	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--1a017b24f0
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5870	2025-04-01 21:41:30.629	split_504
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5871	2025-04-01 21:41:30.629	lighthouse-admin-ui-servlet
+confluence.extra.jira	5872	2025-04-01 21:41:30.629	Confluence Jira Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5873	2025-04-01 21:41:30.629	analytics-support
+com.atlassian.confluence.plugins.share-page	5874	2025-04-01 21:41:30.629	assets-96ad9862-d202-4415-92b0-675f36770bf6
+com.atlassian.confluence.ext.newcode-macro-plugin	5875	2025-04-01 21:41:30.629	admin
+com.atlassian.plugins.jquery	5876	2025-04-01 21:41:30.629	jquery-migrate-logging
+com.atlassian.confluence.plugins.confluence-frontend	5877	2025-04-01 21:41:30.629	keygen
+com.atlassian.oauth2.oauth2-provider-plugin	5878	2025-04-01 21:41:30.629	auth-type-filter
+com.atlassian.confluence.plugins.confluence-frontend	5879	2025-04-01 21:41:30.629	split_vendors-node_modules_atlassian_wrm-react-i18n_wrm-react-i18n_js
+com.atlassian.confluence.restplugin	5880	2025-04-01 21:41:30.629	rest-jackson2
+confluence.extra.userlister	5881	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-userlister-plugin
+com.atlassian.confluence.plugins.confluence-frontend	5882	2025-04-01 21:41:30.629	draft-changes-js
+com.atlassian.confluence.plugins.confluence-frontend	5883	2025-04-01 21:41:30.629	setup-cluster-success
+com.atlassian.confluence.plugins.confluence-frontend	5884	2025-04-01 21:41:30.629	aui-dialog1-deprecated
+confluence.macros.dashboard	5885	2025-04-01 21:41:30.629	Dashboard Macros-rest-migration
+com.atlassian.streams.confluence	5886	2025-04-01 21:41:30.629	webResourceUrlProvider
+com.atlassian.auiplugin	5887	2025-04-01 21:41:30.629	split_aui.splitchunk.5fe669cbc9
+com.atlassian.confluence.plugins.confluence-frontend	5888	2025-04-01 21:41:30.629	trigger
+com.atlassian.confluence.plugins.confluence-frontend	5889	2025-04-01 21:41:30.629	split_vendors-node_modules_emotion_react_dist_emotion-react_browser_esm_js-node_modules_babel_runti-e67b97
+confluence.macros.advanced	5890	2025-04-01 21:41:30.629	velocity-allowlist-advanced-macros
+com.atlassian.auiplugin	5891	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--e6639db5ee
+com.atlassian.confluence.plugins.confluence-inline-tasks	5892	2025-04-01 21:41:30.629	Confluence Inline Tasks-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5893	2025-04-01 21:41:30.629	syntaxhighlighter-css
+com.atlassian.confluence.plugins.drag-and-drop	5894	2025-04-01 21:41:30.629	Confluence Drag and Drop Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-edge-index	5895	2025-04-01 21:41:30.629	Confluence Edge Index-rest-migration
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5896	2025-04-01 21:41:30.629	713
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5897	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5898	2025-04-01 21:41:30.629	lighthouse-icon-resources
+com.atlassian.confluence.plugins.confluence-frontend	5899	2025-04-01 21:41:30.629	page-templates
+confluence.macros.advanced	5900	2025-04-01 21:41:30.629	children-macro-resource-filter
+com.atlassian.confluence.plugins.confluence-frontend	5901	2025-04-01 21:41:30.629	navigator-context
+com.atlassian.confluence.plugins.confluence-pretty-urls	5902	2025-04-01 21:41:30.629	routing-blog
+confluence.extra.attachments	5903	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-periodic-analytics-events	5904	2025-04-01 21:41:30.629	GetEntitiesByKeyAndStringVal
+com.atlassian.crowd.embedded.admin	5905	2025-04-01 21:41:30.629	UpdateDelegatedDirectoriesConfigurationWithUpdateUserPermission
+com.atlassian.confluence.plugins.confluence-frontend	5906	2025-04-01 21:41:30.629	split_confluence_aui_staging_dark-features_require_confluence_dark-features_
+com.atlassian.confluence.plugins.confluence-super-batch	5907	2025-04-01 21:41:30.629	assets-c501a7d6-961d-430e-88ba-5fd232072198
+confluence.web.resources	5908	2025-04-01 21:41:30.629	captcha-handler
+com.atlassian.confluence.keyboardshortcuts	5909	2025-04-01 21:41:30.629	tinymce.monospace
+com.atlassian.auiplugin	5910	2025-04-01 21:41:30.629	split_aui.splitchunk.1f82c35ea5
+com.atlassian.confluence.plugins.confluence-denormalised-permissions	5911	2025-04-01 21:41:30.629	assets-5556360b-36b6-4c80-b9bc-19a640aacd29
+com.atlassian.confluence.plugins.confluence-onboarding	5912	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-onboarding
+com.atlassian.confluence.plugins.confluence-software-blueprints	5913	2025-04-01 21:41:30.629	confluence-software-blueprints-rest-migration
+com.atlassian.confluence.ext.newcode-macro-plugin	5914	2025-04-01 21:41:30.629	edit
+confluence.web.resources	5915	2025-04-01 21:41:30.629	login-templates
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5916	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-frontend	5917	2025-04-01 21:41:30.629	aui-experimental
+com.atlassian.applinks.applinks-oauth-plugin	5918	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-frontend	5919	2025-04-01 21:41:30.629	page-restricted-resources
+confluence.extra.jira	5920	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.confluence-jira-plugin
+com.atlassian.confluence.plugins.confluence-frontend	5921	2025-04-01 21:41:30.629	core-amd
+com.atlassian.confluence.plugins.confluence-frontend	5922	2025-04-01 21:41:30.629	licensedetails
+com.atlassian.applinks.applinks-plugin	5923	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.image.effects.ImageEffectsPlugin	5924	2025-04-01 21:41:30.629	ImageEffectsPlugin-rest-migration
+com.atlassian.troubleshooting.plugin-confluence	5925	2025-04-01 21:41:30.629	velocity-allowlist-atst
+com.atlassian.confluence.plugins.confluence-frontend	5926	2025-04-01 21:41:30.629	split_theme-switcher-listener
+com.atlassian.confluence.plugins.confluence-frontend	5927	2025-04-01 21:41:30.629	cookie-overrides
+com.atlassian.auiplugin	5928	2025-04-01 21:41:30.629	split_aui.splitchunk.47718634a4
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	5929	2025-04-01 21:41:30.629	lighthouse-confluence-admin-ui-menu-link
+com.atlassian.confluence.plugins.watch-button	5930	2025-04-01 21:41:30.629	Watch Button REST Resources-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5931	2025-04-01 21:41:30.629	edit-user-group-resources
+com.atlassian.confluence.plugins.confluence-frontend	5932	2025-04-01 21:41:30.629	assets-e66affa7-5f23-4490-b6c2-058de08b14f4
+com.atlassian.confluence.plugins.confluence-frontend	5933	2025-04-01 21:41:30.629	split_inline-dialog
+com.atlassian.confluence.plugins.confluence-frontend	5934	2025-04-01 21:41:30.629	split_theme-switcher-loader
+com.atlassian.auiplugin	5935	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--4ce6273df1
+com.atlassian.confluence.plugins.confluence-frontend	5936	2025-04-01 21:41:30.629	console-instrumentation
+com.atlassian.confluence.plugins.confluence-frontend	5937	2025-04-01 21:41:30.629	dialog-breadcrumbs
+com.atlassian.confluence.plugins.confluence-frontend	5938	2025-04-01 21:41:30.629	split_vendors-node_modules_atlassian_dc-theme-switcher_theme-efe7c28d_js
+com.atlassian.confluence.plugins.confluence-frontend	5939	2025-04-01 21:41:30.629	setup-datasource
+com.atlassian.confluence.plugins.confluence-frontend	5940	2025-04-01 21:41:30.629	split_com_atlassian_plugins_atlassian-plugins-webresource-plugin_i18n_WRM_I18n-com_atlassian_plugin-08e97b
+com.atlassian.auiplugin	5941	2025-04-01 21:41:30.629	split_aui.splitchunk.ff6a1e4013
+com.atlassian.zdu.confluence-zdu-plugin	5942	2025-04-01 21:41:30.629	assets-945ebaa6-73fa-4835-8bc1-61540b0f5fdb
+confluence.extra.attachments	5943	2025-04-01 21:41:30.629	velocity-allowlist-confluence.extra.attachments
+com.atlassian.confluence.plugins.confluence-frontend	5944	2025-04-01 21:41:30.629	lookandfeel
+com.atlassian.confluence.plugins.confluence-pretty-urls	5945	2025-04-01 21:41:30.629	routing-pages
+com.atlassian.confluence.plugins.confluence-frontend	5946	2025-04-01 21:41:30.629	memory-usage
+com.atlassian.confluence.plugins.confluence-remote-page-view-plugin	5947	2025-04-01 21:41:30.629	remote-page-view-plugin-rest-v2-migration
+com.atlassian.confluence.plugins.confluence-frontend	5948	2025-04-01 21:41:30.629	split_confluence_web_resources_amd_require_confluence_api_logger_
+com.atlassian.auiplugin	5949	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--9ce5195911
+com.atlassian.pats.pats-plugin	5950	2025-04-01 21:41:30.629	pats-test-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5951	2025-04-01 21:41:30.629	benefits-doc-link-templates
+com.atlassian.auiplugin	5952	2025-04-01 21:41:30.629	split_aui.splitchunk.b3732fff33
+com.atlassian.plugins.atlassian-help-tips	5953	2025-04-01 21:41:30.629	atlassian-help-tips-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5954	2025-04-01 21:41:30.629	split_confluence_web_resources_amd_require_confluence_templates_
+com.atlassian.confluence.plugins.confluence-frontend	5955	2025-04-01 21:41:30.629	keyboard
+com.atlassian.confluence.plugins.confluence-frontend	5956	2025-04-01 21:41:30.629	reload-captcha
+com.atlassian.confluence.plugins.confluence-knowledge-base	5957	2025-04-01 21:41:30.629	confluence-knowledge-base-plugin-rest-v2-migration
+com.atlassian.auiplugin	5958	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--919950bf68
+com.atlassian.confluence.plugins.confluence-opensearch-healthchecks	5959	2025-04-01 21:41:30.629	openSearchSpaceLimitCheck
+com.atlassian.applinks.applinks-plugin	5960	2025-04-01 21:41:30.629	confluence-inbound-three-legged-oauth2
+com.atlassian.auiplugin	5961	2025-04-01 21:41:30.629	6917
+com.atlassian.confluence.plugins.confluence-backup-and-restore-ui	5962	2025-04-01 21:41:30.629	1
+com.atlassian.confluence.plugins.confluence-frontend	5963	2025-04-01 21:41:30.629	custom-protocol-launcher
+com.atlassian.confluence.plugins.confluence-frontend	5964	2025-04-01 21:41:30.629	split_confluence_web_resources_jquery_require_jquery_
+com.atlassian.confluence.plugins.confluence-frontend	5965	2025-04-01 21:41:30.629	vendors-node_modules_react-popper_lib_esm_Popper_js
+com.atlassian.confluence.plugins.confluence-frontend	5966	2025-04-01 21:41:30.629	backupadmin
+com.atlassian.confluence.plugins.confluence-retention-rules	5967	2025-04-01 21:41:30.629	Confluence Retention Rules-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	5968	2025-04-01 21:41:30.629	split_src_packages_theme-switcher_index_tsx
+com.atlassian.auiplugin	5969	2025-04-01 21:41:30.629	aui-browser-focus
+com.atlassian.auiplugin	5970	2025-04-01 21:41:30.629	split_aui.splitchunk.2e87193100
+com.atlassian.confluence.plugins.confluence-frontend	5971	2025-04-01 21:41:30.629	raphael
+com.atlassian.plugins.static-assets-url	5972	2025-04-01 21:41:30.629	static-asset-rest-migration
+com.atlassian.auiplugin	5973	2025-04-01 21:41:30.629	split_aui.splitchunk.73d16a88c7
+com.atlassian.confluence.plugins.confluence-edge-index	5974	2025-04-01 21:41:30.629	edgeMappingsProvider
+com.atlassian.auiplugin	5975	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--7ee5af41f1
+com.atlassian.crowd.embedded.admin	5976	2025-04-01 21:41:30.629	defaultDelegatedDirectoryFinder
+com.atlassian.diagnostics.atlassian-diagnostics-plugin	5977	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.auiplugin	5978	2025-04-01 21:41:30.629	split_aui.splitchunk.e5cac58685
+com.atlassian.confluence.plugins.confluence-frontend	5979	2025-04-01 21:41:30.629	page-history
+com.atlassian.confluence.plugin.copyspace	5980	2025-04-01 21:41:30.629	assets-884d2481-20dc-48cb-a6f3-958bc1bdfeb0
+com.atlassian.confluence.plugins.confluence-emoticons-plugin	5981	2025-04-01 21:41:30.629	assets-d4b3cf2d-8bb8-4988-85f4-2d786fcfeb30
+com.atlassian.confluence.plugins.gatekeeper.gatekeeper-plugin	5982	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.confluence.plugins.gatekeeper.plugin
+com.atlassian.plugins.rest.atlassian-rest-v2-plugin	5983	2025-04-01 21:41:30.629	rest-seraph-filter
+com.atlassian.confluence.plugins.confluence-frontend	5984	2025-04-01 21:41:30.629	vendors-node_modules_atlassian_dc-theme-switcher_index_js
+com.atlassian.confluence.plugins.confluence-frontend	5985	2025-04-01 21:41:30.629	split_groups-autocomplete-helper
+com.atlassian.confluence.plugins.cacheanalytics.cache-analytics-plugin	5986	2025-04-01 21:41:30.629	Confluence Cache Analytics Plugin-rest-migration
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5987	2025-04-01 21:41:30.629	disable-native-login-filter
+com.atlassian.confluence.plugins.confluence-frontend	5988	2025-04-01 21:41:30.629	split_theme-switcher
+com.atlassian.migration.agent	5989	2025-04-01 21:41:30.629	external-libraries
+com.atlassian.confluence.plugins.confluence-frontend	5990	2025-04-01 21:41:30.629	deferred-loaders
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	5991	2025-04-01 21:41:30.629	jsm-user-profile-2sv-trigger
+com.atlassian.confluence.plugins.view-source	5992	2025-04-01 21:41:30.629	Confluence View Source-rest-migration
+com.atlassian.confluence.plugins.xmlrpc.bloggingrpc.bloggingrpc	5993	2025-04-01 21:41:30.629	blogger-xmlrpc
+com.atlassian.auiplugin	5994	2025-04-01 21:41:30.629	split_aui.splitchunk.bf8135db29
+com.atlassian.auiplugin	5995	2025-04-01 21:41:30.629	split_aui.splitchunk.b1c3361e2a
+com.atlassian.confluence.plugins.synchrony-interop	5996	2025-04-01 21:41:30.629	velocity-allowlist-synchrony-interop
+com.atlassian.auiplugin	5997	2025-04-01 21:41:30.629	split_aui.splitchunk.51ee36ecdd
+com.atlassian.confluence.plugins.confluence-frontend	5998	2025-04-01 21:41:30.629	clipboard-helper
+com.atlassian.auiplugin	5999	2025-04-01 21:41:30.629	split_aui.splitchunk.ae218db3f9
+com.atlassian.auiplugin	6000	2025-04-01 21:41:30.629	split_aui.splitchunk.4717e31b0f
+com.atlassian.confluence.plugins.confluence-frontend	6001	2025-04-01 21:41:30.629	setup-eval-license
+com.atlassian.confluence.plugins.confluence-frontend	6002	2025-04-01 21:41:30.629	spaceexport
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	6003	2025-04-01 21:41:30.629	split_684
+com.atlassian.confluence.keyboardshortcuts	6004	2025-04-01 21:41:30.629	tinymce.superscript
+com.atlassian.auiplugin	6005	2025-04-01 21:41:30.629	split_aui.splitchunk.323af25294
+com.atlassian.migration.agent	6006	2025-04-01 21:41:30.629	sessioncleanupfilter
+com.atlassian.confluence.plugins.confluence-frontend	6007	2025-04-01 21:41:30.629	entitypicker
+com.atlassian.confluence.plugins.confluence-frontend	6008	2025-04-01 21:41:30.629	mailserver
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	6009	2025-04-01 21:41:30.629	jsm-user-profile-2sv-panel
+com.atlassian.auiplugin	6010	2025-04-01 21:41:30.629	assets-8d89ac33-ae96-48c6-8534-117c8d34191b
+com.atlassian.auiplugin	6011	2025-04-01 21:41:30.629	split_aui.splitchunk.1d5e938604
+com.atlassian.auiplugin	6012	2025-04-01 21:41:30.629	split_aui.splitchunk.fbff6178a8
+com.atlassian.confluence.plugins.confluence-frontend	6013	2025-04-01 21:41:30.629	split_confluence_web_resources_meta_require_confluence_meta_
+com.atlassian.auiplugin	6014	2025-04-01 21:41:30.629	split_aui.splitchunk.175d337e8b
+com.atlassian.auiplugin	6015	2025-04-01 21:41:30.629	split_aui.page.design-tokens-api-full
+com.atlassian.business.insights.core-plugin	6016	2025-04-01 21:41:30.629	1
+com.atlassian.auiplugin	6017	2025-04-01 21:41:30.629	1138
+com.atlassian.auiplugin	6018	2025-04-01 21:41:30.629	split_aui.splitchunk.238de622f7
+com.atlassian.plugins.atlassian-clientside-extensions-runtime	6019	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.applinks.applinks-plugin	6020	2025-04-01 21:41:30.629	confluence-inbound-two-legged-oauth2
+com.atlassian.auiplugin	6021	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--ddc81f48ae
+com.atlassian.confluence.plugins.confluence-frontend	6022	2025-04-01 21:41:30.629	create-space
+com.atlassian.confluence.plugins.confluence-frontend	6023	2025-04-01 21:41:30.629	split_vendors-node_modules_react-popper_lib_esm_Popper_js
+confluence.web.resources	6024	2025-04-01 21:41:30.629	theme-styles
+com.atlassian.crowd.embedded.admin	6025	2025-04-01 21:41:30.629	UpdateDelegatedDirectoriesConfigurationWithDefaultLDAPTimeouts
+com.atlassian.confluence.plugins.confluence-frontend	6026	2025-04-01 21:41:30.629	profile-macro-styles
+com.atlassian.confluence.plugins.quickreload	6027	2025-04-01 21:41:30.629	Quick Reload Plugin-rest-migration
+confluence.web.resources	6028	2025-04-01 21:41:30.629	clipboard-helper
+com.atlassian.confluence.plugins.confluence-frontend	6029	2025-04-01 21:41:30.629	logger
+com.atlassian.plugins.authentication.atlassian-authentication-plugin	6030	2025-04-01 21:41:30.629	jsm-user-profile-2sv-panel-template
+com.atlassian.confluence.plugins.confluence-frontend	6031	2025-04-01 21:41:30.629	general-config-resources
+com.atlassian.plugins.atlassian-nav-links-plugin	6032	2025-04-01 21:41:30.629	capabilities-resources
+com.atlassian.confluence.plugins.confluence-retention-rules	6033	2025-04-01 21:41:30.629	assets-87a2fd85-eb71-4404-b715-e0deb4b7391f
+com.atlassian.confluence.plugins.confluence-frontend	6034	2025-04-01 21:41:30.629	browser
+confluence.listeners.core	6035	2025-04-01 21:41:30.629	applicationContextEventPropagator
+com.atlassian.confluence.plugins.recently-viewed-plugin	6036	2025-04-01 21:41:30.629	Recently Viewed Plugin-rest-migration
+com.atlassian.confluence.plugins.confluence-user-rest	6037	2025-04-01 21:41:30.629	Confluence User Rest-rest-migration
+com.atlassian.auiplugin	6038	2025-04-01 21:41:30.629	entrypoint-aui.pattern.avatar
+com.atlassian.confluence.plugins.confluence-frontend	6039	2025-04-01 21:41:30.629	meta
+com.atlassian.confluence.plugins.confluence-frontend	6040	2025-04-01 21:41:30.629	shared-icons
+com.atlassian.confluence.plugins.confluence-editor-plugin	6041	2025-04-01 21:41:30.629	theme-css-content-resources
+com.atlassian.auiplugin	6042	2025-04-01 21:41:30.629	split_aui.splitchunk.vendors--05958e24f3
+com.atlassian.monitoring.and.alerting.atlassian-lighthouse-plugin	6043	2025-04-01 21:41:30.629	lighthouse-rest-filter
+com.atlassian.confluence.plugins.confluence-sal-plugin	6044	2025-04-01 21:41:30.629	pluginEventManager
+com.atlassian.auiplugin	6045	2025-04-01 21:41:30.629	split_aui.splitchunk.fe1bcd26f2
+com.atlassian.confluence.plugins.confluence-frontend	6046	2025-04-01 21:41:30.629	panel-styles
+com.atlassian.confluence.plugins.confluence-editor-plugin	6047	2025-04-01 21:41:30.629	editor-content-loader
+com.atlassian.plugins.atlassian-plugins-webresource-rest	6048	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.confluence.plugins.confluence-pretty-urls	6049	2025-04-01 21:41:30.629	routing-spaces
+com.atlassian.confluence.plugins.confluence-frontend	6050	2025-04-01 21:41:30.629	page-loading-indicator
+com.atlassian.confluence.plugins.soy	6051	2025-04-01 21:41:30.629	soy-get-Iterable-List-soy-function
+com.atlassian.confluence.plugins.soy	6052	2025-04-01 21:41:30.629	soy-put-metadata-soy-function
+com.atlassian.confluence.plugins.confluence-opensearch-healthchecks	6053	2025-04-01 21:41:30.629	openSearchClusterHealthCheck
+com.atlassian.oauth2.oauth2-provider-plugin	6054	2025-04-01 21:41:30.629	rest-migration-key
+com.atlassian.applinks.applinks-plugin	6055	2025-04-01 21:41:30.629	velocity-allowlist-com.atlassian.applinks.plugin
+com.atlassian.applinks.applinks-plugin	6056	2025-04-01 21:41:30.629	entrypoint-atlassian-oauth2-ui-page-init
+com.atlassian.confluence.plugins.confluence-mobile-plugin	6057	2025-04-01 21:41:30.629	Mobile Plugin for Confluence Data Center and Server-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	6058	2025-04-01 21:41:30.629	login
+confluence.extractors.core	6059	2025-04-01 21:41:30.629	changeIndexCoreMappings
+com.atlassian.confluence.plugins.confluence-frontend	6060	2025-04-01 21:41:30.629	page-move-resources
+com.atlassian.confluence.plugins.share-page	6061	2025-04-01 21:41:30.629	Share Page-rest-migration
+com.atlassian.confluence.plugins.confluence-frontend	6062	2025-04-01 21:41:30.629	theme-switcher-component
+com.atlassian.confluence.plugins.confluence-frontend	6063	2025-04-01 21:41:30.629	jsUri
+com.atlassian.confluence.plugins.confluence-inline-tasks	6064	2025-04-01 21:41:30.629	taskIndexRecoverer
+com.atlassian.theme.atlassian-theme-plugin	6065	2025-04-01 21:41:30.629	themeOverrideFilter
+com.atlassian.auiplugin	6066	2025-04-01 21:41:30.629	split_aui.splitchunk.6be109ac60
+\.
+
+
+--
+-- Data for Name: AO_6ABCE4_TUNNEL; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_6ABCE4_TUNNEL" ("CLOUD_ORG_NAME", "CLOUD_PAGE_URL", "ID", "NAME", "TOKEN", "UPSTREAM_DNS_URL") FROM stdin;
+\.
+
+
+--
+-- Data for Name: AO_6ABCE4_TUNNEL_CONNECTION; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_6ABCE4_TUNNEL_CONNECTION" ("ID", "NODE_ID", "RETRY_COUNT", "STATUS") FROM stdin;
+1	NOT_CLUSTERED	0	NOT_RUNNING
 \.
 
 
@@ -5598,7 +12341,7 @@ com.atlassian.confluence.keyboardshortcuts	5307	2024-07-01 22:17:45.988	tinymce.
 -- Data for Name: AO_723324_CLIENT_CONFIG; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public."AO_723324_CLIENT_CONFIG" ("AUTHORIZATION_ENDPOINT", "CLIENT_ID", "CLIENT_SECRET", "DESCRIPTION", "ID", "NAME", "SCOPES", "TOKEN_ENDPOINT", "TYPE") FROM stdin;
+COPY public."AO_723324_CLIENT_CONFIG" ("AUTHORIZATION_ENDPOINT", "CLIENT_ID", "CLIENT_SECRET", "DESCRIPTION", "ID", "NAME", "SCOPES", "TOKEN_ENDPOINT", "TYPE", "CLIENT_CERTIFICATE", "CUSTOM_PARAMS", "GRANT_TYPE") FROM stdin;
 \.
 
 
@@ -5606,7 +12349,7 @@ COPY public."AO_723324_CLIENT_CONFIG" ("AUTHORIZATION_ENDPOINT", "CLIENT_ID", "C
 -- Data for Name: AO_723324_CLIENT_TOKEN; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public."AO_723324_CLIENT_TOKEN" ("ACCESS_TOKEN", "ACCESS_TOKEN_EXPIRATION", "CONFIG_ID", "ID", "LAST_REFRESHED", "LAST_STATUS_UPDATED", "REFRESH_COUNT", "REFRESH_TOKEN", "REFRESH_TOKEN_EXPIRATION", "STATUS") FROM stdin;
+COPY public."AO_723324_CLIENT_TOKEN" ("ACCESS_TOKEN", "ACCESS_TOKEN_EXPIRATION", "CONFIG_ID", "ID", "LAST_REFRESHED", "LAST_STATUS_UPDATED", "REFRESH_COUNT", "REFRESH_TOKEN", "REFRESH_TOKEN_EXPIRATION", "STATUS", "EXTERNAL_ID") FROM stdin;
 \.
 
 
@@ -5636,22 +12379,6 @@ COPY public."AO_7B47A5_SETTINGS" ("CREATED_AT", "ID", "KEY", "UPDATED_AT", "VALU
 
 
 --
--- Data for Name: AO_7CDE43_NOTIFICATION_SCHEME; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public."AO_7CDE43_NOTIFICATION_SCHEME" ("DESCRIPTION", "ID", "SCHEME_NAME") FROM stdin;
-\.
-
-
---
--- Data for Name: AO_7CDE43_NOTIFICATION; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public."AO_7CDE43_NOTIFICATION" ("ID", "NOTIFICATION_SCHEME_ID") FROM stdin;
-\.
-
-
---
 -- Data for Name: AO_7CDE43_EVENT; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -5664,6 +12391,22 @@ COPY public."AO_7CDE43_EVENT" ("EVENT_KEY", "ID", "NOTIFICATION_ID") FROM stdin;
 --
 
 COPY public."AO_7CDE43_FILTER_PARAM" ("ID", "NOTIFICATION_ID", "PARAM_KEY", "PARAM_VALUE") FROM stdin;
+\.
+
+
+--
+-- Data for Name: AO_7CDE43_NOTIFICATION; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_7CDE43_NOTIFICATION" ("ID", "NOTIFICATION_SCHEME_ID") FROM stdin;
+\.
+
+
+--
+-- Data for Name: AO_7CDE43_NOTIFICATION_SCHEME; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_7CDE43_NOTIFICATION_SCHEME" ("DESCRIPTION", "ID", "SCHEME_NAME") FROM stdin;
 \.
 
 
@@ -5697,6 +12440,7 @@ COPY public."AO_7CDE43_SERVER_PARAM" ("ID", "PARAM_KEY", "PARAM_VALUE", "SERVER_
 
 COPY public."AO_81F455_PERSONAL_TOKEN" ("CREATED_AT", "EXPIRING_AT", "HASHED_TOKEN", "ID", "LAST_ACCESSED_AT", "NAME", "NOTIFICATION_STATE", "TOKEN_ID", "USER_KEY") FROM stdin;
 2024-07-02 16:59:32.489	9999-12-31 00:00:00	{PKCS5S2}s5LU6yYoWSN22/G1IxAKVm92rdaeP8PyXuMxJbcMfxpfoLQeP6iCCpzE7gU70WVM	1	\N	ci token	NOT_SENT	695279515561	4028408390705fdc01907061af0d0000
+2025-04-01 21:42:38.585	9999-12-31 00:00:00	{PKCS5S2}gcDrg7iNe+VZuCT0UdQ+Y4m1+eiCGHeDkT6jjY5zM1EHtnt92NTylKr69Ey+dfjT	2	2025-04-01 21:43:17.780172	baton-test	NOT_SENT	895772821635	4028408390705fdc01907061af0d0000
 \.
 
 
@@ -5720,7 +12464,7 @@ COPY public."AO_8752F1_DATA_PIPELINE_EOO" ("ENTITY_IDENTIFIER", "ENTITY_TYPE", "
 -- Data for Name: AO_8752F1_DATA_PIPELINE_JOB; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public."AO_8752F1_DATA_PIPELINE_JOB" ("CREATED", "ERRORS", "EXPORTED_ENTITIES", "EXPORT_FORCED", "EXPORT_FROM", "EXPORT_PATH", "ID", "METADATA", "OPTED_OUT_ENTITY_IDENTIFIERS", "ROOT_EXPORT_PATH", "SCHEMA_VERSION", "STATUS", "UPDATED", "WARNINGS", "WRITTEN_ROWS") FROM stdin;
+COPY public."AO_8752F1_DATA_PIPELINE_JOB" ("CREATED", "ERRORS", "EXPORTED_ENTITIES", "EXPORT_FORCED", "EXPORT_FROM", "EXPORT_PATH", "ID", "METADATA", "OPTED_OUT_ENTITY_IDENTIFIERS", "ROOT_EXPORT_PATH", "SCHEMA_VERSION", "STATUS", "UPDATED", "WARNINGS", "WRITTEN_ROWS", "OPTED_OUT_FILE_SCHEMAS") FROM stdin;
 \.
 
 
@@ -5780,14 +12524,6 @@ COPY public."AO_9412A1_AOUSER" ("CREATED", "ID", "LAST_READ_NOTIFICATION_ID", "T
 --
 
 COPY public."AO_9412A1_USER_APP_LINK" ("APPLICATION_LINK_ID", "AUTH_VERIFIED", "CREATED", "ID", "UPDATED", "USER_ID") FROM stdin;
-\.
-
-
---
--- Data for Name: AO_950DC3_TC_SUBCALS; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public."AO_950DC3_TC_SUBCALS" ("COLOUR", "CREATED", "CREATOR", "DESCRIPTION", "ID", "LAST_MODIFIED", "NAME", "PARENT_ID", "SPACE_KEY", "STORE_KEY", "SUBSCRIPTION_ID", "TIME_ZONE_ID", "USING_CUSTOM_EVENT_TYPE_ID") FROM stdin;
 \.
 
 
@@ -5856,6 +12592,14 @@ COPY public."AO_950DC3_TC_REMINDER_USERS" ("ID", "SUB_CALENDAR_ID", "USER_KEY") 
 
 
 --
+-- Data for Name: AO_950DC3_TC_SUBCALS; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_950DC3_TC_SUBCALS" ("COLOUR", "CREATED", "CREATOR", "DESCRIPTION", "ID", "LAST_MODIFIED", "NAME", "PARENT_ID", "SPACE_KEY", "STORE_KEY", "SUBSCRIPTION_ID", "TIME_ZONE_ID", "USING_CUSTOM_EVENT_TYPE_ID") FROM stdin;
+\.
+
+
+--
 -- Data for Name: AO_950DC3_TC_SUBCALS_IN_SPACE; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -5888,6 +12632,14 @@ COPY public."AO_950DC3_TC_SUBCALS_PROPS" ("ID", "KEY", "SUB_CALENDAR_ID", "VALUE
 
 
 --
+-- Data for Name: AO_954A21_MOBILE_OAUTH2; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_954A21_MOBILE_OAUTH2" ("BROWSER_CACHE_ENABLED", "CLIENT_ID", "CONFIGURATION_ID", "ID") FROM stdin;
+\.
+
+
+--
 -- Data for Name: AO_954A21_PUSH_NOTIFICATION_AO; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -5907,7 +12659,7 @@ COPY public."AO_A0B856_DAILY_COUNTS" ("DAY_SINCE_EPOCH", "ERRORS", "EVENT_ID", "
 -- Data for Name: AO_A0B856_HIST_INVOCATION; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public."AO_A0B856_HIST_INVOCATION" ("ERROR_CONTENT", "EVENT_ID", "FINISH", "ID", "OUTCOME", "REQUEST_BODY", "REQUEST_HEADERS", "REQUEST_ID", "REQUEST_METHOD", "REQUEST_URL", "RESPONSE_BODY", "RESPONSE_HEADERS", "RESULT_DESCRIPTION", "START", "STATUS_CODE", "WEBHOOK_ID") FROM stdin;
+COPY public."AO_A0B856_HIST_INVOCATION" ("ERROR_CONTENT", "EVENT_ID", "FINISH", "ID", "OUTCOME", "REQUEST_BODY", "REQUEST_HEADERS", "REQUEST_ID", "REQUEST_METHOD", "REQUEST_URL", "RESPONSE_BODY", "RESPONSE_HEADERS", "RESULT_DESCRIPTION", "START", "STATUS_CODE", "WEBHOOK_ID", "EVENT_SCOPE_ID", "EVENT_SCOPE_TYPE") FROM stdin;
 \.
 
 
@@ -5915,7 +12667,7 @@ COPY public."AO_A0B856_HIST_INVOCATION" ("ERROR_CONTENT", "EVENT_ID", "FINISH", 
 -- Data for Name: AO_A0B856_WEBHOOK; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public."AO_A0B856_WEBHOOK" ("ACTIVE", "CREATED", "ID", "NAME", "SCOPE_ID", "SCOPE_TYPE", "UPDATED", "URL") FROM stdin;
+COPY public."AO_A0B856_WEBHOOK" ("ACTIVE", "CREATED", "ID", "NAME", "SCOPE_ID", "SCOPE_TYPE", "UPDATED", "URL", "PASSWORD", "SSL_VERIFICATION_REQUIRED", "USERNAME") FROM stdin;
 \.
 
 
@@ -6007,6 +12759,9 @@ JFR recording started	stp.jfr.audit.recording.started	19
 Space configuration updated	audit.logging.summary.space.config.updated	20
 Space permission removed	audit.logging.summary.space.permission.removed	21
 Personal access token created	personal.access.tokens.audit.log.summary.token.created	22
+Secret value has been updated	audit.logging.summary.security.secret.updated	23
+Admin logged in without 2SV	authentication.two-step-verification.audit.identity.verification.admin-without-tsv	24
+Security email sent	lighthouse.email.notification.action.sent	25
 \.
 
 
@@ -6023,6 +12778,9 @@ Reindex	audit.logging.category.reindex	10
 System	stp.audit.category.system	11
 Spaces	audit.logging.category.spaces	12
 Security	personal.access.tokens.audit.log.category	13
+Security	audit.logging.category.security	14
+Identity verification	authentication.two-step-verification.audit.identity.verification.category	15
+Security monitoring and alerts	lighthouse.email.notification.category	16
 \.
 
 
@@ -6208,6 +12966,40 @@ Space permission added	audit.logging.summary.space.permission.added	PERMISSIONS	
 JFR recording started	stp.jfr.audit.recording.started	AUDIT_LOG	[{"nameI18nKey":"stp.jfr.audit.configuration","name":"Configuration for JFR recording","value":"Default"},{"nameI18nKey":"stp.jfr.audit.start.type","name":"Started automatically","value":"true"}]	System	stp.audit.category.system	[]	1719938578558	167	BASE	System	\N	\N	\N	[]	\N	\N	\N	\N	\N	\N	stp.jfr.audit.recording.started stp.audit.category.system jfr recording started system	\N	\N	\N	http://localhost:8090	-1	System	system
 JFR recording started	stp.jfr.audit.recording.started	AUDIT_LOG	[{"nameI18nKey":"stp.jfr.audit.configuration","name":"Configuration for JFR recording","value":"Default"},{"nameI18nKey":"stp.jfr.audit.start.type","name":"Started automatically","value":"true"}]	System	stp.audit.category.system	[]	1719938579416	168	BASE	System	\N	\N	\N	[]	\N	\N	\N	\N	\N	\N	stp.jfr.audit.recording.started stp.audit.category.system jfr recording started system	\N	\N	\N	http://localhost:8090	-1	System	system
 Personal access token created	personal.access.tokens.audit.log.summary.token.created	SECURITY	[{"nameI18nKey":"personal.access.tokens.audit.log.extra.attribute.name","name":"Token Name","value":"ci token"}]	Security	personal.access.tokens.audit.log.category	[]	1719939572498	169	BASE	Browser	\N	4028408390705fdc01907061af0d0000	User	[{"name":"admin","type":"User","uri":null,"id":"4028408390705fdc01907061af0d0000"}]	\N	\N	\N	\N	\N	\N	admin personal.access.tokens.audit.log.summary.token.created personal.access.tokens.audit.log.category personal access token created security 192.168.65.1	\N	\N	192.168.65.1	http://localhost:8090	4028408390705fdc01907061af0d0000	admin	user
+Secret value has been updated	audit.logging.summary.security.secret.updated	SECURITY	[]	Security	audit.logging.category.security	[]	1743543675207	170	BASE	System	\N	\N	Secret	[{"name":"confluence.property.synchrony.service.authtoken","type":"Secret","uri":null,"id":null}]	\N	\N	\N	\N	\N	\N	confluence.property.synchrony.service.authtoken audit.logging.summary.security.secret.updated audit.logging.category.security secret value has been updated security system	\N	\N	\N	http://localhost:8090	-1	System	system
+Secret value has been updated	audit.logging.summary.security.secret.updated	SECURITY	[]	Security	audit.logging.category.security	[]	1743543675223	171	BASE	System	\N	\N	Secret	[{"name":"confluence.property.hibernate.connection.password","type":"Secret","uri":null,"id":null}]	\N	\N	\N	\N	\N	\N	confluence.property.hibernate.connection.password audit.logging.summary.security.secret.updated audit.logging.category.security secret value has been updated security system	\N	\N	\N	http://localhost:8090	-1	System	system
+JFR recording started	stp.jfr.audit.recording.started	AUDIT_LOG	[{"nameI18nKey":"stp.jfr.audit.configuration","name":"Configuration for JFR recording","value":"Default"},{"nameI18nKey":"stp.jfr.audit.start.type","name":"Started automatically","value":"true"}]	System	stp.audit.category.system	[]	1743543686512	172	BASE	System	\N	\N	\N	[]	\N	\N	\N	\N	\N	\N	stp.jfr.audit.recording.started stp.audit.category.system jfr recording started system	\N	\N	\N	http://localhost:8090	-1	System	system
+JFR recording started	stp.jfr.audit.recording.started	AUDIT_LOG	[{"nameI18nKey":"stp.jfr.audit.configuration","name":"Configuration for JFR recording","value":"Default"},{"nameI18nKey":"stp.jfr.audit.start.type","name":"Started automatically","value":"true"}]	System	stp.audit.category.system	[]	1743543686540	173	BASE	System	\N	\N	\N	[]	\N	\N	\N	\N	\N	\N	stp.jfr.audit.recording.started stp.audit.category.system jfr recording started system	\N	\N	\N	http://localhost:8090	-1	System	system
+Admin logged in without 2SV	authentication.two-step-verification.audit.identity.verification.admin-without-tsv	SECURITY	[]	Identity verification	authentication.two-step-verification.audit.identity.verification.category	[]	1743543706239	174	BASE	Browser	\N	\N	user	[{"name":"admin","type":"user","uri":null,"id":null}]	\N	\N	\N	\N	\N	\N	admin authentication.two-step-verification.audit.identity.verification.admin-without-tsv authentication.two-step-verification.audit.identity.verification.category logged in without 2sv identity verification anonymous 172.20.0.1	\N	\N	172.20.0.1	http://localhost:8090	-2	Anonymous	user
+Security email sent	lighthouse.email.notification.action.sent	GLOBAL_CONFIG_AND_ADMINISTRATION	[{"nameI18nKey":"lighthouse.email.label.method","name":"Method","value":"Browser"},{"nameI18nKey":"lighthouse.email.label.alertName","name":"Alert name","value":"admin-user-logged-in-without-2sv"},{"nameI18nKey":"lighthouse.email.label.nodeId","name":"Node ID","value":null},{"nameI18nKey":"lighthouse.email.label.documentationUrl","name":"Documentation URL","value":"https://confluence.atlassian.com/display/DOC/Monitor+security+threats"},{"nameI18nKey":"lighthouse.email.label.instanceUrl","name":"Instance URL","value":"http://localhost:8090"},{"nameI18nKey":"lighthouse.email.label.securityGroupName","name":"Security group name","value":"security-monitoring-alerts"},{"nameI18nKey":"lighthouse.email.notification.recipients","name":"Email addresses","value":"admin@example.com"},{"nameI18nKey":"lighthouse.email.label.sourceIp","name":"Source IP address","value":"172.20.0.1"},{"nameI18nKey":"lighthouse.email.label.alertUUID","name":"Event ID","value":"b35e4122-0953-4084-aeb5-757d6f7f3b44"},{"nameI18nKey":"lighthouse.email.label.alertTime","name":"Alert time","value":"1 April 2025 at 21:41:46 UTC"},{"nameI18nKey":"lighthouse.email.label.productId","name":"Product","value":"confluence"},{"nameI18nKey":"lighthouse.email.label.subject","name":"Subject","value":"Security alert for: admin user logged in without two-step verification"},{"nameI18nKey":"lighthouse.email.label.auditAuthor","name":"Actioned by","value":"admin (admin)"},{"nameI18nKey":"lighthouse.email.label.alertId","name":"Alert ID","value":"1"},{"nameI18nKey":"lighthouse.email.label.username","name":"Username","value":"admin (admin)"},{"nameI18nKey":"lighthouse.email.label.isSecurityGroupSetup","name":"Security group setup","value":"false"}]	Security monitoring and alerts	lighthouse.email.notification.category	[]	1743543706549	175	BASE	System	\N	\N	\N	[]	\N	\N	\N	\N	\N	\N	lighthouse.email.notification.action.sent lighthouse.email.notification.category security email sent monitoring and alerts system	\N	\N	\N	http://localhost:8090	-1	System	system
+Personal access token created	personal.access.tokens.audit.log.summary.token.created	SECURITY	[{"nameI18nKey":"personal.access.tokens.audit.log.extra.attribute.name","name":"Token Name","value":"baton-test"}]	Security	personal.access.tokens.audit.log.category	[]	1743543758619	176	BASE	Browser	\N	4028408390705fdc01907061af0d0000	User	[{"name":"admin","type":"User","uri":null,"id":"4028408390705fdc01907061af0d0000"}]	\N	\N	\N	\N	\N	\N	admin personal.access.tokens.audit.log.summary.token.created personal.access.tokens.audit.log.category personal access token created security 172.20.0.1	\N	\N	172.20.0.1	http://localhost:8090	4028408390705fdc01907061af0d0000	admin	user
+\.
+
+
+--
+-- Data for Name: AO_CC7F60_SEC_MON_ALERT; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_CC7F60_SEC_MON_ALERT" ("ALERT_STATUS", "ALERT_TIMESTAMP", "ALERT_TYPE", "EMAIL_STATUS", "ID", "QUEUED_TIMESTAMP", "UUID") FROM stdin;
+1	1743543706239	admin-user-logged-in-without-2sv	SENT	1	1743543706557	b35e4122-0953-4084-aeb5-757d6f7f3b44
+\.
+
+
+--
+-- Data for Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" ("ID", "JOB_KEY", "LAST_SUCCESSFUL_RUN") FROM stdin;
+1	com.atlassian.lighthouse.service.scheduler.DailyAnalyticsScheduleJobRunner	\N
+\.
+
+
+--
+-- Data for Name: AO_CC7F60_SEC_MON_THREAT_EVENT; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_CC7F60_SEC_MON_THREAT_EVENT" ("ACTION_T_KEY", "ALERT_ID", "CREATED_TIME", "EVENT_SOURCE", "EXTRA_ATTRIBUTE_T_KEY_1", "EXTRA_ATTRIBUTE_T_KEY_2", "EXTRA_ATTRIBUTE_T_KEY_3", "EXTRA_ATTRIBUTE_VALUE_COLUMN_1", "EXTRA_ATTRIBUTE_VALUE_COLUMN_2", "EXTRA_ATTRIBUTE_VALUE_COLUMN_3", "ID", "INSTANCE_BASE_URL", "NODE", "SOURCE_IP", "TRIGGERING_USER_KEY") FROM stdin;
+authentication.two-step-verification.audit.identity.verification.admin-without-tsv	1	1743543706239	Browser	admin.username	\N	\N	admin	\N	\N	1	http://localhost:8090	\N	172.20.0.1	4028408390705fdc01907061af0d0000
 \.
 
 
@@ -6228,10 +13020,34 @@ COPY public."AO_ED669C_IDP_CONFIG" ("ADDITIONAL_JIT_SCOPES", "ADDITIONAL_SCOPES"
 
 
 --
+-- Data for Name: AO_ED669C_SEALED_ENTITY; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_ED669C_SEALED_ENTITY" ("ID", "KEY", "VALUE") FROM stdin;
+\.
+
+
+--
 -- Data for Name: AO_ED669C_SEEN_ASSERTIONS; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
 COPY public."AO_ED669C_SEEN_ASSERTIONS" ("ASSERTION_ID", "EXPIRY_TIMESTAMP", "ID") FROM stdin;
+\.
+
+
+--
+-- Data for Name: AO_ED669C_TOTP_CODES; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_ED669C_TOTP_CODES" ("EXPIRY_TIMESTAMP", "ID", "TOTP_CODE_HASH", "USER_KEY") FROM stdin;
+\.
+
+
+--
+-- Data for Name: AO_ED669C_TOTP_USER_ENROLLMENT; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public."AO_ED669C_TOTP_USER_ENROLLMENT" ("CREATED_AT", "MODIFIED_AT", "RECOVERY_CODE", "SECRET", "USER_KEY") FROM stdin;
 \.
 
 
@@ -6280,7 +13096,6 @@ COPY public."AO_FE1BC5_REFRESH_TOKEN" ("ACCESS_TOKEN_ID", "AUTHORIZATION_CODE", 
 --
 
 COPY public."EVENTS" (rev, history, partition, sequence, event, contentid, inserted) FROM stdin;
-confluence$content$98371.6	/Synchrony-140efc8d-eb6a-3487-a87d-34419cd72508/confluence-98371	0	0	\\x01934493469301914a9147c44293429201961e9420b8636f6e666c75656e636524636f6e74656e742439383337310600c0c09206b8323032342d30372d30315432323a32303a32392e3731375ac0c2934694019148914a9147c48f9801b092439201961ec0c0931994041100a4626f64799514029314aa646174612d7469746c659319a09215010192139305240ca1709314150d0ca2627293012f00ae052fb86d63652d626f6775739319a131921501c09503a7757365724b6579d920343032383430383339303730356664633031010a5c36316166306430303030a66272616e6368a66d6173746572	98371	2024-07-01 22:20:29.767
 \.
 
 
@@ -6299,17 +13114,336 @@ Synchrony-140efc8d-eb6a-3487-a87d-34419cd72508-debug	M71RJ+0mp8sal9GHS9J50Bq2kKl
 --
 
 COPY public."SNAPSHOTS" (key, value, contentid, inserted) FROM stdin;
-snapshot|0.confluence$content$98371.6|/Synchrony-140efc8d-eb6a-3487-a87d-34419cd72508/confluence-98371	\\x0193469301914a9147c463924593039420b8636f6e666c75656e636524636f6e74656e74243938333731060098041100a4626f647901921296041100a17001921298041100a26272019112029303ae646174612d6d63652d626f677573a131029303aa646174612d7469746c65a0	98371	2024-07-01 22:20:29.774
 \.
 
 
 --
--- Data for Name: user_mapping; Type: TABLE DATA; Schema: public; Owner: confluence
+-- Data for Name: attachmentdata; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.user_mapping (user_key, username, lower_username) FROM stdin;
-4028408390705fdc01907061af0d0000	admin	admin
-4028408390705fdc01907062915d0001	exporter	exporter
+COPY public.attachmentdata (attachmentdataid, hibernateversion, attversion, data, attachmentid) FROM stdin;
+\.
+
+
+--
+-- Data for Name: audit_affected_object; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.audit_affected_object (id, name, type, auditrecordid) FROM stdin;
+\.
+
+
+--
+-- Data for Name: audit_changed_value; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.audit_changed_value (id, name, oldvalue, newvalue, auditrecordid) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auditrecord; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.auditrecord (auditrecordid, summary, description, category, address, sysamdin, authorname, authorfullname, authorkey, objectname, objecttype, searchstring, creationdate) FROM stdin;
+\.
+
+
+--
+-- Data for Name: background_job; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.background_job (id, type, owner, description, run_at, iteration_number, number_of_failures, creation_time, last_touch_time, duration_ms, parameters) FROM stdin;
+819201	BackgroundJobCleaner	\N	Repetitive task	2025-04-02 21:42:00.075651	2	0	2024-07-01 22:21:00.004807	2025-04-01 21:42:00.076463	53	{}
+\.
+
+
+--
+-- Data for Name: background_job_archived; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.background_job_archived (id, type, owner, description, error_message, iteration_number, number_of_failures, creation_time, completion_time, duration_ms, state) FROM stdin;
+\.
+
+
+--
+-- Data for Name: backup_restore_job_details; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.backup_restore_job_details (id, operation, scope, state, create_time, start_processing_time, finish_processing_time, error_message, owner, terminator, cancel_time, filename, single_space_key, space_keys, file_delete_time, file_exists) FROM stdin;
+\.
+
+
+--
+-- Data for Name: backup_restore_job_settings; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.backup_restore_job_settings (id, settings) FROM stdin;
+\.
+
+
+--
+-- Data for Name: backup_restore_job_statistics; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.backup_restore_job_statistics (id, job_statistics) FROM stdin;
+\.
+
+
+--
+-- Data for Name: bandana; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.bandana (bandanaid, bandanacontext, bandanakey, bandanavalue) FROM stdin;
+32780	_GLOBAL	com.atlassian.migration.agent:CONCURRENCY	<string>{&quot;SPACE_USERS_CONCURRENCY_MAX&quot;:2,&quot;SPACE_USERS_CONCURRENCY_NODE_MAX&quot;:2,&quot;ATTACHMENT_CONCURRENCY_CLUSTER_MAX&quot;:1,&quot;ATTACHMENT_CONCURRENCY_NODE_MAX&quot;:1,&quot;EXPORT_CONCURRENCY_CLUSTER_MAX&quot;:1,&quot;EXPORT_CONCURRENCY_NODE_MAX&quot;:1,&quot;IMPORT_CONCURRENCY_CLUSTER_MAX&quot;:4,&quot;IMPORT_CONCURRENCY_NODE_MAX&quot;:4,&quot;UPLOAD_CONCURRENCY_CLUSTER_MAX&quot;:2,&quot;UPLOAD_CONCURRENCY_NODE_MAX&quot;:2,&quot;ATTACHMENT_UPLOAD_CONCURRENCY&quot;:5}</string>
+32776	_GLOBAL	atlassian.confluence.settings	<settings>\n  <doNotSave>false</doNotSave>\n  <allowCamelCase>false</allowCamelCase>\n  <allowTrackbacks>false</allowTrackbacks>\n  <allowThreadedComments>true</allowThreadedComments>\n  <externalUserManagement>false</externalUserManagement>\n  <denyPublicSignup>true</denyPublicSignup>\n  <emailAdminMessageOff>false</emailAdminMessageOff>\n  <almostSupportPeriodEndMessageOff>false</almostSupportPeriodEndMessageOff>\n  <senMissingInLicenseMessageOff>true</senMissingInLicenseMessageOff>\n  <baseUrlAdminMessageOff>false</baseUrlAdminMessageOff>\n  <allowRemoteApi>false</allowRemoteApi>\n  <allowRemoteApiAnonymous>false</allowRemoteApiAnonymous>\n  <antiXssMode>true</antiXssMode>\n  <gzippingResponse>true</gzippingResponse>\n  <disableLogo>false</disableLogo>\n  <sharedMode>false</sharedMode>\n  <enableDidYouMean>false</enableDidYouMean>\n  <enableQuickNav>true</enableQuickNav>\n  <enableSpaceStyles>false</enableSpaceStyles>\n  <enableOpenSearch>true</enableOpenSearch>\n  <showSystemInfoIn500Page>false</showSystemInfoIn500Page>\n  <showApplicationTitle>false</showApplicationTitle>\n  <captchaSettings>\n    <enableCaptcha>false</enableCaptcha>\n    <enableDebug>false</enableDebug>\n    <captchaGroups class="list"/>\n    <exclude>registered</exclude>\n  </captchaSettings>\n  <customHtmlSettings>\n    <beforeHeadEnd></beforeHeadEnd>\n    <afterBodyStart></afterBodyStart>\n    <beforeBodyEnd></beforeBodyEnd>\n  </customHtmlSettings>\n  <colourSchemesSettings>\n    <colourSchemeType>custom</colourSchemeType>\n  </colourSchemesSettings>\n  <loginManagerSettings>\n    <enableElevatedSecurityCheck>true</enableElevatedSecurityCheck>\n    <loginAttemptsThreshold>3</loginAttemptsThreshold>\n  </loginManagerSettings>\n  <confluenceHttpParameters>\n    <connectionTimeout>10000</connectionTimeout>\n    <socketTimeout>10000</socketTimeout>\n    <enabled>true</enabled>\n  </confluenceHttpParameters>\n  <attachmentMaxSize>104857600</attachmentMaxSize>\n  <auditLogRetentionNumber>3</auditLogRetentionNumber>\n  <auditLogRetentionUnit>Years</auditLogRetentionUnit>\n  <draftSaveInterval>30000</draftSaveInterval>\n  <maxAttachmentsInUI>5</maxAttachmentsInUI>\n  <siteTitle>Confluence</siteTitle>\n  <documentationUrlPattern>http://docs.atlassian.com/confluence/docs-{0}/{1}</documentationUrlPattern>\n  <showContactAdministratorsForm>true</showContactAdministratorsForm>\n  <emailAddressVisibility>email.address.public</emailAddressVisibility>\n  <defaultEncoding>UTF-8</defaultEncoding>\n  <maxThumbHeight>300</maxThumbHeight>\n  <maxThumbWidth>300</maxThumbWidth>\n  <backupAttachmentsDaily>true</backupAttachmentsDaily>\n  <backupDaily>true</backupDaily>\n  <backupPath>/var/atlassian/application-data/confluence/backups</backupPath>\n  <nofollowExternalLinks>true</nofollowExternalLinks>\n  <indexingLanguage>english</indexingLanguage>\n  <globalDefaultLocale>en_GB</globalDefaultLocale>\n  <dailyBackupFilePrefix>backup-</dailyBackupFilePrefix>\n  <dailyBackupDateFormatPattern>yyyy_MM_dd</dailyBackupDateFormatPattern>\n  <supportRequestEmail>confluence-autosupportrequests@atlassian.com</supportRequestEmail>\n  <defaultSpaceHomepageTitle>Home</defaultSpaceHomepageTitle>\n  <baseUrl>http://localhost:8090</baseUrl>\n  <attachmentDataStore>file.system.based.attachments.storage</attachmentDataStore>\n  <displayLinkIcons>false</displayLinkIcons>\n  <addWildcardsToUserAndGroupSearches>true</addWildcardsToUserAndGroupSearches>\n  <xsrfAddComments>true</xsrfAddComments>\n  <webSudoTimeout>10</webSudoTimeout>\n  <webSudoEnabled>true</webSudoEnabled>\n  <defaultUsersGroup>confluence-users</defaultUsersGroup>\n  <attachmentSecurityLevel>smart</attachmentSecurityLevel>\n  <enableJavascriptTop>true</enableJavascriptTop>\n  <supportPeriodEndMessageOff>false</supportPeriodEndMessageOff>\n  <enableWysiwyg>true</enableWysiwyg>\n  <useWysiwygByDefault>true</useWysiwygByDefault>\n  <numberOfBreadcrumbAncestors>1</numberOfBreadcrumbAncestors>\n  <viewSpaceGoesToSpaceSummary>false</viewSpaceGoesToSpaceSummary>\n  <enableLikes>false</enableLikes>\n  <currentIndexVersion>0</currentIndexVersion>\n  <maintenanceBannerMessageOn>false</maintenanceBannerMessageOn>\n  <maxSimultaneousQuickNavRequests>40</maxSimultaneousQuickNavRequests>\n  <maxRssItems>200</maxRssItems>\n  <rssTimeout>60</rssTimeout>\n  <pageTimeout>120</pageTimeout>\n</settings>
+32770	_GLOBAL	plugin.manager.state.Map	<map>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-trashed-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-tasks:task-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-trashed-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-edited-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-edited-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-page-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-moved-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-like:like-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-request-access-plugin:request-access-notification-email-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:follower-added-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-onboarding:notification-template-less-users-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-file-notifications:file-content-update-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-onboarding:notification-template-no-spaces-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-mentions-plugin:mention-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-edited-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-comments:notification-template-new-mail-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-notifications-batch-plugin:batching-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-attachment-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-draft-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-created-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-edited-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-comments:notification-template-resolve-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-comments:notification-template-reply-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-tasks:task-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-page-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-edited-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-edited-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:follower-added-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-created-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-created-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:forgot-password-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-mentions-plugin:mention-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-file-notifications:file-content-remove-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-request-access-plugin:grant-access-notification-email-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n</map>
+32774	_GLOBAL	confluence.server.id	<string>BA67-DGPQ-SJ6M-FTXD</string>
+32775	_GLOBAL	confluence.server.installation.date	<date>2024-07-01 22:17:45.988 UTC</date>
+851969	_GLOBAL	easy-user.sign-up.token.previous	<null/>
+32781	_GLOBAL	com.atlassian.migration.agent:CLOUD_TYPE	<string>{&quot;FEDRAMP&quot;:false,&quot;STANDARD&quot;:true}</string>
+32782	_GLOBAL	AO_7B47A5_#	<string>4</string>
+32783	_GLOBAL	AO_950DC3_#	<string>20</string>
+32778	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.plugin-installed-date-in-millis	<string>1719872266360</string>
+32785	ds	atlassian.confluence.theme.settings	<map>\n  <entry>\n    <string>theme.key</string>\n    <string></string>\n  </entry>\n</map>
+32786	ds	atlassian.confluence.css.resource.counter	<int>4</int>
+32787	ds	atlassian.confluence.space.settings	<com.atlassian.confluence.setup.settings.SpaceSettings>\n  <spaceKey>ds</spaceKey>\n  <disableLogo>false</disableLogo>\n  <colourSchemesSettings>\n    <colourSchemeType>global</colourSchemeType>\n  </colourSchemesSettings>\n  <doNotSave>false</doNotSave>\n</com.atlassian.confluence.setup.settings.SpaceSettings>
+32788	ds	sidebar.nav-type	<string>page-tree</string>
+32789	ds	atlassian.confluence.colour.scheme	<colourScheme>\n  <colours>\n    <entry>\n      <string>property.style.topbarmenuselectedbgcolour</string>\n      <string>#336699</string>\n    </entry>\n    <entry>\n      <string>property.style.menuselectedbgcolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.navtextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.bordercolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.navselectedtextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.breadcrumbstextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.topbarcolour</string>\n      <string>#003366</string>\n    </entry>\n    <entry>\n      <string>property.style.navselectedbgcolour</string>\n      <string>#003366</string>\n    </entry>\n    <entry>\n      <string>property.style.linkcolour</string>\n      <string>#326ca6</string>\n    </entry>\n    <entry>\n      <string>property.style.navbgcolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.menuitemselectedtextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.menuitemselectedbgcolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.headingtextcolour</string>\n      <string>#000000</string>\n    </entry>\n    <entry>\n      <string>property.style.spacenamecolour</string>\n      <string>#999999</string>\n    </entry>\n    <entry>\n      <string>property.style.menuitemtextcolour</string>\n      <string>#535353</string>\n    </entry>\n    <entry>\n      <string>property.style.topbarmenuitemtextcolour</string>\n      <string>#326ca6</string>\n    </entry>\n  </colours>\n</colourScheme>
+32794	_GLOBAL	com.atlassian.audit.plugin:audit-config:retention:period	<string>P3Y</string>
+32793	_GLOBAL	com.atlassian.audit.atlassian-audit-plugin:build	<string>4</string>
+32795	_GLOBAL	com.atlassian.confluence.extra.team-calendars:build	<string>1312121002</string>
+32796	_GLOBAL	com.atlassian.confluence.plugins.confluence-edge-index:build	<string>1</string>
+32798	_GLOBAL	com.atlassian.plugins.atlassian-whitelist-core-plugin:build	<string>3</string>
+32799	_GLOBAL	com.atlassian.plugins.custom_apps.hasCustomOrder	<string>false</string>
+32800	_GLOBAL	com.atlassian.plugins.atlassian-nav-links-plugin:build	<string>1</string>
+32801	_GLOBAL	confluence.extra.masterdetail:build	<string>2</string>
+851970	_GLOBAL	easy-user.sign-up.token	<string>64406bf95114ddf7</string>
+32802	_GLOBAL	com.atlassian.confluence.plugins.confluence-inline-comments:build	<string>1</string>
+32803	_GLOBAL	com.atlassian.confluence.plugins.confluence-space-ia:build	<string>1</string>
+32804	_GLOBAL	com.atlassian.confluence.plugins.confluence-roadmap-plugin:build	<string>6</string>
+32806	_GLOBAL	com.atlassian.confluence.plugins.confluence-collaborative-editor-plugin:build	<string>1</string>
+32807	_GLOBAL	com.atlassian.upm.atlassian-universal-plugin-manager-plugin:build	<string>5</string>
+32809	_GLOBAL	com.atlassian.plugins.authentication.sso.config.sso-type	<string>NONE</string>
+32810	_GLOBAL	com.atlassian.plugins.authentication.sso.config.show-login-form	<string>true</string>
+32811	_GLOBAL	com.atlassian.confluence.plugins.confluence-create-content-plugin:build	<string>5</string>
+32812	_GLOBAL	com.atlassian.confluence.plugins.confluence-inline-tasks:build:finalized	<string>4</string>
+32805	_GLOBAL	synchrony_collaborative_editor_app_registered	<string>true</string>
+32790	ds	trash.date.migration.time	<instant>2024-07-01T22:19:28.704603173Z</instant>
+32819	_GLOBAL	com.atlassian.analytics.client.configuration..analytics_enabled	<string>true</string>
+32824	_GLOBAL	com.atlassian.upm:notifications:notification-edition.mismatch	<list/>
+32825	_GLOBAL	com.atlassian.upm:notifications:notification-evaluation.expired	<list/>
+32826	_GLOBAL	com.atlassian.upm:notifications:notification-evaluation.nearlyexpired	<list/>
+32827	_GLOBAL	com.atlassian.upm:notifications:notification-maintenance.expired	<list/>
+32828	_GLOBAL	com.atlassian.upm:notifications:notification-maintenance.nearlyexpired	<list/>
+32829	_GLOBAL	com.atlassian.upm:notifications:notification-license.expired	<list/>
+32830	_GLOBAL	com.atlassian.upm:notifications:notification-license.nearlyexpired	<list/>
+851971	_GLOBAL	atl.confluence.plugins.confluence-daily-summary-email:admin.defaultSchedule	<string>weekly</string>
+32833	_GLOBAL	c.a.c.plugins:confluence-user-rest:firstCheckDateMs	<string>1719872403059</string>
+32834	_GLOBAL	c.a.c.plugins:confluence-user-rest:hadHadASingleDirectory	<string>true</string>
+32813	_GLOBAL	com.atlassian.troubleshooting.thready.configuration.enabled	<string>true</string>
+851972	_GLOBAL	atl.confluence.plugins.confluence-daily-summary-email:admin.defaultEnabled	<string>true</string>
+32814	_GLOBAL	atlassian.confluence.plugin.counter	<int>2</int>
+32822	_GLOBAL	com.atlassian.plugins.oauth2.provider.jwt.secret	<string>2f7d93c8e9744f74e95f47d2ab72a68f6dbb59e08fac83e9ead0704c5d43589b</string>
+32815	_CALENDAR_ee65026d81383713d11480a2da8ced1608ea1448	legacySubCalendarsMigrationCutoffDate	<long>1719872399784</long>
+32817	_GLOBAL	com.atlassian.analytics.client.configuration..policy_acknowledged	<string>true</string>
+32823	_GLOBAL	com.atlassian.upm:notifications:notification-plugin.request	<list/>
+32818	_GLOBAL	com.atlassian.analytics.client.configuration.uuid	<string>6afd4697-a536-4349-92a8-d36edbf9f5b0</string>
+32820	_GLOBAL	com.atlassian.analytics.client.configuration.serverid	<string>BA67-DGPQ-SJ6M-FTXD</string>
+32831	_GLOBAL	synchrony_collaborative_editor_app_base_url	<string>http://localhost:8090/synchrony-proxy,http://localhost:8090/synchrony-proxy</string>
+32832	_GLOBAL	synchrony_collaborative_editor_app_passphrase	<string>OkMnHbXwN8ByFeWM8MwJur9d5qCcPDjh7v+OyWz8w+s=</string>
+32836	_GLOBAL	synchrony_collaborative_editor_app_id	<string>Synchrony-140efc8d-eb6a-3487-a87d-34419cd72508</string>
+32837	_GLOBAL	synchrony_collaborative_editor_app_secret	<string>M71RJ+0mp8sal9GHS9J50Bq2kKlnZQSFR/ZFzWtfqo4=</string>
+32838	_GLOBAL	confluence.darkfeature	<string>site-wide.shared-drafts</string>
+32839	com.atlassian.confluence.content.render.xhtml.migration.macro.MacroMigrationService	migration.required	<boolean>false</boolean>
+32840	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32841	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SystemMaintenanceTaskQueueFlusherScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32842	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ClusterSafetyJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32843	com.atlassian.confluence.schedule.ScheduledJobConfiguration	FlushContentIndexScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32844	com.atlassian.confluence.schedule.ScheduledJobConfiguration	MailQueueFlushJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32845	com.atlassian.confluence.schedule.ScheduledJobConfiguration	clearOldMailErrorsJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32846	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ReIndexHouseKeepingScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32771	_GLOBAL	AO_9412A1_#	<string>8</string>
+32784	_GLOBAL	atlassian.confluence.plugin.resource.counter	<int>5</int>
+32835	_GLOBAL	com.atlassian.upm:notifications:notification-update	<list>\n  <string>com.atlassian.migration.agent</string>\n</list>
+32847	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackgroundJobServiceScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32848	com.atlassian.confluence.schedule.ScheduledJobConfiguration	DeferredFileDeletionJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32849	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ExpiredUserVerificationTokenCleanupJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32850	com.atlassian.confluence.schedule.ScheduledJobConfiguration	IndexSnapshotCleaner	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32851	com.atlassian.confluence.schedule.ScheduledJobConfiguration	JmxAppLoggingJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32852	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ClusterCacheCompactionJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32853	com.atlassian.confluence.schedule.ScheduledJobConfiguration	VersionHardRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>false</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32854	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ClearExpiredRememberMeTokensJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32855	com.atlassian.confluence.schedule.ScheduledJobConfiguration	MonitoringStatsEventPublisher	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32856	com.atlassian.confluence.schedule.ScheduledJobConfiguration	JmxLoggingJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32857	com.atlassian.confluence.schedule.ScheduledJobConfiguration	JournalCleaner	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32858	com.atlassian.confluence.schedule.ScheduledJobConfiguration	VersionSoftRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32859	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SynchronyEventsSoftRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32860	com.atlassian.confluence.schedule.ScheduledJobConfiguration	TrashSoftRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32861	com.atlassian.confluence.schedule.ScheduledJobConfiguration	EhCacheCompactionJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32862	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SynchronyEventsHardRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>false</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32863	com.atlassian.confluence.schedule.ScheduledJobConfiguration	FlushChangeIndexScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32864	com.atlassian.confluence.schedule.ScheduledJobConfiguration	AncestorsRepairJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32865	com.atlassian.confluence.schedule.ScheduledJobConfiguration	DailyReportJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32866	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupRestoreScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32867	com.atlassian.confluence.schedule.ScheduledJobConfiguration	PropertyEntryGardeningJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32868	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SchedulerRunDetailsPurgeJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32869	com.atlassian.confluence.schedule.ScheduledJobConfiguration	LocalTaskQueueFlushJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32870	com.atlassian.confluence.schedule.ScheduledJobConfiguration	CleanTempDirectoryJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32871	com.atlassian.confluence.schedule.ScheduledJobConfiguration	TrashHardRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>false</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32772	_GLOBAL	AO_21D670_#	<string>1</string>
+32872	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupRestoreJobCleanerScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32873	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupRestoreZipCleanerScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32874	com.atlassian.confluence.schedule.ScheduledJobConfiguration	onboardingSpaceCheckJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32875	com.atlassian.confluence.schedule.ScheduledJobConfiguration	batchingJobConfig	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32877	com.atlassian.confluence.schedule.ScheduledJobConfiguration	createBlueprintPageEntityCleanupJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32878	com.atlassian.confluence.schedule.ScheduledJobConfiguration	onboardingNumberOfUsersCheckJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32879	com.atlassian.confluence.schedule.ScheduledJobConfiguration	migration-plugin:interval-space-statistic-calculation	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32881	com.atlassian.confluence.schedule.ScheduledJobConfiguration	reminderJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32882	com.atlassian.confluence.schedule.ScheduledJobConfiguration	periodicEventPublisherJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32883	com.atlassian.confluence.schedule.ScheduledJobConfiguration	purgeHistoryJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32884	com.atlassian.confluence.schedule.ScheduledJobConfiguration	cleanUpReports	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32885	com.atlassian.confluence.schedule.ScheduledJobConfiguration	deletedInviteesCleanUpJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32886	com.atlassian.confluence.schedule.ScheduledJobConfiguration	cacheStatsJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32887	com.atlassian.confluence.schedule.ScheduledJobConfiguration	confluenceDailyStatisticsPublisherJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32888	com.atlassian.confluence.schedule.ScheduledJobConfiguration	jira-metadata-cache-config	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32889	com.atlassian.confluence.schedule.ScheduledJobConfiguration	addonHouskeeperTrigger-v2	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32890	com.atlassian.confluence.schedule.ScheduledJobConfiguration	flushTaskIndexQueue	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32891	com.atlassian.confluence.schedule.ScheduledJobConfiguration	conversionQueueMonitor	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32896	_GLOBAL	com.atlassian.analytics.client.configuration..logged_base_analytics_data	<string>true</string>
+32897	TEST	trash.date.migration.time	<instant>2024-07-01T22:20:26.432823505Z</instant>
+32898	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.is-first-space-created	<string>true</string>
+32892	com.atlassian.confluence.schedule.ScheduledJobConfiguration	cleanupTrigger	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32893	com.atlassian.confluence.schedule.ScheduledJobConfiguration	flushEdgeIndexQueue	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32894	com.atlassian.confluence.schedule.ScheduledJobConfiguration	summaryEmail	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32895	_GLOBAL	global-description.record-id	<long>98359</long>
+32899	com.atlassian.confluence.extra.calendar3.watchdog.impl.CalendarContentForRemovedSpacesCleanUpWatchDogTask	cleanupDone	<string>true</string>
+32900	_GLOBAL	RemapSubscriptionCalendarWatchersWatchdogTask.followers	<string>0</string>
+32901	_GLOBAL	RemapSubscriptionCalendarWatchersWatchdogTask.remapped	<string>0</string>
+32902	_GLOBAL	RemapSubscriptionCalendarWatchersWatchdogTask	<string>FINISHED</string>
+32769	_GLOBAL	AO_187CCC_#	<string>1</string>
+32880	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.onboardingNumberOfUsersCheckJob	<string>JOB_EXECUTED</string>
+32876	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.onboardingSpaceCheckJob	<string>JOB_EXECUTED</string>
+32816	_GLOBAL	gadget.counter	<int>4</int>
+32773	_GLOBAL	AO_A0B856_#	<string>2</string>
+884737	_GLOBAL	atlassian.confluence.smtp.mail.accounts	<linked-hash-map/>
+32779	com.atlassian.confluence.plugins.pulp	version.history	<map>\n  <entry>\n    <string>9.4.0</string>\n    <string>2025-04-01T21:41:17.020Z</string>\n  </entry>\n  <entry>\n    <string>8.6.2</string>\n    <string>2024-07-01T22:17:47.265Z</string>\n  </entry>\n</map>
+32797	_GLOBAL	com.atlassian.crowd.embedded.admin:build	<string>5</string>
+884738	_GLOBAL	com.atlassian.securetunnel.client.tunnel-client-plugin:build	<string>2</string>
+884739	_GLOBAL	com.atlassian.plugins.authentication.sso.config.encryption-key-path	<string>javax.crypto.spec.SecretKeySpec_1743543685790</string>
+32808	_GLOBAL	com.atlassian.plugins.authentication.atlassian-authentication-plugin:build	<string>7</string>
+32777	_GLOBAL	synchrony_collaborative_editor_UUID	<string>e0d106c0-6c25-441c-a386-cb8d5df42679</string>
+32821	_GLOBAL	com.atlassian.upm.log.PluginSettingsAuditLogService:log:upm_audit_log_v3	<list>\n  <string>{&quot;userKey&quot;:&quot;Confluence&quot;,&quot;date&quot;:1743543687194,&quot;i18nKey&quot;:&quot;upm.auditLog.upm.startup&quot;,&quot;entryType&quot;:&quot;UPM_STARTUP&quot;,&quot;params&quot;:[]}</string>\n</list>
+884740	_GLOBAL	com.atlassian.analytics.client.configuration..analytics_option	<string>ADVANCED</string>
+884741	_GLOBAL	com.atlassian.oauth.consumer.ConsumerService:host.__HOST_SERVICE__	<string>{ATL_SECURED}</string>
+884742	_GLOBAL	com.atlassian.oauth.consumer.sal:build:finalized	<string>2</string>
+884743	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ThreadLimiterAnalyticsJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+32792	_GLOBAL	com.atlassian.migration.agent:mp-status	<string>{&quot;pluginVersionLastChecked&quot;:&quot;3.11.5&quot;,&quot;outdated&quot;:false,&quot;upgradeBy&quot;:&quot;2025-04-10&quot;,&quot;timestamp&quot;:1743543691008}</string>
+884744	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupRestoreNotExistingFileMarkerScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
+884745	_GLOBAL	atlassian.authentication.confluence.2sv.installed	<string>true</string>
+884746	_GLOBAL	com.atlassian.confluence.pulp.viewers-9.4.0	<string>4028408390705fdc01907061af0d0000</string>
+\.
+
+
+--
+-- Data for Name: bodycontent; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.bodycontent (bodycontentid, body, contentid, bodytypeid) FROM stdin;
+163841	<p style="margin-left: 60.0px;"> </p><p>Pages live in spaces. This page is in the 'Demonstration Space'. <br /> </p><p>Let's play with some content. Don't worry, you won't break anything:</p><ol><li>Click <strong>Edit</strong> at the top of this page. Now you're in the editor.<br /><br /></li><li>Type some words anywhere on the page.<br /><br /></li><li>Have some fun:<span style="line-height: 0.0px;"> </span></li></ol><ul><li style="list-style-type: none;"><ul><li>Change the color of the text: Select the text, then choose a color from the color option in the editor tool bar.<br /><br /></li><li>Add a link: Select some text, then choose the <strong>Link</strong> button on the toolbar.<br />Click <strong>Web Link</strong> and enter an <strong>Address</strong>, such as <code>http://www.atlassian.com</code>. <br />Click <strong>Insert</strong> to insert the link.<br /><br /></li><li>Find a file or picture on your computer, and drag it anywhere on this page.<br /><br /></li><li>Try some of the other options on the editor toolbar.</li></ul></li></ul><p>When<em> y</em>ou're ready, click <strong>Update</strong> to publish your changes then<strong> </strong>and go to the next step or back to the space home.</p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg" /></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg" /></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Prettify the page with an image (step 4 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg" /></ac:image></ac:link-body></ac:link></span></h1><p> </p>	98317	2
+163842	<p style="text-align: center;"> </p><h2><ac:image><ri:attachment ri:filename="welcome.png" /></ac:image><br />  <span style="color: rgb(128,128,128);">With Confluence it is easy to create, edit and share content with your team. <br />  Choose a topic below to start learning how.</span></h2><h2><span style="color: rgb(0,0,128);"><br /></span></h2><ol><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="What is Confluence? (step 1 of 9)" /><ac:link-body>What is Confluence?<br /><br /></ac:link-body></ac:link></span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:plain-text-link-body><![CDATA[A quick look at the editor]]></ac:plain-text-link-body></ac:link><br /> </span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /><ac:plain-text-link-body><![CDATA[Let's edit this page]]></ac:plain-text-link-body></ac:link><br /><br /></span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Prettify the page with an image (step 4 of 9)" /><ac:link-body>Prettify the page with an image<br /><br /></ac:link-body></ac:link></span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Get serious with a table (step 5 of 9)" /><ac:link-body>Get serious with a table<br /></ac:link-body></ac:link></span><span style="color: rgb(0,0,128);"> </span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Lay out your page (step 6 of 9)" /><ac:plain-text-link-body><![CDATA[Lay out your page]]></ac:plain-text-link-body></ac:link> <br /><br /></span></li><li><ac:link><ri:page ri:content-title="Learn the wonders of autoconvert (step 7 of 9)" /><ac:plain-text-link-body><![CDATA[Learn the wonders of autoconvert]]></ac:plain-text-link-body></ac:link> <br /><br /></li><li><ac:link><ri:page ri:content-title="Tell people what you think in a comment (step 8 of 9)" /><ac:plain-text-link-body><![CDATA[Tell people what you think in a comment]]></ac:plain-text-link-body></ac:link> <br /><br /></li><li><ac:link><ri:page ri:content-title="Share your page with a team member (step 9 of 9)" /><ac:plain-text-link-body><![CDATA[Share your page with a team member]]></ac:plain-text-link-body></ac:link></li></ol><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p style="text-align: right;">      </p>	98319	2
+163843	<p style="margin-left: 60.0px;"> </p><p><strong>Confluence</strong> is where you can create, organize and discuss work with your team. <br />Use Confluence for meeting notes, project plans, requirements, sprint planning, how-to guides, or anything you like.</p><p>Click the <strong>Create</strong> button on the header to see some of the types of pages you can create.</p><p>A Confluence page can contain text, images, diagrams, activity streams, videos, and more. <br />Confluence puts your content online in a central place where your team can search, edit and discuss it at any time. <span><span style="color: rgb(0,0,0);"> </span></span></p><p><span><span style="color: rgb(0,0,0);">So let's try it!<span style="color: rgb(0,0,255);"> <ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:plain-text-link-body><![CDATA[Click here to learn how to edit a page]]></ac:plain-text-link-body></ac:link></span> </span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"> </span></span></p><h1 style="text-align: center;"><ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></h1><p><span style="color: rgb(51,51,51);"><br /></span></p><p><span style="color: rgb(51,51,51);"><br /></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p>	98320	2
+163844	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><p><span style="color: rgb(64,64,64);">Confluence automatically transforms linked content</span> <span style="color: rgb(64,64,64);">into rich content.</span> <span style="color: rgb(64,64,64);">Try it with Confluence pages, JIRA issues, YouTube and Vimeo videos, <br /></span><span style="color: rgb(64,64,64);">Flickr photo streams, Tweets, Google maps and many more.</span></p><p><span style="color: rgb(64,64,64);">Here's two examples of autoconvert in action.</span></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_equal"><ac:layout-cell><h3>   <br /><ac:structured-macro ac:name="widget" ac:schema-version="1" ac:macro-id="e115eec2-dcf7-445c-b563-aca39824d38e"><ac:parameter ac:name="url"><ri:url ri:value="http://youtube.com/watch?v=RXhL9cfwx2c" /></ac:parameter></ac:structured-macro></h3></ac:layout-cell><ac:layout-cell><p><span style="color: rgb(0,0,0);"> <ac:structured-macro ac:name="widget" ac:schema-version="1" ac:macro-id="6f0d84bb-46ee-40a0-8379-fb9a87faf7c7"><ac:parameter ac:name="url"><ri:url ri:value="https://maps.google.com/maps?q=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;hl=en&amp;ll=-33.866572,151.207001&amp;spn=0.004321,0.008256&amp;sll=-33.870509,151.203707&amp;sspn=0.008641,0.016512&amp;oq=atlassian,&amp;hq=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;radius=15000&amp;t=m&amp;z=18&amp;iwloc=A" /></ac:parameter></ac:structured-macro> </span></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_equal"><ac:layout-cell><h3><span style="color: rgb(51,51,51);">Try it yourself:</span></h3><ol><li><span> <span> <span style="color: rgb(51,51,51);"> <span> <strong>Edit</strong> this page.</span> </span> </span> </span></li><li><span> <span> <span style="color: rgb(51,51,51);"> <span>Copy this link <a href="https://youtu.be/RXhL9cfwx2c">https://youtu.be/RXhL9cfwx2c</a> and paste it onto the page.</span> <br /></span> </span> </span></li><li><span style="color: rgb(51,51,51);">Autoconvert will embed the YouTube video on the page.</span></li><li><span style="color: rgb(51,51,51);">Save the page. <br /></span></li></ol></ac:layout-cell><ac:layout-cell><h3><span style="color: rgb(51,51,51);"> <span style="color: rgb(51,51,51);">Try it yourself</span>:</span></h3><ol><li><strong>Edit</strong> this page.</li><li>Copy this link  <a href="https://maps.google.com/maps?q=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;hl=en&amp;ll=-33.866572,151.207001&amp;spn=0.004321,0.008256&amp;sll=-33.870509,151.203707&amp;sspn=0.008641,0.016512&amp;oq=atlassian,&amp;hq=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;radius=15000&amp;t=m&amp;z=18&amp;iwloc=A">https://maps.google.com/maps?q=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;hl=en&amp;ll=-33.866572,151.207001&amp;spn=0.004321,0.008256&amp;sll=-33.870509,151.203707&amp;sspn=0.008641,0.016512&amp;oq=atlassian,&amp;hq=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;radius=15000&amp;t=m&amp;z=18&amp;iwloc=A</a> and paste it onto the page. </li><li>Autoconvert will render the Google Maps view on the page.</li><li><span style="color: rgb(51,51,51);">Save the page. <br /></span></li></ol></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"> <br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"> <ac:link><ri:page ri:content-title="Lay out your page (step 6 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Tell people what you think in a comment (step 8 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> </span></h1><p><span style="color: rgb(51,51,51);"> <br /></span></p></ac:layout-cell></ac:layout-section></ac:layout>	98314	2
+163845	<p><span style="color: rgb(64,64,64);"><br /></span></p><p><span style="color: rgb(64,64,64);">Once you've created content you'll want to share it with your team members. <br /></span><span style="color: rgb(64,64,64);">Confluence can do all the work for you, just click the <strong>Share</strong> button.<br /></span></p><p style="margin-left: 30.0px;"><span style="color: rgb(64,64,64);"><span style="color: rgb(64,64,64);"><br /></span></span></p><ol><li>Let's tell someone about this page. <br />Click the <strong>Share</strong> button at the top right of the page. It looks like this:<br /><br /><ac:image ac:width="379"><ri:attachment ri:filename="step09-01.png" /></ac:image><br /> </li><li>Type the name of the person or group you want to share the page with. <br />You can also enter an email address. <br /><br /></li><li>Add a message to give the person some background about the page.<br /><br /></li><li>Click the <strong>Share</strong> button. <br />Confluence will send the person an email message about this page. Shared!</li></ol><p> </p><p><img class="emoticon emoticon-warning" title="(warning)" src="http://localhost:8090/s/en_GB/7502/10587128b0de2a71f82b5acc129b8b5611829c93/_/images/icons/emoticons/warning.png" alt="(warning)" border="0" /><span style="color: rgb(64,64,64);"> If your administrator has not added a mail server, the </span><strong>Share</strong><span style="color: rgb(64,64,64);"> button will only show the share link.<br /></span></p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Tell people what you think in a comment (step 8 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> </span></h1><p style="margin-left: 30.0px;"><span style="color: rgb(51,51,51);"><br /></span></p>	98306	2
+163846	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><p style="margin-left: 60.0px;"><br /></p><p>Insert tables with drag and drop simplicity. <br />Add, remove, cut, and paste rows and columns – this makes working with tables easy. <br /> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><ol><li><span style="color: rgb(51,51,51);"><strong>Edit</strong> the page.<br /> <br /></span></li><li><span style="color: rgb(51,51,51);">Click in the right-hand column to position your cursor.<br /> <br /></span></li><li>Click the <strong>Table</strong> menu on the toolbar and drag to choose the size of your table. <br /><br /><ac:image ac:thumbnail="true" ac:width="225"><ri:attachment ri:filename="step05-01.png" /></ac:image><br /> </li><li>The table toolbar appears when there is table on your page.<br /><br /></li><li>Place your cursor in the first cell of the table and add a row below it.<br /><br /><ac:image ac:thumbnail="true" ac:width="160"><ri:attachment ri:filename="step05-03.png" /></ac:image><br /><br /></li><li>Place your cursor in any cell of the last column of the table and delete the column.<br /><br /><ac:image ac:thumbnail="true" ac:width="160"><ri:attachment ri:filename="step05-04.png" /></ac:image><br /> </li><li>Grab one of the column borders and drag to resize the column.<br /><br /></li><li><span style="line-height: 1.42857;">Click </span><strong style="line-height: 1.42857;">Update </strong><span style="line-height: 1.42857;">to publish your changes to the page.</span></li></ol></ac:layout-cell><ac:layout-cell><p><br /></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Prettify the page with an image (step 4 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Lay out your page (step 6 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1></ac:layout-cell></ac:layout-section></ac:layout>	98332	2
+163847	<p><br />You can start a discussion by simply leaving a comment on a page, like this one.</p><p>Why not give it a try?</p><p>Go to the bottom of this page and start typing in the comment area. When you're finished just press save! </p><p>Don't just confine your comments to the bottom of the page - highlight some text on the page to add an inline comment like this:</p><p><br /></p><p><ac:image ac:width="417"><ri:attachment ri:filename="Step8-01.png" /></ac:image></p><p><br /></p><p><strong>Hint:</strong> You can mention another user in a page or  comment by typing @ and then the user's name. <br />The user will be notified that you mentioned them.</p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><ac:link><ri:page ri:content-title="Learn the wonders of autoconvert (step 7 of 9)" /><ac:link-body><ac:image ac:height="40" ac:width="106"><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Share your page with a team member (step 9 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></h1><p><span style="color: rgb(51,51,51);"><br /></span></p>	98305	2
+163848	<p>Page layouts provide structure in your page — two-column, three-column, and more — making it easy for anyone to create beautiful pages.</p><p> </p><ol><li><span style="color: rgb(51,51,51);"><strong>Edit</strong> the page.<br />  </span></li><li><span style="color: rgb(51,51,51);">Click the <strong>Page Layout</strong></span> button in the editor toolbar. It looks like this:<br /><br /><ac:image ac:thumbnail="true" ac:width="160"><ri:attachment ri:filename="step06-image01.png" /></ac:image><br /><span style="color: rgb(51,51,51);"><br /> </span>A section is added to your page, dotted lines indicate the section boundaries. <br /> </li><li>Choose a <strong>column layout</strong> to apply to your section, for example two columns. <br /><br /><ac:image ac:width="308"><ri:attachment ri:filename="step06-image02.png" /></ac:image> <br /> </li><li><span style="color: rgb(51,51,51);">Click the <strong>Add section</strong> button to add another section to the page. <br /><br /><ac:image ac:width="385"><ri:attachment ri:filename="step06-image03.png" /></ac:image><br /> </span></li><li><span style="color: rgb(51,51,51);">Choose a different <strong>column layout</strong> for this section. <br /><br /></span></li><li>Click <strong>Update </strong>to publish your changes to the page.</li></ol><p><span>You can add as many sections as you need, and each section can have a different column layout. </span></p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Get serious with a table (step 5 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Learn the wonders of autoconvert (step 7 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1>	98321	2
+163849	<p><br /></p><p>Let's start with the editor. You'll use the Confluence editor to <strong>create</strong> and <strong>edit</strong> pages.<br />You can type in the editor as you would in any document, apply formatting, and embed other content and files into the page.</p><p>The editor looks like this <span style="color: rgb(153,153,153);">(click images for a larger view)</span>:</p><p><br /></p><p><ac:image ac:width="511"><ri:attachment ri:filename="step-2-image-1.png" /></ac:image></p><p><br /></p><p><span>Here is a description of the components:</span></p><ol><li><h4><span style="color: rgb(0,0,0);">Editor toolbar</span></h4><span style="color: rgb(51,51,51);">The editor toolbar provides tools to format and color page content, create lists and tables, indent and align text, and insert other content into the page such as symbols, links, images, multimedia files, and macros.<br /><br /></span><ac:image ac:width="870"><ri:attachment ri:filename="step-2-image-3.png" /></ac:image><br /><br /></li><li><h4><span style="color: rgb(0,0,0);">Page content</span></h4><span style="color: rgb(51,51,51);">This is where you and your team will type the content for your page. You can also drag attachments from your desktop here.<br /></span>If other people are editing the page at the same time, you'll see their changes in real time! <br /><br /><br /></li><li><h4><span style="color: rgb(0,0,0);">Publish or close</span></h4><span style="color: rgb(0,0,0);">We're saving all the time in the editor.  Once you're ready, hit <strong>publish</strong> to publish your page so others can see the changes, or <strong>close</strong> to finish editing later.<br /><br /><ac:image ac:width="800"><ri:attachment ri:filename="step-2-image-5.png" /></ac:image></span><br /><br /></li></ol><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="What is Confluence? (step 1 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1><p><span style="color: rgb(51,51,51);"><br /></span></p>	98322	2
+163850	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><p style="margin-left: 60.0px;"> </p><p><span style="color: rgb(51,51,51);">The Confluence editor helps you create content, fast. </span><span style="color: rgb(51,51,51);">You can embed images, Office documents, and even videos. <br />That's just the tip of the iceberg when it comes to creating useful content for your team. <br /> </span></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><ol><li style="text-align: left;"><strong>Edit</strong> the page.<br /><br /></li><li style="text-align: left;">Click in the right-hand column to position your cursor.<br /><br /></li><li style="text-align: left;">Click <strong style="text-align: left;">Files</strong> on the editor toolbar. It looks like this:<br /><br /><ac:image ac:width="301"><ri:attachment ri:filename="step04-01.png" /></ac:image><br /> </li><li style="text-align: left;"><span>The Files dialog shows you the files attached to this page. <br />Select the image named <strong>Confluence Origami Necktie</strong>.<br /> <br /></span></li><li style="text-align: left;">Click <strong>Insert</strong>.<br /><br /></li><li style="text-align: left;"><span style="color: rgb(51,51,51);">You will return to this page, and see the 'Image Properties Panel'. If you don't see it, click the image.<br /> <br /></span></li><li style="text-align: left;"><span style="color: rgb(51,51,51);">Resize the image by clicking on the square buttons or entering a width.<br /><br /><ac:image ac:width="540"><ri:attachment ri:filename="step04-02.png" /></ac:image><br /> <br /></span><span style="color: rgb(51,51,51);"><br /></span></li><li style="text-align: left;"><span>Click <strong>Properties </strong>and then select the <strong>Curl Shadow</strong> option from the Image Effects dialog. <br />   <br /></span></li><li style="text-align: left;"><span style="color: rgb(51,51,51);">Your image should look like this when completed:<br /><ac:image ac:queryparams="effects=border-simple,shadow-kn" ac:thumbnail="true" ac:width="300"><ri:attachment ri:filename="Confluence-Origami-Necktie.jpeg" /></ac:image><br /> </span></li><li style="text-align: left;"><span style="line-height: 1.42857;">Click </span><strong style="line-height: 1.42857;">Update </strong><span style="line-height: 1.42857;">to publish your changes to the page.</span><br /><br /></li><li style="text-align: left;">View the image on the page, or click to preview the file.</li></ol><p style="text-align: left;">The Files button is not just for images, you can insert and preview a wide range of files, including Microsoft Office documents and PDFs.</p></ac:layout-cell><ac:layout-cell><p> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Get serious with a table (step 5 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1><p><span style="color: rgb(51,51,51);"><br /></span></p></ac:layout-cell></ac:layout-section></ac:layout>	98318	2
+163851		98357	0
+163852	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><ac:structured-macro ac:macro-id="5da7fd26-ee1a-4fe5-a582-dcf9bfaf8f45" ac:name="tip" ac:schema-version="1"><ac:rich-text-body><p>Welcome to your first space. Go ahead, edit and customize this home page any way you like. We've added some sample content to get you started.</p></ac:rich-text-body></ac:structured-macro></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><p><ac:image><ri:attachment ri:filename="peak.jpeg" /></ac:image></p><p> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><hr /><h1><strong>Goal</strong></h1><h2><em>Your space homepage should summarize what the space is for, and provide links to key resources for your team. </em></h2><hr /><p> </p><h1><strong>Core team</strong></h1><table><tbody><tr><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Harvey.jpg" /></ac:image></p><p style="text-align: center;"><strong>Harvey Honner-white<br /></strong>Team Lead<strong> </strong></p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Alana.jpg" /></ac:image></p><p style="text-align: center;"><strong>Alana Baczewski<br /> </strong>Tech Lead</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Sameer.jpg" /></ac:image></p><p style="text-align: center;"><strong>Sameer Farrell<br /> </strong>Marketing</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Cassie.jpg" /></ac:image></p><p style="text-align: center;"><strong>Mia Bednarczyk<br /> </strong>Recruitment</p></td></tr></tbody></table><p> </p><h1><strong>Roadmap</strong></h1><p>You can edit this roadmap or create a new one by adding the Roadmap Planner macro from the Insert menu. Link your Confluence pages to each bar to add visibility, and find more tips by reading the Atlassian blog: <a href="http://blogs.atlassian.com/2015/01/roadmap-planner-macro/">Plan better in 2015 with the Roadmap Planner macro</a>.</p><p><ac:structured-macro ac:macro-id="acab4a3d-dde3-4e22-a912-ce9f886e3e91" ac:name="roadmap" ac:schema-version="1"><ac:parameter ac:name="maplinks" /><ac:parameter ac:name="timeline">true</ac:parameter><ac:parameter ac:name="pagelinks" /><ac:parameter ac:name="source">%7B%22title%22%3A%22Roadmap%20Planner%22%2C%22timeline%22%3A%7B%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22endDate%22%3A%222015-12-31%2000%3A00%3A00%22%2C%22displayOption%22%3A%22MONTH%22%7D%2C%22lanes%22%3A%5B%7B%22title%22%3A%22Marketing%22%2C%22color%22%3A%7B%22lane%22%3A%22%23f15c75%22%2C%22bar%22%3A%22%23f58598%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Social%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-30%2011%3A10%3A05%22%2C%22duration%22%3A3.6435643564356437%2C%22rowIndex%22%3A0%2C%22id%22%3A%22e703c6a8-1649-4d20-9ccf-2c7a8698e385%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22title%22%3A%22Website%20development%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-17%2006%3A24%3A57%22%2C%22duration%22%3A3.3069306930693068%2C%22rowIndex%22%3A1%2C%22id%22%3A%22655d454d-b701-4584-a301-9ea0bb86ed32%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A2%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22id%22%3A%22c420ef33-ae28-4828-958f-8a9d793153b3%22%2C%22title%22%3A%22Crowdfunding%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22duration%22%3A2.5544554455445545%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22People%22%2C%22color%22%3A%7B%22lane%22%3A%22%23654982%22%2C%22bar%22%3A%22%238c77a1%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Recruitment%22%2C%22description%22%3A%22%22%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22duration%22%3A2.5%2C%22rowIndex%22%3A0%2C%22id%22%3A%221230bab8-718c-47da-903a-2cbdcb220d97%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-17%2013%3A46%3A55%22%2C%22id%22%3A%228639d09c-59d1-4d1f-ad91-c78f04b20135%22%2C%22title%22%3A%22Assessment%20Period%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.910891089108911%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A1%2C%22startDate%22%3A%222015-09-01%2021%3A23%3A10%22%2C%22id%22%3A%22802b53f7-ba66-4415-984d-efef93b4caec%22%2C%22title%22%3A%22Training%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.5841584158415842%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-15%2006%3A10%3A41%22%2C%22id%22%3A%22502fac56-3849-415f-b412-af27c39229b7%22%2C%22title%22%3A%22Finalisation%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.4356435643564356%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22Product%22%2C%22color%22%3A%7B%22lane%22%3A%22%233b7fc4%22%2C%22bar%22%3A%22%236c9fd3%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-06-24%2004%3A02%3A22%22%2C%22id%22%3A%2200ada54b-0998-41a5-aa98-712ecdec8c7f%22%2C%22title%22%3A%22Planning%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.1782178217821784%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-31%2001%3A54%3A03%22%2C%22id%22%3A%2271967f2c-f3ab-4871-aaf5-7cf31389e62f%22%2C%22title%22%3A%22Development%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.9207920792079207%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-10-29%2013%3A04%3A09%22%2C%22id%22%3A%22d76ac773-3ee7-495b-9d7f-1daf267dc58c%22%2C%22title%22%3A%22Testing%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-30%2002%3A36%3A49%22%2C%22id%22%3A%224f584dc6-63b8-4efa-a98e-a5d7bbe9910e%22%2C%22title%22%3A%22Deploy%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.0297029702970297%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%5D%2C%22markers%22%3A%5B%7B%22title%22%3A%22Yearly%20Finalisation%22%2C%22markerDate%22%3A%222015-11-29%2012%3A21%3A23%22%7D%5D%7D</ac:parameter><ac:parameter ac:name="title">Roadmap%20Planner</ac:parameter><ac:parameter ac:name="hash">f0477dfac6f6ca380d8c5f2f44041947</ac:parameter></ac:structured-macro></p><p> </p><h1><strong>Know your spaces</strong> </h1><p>Everything your team is working on - meeting notes and agendas, project plans and timelines, technical documentation and more - is located in a space; it's home base for your team.</p><p>A small team should plan to have a space for the team, and a space for each big project. If you'll be working in Confluence with several other teams and departments, we recommend a space for each team as well as a space for each major cross-team project. The key is to think of a space as the container that holds all the important stuff - like pages, files, and blog posts - a team, group, or project needs to work.</p><h1><strong>Know your pages</strong></h1><p>If you're working on something related to your team - project plans, product requirements, blog posts, internal communications, you name it - create and store it in a Confluence page. Confluence pages offer a lot of flexibility in creating and storing information, and there are a number of useful page templates included to get you started, like the meeting notes template. Your spaces should be filled with pages that document your business processes, outline your plans, contain your files, and report on your progress. The more you learn to do in Confluence (adding tables and graphs, or embedding video and links are great places to start), the more engaging and helpful your pages will become.</p><p>Learn more by reading <a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></p><p> </p><hr /></ac:layout-cell><ac:layout-cell><h1><strong>Quick navigation</strong></h1><p>When you create new pages in this space, they'll appear here automatically.</p><p><ac:structured-macro ac:macro-id="8ca379f2-ea2a-4fbb-bf4a-77619f9875ed" ac:name="children" ac:schema-version="2" /></p><h1><strong>Useful links</strong></h1><table><tbody><tr><th>Link</th><th>Description</th></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></td><td><p>Chances are, the information you need to do your job lives in multiple places. Word docs, Evernote files, email, PDFs, even Post-it notes. It's scattered among different systems. And to make matters worse, <em>the stuff your teammates need is equally siloed</em>. If information had feelings, it would be lonely.</p><p>But with Confluence, you can bring all that information into one place.</p></td></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-discuss-work-with-your-team">Confluence 101: discuss work with your team</a></td><td>Getting a project outlined and adding the right content are just the first steps. Now it's time for your team to weigh in. Confluence makes it easy to discuss your work - with your team, your boss, or your entire company - in the same place where you organized and created it.</td></tr><tr><td colspan="1"><a href="https://www.atlassian.com/collaboration/confluence-create-content-with-pages">Confluence 101: create content with pages</a></td><td colspan="1">Think of pages as a New Age &quot;document.&quot; If Word docs were rotary phones, Confluence pages would be smart phones. A smart phone still makes calls (like their rotary counterparts), but it can do so much more than that</td></tr></tbody></table><p><strong style="font-size: 24.0px;line-height: 1.25;"><br /></strong></p><p><strong style="font-size: 24.0px;line-height: 1.25;">Tasks</strong></p><table><tbody><tr><td><ac:task-list>\n<ac:task>\n<ac:task-id>59</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body><a href="https://confluence.atlassian.com/x/NgszKw">Customize the name, colour, and icon of Confluence</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>56</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Decide who can see and edit this space or a specific page by clicking the <ac:image><ri:attachment ri:filename="lock-icon.png" /></ac:image> icon. Learn more about <a href="https://confluence.atlassian.com/x/liAC">Page Restrictions</a> and <a href="https://confluence.atlassian.com/x/ASEC">Space Permissions</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>57</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Try adding an <a href="https://confluence.atlassian.com/x/2yAC">inline comment</a> by highlighting some text and click the comment icon.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>58</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Learn more about <a href="https://confluence.atlassian.com/x/SRwC">inviting your team to Confluence</a>.</ac:task-body>\n</ac:task>\n</ac:task-list>\n</td></tr></tbody></table></ac:layout-cell></ac:layout-section></ac:layout>	98361	2
+163853		98362	0
+163854	efionboardingspace	98369	0
+163855	<p><span>You can add comments directly to images. Use file comments to review designs, add feedback, or just start a conversation.</span></p>	98370	2
+950273	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><ac:structured-macro ac:macro-id="5da7fd26-ee1a-4fe5-a582-dcf9bfaf8f45" ac:name="tip" ac:schema-version="1"><ac:rich-text-body><p>Welcome to your first space. Go ahead, edit and customize this home page any way you like. We've added some sample content to get you started.</p></ac:rich-text-body></ac:structured-macro></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><p><ac:image><ri:attachment ri:filename="peak.jpeg" /></ac:image></p><p> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><hr /><h1><strong>Goal</strong></h1><h2><em>Your space homepage should summarize what the space is for, and provide links to key resources for your team. </em></h2><hr /><p> </p><h1><strong>Core team</strong></h1><table><tbody><tr><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Harvey.jpg" /></ac:image></p><p style="text-align: center;"><strong>Harvey Honner-white<br /></strong>Team Lead<strong> </strong></p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Alana.jpg" /></ac:image></p><p style="text-align: center;"><strong>Alana Baczewski<br /> </strong>Tech Lead</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Sameer.jpg" /></ac:image></p><p style="text-align: center;"><strong>Sameer Farrell<br /> </strong>Marketing</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Cassie.jpg" /></ac:image></p><p style="text-align: center;"><strong>Mia Bednarczyk<br /> </strong>Recruitment</p></td></tr></tbody></table><p> </p><h1><strong>Roadmap</strong></h1><p>You can edit this roadmap or create a new one by adding the Roadmap Planner macro from the Insert menu. Link your Confluence pages to each bar to add visibility, and find more tips by reading the Atlassian blog: <a href="http://blogs.atlassian.com/2015/01/roadmap-planner-macro/">Plan better in 2015 with the Roadmap Planner macro</a>.</p><p><ac:structured-macro ac:macro-id="acab4a3d-dde3-4e22-a912-ce9f886e3e91" ac:name="roadmap" ac:schema-version="1"><ac:parameter ac:name="maplinks" /><ac:parameter ac:name="timeline">true</ac:parameter><ac:parameter ac:name="pagelinks" /><ac:parameter ac:name="source">%7B%22title%22%3A%22Roadmap%20Planner%22%2C%22timeline%22%3A%7B%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22endDate%22%3A%222015-12-31%2000%3A00%3A00%22%2C%22displayOption%22%3A%22MONTH%22%7D%2C%22lanes%22%3A%5B%7B%22title%22%3A%22Marketing%22%2C%22color%22%3A%7B%22lane%22%3A%22%23f15c75%22%2C%22bar%22%3A%22%23f58598%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Social%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-30%2011%3A10%3A05%22%2C%22duration%22%3A3.6435643564356437%2C%22rowIndex%22%3A0%2C%22id%22%3A%22e703c6a8-1649-4d20-9ccf-2c7a8698e385%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22title%22%3A%22Website%20development%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-17%2006%3A24%3A57%22%2C%22duration%22%3A3.3069306930693068%2C%22rowIndex%22%3A1%2C%22id%22%3A%22655d454d-b701-4584-a301-9ea0bb86ed32%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A2%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22id%22%3A%22c420ef33-ae28-4828-958f-8a9d793153b3%22%2C%22title%22%3A%22Crowdfunding%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22duration%22%3A2.5544554455445545%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22People%22%2C%22color%22%3A%7B%22lane%22%3A%22%23654982%22%2C%22bar%22%3A%22%238c77a1%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Recruitment%22%2C%22description%22%3A%22%22%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22duration%22%3A2.5%2C%22rowIndex%22%3A0%2C%22id%22%3A%221230bab8-718c-47da-903a-2cbdcb220d97%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-17%2013%3A46%3A55%22%2C%22id%22%3A%228639d09c-59d1-4d1f-ad91-c78f04b20135%22%2C%22title%22%3A%22Assessment%20Period%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.910891089108911%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A1%2C%22startDate%22%3A%222015-09-01%2021%3A23%3A10%22%2C%22id%22%3A%22802b53f7-ba66-4415-984d-efef93b4caec%22%2C%22title%22%3A%22Training%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.5841584158415842%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-15%2006%3A10%3A41%22%2C%22id%22%3A%22502fac56-3849-415f-b412-af27c39229b7%22%2C%22title%22%3A%22Finalisation%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.4356435643564356%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22Product%22%2C%22color%22%3A%7B%22lane%22%3A%22%233b7fc4%22%2C%22bar%22%3A%22%236c9fd3%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-06-24%2004%3A02%3A22%22%2C%22id%22%3A%2200ada54b-0998-41a5-aa98-712ecdec8c7f%22%2C%22title%22%3A%22Planning%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.1782178217821784%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-31%2001%3A54%3A03%22%2C%22id%22%3A%2271967f2c-f3ab-4871-aaf5-7cf31389e62f%22%2C%22title%22%3A%22Development%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.9207920792079207%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-10-29%2013%3A04%3A09%22%2C%22id%22%3A%22d76ac773-3ee7-495b-9d7f-1daf267dc58c%22%2C%22title%22%3A%22Testing%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-30%2002%3A36%3A49%22%2C%22id%22%3A%224f584dc6-63b8-4efa-a98e-a5d7bbe9910e%22%2C%22title%22%3A%22Deploy%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.0297029702970297%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%5D%2C%22markers%22%3A%5B%7B%22title%22%3A%22Yearly%20Finalisation%22%2C%22markerDate%22%3A%222015-11-29%2012%3A21%3A23%22%7D%5D%7D</ac:parameter><ac:parameter ac:name="title">Roadmap%20Planner</ac:parameter><ac:parameter ac:name="hash">f0477dfac6f6ca380d8c5f2f44041947</ac:parameter></ac:structured-macro></p><p> </p><h1><strong>Know your spaces</strong> </h1><p>Everything your team is working on - meeting notes and agendas, project plans and timelines, technical documentation and more - is located in a space; it's home base for your team.</p><p>A small team should plan to have a space for the team, and a space for each big project. If you'll be working in Confluence with several other teams and departments, we recommend a space for each team as well as a space for each major cross-team project. The key is to think of a space as the container that holds all the important stuff - like pages, files, and blog posts - a team, group, or project needs to work.</p><h1><strong>Know your pages</strong></h1><p>If you're working on something related to your team - project plans, product requirements, blog posts, internal communications, you name it - create and store it in a Confluence page. Confluence pages offer a lot of flexibility in creating and storing information, and there are a number of useful page templates included to get you started, like the meeting notes template. Your spaces should be filled with pages that document your business processes, outline your plans, contain your files, and report on your progress. The more you learn to do in Confluence (adding tables and graphs, or embedding video and links are great places to start), the more engaging and helpful your pages will become.</p><p>Learn more by reading <a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></p><p> </p><hr /></ac:layout-cell><ac:layout-cell><h1><strong>Quick navigation</strong></h1><p>When you create new pages in this space, they'll appear here automatically.</p><p><ac:structured-macro ac:macro-id="8ca379f2-ea2a-4fbb-bf4a-77619f9875ed" ac:name="children" ac:schema-version="2" /></p><h1><strong>Useful links</strong></h1><table><tbody><tr><th>Link</th><th>Description</th></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></td><td><p>Chances are, the information you need to do your job lives in multiple places. Word docs, Evernote files, email, PDFs, even Post-it notes. It's scattered among different systems. And to make matters worse, <em>the stuff your teammates need is equally siloed</em>. If information had feelings, it would be lonely.</p><p>But with Confluence, you can bring all that information into one place.</p></td></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-discuss-work-with-your-team">Confluence 101: discuss work with your team</a></td><td>Getting a project outlined and adding the right content are just the first steps. Now it's time for your team to weigh in. Confluence makes it easy to discuss your work - with your team, your boss, or your entire company - in the same place where you organized and created it.</td></tr><tr><td colspan="1"><a href="https://www.atlassian.com/collaboration/confluence-create-content-with-pages">Confluence 101: create content with pages</a></td><td colspan="1">Think of pages as a New Age &quot;document.&quot; If Word docs were rotary phones, Confluence pages would be smart phones. A smart phone still makes calls (like their rotary counterparts), but it can do so much more than that</td></tr></tbody></table><p><strong style="font-size: 24.0px;line-height: 1.25;"><br /></strong></p><p><strong style="font-size: 24.0px;line-height: 1.25;">Tasks</strong></p><table><tbody><tr><td><ac:task-list>\n<ac:task>\n<ac:task-id>59</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body><a href="https://confluence.atlassian.com/x/NgszKw">Customize the name, colour, and icon of Confluence</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>56</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Decide who can see and edit this space or a specific page by clicking the <ac:image><ri:attachment ri:filename="lock-icon.png" /></ac:image> icon. Learn more about <a href="https://confluence.atlassian.com/x/liAC">Page Restrictions</a> and <a href="https://confluence.atlassian.com/x/ASEC">Space Permissions</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>57</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Try adding an <a href="https://confluence.atlassian.com/x/2yAC">inline comment</a> by highlighting some text and click the comment icon.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>58</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Learn more about <a href="https://confluence.atlassian.com/x/SRwC">inviting your team to Confluence</a>.</ac:task-body>\n</ac:task>\n</ac:task-list>\n</td></tr></tbody></table></ac:layout-cell></ac:layout-section></ac:layout>	917505	2
+\.
+
+
+--
+-- Data for Name: browser_metrics; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.browser_metrics (id, userkey, createdat, metricsjson) FROM stdin;
+\.
+
+
+--
+-- Data for Name: clustersafety; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.clustersafety (clustersafetyid, safetynumber) FROM stdin;
+688129	-1010803887
+\.
+
+
+--
+-- Data for Name: confancestors; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.confancestors (descendentid, ancestorposition, ancestorid) FROM stdin;
+98305	0	98319
+98307	0	98319
+98306	0	98319
+98309	0	98319
+98308	0	98319
+98311	0	98319
+98310	0	98319
+98313	0	98319
+98312	0	98319
+98315	0	98319
+98314	0	98319
+98317	0	98319
+98316	0	98319
+98318	0	98319
+98321	0	98319
+98320	0	98319
+98323	0	98319
+98322	0	98319
+98325	0	98319
+98324	0	98319
+98327	0	98319
+98326	0	98319
+98329	0	98319
+98328	0	98319
+98331	0	98319
+98330	0	98319
+98333	0	98319
+98332	0	98319
+98335	0	98319
+98334	0	98319
+98336	0	98319
+\.
+
+
+--
+-- Data for Name: confversion; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.confversion (confversionid, buildnumber, installdate, versiontag, finalized, creationdate, lastmoddate) FROM stdin;
+655361	9101	2024-07-01 22:19:59.56	\N	Y	\N	\N
+1081345	9104	2025-04-01 21:41:14.808	\N	N	\N	\N
+1081347	9103	2025-04-01 21:41:15.295	\N	Y	\N	\N
+1081348	9105	2025-04-01 21:41:15.313	\N	Y	\N	\N
+1081349	9107	2025-04-01 21:41:15.32	\N	Y	\N	\N
+1081346	9203	2025-04-01 21:41:15.241	\N	Y	\N	\N
+\.
+
+
+--
+-- Data for Name: confzdu; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.confzdu (confzduid, state, orig_ver, orig_build_number) FROM stdin;
 \.
 
 
@@ -6394,340 +13528,6 @@ COPY public.content (contentid, hibernateversion, contenttype, title, lowertitle
 
 
 --
--- Data for Name: attachmentdata; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.attachmentdata (attachmentdataid, hibernateversion, attversion, data, attachmentid) FROM stdin;
-\.
-
-
---
--- Data for Name: auditrecord; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.auditrecord (auditrecordid, summary, description, category, address, sysamdin, authorname, authorfullname, authorkey, objectname, objecttype, searchstring, creationdate) FROM stdin;
-\.
-
-
---
--- Data for Name: audit_affected_object; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.audit_affected_object (id, name, type, auditrecordid) FROM stdin;
-\.
-
-
---
--- Data for Name: audit_changed_value; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.audit_changed_value (id, name, oldvalue, newvalue, auditrecordid) FROM stdin;
-\.
-
-
---
--- Data for Name: background_job; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.background_job (id, type, owner, description, run_at, iteration_number, number_of_failures, creation_time, last_touch_time, duration_ms, parameters) FROM stdin;
-819201	BackgroundJobCleaner	\N	Repetitive task	2024-07-02 22:21:00.024701	1	0	2024-07-01 22:21:00.004807	2024-07-01 22:21:00.024847	13	{}
-\.
-
-
---
--- Data for Name: background_job_archived; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.background_job_archived (id, type, owner, description, error_message, iteration_number, number_of_failures, creation_time, completion_time, duration_ms, state) FROM stdin;
-\.
-
-
---
--- Data for Name: backup_restore_job_details; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.backup_restore_job_details (id, operation, scope, state, create_time, start_processing_time, finish_processing_time, error_message, owner, terminator, cancel_time, filename, single_space_key, space_keys, file_delete_time, file_exists) FROM stdin;
-\.
-
-
---
--- Data for Name: backup_restore_job_settings; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.backup_restore_job_settings (id, settings) FROM stdin;
-\.
-
-
---
--- Data for Name: backup_restore_job_statistics; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.backup_restore_job_statistics (id, job_statistics) FROM stdin;
-\.
-
-
---
--- Data for Name: bandana; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.bandana (bandanaid, bandanacontext, bandanakey, bandanavalue) FROM stdin;
-32779	com.atlassian.confluence.plugins.pulp	version.history	<map>\n  <entry>\n    <string>8.6.2</string>\n    <string>2024-07-01T22:17:47.265Z</string>\n  </entry>\n</map>
-32780	_GLOBAL	com.atlassian.migration.agent:CONCURRENCY	<string>{&quot;SPACE_USERS_CONCURRENCY_MAX&quot;:2,&quot;SPACE_USERS_CONCURRENCY_NODE_MAX&quot;:2,&quot;ATTACHMENT_CONCURRENCY_CLUSTER_MAX&quot;:1,&quot;ATTACHMENT_CONCURRENCY_NODE_MAX&quot;:1,&quot;EXPORT_CONCURRENCY_CLUSTER_MAX&quot;:1,&quot;EXPORT_CONCURRENCY_NODE_MAX&quot;:1,&quot;IMPORT_CONCURRENCY_CLUSTER_MAX&quot;:4,&quot;IMPORT_CONCURRENCY_NODE_MAX&quot;:4,&quot;UPLOAD_CONCURRENCY_CLUSTER_MAX&quot;:2,&quot;UPLOAD_CONCURRENCY_NODE_MAX&quot;:2,&quot;ATTACHMENT_UPLOAD_CONCURRENCY&quot;:5}</string>
-32776	_GLOBAL	atlassian.confluence.settings	<settings>\n  <doNotSave>false</doNotSave>\n  <allowCamelCase>false</allowCamelCase>\n  <allowTrackbacks>false</allowTrackbacks>\n  <allowThreadedComments>true</allowThreadedComments>\n  <externalUserManagement>false</externalUserManagement>\n  <denyPublicSignup>true</denyPublicSignup>\n  <emailAdminMessageOff>false</emailAdminMessageOff>\n  <almostSupportPeriodEndMessageOff>false</almostSupportPeriodEndMessageOff>\n  <senMissingInLicenseMessageOff>true</senMissingInLicenseMessageOff>\n  <baseUrlAdminMessageOff>false</baseUrlAdminMessageOff>\n  <allowRemoteApi>false</allowRemoteApi>\n  <allowRemoteApiAnonymous>false</allowRemoteApiAnonymous>\n  <antiXssMode>true</antiXssMode>\n  <gzippingResponse>true</gzippingResponse>\n  <disableLogo>false</disableLogo>\n  <sharedMode>false</sharedMode>\n  <enableDidYouMean>false</enableDidYouMean>\n  <enableQuickNav>true</enableQuickNav>\n  <enableSpaceStyles>false</enableSpaceStyles>\n  <enableOpenSearch>true</enableOpenSearch>\n  <showSystemInfoIn500Page>false</showSystemInfoIn500Page>\n  <showApplicationTitle>false</showApplicationTitle>\n  <captchaSettings>\n    <enableCaptcha>false</enableCaptcha>\n    <enableDebug>false</enableDebug>\n    <captchaGroups class="list"/>\n    <exclude>registered</exclude>\n  </captchaSettings>\n  <customHtmlSettings>\n    <beforeHeadEnd></beforeHeadEnd>\n    <afterBodyStart></afterBodyStart>\n    <beforeBodyEnd></beforeBodyEnd>\n  </customHtmlSettings>\n  <colourSchemesSettings>\n    <colourSchemeType>custom</colourSchemeType>\n  </colourSchemesSettings>\n  <loginManagerSettings>\n    <enableElevatedSecurityCheck>true</enableElevatedSecurityCheck>\n    <loginAttemptsThreshold>3</loginAttemptsThreshold>\n  </loginManagerSettings>\n  <confluenceHttpParameters>\n    <connectionTimeout>10000</connectionTimeout>\n    <socketTimeout>10000</socketTimeout>\n    <enabled>true</enabled>\n  </confluenceHttpParameters>\n  <attachmentMaxSize>104857600</attachmentMaxSize>\n  <auditLogRetentionNumber>3</auditLogRetentionNumber>\n  <auditLogRetentionUnit>Years</auditLogRetentionUnit>\n  <draftSaveInterval>30000</draftSaveInterval>\n  <maxAttachmentsInUI>5</maxAttachmentsInUI>\n  <siteTitle>Confluence</siteTitle>\n  <documentationUrlPattern>http://docs.atlassian.com/confluence/docs-{0}/{1}</documentationUrlPattern>\n  <showContactAdministratorsForm>true</showContactAdministratorsForm>\n  <emailAddressVisibility>email.address.public</emailAddressVisibility>\n  <defaultEncoding>UTF-8</defaultEncoding>\n  <maxThumbHeight>300</maxThumbHeight>\n  <maxThumbWidth>300</maxThumbWidth>\n  <backupAttachmentsDaily>true</backupAttachmentsDaily>\n  <backupDaily>true</backupDaily>\n  <backupPath>/var/atlassian/application-data/confluence/backups</backupPath>\n  <nofollowExternalLinks>true</nofollowExternalLinks>\n  <indexingLanguage>english</indexingLanguage>\n  <globalDefaultLocale>en_GB</globalDefaultLocale>\n  <dailyBackupFilePrefix>backup-</dailyBackupFilePrefix>\n  <dailyBackupDateFormatPattern>yyyy_MM_dd</dailyBackupDateFormatPattern>\n  <supportRequestEmail>confluence-autosupportrequests@atlassian.com</supportRequestEmail>\n  <defaultSpaceHomepageTitle>Home</defaultSpaceHomepageTitle>\n  <baseUrl>http://localhost:8090</baseUrl>\n  <attachmentDataStore>file.system.based.attachments.storage</attachmentDataStore>\n  <displayLinkIcons>false</displayLinkIcons>\n  <addWildcardsToUserAndGroupSearches>true</addWildcardsToUserAndGroupSearches>\n  <xsrfAddComments>true</xsrfAddComments>\n  <webSudoTimeout>10</webSudoTimeout>\n  <webSudoEnabled>true</webSudoEnabled>\n  <defaultUsersGroup>confluence-users</defaultUsersGroup>\n  <attachmentSecurityLevel>smart</attachmentSecurityLevel>\n  <enableJavascriptTop>true</enableJavascriptTop>\n  <supportPeriodEndMessageOff>false</supportPeriodEndMessageOff>\n  <enableWysiwyg>true</enableWysiwyg>\n  <useWysiwygByDefault>true</useWysiwygByDefault>\n  <numberOfBreadcrumbAncestors>1</numberOfBreadcrumbAncestors>\n  <viewSpaceGoesToSpaceSummary>false</viewSpaceGoesToSpaceSummary>\n  <enableLikes>false</enableLikes>\n  <currentIndexVersion>0</currentIndexVersion>\n  <maintenanceBannerMessageOn>false</maintenanceBannerMessageOn>\n  <maxSimultaneousQuickNavRequests>40</maxSimultaneousQuickNavRequests>\n  <maxRssItems>200</maxRssItems>\n  <rssTimeout>60</rssTimeout>\n  <pageTimeout>120</pageTimeout>\n</settings>
-32770	_GLOBAL	plugin.manager.state.Map	<map>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-trashed-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-tasks:task-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-trashed-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-edited-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-edited-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-page-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-moved-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-like:like-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-request-access-plugin:request-access-notification-email-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:follower-added-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-onboarding:notification-template-less-users-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-file-notifications:file-content-update-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-onboarding:notification-template-no-spaces-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-mentions-plugin:mention-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-edited-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-comments:notification-template-new-mail-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-notifications-batch-plugin:batching-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-attachment-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-draft-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-created-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-edited-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-comments:notification-template-resolve-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-comments:notification-template-reply-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-inline-tasks:task-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.share-page:share-page-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-created-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-edited-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:blogpost-edited-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:follower-added-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:comment-created-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:page-created-hipchat-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-content-notifications-plugin:forgot-password-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-mentions-plugin:mention-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-file-notifications:file-content-remove-email-notification-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n  <entry>\n    <string>com.atlassian.confluence.plugins.confluence-request-access-plugin:grant-access-notification-email-template-body</string>\n    <boolean>true</boolean>\n  </entry>\n</map>
-32774	_GLOBAL	confluence.server.id	<string>BA67-DGPQ-SJ6M-FTXD</string>
-32775	_GLOBAL	confluence.server.installation.date	<date>2024-07-01 22:17:45.988 UTC</date>
-851969	_GLOBAL	easy-user.sign-up.token.previous	<null/>
-32781	_GLOBAL	com.atlassian.migration.agent:CLOUD_TYPE	<string>{&quot;FEDRAMP&quot;:false,&quot;STANDARD&quot;:true}</string>
-32782	_GLOBAL	AO_7B47A5_#	<string>4</string>
-32783	_GLOBAL	AO_950DC3_#	<string>20</string>
-32778	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.plugin-installed-date-in-millis	<string>1719872266360</string>
-32785	ds	atlassian.confluence.theme.settings	<map>\n  <entry>\n    <string>theme.key</string>\n    <string></string>\n  </entry>\n</map>
-32786	ds	atlassian.confluence.css.resource.counter	<int>4</int>
-32787	ds	atlassian.confluence.space.settings	<com.atlassian.confluence.setup.settings.SpaceSettings>\n  <spaceKey>ds</spaceKey>\n  <disableLogo>false</disableLogo>\n  <colourSchemesSettings>\n    <colourSchemeType>global</colourSchemeType>\n  </colourSchemesSettings>\n  <doNotSave>false</doNotSave>\n</com.atlassian.confluence.setup.settings.SpaceSettings>
-32788	ds	sidebar.nav-type	<string>page-tree</string>
-32789	ds	atlassian.confluence.colour.scheme	<colourScheme>\n  <colours>\n    <entry>\n      <string>property.style.topbarmenuselectedbgcolour</string>\n      <string>#336699</string>\n    </entry>\n    <entry>\n      <string>property.style.menuselectedbgcolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.navtextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.bordercolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.navselectedtextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.breadcrumbstextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.topbarcolour</string>\n      <string>#003366</string>\n    </entry>\n    <entry>\n      <string>property.style.navselectedbgcolour</string>\n      <string>#003366</string>\n    </entry>\n    <entry>\n      <string>property.style.linkcolour</string>\n      <string>#326ca6</string>\n    </entry>\n    <entry>\n      <string>property.style.navbgcolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.menuitemselectedtextcolour</string>\n      <string>#ffffff</string>\n    </entry>\n    <entry>\n      <string>property.style.menuitemselectedbgcolour</string>\n      <string>#6699cc</string>\n    </entry>\n    <entry>\n      <string>property.style.headingtextcolour</string>\n      <string>#000000</string>\n    </entry>\n    <entry>\n      <string>property.style.spacenamecolour</string>\n      <string>#999999</string>\n    </entry>\n    <entry>\n      <string>property.style.menuitemtextcolour</string>\n      <string>#535353</string>\n    </entry>\n    <entry>\n      <string>property.style.topbarmenuitemtextcolour</string>\n      <string>#326ca6</string>\n    </entry>\n  </colours>\n</colourScheme>
-32794	_GLOBAL	com.atlassian.audit.plugin:audit-config:retention:period	<string>P3Y</string>
-32793	_GLOBAL	com.atlassian.audit.atlassian-audit-plugin:build	<string>4</string>
-32795	_GLOBAL	com.atlassian.confluence.extra.team-calendars:build	<string>1312121002</string>
-32796	_GLOBAL	com.atlassian.confluence.plugins.confluence-edge-index:build	<string>1</string>
-32797	_GLOBAL	com.atlassian.crowd.embedded.admin:build	<string>3</string>
-32798	_GLOBAL	com.atlassian.plugins.atlassian-whitelist-core-plugin:build	<string>3</string>
-32799	_GLOBAL	com.atlassian.plugins.custom_apps.hasCustomOrder	<string>false</string>
-32800	_GLOBAL	com.atlassian.plugins.atlassian-nav-links-plugin:build	<string>1</string>
-32801	_GLOBAL	confluence.extra.masterdetail:build	<string>2</string>
-851970	_GLOBAL	easy-user.sign-up.token	<string>64406bf95114ddf7</string>
-32802	_GLOBAL	com.atlassian.confluence.plugins.confluence-inline-comments:build	<string>1</string>
-32803	_GLOBAL	com.atlassian.confluence.plugins.confluence-space-ia:build	<string>1</string>
-32804	_GLOBAL	com.atlassian.confluence.plugins.confluence-roadmap-plugin:build	<string>6</string>
-32806	_GLOBAL	com.atlassian.confluence.plugins.confluence-collaborative-editor-plugin:build	<string>1</string>
-32807	_GLOBAL	com.atlassian.upm.atlassian-universal-plugin-manager-plugin:build	<string>5</string>
-32809	_GLOBAL	com.atlassian.plugins.authentication.sso.config.sso-type	<string>NONE</string>
-32810	_GLOBAL	com.atlassian.plugins.authentication.sso.config.show-login-form	<string>true</string>
-32808	_GLOBAL	com.atlassian.plugins.authentication.atlassian-authentication-plugin:build	<string>6</string>
-32811	_GLOBAL	com.atlassian.confluence.plugins.confluence-create-content-plugin:build	<string>5</string>
-32812	_GLOBAL	com.atlassian.confluence.plugins.confluence-inline-tasks:build:finalized	<string>4</string>
-32835	_GLOBAL	com.atlassian.upm:notifications:notification-update	<list>\n  <string>com.atlassian.migration.agent</string>\n  <string>com.atlassian.plugins.authentication.atlassian-authentication-plugin</string>\n  <string>com.atlassian.troubleshooting.plugin-confluence</string>\n</list>
-32805	_GLOBAL	synchrony_collaborative_editor_app_registered	<string>true</string>
-32790	ds	trash.date.migration.time	<instant>2024-07-01T22:19:28.704603173Z</instant>
-32819	_GLOBAL	com.atlassian.analytics.client.configuration..analytics_enabled	<string>true</string>
-32824	_GLOBAL	com.atlassian.upm:notifications:notification-edition.mismatch	<list/>
-32825	_GLOBAL	com.atlassian.upm:notifications:notification-evaluation.expired	<list/>
-32826	_GLOBAL	com.atlassian.upm:notifications:notification-evaluation.nearlyexpired	<list/>
-32827	_GLOBAL	com.atlassian.upm:notifications:notification-maintenance.expired	<list/>
-32828	_GLOBAL	com.atlassian.upm:notifications:notification-maintenance.nearlyexpired	<list/>
-32829	_GLOBAL	com.atlassian.upm:notifications:notification-license.expired	<list/>
-32830	_GLOBAL	com.atlassian.upm:notifications:notification-license.nearlyexpired	<list/>
-851971	_GLOBAL	atl.confluence.plugins.confluence-daily-summary-email:admin.defaultSchedule	<string>weekly</string>
-32833	_GLOBAL	c.a.c.plugins:confluence-user-rest:firstCheckDateMs	<string>1719872403059</string>
-32834	_GLOBAL	c.a.c.plugins:confluence-user-rest:hadHadASingleDirectory	<string>true</string>
-32813	_GLOBAL	com.atlassian.troubleshooting.thready.configuration.enabled	<string>true</string>
-851972	_GLOBAL	atl.confluence.plugins.confluence-daily-summary-email:admin.defaultEnabled	<string>true</string>
-32814	_GLOBAL	atlassian.confluence.plugin.counter	<int>2</int>
-32822	_GLOBAL	com.atlassian.plugins.oauth2.provider.jwt.secret	<string>2f7d93c8e9744f74e95f47d2ab72a68f6dbb59e08fac83e9ead0704c5d43589b</string>
-32815	_CALENDAR_ee65026d81383713d11480a2da8ced1608ea1448	legacySubCalendarsMigrationCutoffDate	<long>1719872399784</long>
-32817	_GLOBAL	com.atlassian.analytics.client.configuration..policy_acknowledged	<string>true</string>
-32823	_GLOBAL	com.atlassian.upm:notifications:notification-plugin.request	<list/>
-32818	_GLOBAL	com.atlassian.analytics.client.configuration.uuid	<string>6afd4697-a536-4349-92a8-d36edbf9f5b0</string>
-32820	_GLOBAL	com.atlassian.analytics.client.configuration.serverid	<string>BA67-DGPQ-SJ6M-FTXD</string>
-32831	_GLOBAL	synchrony_collaborative_editor_app_base_url	<string>http://localhost:8090/synchrony-proxy,http://localhost:8090/synchrony-proxy</string>
-32832	_GLOBAL	synchrony_collaborative_editor_app_passphrase	<string>OkMnHbXwN8ByFeWM8MwJur9d5qCcPDjh7v+OyWz8w+s=</string>
-32836	_GLOBAL	synchrony_collaborative_editor_app_id	<string>Synchrony-140efc8d-eb6a-3487-a87d-34419cd72508</string>
-32837	_GLOBAL	synchrony_collaborative_editor_app_secret	<string>M71RJ+0mp8sal9GHS9J50Bq2kKlnZQSFR/ZFzWtfqo4=</string>
-32838	_GLOBAL	confluence.darkfeature	<string>site-wide.shared-drafts</string>
-32839	com.atlassian.confluence.content.render.xhtml.migration.macro.MacroMigrationService	migration.required	<boolean>false</boolean>
-32840	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32841	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SystemMaintenanceTaskQueueFlusherScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32842	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ClusterSafetyJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32843	com.atlassian.confluence.schedule.ScheduledJobConfiguration	FlushContentIndexScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32844	com.atlassian.confluence.schedule.ScheduledJobConfiguration	MailQueueFlushJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32845	com.atlassian.confluence.schedule.ScheduledJobConfiguration	clearOldMailErrorsJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32846	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ReIndexHouseKeepingScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32771	_GLOBAL	AO_9412A1_#	<string>8</string>
-32792	_GLOBAL	com.atlassian.migration.agent:mp-status	<string>{&quot;pluginVersionLastChecked&quot;:&quot;3.7.0&quot;,&quot;outdated&quot;:true,&quot;upgradeBy&quot;:null,&quot;timestamp&quot;:1719938590101}</string>
-32847	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackgroundJobServiceScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32848	com.atlassian.confluence.schedule.ScheduledJobConfiguration	DeferredFileDeletionJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32849	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ExpiredUserVerificationTokenCleanupJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32850	com.atlassian.confluence.schedule.ScheduledJobConfiguration	IndexSnapshotCleaner	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32851	com.atlassian.confluence.schedule.ScheduledJobConfiguration	JmxAppLoggingJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32852	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ClusterCacheCompactionJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32853	com.atlassian.confluence.schedule.ScheduledJobConfiguration	VersionHardRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>false</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32854	com.atlassian.confluence.schedule.ScheduledJobConfiguration	ClearExpiredRememberMeTokensJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32855	com.atlassian.confluence.schedule.ScheduledJobConfiguration	MonitoringStatsEventPublisher	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32856	com.atlassian.confluence.schedule.ScheduledJobConfiguration	JmxLoggingJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32857	com.atlassian.confluence.schedule.ScheduledJobConfiguration	JournalCleaner	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32858	com.atlassian.confluence.schedule.ScheduledJobConfiguration	VersionSoftRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32859	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SynchronyEventsSoftRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32860	com.atlassian.confluence.schedule.ScheduledJobConfiguration	TrashSoftRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32861	com.atlassian.confluence.schedule.ScheduledJobConfiguration	EhCacheCompactionJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32862	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SynchronyEventsHardRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>false</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32863	com.atlassian.confluence.schedule.ScheduledJobConfiguration	FlushChangeIndexScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32864	com.atlassian.confluence.schedule.ScheduledJobConfiguration	AncestorsRepairJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32865	com.atlassian.confluence.schedule.ScheduledJobConfiguration	DailyReportJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32866	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupRestoreScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32867	com.atlassian.confluence.schedule.ScheduledJobConfiguration	PropertyEntryGardeningJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32868	com.atlassian.confluence.schedule.ScheduledJobConfiguration	SchedulerRunDetailsPurgeJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32869	com.atlassian.confluence.schedule.ScheduledJobConfiguration	LocalTaskQueueFlushJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32870	com.atlassian.confluence.schedule.ScheduledJobConfiguration	CleanTempDirectoryJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32871	com.atlassian.confluence.schedule.ScheduledJobConfiguration	TrashHardRemovalScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>false</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32772	_GLOBAL	AO_21D670_#	<string>1</string>
-32773	_GLOBAL	AO_A0B856_#	<string>1</string>
-32872	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupRestoreJobCleanerScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32873	com.atlassian.confluence.schedule.ScheduledJobConfiguration	BackupRestoreZipCleanerScheduledJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32874	com.atlassian.confluence.schedule.ScheduledJobConfiguration	onboardingSpaceCheckJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32875	com.atlassian.confluence.schedule.ScheduledJobConfiguration	batchingJobConfig	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32877	com.atlassian.confluence.schedule.ScheduledJobConfiguration	createBlueprintPageEntityCleanupJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32878	com.atlassian.confluence.schedule.ScheduledJobConfiguration	onboardingNumberOfUsersCheckJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32879	com.atlassian.confluence.schedule.ScheduledJobConfiguration	migration-plugin:interval-space-statistic-calculation	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32881	com.atlassian.confluence.schedule.ScheduledJobConfiguration	reminderJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32882	com.atlassian.confluence.schedule.ScheduledJobConfiguration	periodicEventPublisherJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32883	com.atlassian.confluence.schedule.ScheduledJobConfiguration	purgeHistoryJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32884	com.atlassian.confluence.schedule.ScheduledJobConfiguration	cleanUpReports	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32885	com.atlassian.confluence.schedule.ScheduledJobConfiguration	deletedInviteesCleanUpJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32886	com.atlassian.confluence.schedule.ScheduledJobConfiguration	cacheStatsJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32887	com.atlassian.confluence.schedule.ScheduledJobConfiguration	confluenceDailyStatisticsPublisherJob	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32888	com.atlassian.confluence.schedule.ScheduledJobConfiguration	jira-metadata-cache-config	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32889	com.atlassian.confluence.schedule.ScheduledJobConfiguration	addonHouskeeperTrigger-v2	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32890	com.atlassian.confluence.schedule.ScheduledJobConfiguration	flushTaskIndexQueue	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32891	com.atlassian.confluence.schedule.ScheduledJobConfiguration	conversionQueueMonitor	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32896	_GLOBAL	com.atlassian.analytics.client.configuration..logged_base_analytics_data	<string>true</string>
-32897	TEST	trash.date.migration.time	<instant>2024-07-01T22:20:26.432823505Z</instant>
-32898	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.is-first-space-created	<string>true</string>
-32892	com.atlassian.confluence.schedule.ScheduledJobConfiguration	cleanupTrigger	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32893	com.atlassian.confluence.schedule.ScheduledJobConfiguration	flushEdgeIndexQueue	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32894	com.atlassian.confluence.schedule.ScheduledJobConfiguration	summaryEmail	<com.atlassian.confluence.schedule.ScheduledJobConfiguration>\n  <enabled>true</enabled>\n  <cronSchedule/>\n  <repeatInterval/>\n</com.atlassian.confluence.schedule.ScheduledJobConfiguration>
-32895	_GLOBAL	global-description.record-id	<long>98359</long>
-32899	com.atlassian.confluence.extra.calendar3.watchdog.impl.CalendarContentForRemovedSpacesCleanUpWatchDogTask	cleanupDone	<string>true</string>
-32900	_GLOBAL	RemapSubscriptionCalendarWatchersWatchdogTask.followers	<string>0</string>
-32901	_GLOBAL	RemapSubscriptionCalendarWatchersWatchdogTask.remapped	<string>0</string>
-32902	_GLOBAL	RemapSubscriptionCalendarWatchersWatchdogTask	<string>FINISHED</string>
-32769	_GLOBAL	AO_187CCC_#	<string>1</string>
-32880	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.onboardingNumberOfUsersCheckJob	<string>JOB_EXECUTED</string>
-32876	com.atlassian.confluence.efi.store.GlobalStorageServiceImpl	efi.store.onboarding.onboardingSpaceCheckJob	<string>JOB_EXECUTED</string>
-32784	_GLOBAL	atlassian.confluence.plugin.resource.counter	<int>4</int>
-32777	_GLOBAL	synchrony_collaborative_editor_UUID	<string>659509c8-cdc5-4c7b-b3b1-78d6f140f316</string>
-32816	_GLOBAL	gadget.counter	<int>4</int>
-32821	_GLOBAL	com.atlassian.upm.log.PluginSettingsAuditLogService:log:upm_audit_log_v3	<list>\n  <string>{&quot;userKey&quot;:&quot;Confluence&quot;,&quot;date&quot;:1719939481734,&quot;i18nKey&quot;:&quot;upm.auditLog.upm.startup&quot;,&quot;entryType&quot;:&quot;UPM_STARTUP&quot;,&quot;params&quot;:[]}</string>\n  <string>{&quot;userKey&quot;:&quot;Confluence&quot;,&quot;date&quot;:1719938577818,&quot;i18nKey&quot;:&quot;upm.auditLog.upm.startup&quot;,&quot;entryType&quot;:&quot;UPM_STARTUP&quot;,&quot;params&quot;:[]}</string>\n  <string>{&quot;userKey&quot;:&quot;Confluence&quot;,&quot;date&quot;:1719872399780,&quot;i18nKey&quot;:&quot;upm.auditLog.upm.startup&quot;,&quot;entryType&quot;:&quot;UPM_STARTUP&quot;,&quot;params&quot;:[]}</string>\n</list>
-\.
-
-
---
--- Data for Name: bodycontent; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.bodycontent (bodycontentid, body, contentid, bodytypeid) FROM stdin;
-163841	<p style="margin-left: 60.0px;"> </p><p>Pages live in spaces. This page is in the 'Demonstration Space'. <br /> </p><p>Let's play with some content. Don't worry, you won't break anything:</p><ol><li>Click <strong>Edit</strong> at the top of this page. Now you're in the editor.<br /><br /></li><li>Type some words anywhere on the page.<br /><br /></li><li>Have some fun:<span style="line-height: 0.0px;"> </span></li></ol><ul><li style="list-style-type: none;"><ul><li>Change the color of the text: Select the text, then choose a color from the color option in the editor tool bar.<br /><br /></li><li>Add a link: Select some text, then choose the <strong>Link</strong> button on the toolbar.<br />Click <strong>Web Link</strong> and enter an <strong>Address</strong>, such as <code>http://www.atlassian.com</code>. <br />Click <strong>Insert</strong> to insert the link.<br /><br /></li><li>Find a file or picture on your computer, and drag it anywhere on this page.<br /><br /></li><li>Try some of the other options on the editor toolbar.</li></ul></li></ul><p>When<em> y</em>ou're ready, click <strong>Update</strong> to publish your changes then<strong> </strong>and go to the next step or back to the space home.</p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg" /></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg" /></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Prettify the page with an image (step 4 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg" /></ac:image></ac:link-body></ac:link></span></h1><p> </p>	98317	2
-163842	<p style="text-align: center;"> </p><h2><ac:image><ri:attachment ri:filename="welcome.png" /></ac:image><br />  <span style="color: rgb(128,128,128);">With Confluence it is easy to create, edit and share content with your team. <br />  Choose a topic below to start learning how.</span></h2><h2><span style="color: rgb(0,0,128);"><br /></span></h2><ol><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="What is Confluence? (step 1 of 9)" /><ac:link-body>What is Confluence?<br /><br /></ac:link-body></ac:link></span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:plain-text-link-body><![CDATA[A quick look at the editor]]></ac:plain-text-link-body></ac:link><br /> </span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /><ac:plain-text-link-body><![CDATA[Let's edit this page]]></ac:plain-text-link-body></ac:link><br /><br /></span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Prettify the page with an image (step 4 of 9)" /><ac:link-body>Prettify the page with an image<br /><br /></ac:link-body></ac:link></span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Get serious with a table (step 5 of 9)" /><ac:link-body>Get serious with a table<br /></ac:link-body></ac:link></span><span style="color: rgb(0,0,128);"> </span></li><li><span style="color: rgb(0,0,128);"><ac:link><ri:page ri:content-title="Lay out your page (step 6 of 9)" /><ac:plain-text-link-body><![CDATA[Lay out your page]]></ac:plain-text-link-body></ac:link> <br /><br /></span></li><li><ac:link><ri:page ri:content-title="Learn the wonders of autoconvert (step 7 of 9)" /><ac:plain-text-link-body><![CDATA[Learn the wonders of autoconvert]]></ac:plain-text-link-body></ac:link> <br /><br /></li><li><ac:link><ri:page ri:content-title="Tell people what you think in a comment (step 8 of 9)" /><ac:plain-text-link-body><![CDATA[Tell people what you think in a comment]]></ac:plain-text-link-body></ac:link> <br /><br /></li><li><ac:link><ri:page ri:content-title="Share your page with a team member (step 9 of 9)" /><ac:plain-text-link-body><![CDATA[Share your page with a team member]]></ac:plain-text-link-body></ac:link></li></ol><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p><span style="color: rgb(128,128,128);"><br /></span></p><p style="text-align: right;">      </p>	98319	2
-163843	<p style="margin-left: 60.0px;"> </p><p><strong>Confluence</strong> is where you can create, organize and discuss work with your team. <br />Use Confluence for meeting notes, project plans, requirements, sprint planning, how-to guides, or anything you like.</p><p>Click the <strong>Create</strong> button on the header to see some of the types of pages you can create.</p><p>A Confluence page can contain text, images, diagrams, activity streams, videos, and more. <br />Confluence puts your content online in a central place where your team can search, edit and discuss it at any time. <span><span style="color: rgb(0,0,0);"> </span></span></p><p><span><span style="color: rgb(0,0,0);">So let's try it!<span style="color: rgb(0,0,255);"> <ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:plain-text-link-body><![CDATA[Click here to learn how to edit a page]]></ac:plain-text-link-body></ac:link></span> </span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"> </span></span></p><h1 style="text-align: center;"><ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="A quick look at the editor (step 2 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></h1><p><span style="color: rgb(51,51,51);"><br /></span></p><p><span style="color: rgb(51,51,51);"><br /></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p><p><span style="color: rgb(153,153,153);"><span style="color: rgb(0,0,0);"><br /></span></span></p>	98320	2
-163844	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><p><span style="color: rgb(64,64,64);">Confluence automatically transforms linked content</span> <span style="color: rgb(64,64,64);">into rich content.</span> <span style="color: rgb(64,64,64);">Try it with Confluence pages, JIRA issues, YouTube and Vimeo videos, <br /></span><span style="color: rgb(64,64,64);">Flickr photo streams, Tweets, Google maps and many more.</span></p><p><span style="color: rgb(64,64,64);">Here's two examples of autoconvert in action.</span></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_equal"><ac:layout-cell><h3>   <br /><ac:structured-macro ac:name="widget" ac:schema-version="1" ac:macro-id="e115eec2-dcf7-445c-b563-aca39824d38e"><ac:parameter ac:name="url"><ri:url ri:value="http://youtube.com/watch?v=RXhL9cfwx2c" /></ac:parameter></ac:structured-macro></h3></ac:layout-cell><ac:layout-cell><p><span style="color: rgb(0,0,0);"> <ac:structured-macro ac:name="widget" ac:schema-version="1" ac:macro-id="6f0d84bb-46ee-40a0-8379-fb9a87faf7c7"><ac:parameter ac:name="url"><ri:url ri:value="https://maps.google.com/maps?q=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;hl=en&amp;ll=-33.866572,151.207001&amp;spn=0.004321,0.008256&amp;sll=-33.870509,151.203707&amp;sspn=0.008641,0.016512&amp;oq=atlassian,&amp;hq=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;radius=15000&amp;t=m&amp;z=18&amp;iwloc=A" /></ac:parameter></ac:structured-macro> </span></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_equal"><ac:layout-cell><h3><span style="color: rgb(51,51,51);">Try it yourself:</span></h3><ol><li><span> <span> <span style="color: rgb(51,51,51);"> <span> <strong>Edit</strong> this page.</span> </span> </span> </span></li><li><span> <span> <span style="color: rgb(51,51,51);"> <span>Copy this link <a href="https://youtu.be/RXhL9cfwx2c">https://youtu.be/RXhL9cfwx2c</a> and paste it onto the page.</span> <br /></span> </span> </span></li><li><span style="color: rgb(51,51,51);">Autoconvert will embed the YouTube video on the page.</span></li><li><span style="color: rgb(51,51,51);">Save the page. <br /></span></li></ol></ac:layout-cell><ac:layout-cell><h3><span style="color: rgb(51,51,51);"> <span style="color: rgb(51,51,51);">Try it yourself</span>:</span></h3><ol><li><strong>Edit</strong> this page.</li><li>Copy this link  <a href="https://maps.google.com/maps?q=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;hl=en&amp;ll=-33.866572,151.207001&amp;spn=0.004321,0.008256&amp;sll=-33.870509,151.203707&amp;sspn=0.008641,0.016512&amp;oq=atlassian,&amp;hq=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;radius=15000&amp;t=m&amp;z=18&amp;iwloc=A">https://maps.google.com/maps?q=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;hl=en&amp;ll=-33.866572,151.207001&amp;spn=0.004321,0.008256&amp;sll=-33.870509,151.203707&amp;sspn=0.008641,0.016512&amp;oq=atlassian,&amp;hq=Atlassian,+George+Street,+New+South+Wales,+Australia&amp;radius=15000&amp;t=m&amp;z=18&amp;iwloc=A</a> and paste it onto the page. </li><li>Autoconvert will render the Google Maps view on the page.</li><li><span style="color: rgb(51,51,51);">Save the page. <br /></span></li></ol></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"> <br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"> <ac:link><ri:page ri:content-title="Lay out your page (step 6 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Tell people what you think in a comment (step 8 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> </span></h1><p><span style="color: rgb(51,51,51);"> <br /></span></p></ac:layout-cell></ac:layout-section></ac:layout>	98314	2
-163845	<p><span style="color: rgb(64,64,64);"><br /></span></p><p><span style="color: rgb(64,64,64);">Once you've created content you'll want to share it with your team members. <br /></span><span style="color: rgb(64,64,64);">Confluence can do all the work for you, just click the <strong>Share</strong> button.<br /></span></p><p style="margin-left: 30.0px;"><span style="color: rgb(64,64,64);"><span style="color: rgb(64,64,64);"><br /></span></span></p><ol><li>Let's tell someone about this page. <br />Click the <strong>Share</strong> button at the top right of the page. It looks like this:<br /><br /><ac:image ac:width="379"><ri:attachment ri:filename="step09-01.png" /></ac:image><br /> </li><li>Type the name of the person or group you want to share the page with. <br />You can also enter an email address. <br /><br /></li><li>Add a message to give the person some background about the page.<br /><br /></li><li>Click the <strong>Share</strong> button. <br />Confluence will send the person an email message about this page. Shared!</li></ol><p> </p><p><img class="emoticon emoticon-warning" title="(warning)" src="http://localhost:8090/s/en_GB/7502/10587128b0de2a71f82b5acc129b8b5611829c93/_/images/icons/emoticons/warning.png" alt="(warning)" border="0" /><span style="color: rgb(64,64,64);"> If your administrator has not added a mail server, the </span><strong>Share</strong><span style="color: rgb(64,64,64);"> button will only show the share link.<br /></span></p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Tell people what you think in a comment (step 8 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> </span></h1><p style="margin-left: 30.0px;"><span style="color: rgb(51,51,51);"><br /></span></p>	98306	2
-163846	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><p style="margin-left: 60.0px;"><br /></p><p>Insert tables with drag and drop simplicity. <br />Add, remove, cut, and paste rows and columns – this makes working with tables easy. <br /> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><ol><li><span style="color: rgb(51,51,51);"><strong>Edit</strong> the page.<br /> <br /></span></li><li><span style="color: rgb(51,51,51);">Click in the right-hand column to position your cursor.<br /> <br /></span></li><li>Click the <strong>Table</strong> menu on the toolbar and drag to choose the size of your table. <br /><br /><ac:image ac:thumbnail="true" ac:width="225"><ri:attachment ri:filename="step05-01.png" /></ac:image><br /> </li><li>The table toolbar appears when there is table on your page.<br /><br /></li><li>Place your cursor in the first cell of the table and add a row below it.<br /><br /><ac:image ac:thumbnail="true" ac:width="160"><ri:attachment ri:filename="step05-03.png" /></ac:image><br /><br /></li><li>Place your cursor in any cell of the last column of the table and delete the column.<br /><br /><ac:image ac:thumbnail="true" ac:width="160"><ri:attachment ri:filename="step05-04.png" /></ac:image><br /> </li><li>Grab one of the column borders and drag to resize the column.<br /><br /></li><li><span style="line-height: 1.42857;">Click </span><strong style="line-height: 1.42857;">Update </strong><span style="line-height: 1.42857;">to publish your changes to the page.</span></li></ol></ac:layout-cell><ac:layout-cell><p><br /></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Prettify the page with an image (step 4 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Lay out your page (step 6 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1></ac:layout-cell></ac:layout-section></ac:layout>	98332	2
-163847	<p><br />You can start a discussion by simply leaving a comment on a page, like this one.</p><p>Why not give it a try?</p><p>Go to the bottom of this page and start typing in the comment area. When you're finished just press save! </p><p>Don't just confine your comments to the bottom of the page - highlight some text on the page to add an inline comment like this:</p><p><br /></p><p><ac:image ac:width="417"><ri:attachment ri:filename="Step8-01.png" /></ac:image></p><p><br /></p><p><strong>Hint:</strong> You can mention another user in a page or  comment by typing @ and then the user's name. <br />The user will be notified that you mentioned them.</p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><ac:link><ri:page ri:content-title="Learn the wonders of autoconvert (step 7 of 9)" /><ac:link-body><ac:image ac:height="40" ac:width="106"><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Share your page with a team member (step 9 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></h1><p><span style="color: rgb(51,51,51);"><br /></span></p>	98305	2
-163848	<p>Page layouts provide structure in your page — two-column, three-column, and more — making it easy for anyone to create beautiful pages.</p><p> </p><ol><li><span style="color: rgb(51,51,51);"><strong>Edit</strong> the page.<br />  </span></li><li><span style="color: rgb(51,51,51);">Click the <strong>Page Layout</strong></span> button in the editor toolbar. It looks like this:<br /><br /><ac:image ac:thumbnail="true" ac:width="160"><ri:attachment ri:filename="step06-image01.png" /></ac:image><br /><span style="color: rgb(51,51,51);"><br /> </span>A section is added to your page, dotted lines indicate the section boundaries. <br /> </li><li>Choose a <strong>column layout</strong> to apply to your section, for example two columns. <br /><br /><ac:image ac:width="308"><ri:attachment ri:filename="step06-image02.png" /></ac:image> <br /> </li><li><span style="color: rgb(51,51,51);">Click the <strong>Add section</strong> button to add another section to the page. <br /><br /><ac:image ac:width="385"><ri:attachment ri:filename="step06-image03.png" /></ac:image><br /> </span></li><li><span style="color: rgb(51,51,51);">Choose a different <strong>column layout</strong> for this section. <br /><br /></span></li><li>Click <strong>Update </strong>to publish your changes to the page.</li></ol><p><span>You can add as many sections as you need, and each section can have a different column layout. </span></p><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Get serious with a table (step 5 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Learn the wonders of autoconvert (step 7 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1>	98321	2
-163849	<p><br /></p><p>Let's start with the editor. You'll use the Confluence editor to <strong>create</strong> and <strong>edit</strong> pages.<br />You can type in the editor as you would in any document, apply formatting, and embed other content and files into the page.</p><p>The editor looks like this <span style="color: rgb(153,153,153);">(click images for a larger view)</span>:</p><p><br /></p><p><ac:image ac:width="511"><ri:attachment ri:filename="step-2-image-1.png" /></ac:image></p><p><br /></p><p><span>Here is a description of the components:</span></p><ol><li><h4><span style="color: rgb(0,0,0);">Editor toolbar</span></h4><span style="color: rgb(51,51,51);">The editor toolbar provides tools to format and color page content, create lists and tables, indent and align text, and insert other content into the page such as symbols, links, images, multimedia files, and macros.<br /><br /></span><ac:image ac:width="870"><ri:attachment ri:filename="step-2-image-3.png" /></ac:image><br /><br /></li><li><h4><span style="color: rgb(0,0,0);">Page content</span></h4><span style="color: rgb(51,51,51);">This is where you and your team will type the content for your page. You can also drag attachments from your desktop here.<br /></span>If other people are editing the page at the same time, you'll see their changes in real time! <br /><br /><br /></li><li><h4><span style="color: rgb(0,0,0);">Publish or close</span></h4><span style="color: rgb(0,0,0);">We're saving all the time in the editor.  Once you're ready, hit <strong>publish</strong> to publish your page so others can see the changes, or <strong>close</strong> to finish editing later.<br /><br /><ac:image ac:width="800"><ri:attachment ri:filename="step-2-image-5.png" /></ac:image></span><br /><br /></li></ol><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="What is Confluence? (step 1 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1><p><span style="color: rgb(51,51,51);"><br /></span></p>	98322	2
-163850	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><p style="margin-left: 60.0px;"> </p><p><span style="color: rgb(51,51,51);">The Confluence editor helps you create content, fast. </span><span style="color: rgb(51,51,51);">You can embed images, Office documents, and even videos. <br />That's just the tip of the iceberg when it comes to creating useful content for your team. <br /> </span></p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><ol><li style="text-align: left;"><strong>Edit</strong> the page.<br /><br /></li><li style="text-align: left;">Click in the right-hand column to position your cursor.<br /><br /></li><li style="text-align: left;">Click <strong style="text-align: left;">Files</strong> on the editor toolbar. It looks like this:<br /><br /><ac:image ac:width="301"><ri:attachment ri:filename="step04-01.png" /></ac:image><br /> </li><li style="text-align: left;"><span>The Files dialog shows you the files attached to this page. <br />Select the image named <strong>Confluence Origami Necktie</strong>.<br /> <br /></span></li><li style="text-align: left;">Click <strong>Insert</strong>.<br /><br /></li><li style="text-align: left;"><span style="color: rgb(51,51,51);">You will return to this page, and see the 'Image Properties Panel'. If you don't see it, click the image.<br /> <br /></span></li><li style="text-align: left;"><span style="color: rgb(51,51,51);">Resize the image by clicking on the square buttons or entering a width.<br /><br /><ac:image ac:width="540"><ri:attachment ri:filename="step04-02.png" /></ac:image><br /> <br /></span><span style="color: rgb(51,51,51);"><br /></span></li><li style="text-align: left;"><span>Click <strong>Properties </strong>and then select the <strong>Curl Shadow</strong> option from the Image Effects dialog. <br />   <br /></span></li><li style="text-align: left;"><span style="color: rgb(51,51,51);">Your image should look like this when completed:<br /><ac:image ac:queryparams="effects=border-simple,shadow-kn" ac:thumbnail="true" ac:width="300"><ri:attachment ri:filename="Confluence-Origami-Necktie.jpeg" /></ac:image><br /> </span></li><li style="text-align: left;"><span style="line-height: 1.42857;">Click </span><strong style="line-height: 1.42857;">Update </strong><span style="line-height: 1.42857;">to publish your changes to the page.</span><br /><br /></li><li style="text-align: left;">View the image on the page, or click to preview the file.</li></ol><p style="text-align: left;">The Files button is not just for images, you can insert and preview a wide range of files, including Microsoft Office documents and PDFs.</p></ac:layout-cell><ac:layout-cell><p> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><br /></span></h1><h1 style="text-align: center;"><span style="color: rgb(51,51,51);"><ac:link><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="prev.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Welcome to Confluence" /><ac:link-body><ac:image><ri:attachment ri:filename="home.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link> <ac:link><ri:page ri:content-title="Get serious with a table (step 5 of 9)" /><ac:link-body><ac:image><ri:attachment ri:filename="next.jpg"><ri:page ri:content-title="Let's edit this page (step 3 of 9)" /></ri:attachment></ac:image></ac:link-body></ac:link></span></h1><p><span style="color: rgb(51,51,51);"><br /></span></p></ac:layout-cell></ac:layout-section></ac:layout>	98318	2
-163851		98357	0
-163852	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><ac:structured-macro ac:macro-id="5da7fd26-ee1a-4fe5-a582-dcf9bfaf8f45" ac:name="tip" ac:schema-version="1"><ac:rich-text-body><p>Welcome to your first space. Go ahead, edit and customize this home page any way you like. We've added some sample content to get you started.</p></ac:rich-text-body></ac:structured-macro></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><p><ac:image><ri:attachment ri:filename="peak.jpeg" /></ac:image></p><p> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><hr /><h1><strong>Goal</strong></h1><h2><em>Your space homepage should summarize what the space is for, and provide links to key resources for your team. </em></h2><hr /><p> </p><h1><strong>Core team</strong></h1><table><tbody><tr><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Harvey.jpg" /></ac:image></p><p style="text-align: center;"><strong>Harvey Honner-white<br /></strong>Team Lead<strong> </strong></p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Alana.jpg" /></ac:image></p><p style="text-align: center;"><strong>Alana Baczewski<br /> </strong>Tech Lead</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Sameer.jpg" /></ac:image></p><p style="text-align: center;"><strong>Sameer Farrell<br /> </strong>Marketing</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Cassie.jpg" /></ac:image></p><p style="text-align: center;"><strong>Mia Bednarczyk<br /> </strong>Recruitment</p></td></tr></tbody></table><p> </p><h1><strong>Roadmap</strong></h1><p>You can edit this roadmap or create a new one by adding the Roadmap Planner macro from the Insert menu. Link your Confluence pages to each bar to add visibility, and find more tips by reading the Atlassian blog: <a href="http://blogs.atlassian.com/2015/01/roadmap-planner-macro/">Plan better in 2015 with the Roadmap Planner macro</a>.</p><p><ac:structured-macro ac:macro-id="acab4a3d-dde3-4e22-a912-ce9f886e3e91" ac:name="roadmap" ac:schema-version="1"><ac:parameter ac:name="maplinks" /><ac:parameter ac:name="timeline">true</ac:parameter><ac:parameter ac:name="pagelinks" /><ac:parameter ac:name="source">%7B%22title%22%3A%22Roadmap%20Planner%22%2C%22timeline%22%3A%7B%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22endDate%22%3A%222015-12-31%2000%3A00%3A00%22%2C%22displayOption%22%3A%22MONTH%22%7D%2C%22lanes%22%3A%5B%7B%22title%22%3A%22Marketing%22%2C%22color%22%3A%7B%22lane%22%3A%22%23f15c75%22%2C%22bar%22%3A%22%23f58598%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Social%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-30%2011%3A10%3A05%22%2C%22duration%22%3A3.6435643564356437%2C%22rowIndex%22%3A0%2C%22id%22%3A%22e703c6a8-1649-4d20-9ccf-2c7a8698e385%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22title%22%3A%22Website%20development%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-17%2006%3A24%3A57%22%2C%22duration%22%3A3.3069306930693068%2C%22rowIndex%22%3A1%2C%22id%22%3A%22655d454d-b701-4584-a301-9ea0bb86ed32%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A2%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22id%22%3A%22c420ef33-ae28-4828-958f-8a9d793153b3%22%2C%22title%22%3A%22Crowdfunding%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22duration%22%3A2.5544554455445545%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22People%22%2C%22color%22%3A%7B%22lane%22%3A%22%23654982%22%2C%22bar%22%3A%22%238c77a1%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Recruitment%22%2C%22description%22%3A%22%22%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22duration%22%3A2.5%2C%22rowIndex%22%3A0%2C%22id%22%3A%221230bab8-718c-47da-903a-2cbdcb220d97%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-17%2013%3A46%3A55%22%2C%22id%22%3A%228639d09c-59d1-4d1f-ad91-c78f04b20135%22%2C%22title%22%3A%22Assessment%20Period%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.910891089108911%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A1%2C%22startDate%22%3A%222015-09-01%2021%3A23%3A10%22%2C%22id%22%3A%22802b53f7-ba66-4415-984d-efef93b4caec%22%2C%22title%22%3A%22Training%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.5841584158415842%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-15%2006%3A10%3A41%22%2C%22id%22%3A%22502fac56-3849-415f-b412-af27c39229b7%22%2C%22title%22%3A%22Finalisation%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.4356435643564356%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22Product%22%2C%22color%22%3A%7B%22lane%22%3A%22%233b7fc4%22%2C%22bar%22%3A%22%236c9fd3%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-06-24%2004%3A02%3A22%22%2C%22id%22%3A%2200ada54b-0998-41a5-aa98-712ecdec8c7f%22%2C%22title%22%3A%22Planning%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.1782178217821784%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-31%2001%3A54%3A03%22%2C%22id%22%3A%2271967f2c-f3ab-4871-aaf5-7cf31389e62f%22%2C%22title%22%3A%22Development%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.9207920792079207%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-10-29%2013%3A04%3A09%22%2C%22id%22%3A%22d76ac773-3ee7-495b-9d7f-1daf267dc58c%22%2C%22title%22%3A%22Testing%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-30%2002%3A36%3A49%22%2C%22id%22%3A%224f584dc6-63b8-4efa-a98e-a5d7bbe9910e%22%2C%22title%22%3A%22Deploy%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.0297029702970297%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%5D%2C%22markers%22%3A%5B%7B%22title%22%3A%22Yearly%20Finalisation%22%2C%22markerDate%22%3A%222015-11-29%2012%3A21%3A23%22%7D%5D%7D</ac:parameter><ac:parameter ac:name="title">Roadmap%20Planner</ac:parameter><ac:parameter ac:name="hash">f0477dfac6f6ca380d8c5f2f44041947</ac:parameter></ac:structured-macro></p><p> </p><h1><strong>Know your spaces</strong> </h1><p>Everything your team is working on - meeting notes and agendas, project plans and timelines, technical documentation and more - is located in a space; it's home base for your team.</p><p>A small team should plan to have a space for the team, and a space for each big project. If you'll be working in Confluence with several other teams and departments, we recommend a space for each team as well as a space for each major cross-team project. The key is to think of a space as the container that holds all the important stuff - like pages, files, and blog posts - a team, group, or project needs to work.</p><h1><strong>Know your pages</strong></h1><p>If you're working on something related to your team - project plans, product requirements, blog posts, internal communications, you name it - create and store it in a Confluence page. Confluence pages offer a lot of flexibility in creating and storing information, and there are a number of useful page templates included to get you started, like the meeting notes template. Your spaces should be filled with pages that document your business processes, outline your plans, contain your files, and report on your progress. The more you learn to do in Confluence (adding tables and graphs, or embedding video and links are great places to start), the more engaging and helpful your pages will become.</p><p>Learn more by reading <a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></p><p> </p><hr /></ac:layout-cell><ac:layout-cell><h1><strong>Quick navigation</strong></h1><p>When you create new pages in this space, they'll appear here automatically.</p><p><ac:structured-macro ac:macro-id="8ca379f2-ea2a-4fbb-bf4a-77619f9875ed" ac:name="children" ac:schema-version="2" /></p><h1><strong>Useful links</strong></h1><table><tbody><tr><th>Link</th><th>Description</th></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></td><td><p>Chances are, the information you need to do your job lives in multiple places. Word docs, Evernote files, email, PDFs, even Post-it notes. It's scattered among different systems. And to make matters worse, <em>the stuff your teammates need is equally siloed</em>. If information had feelings, it would be lonely.</p><p>But with Confluence, you can bring all that information into one place.</p></td></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-discuss-work-with-your-team">Confluence 101: discuss work with your team</a></td><td>Getting a project outlined and adding the right content are just the first steps. Now it's time for your team to weigh in. Confluence makes it easy to discuss your work - with your team, your boss, or your entire company - in the same place where you organized and created it.</td></tr><tr><td colspan="1"><a href="https://www.atlassian.com/collaboration/confluence-create-content-with-pages">Confluence 101: create content with pages</a></td><td colspan="1">Think of pages as a New Age &quot;document.&quot; If Word docs were rotary phones, Confluence pages would be smart phones. A smart phone still makes calls (like their rotary counterparts), but it can do so much more than that</td></tr></tbody></table><p><strong style="font-size: 24.0px;line-height: 1.25;"><br /></strong></p><p><strong style="font-size: 24.0px;line-height: 1.25;">Tasks</strong></p><table><tbody><tr><td><ac:task-list>\n<ac:task>\n<ac:task-id>59</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body><a href="https://confluence.atlassian.com/x/NgszKw">Customize the name, colour, and icon of Confluence</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>56</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Decide who can see and edit this space or a specific page by clicking the <ac:image><ri:attachment ri:filename="lock-icon.png" /></ac:image> icon. Learn more about <a href="https://confluence.atlassian.com/x/liAC">Page Restrictions</a> and <a href="https://confluence.atlassian.com/x/ASEC">Space Permissions</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>57</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Try adding an <a href="https://confluence.atlassian.com/x/2yAC">inline comment</a> by highlighting some text and click the comment icon.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>58</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Learn more about <a href="https://confluence.atlassian.com/x/SRwC">inviting your team to Confluence</a>.</ac:task-body>\n</ac:task>\n</ac:task-list>\n</td></tr></tbody></table></ac:layout-cell></ac:layout-section></ac:layout>	98361	2
-163853		98362	0
-163854	efionboardingspace	98369	0
-163855	<p><span>You can add comments directly to images. Use file comments to review designs, add feedback, or just start a conversation.</span></p>	98370	2
-950273	<ac:layout><ac:layout-section ac:type="single"><ac:layout-cell><ac:structured-macro ac:macro-id="5da7fd26-ee1a-4fe5-a582-dcf9bfaf8f45" ac:name="tip" ac:schema-version="1"><ac:rich-text-body><p>Welcome to your first space. Go ahead, edit and customize this home page any way you like. We've added some sample content to get you started.</p></ac:rich-text-body></ac:structured-macro></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="single"><ac:layout-cell><p><ac:image><ri:attachment ri:filename="peak.jpeg" /></ac:image></p><p> </p></ac:layout-cell></ac:layout-section><ac:layout-section ac:type="two_right_sidebar"><ac:layout-cell><hr /><h1><strong>Goal</strong></h1><h2><em>Your space homepage should summarize what the space is for, and provide links to key resources for your team. </em></h2><hr /><p> </p><h1><strong>Core team</strong></h1><table><tbody><tr><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Harvey.jpg" /></ac:image></p><p style="text-align: center;"><strong>Harvey Honner-white<br /></strong>Team Lead<strong> </strong></p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Alana.jpg" /></ac:image></p><p style="text-align: center;"><strong>Alana Baczewski<br /> </strong>Tech Lead</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Sameer.jpg" /></ac:image></p><p style="text-align: center;"><strong>Sameer Farrell<br /> </strong>Marketing</p></td><td><p style="text-align: center;"><ac:image ac:thumbnail="true" ac:width="100"><ri:attachment ri:filename="Cassie.jpg" /></ac:image></p><p style="text-align: center;"><strong>Mia Bednarczyk<br /> </strong>Recruitment</p></td></tr></tbody></table><p> </p><h1><strong>Roadmap</strong></h1><p>You can edit this roadmap or create a new one by adding the Roadmap Planner macro from the Insert menu. Link your Confluence pages to each bar to add visibility, and find more tips by reading the Atlassian blog: <a href="http://blogs.atlassian.com/2015/01/roadmap-planner-macro/">Plan better in 2015 with the Roadmap Planner macro</a>.</p><p><ac:structured-macro ac:macro-id="acab4a3d-dde3-4e22-a912-ce9f886e3e91" ac:name="roadmap" ac:schema-version="1"><ac:parameter ac:name="maplinks" /><ac:parameter ac:name="timeline">true</ac:parameter><ac:parameter ac:name="pagelinks" /><ac:parameter ac:name="source">%7B%22title%22%3A%22Roadmap%20Planner%22%2C%22timeline%22%3A%7B%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22endDate%22%3A%222015-12-31%2000%3A00%3A00%22%2C%22displayOption%22%3A%22MONTH%22%7D%2C%22lanes%22%3A%5B%7B%22title%22%3A%22Marketing%22%2C%22color%22%3A%7B%22lane%22%3A%22%23f15c75%22%2C%22bar%22%3A%22%23f58598%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Social%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-30%2011%3A10%3A05%22%2C%22duration%22%3A3.6435643564356437%2C%22rowIndex%22%3A0%2C%22id%22%3A%22e703c6a8-1649-4d20-9ccf-2c7a8698e385%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22title%22%3A%22Website%20development%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22startDate%22%3A%222015-07-17%2006%3A24%3A57%22%2C%22duration%22%3A3.3069306930693068%2C%22rowIndex%22%3A1%2C%22id%22%3A%22655d454d-b701-4584-a301-9ea0bb86ed32%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A2%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22id%22%3A%22c420ef33-ae28-4828-958f-8a9d793153b3%22%2C%22title%22%3A%22Crowdfunding%20campaign%22%2C%22description%22%3A%22Add%20a%20description%20to%20your%20bars%20here.%22%2C%22duration%22%3A2.5544554455445545%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22People%22%2C%22color%22%3A%7B%22lane%22%3A%22%23654982%22%2C%22bar%22%3A%22%238c77a1%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22title%22%3A%22Recruitment%22%2C%22description%22%3A%22%22%2C%22startDate%22%3A%222015-06-01%2000%3A00%3A00%22%2C%22duration%22%3A2.5%2C%22rowIndex%22%3A0%2C%22id%22%3A%221230bab8-718c-47da-903a-2cbdcb220d97%22%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-17%2013%3A46%3A55%22%2C%22id%22%3A%228639d09c-59d1-4d1f-ad91-c78f04b20135%22%2C%22title%22%3A%22Assessment%20Period%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.910891089108911%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A1%2C%22startDate%22%3A%222015-09-01%2021%3A23%3A10%22%2C%22id%22%3A%22802b53f7-ba66-4415-984d-efef93b4caec%22%2C%22title%22%3A%22Training%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.5841584158415842%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-15%2006%3A10%3A41%22%2C%22id%22%3A%22502fac56-3849-415f-b412-af27c39229b7%22%2C%22title%22%3A%22Finalisation%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.4356435643564356%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%2C%7B%22title%22%3A%22Product%22%2C%22color%22%3A%7B%22lane%22%3A%22%233b7fc4%22%2C%22bar%22%3A%22%236c9fd3%22%2C%22text%22%3A%22%23ffffff%22%2C%22count%22%3A1%7D%2C%22bars%22%3A%5B%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-06-24%2004%3A02%3A22%22%2C%22id%22%3A%2200ada54b-0998-41a5-aa98-712ecdec8c7f%22%2C%22title%22%3A%22Planning%22%2C%22description%22%3A%22%22%2C%22duration%22%3A2.1782178217821784%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-08-31%2001%3A54%3A03%22%2C%22id%22%3A%2271967f2c-f3ab-4871-aaf5-7cf31389e62f%22%2C%22title%22%3A%22Development%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.9207920792079207%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-10-29%2013%3A04%3A09%22%2C%22id%22%3A%22d76ac773-3ee7-495b-9d7f-1daf267dc58c%22%2C%22title%22%3A%22Testing%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1%2C%22pageLink%22%3A%7B%7D%7D%2C%7B%22rowIndex%22%3A0%2C%22startDate%22%3A%222015-11-30%2002%3A36%3A49%22%2C%22id%22%3A%224f584dc6-63b8-4efa-a98e-a5d7bbe9910e%22%2C%22title%22%3A%22Deploy%22%2C%22description%22%3A%22%22%2C%22duration%22%3A1.0297029702970297%2C%22pageLink%22%3A%7B%7D%7D%5D%7D%5D%2C%22markers%22%3A%5B%7B%22title%22%3A%22Yearly%20Finalisation%22%2C%22markerDate%22%3A%222015-11-29%2012%3A21%3A23%22%7D%5D%7D</ac:parameter><ac:parameter ac:name="title">Roadmap%20Planner</ac:parameter><ac:parameter ac:name="hash">f0477dfac6f6ca380d8c5f2f44041947</ac:parameter></ac:structured-macro></p><p> </p><h1><strong>Know your spaces</strong> </h1><p>Everything your team is working on - meeting notes and agendas, project plans and timelines, technical documentation and more - is located in a space; it's home base for your team.</p><p>A small team should plan to have a space for the team, and a space for each big project. If you'll be working in Confluence with several other teams and departments, we recommend a space for each team as well as a space for each major cross-team project. The key is to think of a space as the container that holds all the important stuff - like pages, files, and blog posts - a team, group, or project needs to work.</p><h1><strong>Know your pages</strong></h1><p>If you're working on something related to your team - project plans, product requirements, blog posts, internal communications, you name it - create and store it in a Confluence page. Confluence pages offer a lot of flexibility in creating and storing information, and there are a number of useful page templates included to get you started, like the meeting notes template. Your spaces should be filled with pages that document your business processes, outline your plans, contain your files, and report on your progress. The more you learn to do in Confluence (adding tables and graphs, or embedding video and links are great places to start), the more engaging and helpful your pages will become.</p><p>Learn more by reading <a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></p><p> </p><hr /></ac:layout-cell><ac:layout-cell><h1><strong>Quick navigation</strong></h1><p>When you create new pages in this space, they'll appear here automatically.</p><p><ac:structured-macro ac:macro-id="8ca379f2-ea2a-4fbb-bf4a-77619f9875ed" ac:name="children" ac:schema-version="2" /></p><h1><strong>Useful links</strong></h1><table><tbody><tr><th>Link</th><th>Description</th></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-organize-work-in-spaces">Confluence 101: organize your work in spaces</a></td><td><p>Chances are, the information you need to do your job lives in multiple places. Word docs, Evernote files, email, PDFs, even Post-it notes. It's scattered among different systems. And to make matters worse, <em>the stuff your teammates need is equally siloed</em>. If information had feelings, it would be lonely.</p><p>But with Confluence, you can bring all that information into one place.</p></td></tr><tr><td><a href="https://www.atlassian.com/collaboration/confluence-discuss-work-with-your-team">Confluence 101: discuss work with your team</a></td><td>Getting a project outlined and adding the right content are just the first steps. Now it's time for your team to weigh in. Confluence makes it easy to discuss your work - with your team, your boss, or your entire company - in the same place where you organized and created it.</td></tr><tr><td colspan="1"><a href="https://www.atlassian.com/collaboration/confluence-create-content-with-pages">Confluence 101: create content with pages</a></td><td colspan="1">Think of pages as a New Age &quot;document.&quot; If Word docs were rotary phones, Confluence pages would be smart phones. A smart phone still makes calls (like their rotary counterparts), but it can do so much more than that</td></tr></tbody></table><p><strong style="font-size: 24.0px;line-height: 1.25;"><br /></strong></p><p><strong style="font-size: 24.0px;line-height: 1.25;">Tasks</strong></p><table><tbody><tr><td><ac:task-list>\n<ac:task>\n<ac:task-id>59</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body><a href="https://confluence.atlassian.com/x/NgszKw">Customize the name, colour, and icon of Confluence</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>56</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Decide who can see and edit this space or a specific page by clicking the <ac:image><ri:attachment ri:filename="lock-icon.png" /></ac:image> icon. Learn more about <a href="https://confluence.atlassian.com/x/liAC">Page Restrictions</a> and <a href="https://confluence.atlassian.com/x/ASEC">Space Permissions</a>.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>57</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Try adding an <a href="https://confluence.atlassian.com/x/2yAC">inline comment</a> by highlighting some text and click the comment icon.</ac:task-body>\n</ac:task>\n<ac:task>\n<ac:task-id>58</ac:task-id>\n<ac:task-status>incomplete</ac:task-status>\n<ac:task-body>Learn more about <a href="https://confluence.atlassian.com/x/SRwC">inviting your team to Confluence</a>.</ac:task-body>\n</ac:task>\n</ac:task-list>\n</td></tr></tbody></table></ac:layout-cell></ac:layout-section></ac:layout>	917505	2
-\.
-
-
---
--- Data for Name: clustersafety; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.clustersafety (clustersafetyid, safetynumber) FROM stdin;
-688129	2107590517
-\.
-
-
---
--- Data for Name: confancestors; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.confancestors (descendentid, ancestorposition, ancestorid) FROM stdin;
-98305	0	98319
-98307	0	98319
-98306	0	98319
-98309	0	98319
-98308	0	98319
-98311	0	98319
-98310	0	98319
-98313	0	98319
-98312	0	98319
-98315	0	98319
-98314	0	98319
-98317	0	98319
-98316	0	98319
-98318	0	98319
-98321	0	98319
-98320	0	98319
-98323	0	98319
-98322	0	98319
-98325	0	98319
-98324	0	98319
-98327	0	98319
-98326	0	98319
-98329	0	98319
-98328	0	98319
-98331	0	98319
-98330	0	98319
-98333	0	98319
-98332	0	98319
-98335	0	98319
-98334	0	98319
-98336	0	98319
-\.
-
-
---
--- Data for Name: confversion; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.confversion (confversionid, buildnumber, installdate, versiontag, finalized, creationdate, lastmoddate) FROM stdin;
-655361	9101	2024-07-01 22:19:59.56	\N	Y	\N	\N
-\.
-
-
---
--- Data for Name: confzdu; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.confzdu (confzduid, state, orig_ver, orig_build_number) FROM stdin;
-\.
-
-
---
--- Data for Name: label; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.label (labelid, name, owner, namespace, creationdate, lastmoddate) FROM stdin;
-753665	favourite	4028408390705fdc01907061af0d0000	my	2015-09-15 16:59:33.517	2015-09-15 16:59:33.517
-\.
-
-
---
--- Data for Name: spaces; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.spaces (spaceid, spacename, spacekey, lowerspacekey, spacedescid, homepage, creator, creationdate, lastmodifier, lastmoddate, spacetype, spacestatus) FROM stdin;
-131073	Demonstration Space	ds	ds	98357	98319	\N	2020-04-14 11:55:11.912	\N	2024-07-01 22:19:28.154	global	CURRENT
-131074	test	TEST	test	98362	98361	4028408390705fdc01907061af0d0000	2024-07-01 22:20:26.308	4028408390705fdc01907061af0d0000	2024-07-01 22:20:26.447	global	CURRENT
-\.
-
-
---
--- Data for Name: pagetemplates; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.pagetemplates (templateid, hibernateversion, templatename, templatedesc, pluginkey, modulekey, refpluginkey, refmodulekey, content, spaceid, prevver, version, creator, creationdate, lastmodifier, lastmoddate, bodytypeid) FROM stdin;
-\.
-
-
---
 -- Data for Name: content_label; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -6737,18 +13537,18 @@ COPY public.content_label (id, labelid, contentid, pagetemplateid, owner, creati
 
 
 --
--- Data for Name: content_perm_set; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.content_perm_set (id, cont_perm_type, content_id, creationdate, lastmoddate) FROM stdin;
-\.
-
-
---
 -- Data for Name: content_perm; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
 COPY public.content_perm (id, cp_type, username, groupname, cps_id, creator, creationdate, lastmodifier, lastmoddate) FROM stdin;
+\.
+
+
+--
+-- Data for Name: content_perm_set; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.content_perm_set (id, cont_perm_type, content_id, creationdate, lastmoddate) FROM stdin;
 \.
 
 
@@ -6868,7 +13668,6 @@ COPY public.contentproperties (propertyid, propertyname, stringval, longval, dat
 262198	FILESIZE	\N	21488	\N	98356
 262199	MINOR_EDIT	\N	1	\N	98356
 262210	MEDIA_TYPE	image/png	\N	\N	98356
-262301	sync-rev-source	synchrony	\N	\N	98371
 262302	share-id	df343bf7-9009-4d07-b560-3cbb33038a43	\N	\N	98371
 262303	MEDIA_TYPE	image/png	\N	\N	98372
 262304	FILESIZE	\N	94904	\N	98372
@@ -6944,24 +13743,15 @@ COPY public.contentproperties (propertyid, propertyname, stringval, longval, dat
 262326	HIDDEN	\N	0	\N	98376
 983041	sync-rev-source	synchrony	\N	\N	917505
 983042	share-id	bc981e93-a4a7-46fa-8044-c8f07dd46a30	\N	\N	917505
+262301	sync-rev-source	restored	\N	\N	98371
 \.
 
 
 --
--- Data for Name: cwd_application; Type: TABLE DATA; Schema: public; Owner: confluence
+-- Data for Name: cwd_app_dir_group_mapping; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.cwd_application (id, application_name, lower_application_name, created_date, updated_date, active, description, application_type, credential) FROM stdin;
-327681	crowd-embedded	crowd-embedded	2024-07-01 22:19:59.278	2024-07-01 22:19:59.293	T	\N	GENERIC_APPLICATION	X
-\.
-
-
---
--- Data for Name: cwd_directory; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.cwd_directory (id, directory_name, lower_directory_name, created_date, updated_date, active, description, impl_class, lower_impl_class, directory_type) FROM stdin;
-360449	Confluence Internal Directory	confluence internal directory	2024-07-01 22:19:59.287	2024-07-01 22:19:59.287	T	Confluence default internal directory	com.atlassian.crowd.directory.InternalDirectory	com.atlassian.crowd.directory.internaldirectory	INTERNAL
+COPY public.cwd_app_dir_group_mapping (id, app_dir_mapping_id, application_id, directory_id, group_name) FROM stdin;
 \.
 
 
@@ -6971,14 +13761,6 @@ COPY public.cwd_directory (id, directory_name, lower_directory_name, created_dat
 
 COPY public.cwd_app_dir_mapping (id, application_id, directory_id, allow_all, list_index) FROM stdin;
 393217	327681	360449	T	0
-\.
-
-
---
--- Data for Name: cwd_app_dir_group_mapping; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.cwd_app_dir_group_mapping (id, app_dir_mapping_id, application_id, directory_id, group_name) FROM stdin;
 \.
 
 
@@ -7003,6 +13785,15 @@ COPY public.cwd_app_dir_operation (app_dir_mapping_id, operation_type) FROM stdi
 
 
 --
+-- Data for Name: cwd_application; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.cwd_application (id, application_name, lower_application_name, created_date, updated_date, active, description, application_type, credential) FROM stdin;
+327681	crowd-embedded	crowd-embedded	2024-07-01 22:19:59.278	2024-07-01 22:19:59.293	T	\N	GENERIC_APPLICATION	X
+\.
+
+
+--
 -- Data for Name: cwd_application_address; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -7023,6 +13814,15 @@ COPY public.cwd_application_attribute (application_id, attribute_name, attribute
 327681	com.sun.jndi.ldap.connect.pool.prefsize	10
 327681	aggregateMemberships	true
 327681	com.sun.jndi.ldap.connect.pool.protocol	plain ssl
+\.
+
+
+--
+-- Data for Name: cwd_directory; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.cwd_directory (id, directory_name, lower_directory_name, created_date, updated_date, active, description, impl_class, lower_impl_class, directory_type) FROM stdin;
+360449	Confluence Internal Directory	confluence internal directory	2024-07-01 22:19:59.287	2025-04-01 21:41:15.286	T	Confluence default internal directory	com.atlassian.crowd.directory.InternalDirectory	com.atlassian.crowd.directory.internaldirectory	INTERNAL
 \.
 
 
@@ -7074,15 +13874,6 @@ COPY public.cwd_group_attribute (id, group_id, directory_id, attribute_name, att
 
 
 --
--- Data for Name: cwd_user; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.cwd_user (id, user_name, lower_user_name, active, created_date, updated_date, first_name, lower_first_name, last_name, lower_last_name, display_name, lower_display_name, email_address, lower_email_address, external_id, directory_id, credential) FROM stdin;
-491521	admin	admin	T	2024-07-01 22:19:59.414	2024-07-01 22:19:59.414			admin	admin	admin	admin	admin@example.com	admin@example.com	6fb6a168-a49e-405d-b78b-152e066db78f	360449	{PKCS5S2}1LR4rL7MFcfgrRBxvOUOr3FAgqnH7aPIu0eM8HzdIhU9i4x7bvt+NZQuMseSlYhJ
-\.
-
-
---
 -- Data for Name: cwd_membership; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -7117,6 +13908,15 @@ COPY public.cwd_tombstone (id, tombstone_type, tombstone_timestamp, entity_name,
 
 
 --
+-- Data for Name: cwd_user; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.cwd_user (id, user_name, lower_user_name, active, created_date, updated_date, first_name, lower_first_name, last_name, lower_last_name, display_name, lower_display_name, email_address, lower_email_address, external_id, directory_id, credential) FROM stdin;
+491521	admin	admin	T	2024-07-01 22:19:59.414	2024-07-01 22:19:59.414			admin	admin	admin	admin	admin@example.com	admin@example.com	6fb6a168-a49e-405d-b78b-152e066db78f	360449	{PKCS5S2}1LR4rL7MFcfgrRBxvOUOr3FAgqnH7aPIu0eM8HzdIhU9i4x7bvt+NZQuMseSlYhJ
+\.
+
+
+--
 -- Data for Name: cwd_user_attribute; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -7124,7 +13924,7 @@ COPY public.cwd_user_attribute (id, user_id, directory_id, attribute_name, attri
 557057	491521	360449	requiresPasswordChange	false	false
 557058	491521	360449	invalidPasswordAttempts	0	0
 557059	491521	360449	passwordLastChanged	1719872399417	1719872399417
-557060	491521	360449	lastAuthenticated	1719939529879	1719939529879
+557060	491521	360449	lastAuthenticated	1743543704796	1743543704796
 \.
 
 
@@ -7252,7 +14052,7 @@ COPY public.follow_connections (connectionid, follower, followee) FROM stdin;
 -- Data for Name: gr_response_group; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.gr_response_group (id, jobid, nodeid, starttimestamp, endtimestamp) FROM stdin;
+COPY public.gr_response_group (id, jobid, nodeid, starttimestamp, endtimestamp, responsestatus, configjson) FROM stdin;
 \.
 
 
@@ -7260,7 +14060,7 @@ COPY public.gr_response_group (id, jobid, nodeid, starttimestamp, endtimestamp) 
 -- Data for Name: guardrails_response; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.guardrails_response (id, guardrailsresponse, guardrailsresponsetype, queryid, responsegroupid, success, querycomplexity, querystatus) FROM stdin;
+COPY public.guardrails_response (id, guardrailsresponse, guardrailsresponsetype, queryid, responsegroupid, success, querycomplexity, querystatus, queryduration, querycpuload) FROM stdin;
 \.
 
 
@@ -7269,8 +14069,8 @@ COPY public.guardrails_response (id, guardrailsresponse, guardrailsresponsetype,
 --
 
 COPY public.hibernate_unique_key (next_hi) FROM stdin;
-33
-27
+35
+29
 \.
 
 
@@ -7284,6 +14084,22 @@ COPY public.imagedetails (attachmentid, height, width, mimetype) FROM stdin;
 98374	360	640	image/pjpeg
 98375	295	319	image/jpeg
 98376	159	300	image/png
+\.
+
+
+--
+-- Data for Name: incremental_sync_subscription; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.incremental_sync_subscription (id, subscription_creator, subscription_context_key, subscription_most_recent_id, subscription_state, subscription_data, subscription_last_access_time) FROM stdin;
+\.
+
+
+--
+-- Data for Name: inst_analysis_ctrl; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.inst_analysis_ctrl (id, analysistype, starttimestamp, endtimestamp, status) FROM stdin;
 \.
 
 
@@ -7307,6 +14123,7 @@ COPY public.journalentry (entry_id, journal_name, creationdate, type, message, t
 13	main_index	2024-07-01 22:20:26.445	UPDATE_DOCUMENT	com.atlassian.confluence.spaces.SpaceDescription-98362	0
 14	main_index	2024-07-01 22:20:26.851	UPDATE_DOCUMENT	com.atlassian.confluence.pages.Page-98371	0
 15	main_index	2024-07-01 22:20:26.868	UPDATE_DOCUMENT_EXCLUDING_DEPENDENTS	com.atlassian.confluence.pages.Page-98371	0
+16	main_index	2025-04-01 21:41:45.074	UPDATE_DOCUMENT	com.atlassian.confluence.user.PersonalInformation-98358	0
 \.
 
 
@@ -7317,6 +14134,15 @@ COPY public.journalentry (entry_id, journal_name, creationdate, type, message, t
 COPY public.keystore (keyid, alias, type, algorithm, keyspec) FROM stdin;
 65537	confluence:2308943	public	RSA	MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsG5cwxQrNiLFddr3+adan1XODBZfNIZmhoK2aB0ozYTdo1O0U5QYqrXYnJr+dR9zSiOfBLUOkX4pfw6oy5jKvi1No0QtSxbazuFzCzfaSYdSYRIQMlnQTds/00LG62yoJbVrpXUpncUA/+kXiR4a1H1a5ryRrMmaSHWps7b1Jth6jJBh9k4/2k8xCTcRXxCgZcRScW+nU0HwDZa9akn6CyRLQg+fbrXFcANwxqHdaFpZlfKRCSDqy9qmE7SgWDsZ3VHUmCFGv9qzsbkFw0XQMKeScHKajLyF1i6LmHPnlPP6dR+rJqYqFkH6h25TpPlplRFjYHL+W7hgR/yDlVhuwwIDAQAB
 65538	confluence:2308943	private	RSA	MIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQCwblzDFCs2IsV12vf5p1qfVc4MFl80hmaGgrZoHSjNhN2jU7RTlBiqtdicmv51H3NKI58EtQ6Rfil/DqjLmMq+LU2jRC1LFtrO4XMLN9pJh1JhEhAyWdBN2z/TQsbrbKgltWuldSmdxQD/6ReJHhrUfVrmvJGsyZpIdamztvUm2HqMkGH2Tj/aTzEJNxFfEKBlxFJxb6dTQfANlr1qSfoLJEtCD59utcVwA3DGod1oWlmV8pEJIOrL2qYTtKBYOxndUdSYIUa/2rOxuQXDRdAwp5JwcpqMvIXWLouYc+eU8/p1H6smpioWQfqHblOk+WmVEWNgcv5buGBH/IOVWG7DAgMBAAECgf99XFPzfBRrSUmeWqs+a/gR2JlClwlB/D12vGnfXT8gyMd/+OBCHEVqoGTJSCTsE7mKp5GirQOTXZGFAv8gEYpjygATghETMBB8VYG1w60J+DaqKN6/tN40DXvMU8ADuuQlgKlJARB3Vp1Fn0Azekovsa8yEJdxrpqkro/Mokz1MkU2cXReBz4WhPX2ggmlIZf5cdpSQcGXJzazwncAcs8IcxyAg8ji8lcvhMrSlbkvmAX8gF4uUh+j7iq+3z7PJcO5HNoxcLJhl8bob0ZBdW6NzZ9fdxG8hesdLiS4s0f4iiTtlJ44lVnnbanwlaTjvZqrMZIylNdITHG+1mWZkRUCgYEA8pz+MTtiwm6BRX02bX6lkn0zRRENYwXUGW1w9TaZ57dSsSvckWG3YEJupCPWgPn0aR0icc3ZvoQ8C1n3HHmxm/V6v2s2Bn68qv4x/kuJkYH0HcI7sacUsNCQ5E82duznhTYbm06JCqZe3majvqaCbcYSDBbm+fXYkTgy8C7NiqUCgYEAuiqFSehC36HmnwLUBplj0oJ6fv+vJAHXGoYCFNEnQsRTcH8m+GAf/kEPaX/Ie0swlkmhmkKcvAbOBbgjI8XHB95xXV17zT4JH3/cVyNjLRKTHpVSS0UV86Z6z4jKmGJ+2wtUo52QtOrHbhTmwISbuYIohVIO2RoaLUsQKn/JH0cCgYAc8B7drnCsMlQW/sVkMAv9uhNIdK09F2/iDIzBot6epd4mJc4sRRSDVckuqNuoDKhbdU8rdds3/zvOOs/fxKArsw8OD/Kkua81UhaSd14UTgTZG9bU7NHp+SafJNehPcaru/V1A9wSuh9stZ9oWSILh+mVKZIpVGqdf6+LuHlpxQKBgCQxQgp1ShL6AcDmJtxFk9+IGFJ6WM1SQkRYyyzK4KwdSO90+NmOromakml7OzmlC4QcOnun+ZqgZAs+mi5JNAF2oGl7VCc5qUJjdC3Ipm5LzyhB9WbGvpbIxdV1DZYEiA8Dq+fHKSvS/QSMsbO51CCDimco5dQVPAOUNUdd4nbfAoGAZ9xR4Wbt5/QN114/vu0bK0XJAbGJ+jdJ5IgH+B/26CbZ0xa5Jln0+70reZeqxJbAy2zdIU2fmFtwPbbjRbiBc8w439+rS+wwntkXNBn+q4csVLx589csKIgo2+Z0C5NZxb9xZAQxQSpA2HSSC28XrKp7BADnH742MSyafz2BueE=
+\.
+
+
+--
+-- Data for Name: label; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.label (labelid, name, owner, namespace, creationdate, lastmoddate) FROM stdin;
+753665	favourite	4028408390705fdc01907061af0d0000	my	2015-09-15 16:59:33.517	2015-09-15 16:59:33.517
 \.
 
 
@@ -7411,7 +14237,7 @@ COPY public.links (linkid, destpagetitle, lowerdestpagetitle, destspacekey, lowe
 --
 
 COPY public.logininfo (id, curfailed, totalfailed, successdate, prevsuccessdate, faileddate, username) FROM stdin;
-884737	0	0	2024-07-02 16:58:25.077	2024-07-02 16:43:28.651	\N	4028408390705fdc01907061af0d0000
+884737	0	0	2025-04-01 21:41:45.093	2024-07-02 16:58:25.077	\N	4028408390705fdc01907061af0d0000
 \.
 
 
@@ -7422,6 +14248,7 @@ COPY public.logininfo (id, curfailed, totalfailed, successdate, prevsuccessdate,
 COPY public.mig_analytics_event (id, eventtimestamp, eventtype, event) FROM stdin;
 71e32ee1-e621-4be9-b708-0ade7ac0a15e	1719872368772	OPERATIONAL	18948
 871f639c-7fb1-4ce4-943f-9a7521f54bb7	1719938590026	OPERATIONAL	18892
+ead5ab64-8011-4316-8b9f-c520d33b008d	1743543690858	OPERATIONAL	19099
 \.
 
 
@@ -7438,14 +14265,6 @@ COPY public.mig_app_access_scope (serverappkey, accessscope) FROM stdin;
 --
 
 COPY public.mig_app_assessment_info (appkey, assessmentstatus, notes, alternativeapp, consent) FROM stdin;
-\.
-
-
---
--- Data for Name: mig_cloud_site; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.mig_cloud_site (cloudid, cloudurl, containertoken, isfailing, mediaclientid, createdtime, edition, cloudtype) FROM stdin;
 \.
 
 
@@ -7474,10 +14293,26 @@ COPY public.mig_check_result (id, executionid, checktype, created, lastupdated, 
 
 
 --
+-- Data for Name: mig_cloud_site; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.mig_cloud_site (cloudid, cloudurl, containertoken, isfailing, mediaclientid, createdtime, edition, cloudtype, microsregion) FROM stdin;
+\.
+
+
+--
 -- Data for Name: mig_config; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
 COPY public.mig_config (id, exportconcurrencyclustermax, exportconcurrencynodemax, lastupdate, attachmentconcurrencyclustermax, attachmentconcurrencynodemax, importconcurrencyclustermax, importconcurrencynodemax, uploadconcurrencyclustermax, uploadconcurrencynodemax, attachmentuploadconcurrency) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mig_corrected_email; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.mig_corrected_email (id, userkey, username, type, oldemail, newemail, tombstone, accounttype, udcmode, draft) FROM stdin;
 \.
 
 
@@ -7658,6 +14493,31 @@ userbase-scan-table-no-mssql	MPT	META-INF/db-changelog/44-userbase-scan-table.xm
 62-drop-mapi-plan-mapping-migrationId-not-null-constraint-sql	MPT	META-INF/db-changelog/62-drop-mapi-plan-mapping-migrationId-not-null-constraint.xml	2024-07-01 22:17:49.923372	84	MARK_RAN	8:a52932ab88d7a164245fc00c23be6123	dropNotNullConstraint columnName=migrationId, tableName=MIG_MAPI_PLAN_MAPPING		\N	4.16.1	\N	\N	9872269171
 62-drop-mapi-plan-mapping-migrationId-not-null-constraint-non-mssql	MPT	META-INF/db-changelog/62-drop-mapi-plan-mapping-migrationId-not-null-constraint.xml	2024-07-01 22:17:49.928805	85	EXECUTED	8:c6f27c6691c06f35adb63b74101274b1	dropNotNullConstraint columnName=migrationId, tableName=MIG_MAPI_PLAN_MAPPING		\N	4.16.1	\N	\N	9872269171
 63-add-step-subtype-column.xml	MPT	META-INF/db-changelog/63-add-step-subtype-column.xml	2024-07-01 22:17:49.932756	86	EXECUTED	8:eec713451e010aeedbcd3cb40de1acea	addColumn tableName=MIG_STEP		\N	4.16.1	\N	\N	9872269171
+64-add-tc-count-in-mig-space-statistic	MPT	META-INF/db-changelog/64-add-tc-count-in-mig-space-statistic.xml	2025-04-01 21:41:20.663654	87	EXECUTED	8:fec56bbe250b52f2396ebc906fe5aacb	addColumn tableName=MIG_SPACE_STATISTIC; createIndex indexName=MIG_SPACE_STATISTIC_TEAMCALENDARCOUNT_IDX, tableName=MIG_SPACE_STATISTIC		\N	4.16.1	\N	\N	3543680459
+65-browser-metrics-table-mssql	MPT	META-INF/db-changelog/65-browser-metrics-table.xml	2025-04-01 21:41:20.732599	88	MARK_RAN	8:a88fdf3bfdb4bfa75c0da87ad109158c	createTable tableName=BROWSER_METRICS; createIndex indexName=BROWSER_METRICS_USERKEY_IDX, tableName=BROWSER_METRICS		\N	4.16.1	\N	\N	3543680459
+65-browser-metrics-table-non-mssql	MPT	META-INF/db-changelog/65-browser-metrics-table.xml	2025-04-01 21:41:20.796509	89	EXECUTED	8:ae8f8e742ce2b97b01a4aca92fc866c0	createTable tableName=BROWSER_METRICS; createIndex indexName=BROWSER_METRICS_USERKEY_IDX, tableName=BROWSER_METRICS		\N	4.16.1	\N	\N	3543680459
+66-instance-analysis-control-table-mssql	MPT	META-INF/db-changelog/66-instance-analysis-control-table.xml	2025-04-01 21:41:20.820753	90	MARK_RAN	8:ebb41cc70eaa00c8c0ab143a746905b9	createTable tableName=INST_ANALYSIS_CTRL; createIndex indexName=INSTANCE_ANALYSIS_CONTROL_ANALYSIS_TYPE_IDX, tableName=INST_ANALYSIS_CTRL		\N	4.16.1	\N	\N	3543680459
+66-instance-analysis-control-table-non-mssql	MPT	META-INF/db-changelog/66-instance-analysis-control-table.xml	2025-04-01 21:41:20.841747	91	EXECUTED	8:c17abc6a894f4a294b3c16082be680a4	createTable tableName=INST_ANALYSIS_CTRL; createIndex indexName=INSTANCE_ANALYSIS_CONTROL_ANALYSIS_TYPE_IDX, tableName=INST_ANALYSIS_CTRL		\N	4.16.1	\N	\N	3543680459
+67-add-task-mapping-table	MPT	META-INF/db-changelog/67-add-mapi-task-mapping-table.xml	2025-04-01 21:41:20.851637	92	EXECUTED	8:febdf0ce99ad46ae9448a377a01de518	createTable tableName=MIG_MAPI_TASK_MAPPING		\N	4.16.1	\N	\N	3543680459
+68-add-containerId-transferId-column.xml	MPT	META-INF/db-changelog/68-add-containerId-transferId-column.xml	2025-04-01 21:41:20.857143	93	EXECUTED	8:a76dbbd8d5f1fa4ce7f0724718e3921f	addColumn tableName=MIG_STEP; addColumn tableName=MIG_TASK		\N	4.16.1	\N	\N	3543680459
+69-add-step-progress-properties-table.xml	MPT	META-INF/db-changelog/69-add-step-progress-properties-table.xml	2025-04-01 21:41:20.885731	94	EXECUTED	8:bc356c9fb1bb09e6c39039d697cdf0d8	createTable tableName=MIG_STEP_PROGRESS_PROPERTIES		\N	4.16.1	\N	\N	3543680459
+70-remove-planId-column-from-mig_stats	MPT	META-INF/db-changelog/70-remove-planId-column-from-mig_stats.xml	2025-04-01 21:41:20.895871	95	EXECUTED	8:b739afc409ba7a907e217a4a4905f20a	dropColumn columnName=planId, tableName=MIG_STATS		\N	4.16.1	\N	\N	3543680459
+71-add-canceled-timestamp-to-inst-analysis-ctrl	MPT	META-INF/db-changelog/71-add-canceled-timestamp-to-assessment.xml	2025-04-01 21:41:20.929089	96	EXECUTED	8:a108f87cb666617554f9ee3311c0ef07	addColumn tableName=INST_ANALYSIS_CTRL		\N	4.16.1	\N	\N	3543680459
+71-add-canceled-timestamp-to-gr-response-group	MPT	META-INF/db-changelog/71-add-canceled-timestamp-to-assessment.xml	2025-04-01 21:41:20.941698	97	EXECUTED	8:799443b6ba0eadb6b0f32c13fe01caa8	addColumn tableName=GR_RESPONSE_GROUP		\N	4.16.1	\N	\N	3543680459
+72-add-migration-space-status-table	MPT	META-INF/db-changelog/72-add-migration-space-status-table.xml	2025-04-01 21:41:21.006662	98	EXECUTED	8:b64c492fe362db065198ad2d0c148261	createTable tableName=MIG_SPACE_STATUS		\N	4.16.1	\N	\N	3543680459
+73-add-guardrails-duration-and-load-column	MPT	META-INF/db-changelog/73-add-guardrails-duration-and-load-column.xml	2025-04-01 21:41:21.024445	99	EXECUTED	8:e62de6c9d246162a6f48c87fe28e4d79	addColumn tableName=GUARDRAILS_RESPONSE		\N	4.16.1	\N	\N	3543680459
+74-add-step-metadata-column.xml	MPT	META-INF/db-changelog/74-add-step-metadata-column.xml	2025-04-01 21:41:21.039124	100	EXECUTED	8:248478b05ebdbf217c12089500d802c0	addColumn tableName=MIG_STEP		\N	4.16.1	\N	\N	3543680459
+create-node-infrastructure-table	MPT	META-INF/db-changelog/75-add-node-infrastructure-table.xml	2025-04-01 21:41:21.084246	101	EXECUTED	8:3a9e4be831f5d9db99c07434202a9ed4	createTable tableName=NODE_INFRASTRUCTURE		\N	4.16.1	\N	\N	3543680459
+add-storage-used-and-available-column	MPT	META-INF/db-changelog/76-add-storage-used-and-available-column.xml	2025-04-01 21:41:21.112377	102	EXECUTED	8:b022a690d1ae203c275949e51e6f4c28	addColumn tableName=NODE_INFRASTRUCTURE; addColumn tableName=NODE_INFRASTRUCTURE		\N	4.16.1	\N	\N	3543680459
+add-operating-system-column	MPT	META-INF/db-changelog/77-add-new-fields-to-node-network-and-table-node-network.xml	2025-04-01 21:41:21.119154	103	EXECUTED	8:157af91babf0486d4b17729aea501f35	addColumn tableName=NODE_INFRASTRUCTURE		\N	4.16.1	\N	\N	3543680459
+create-node-network-table	MPT	META-INF/db-changelog/77-add-new-fields-to-node-network-and-table-node-network.xml	2025-04-01 21:41:21.148849	104	EXECUTED	8:2801a57a7e9d7b36e5e4fc55c9815aae	createTable tableName=NODE_NETWORK; addForeignKeyConstraint baseTableName=NODE_NETWORK, constraintName=fk_node_network_node_infrastructure, referencedTableName=NODE_INFRASTRUCTURE		\N	4.16.1	\N	\N	3543680459
+78-add-corrected-email-table.xml	MPT	META-INF/db-changelog/78-add-corrected-email-table.xml	2025-04-01 21:41:21.17796	105	EXECUTED	8:fdd3bb91013c216525b49d9d3319cdff	createTable tableName=MIG_CORRECTED_EMAIL		\N	4.16.1	\N	\N	3543680459
+80-add-migration-protocol-column-to-plan-table.xml	MPT	META-INF/db-changelog/80-add-migration-protocol-column-to-plan-table.xml	2025-04-01 21:41:21.184157	106	EXECUTED	8:d5fc0e2b113ccd4abcd54fcff1193016	addColumn tableName=MIG_PLAN		\N	4.16.1	\N	\N	3543680459
+81-add-infra-optimisation-to-plan-table.xml	MPT	META-INF/db-changelog/81-add-infra-optimisation-to-plan-table.xml	2025-04-01 21:41:21.19433	107	EXECUTED	8:d53096f2d5f4d8d6a9b60cc22089a4f6	addColumn tableName=MIG_PLAN		\N	4.16.1	\N	\N	3543680459
+68-add-artifacts-table	MPT	META-INF/db-changelog/82-add-mapi-artifacts-table.xml	2025-04-01 21:41:21.20459	108	EXECUTED	8:0cccd9f59b250fc247b6155cadca9517	createTable tableName=MIG_MAPI_ARTIFACTS; addPrimaryKey constraintName=PK_MAPI_ARTIFACTS, tableName=MIG_MAPI_ARTIFACTS		\N	4.16.1	\N	\N	3543680459
+83-update-mig-cloud-site-table	MPT	META-INF/db-changelog/83-update-mig-cloud-site-table.xml	2025-04-01 21:41:21.207544	109	EXECUTED	8:8946db3050f882c60d028da14446df52	addColumn tableName=MIG_CLOUD_SITE		\N	4.16.1	\N	\N	3543680459
+84-add-isShadowMigration-column-to-plan-table.xml	MPT	META-INF/db-changelog/84-add-isShadowMigration-column-to-plan-table.xml	2025-04-01 21:41:21.212758	110	EXECUTED	8:17d1b2c7bdf334be175b06ed67c6b984	addColumn tableName=MIG_PLAN		\N	4.16.1	\N	\N	3543680459
+85-add-config-json-to-gr-response-group	MPT	META-INF/db-changelog/85-add-config-json-to-assessment.xml	2025-04-01 21:41:21.216889	111	EXECUTED	8:d83095bdb349b8e98d28555a462ef44e	addColumn tableName=GR_RESPONSE_GROUP		\N	4.16.1	\N	\N	3543680459
 \.
 
 
@@ -7711,10 +14571,26 @@ COPY public.mig_invalid_email_user (username, email, created) FROM stdin;
 
 
 --
+-- Data for Name: mig_mapi_artifacts; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.mig_mapi_artifacts (taskid, checkname, artifactname, lastupdate) FROM stdin;
+\.
+
+
+--
 -- Data for Name: mig_mapi_plan_mapping; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
 COPY public.mig_mapi_plan_mapping (jobid, planid, migrationid) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mig_mapi_task_mapping; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.mig_mapi_task_mapping (taskid, jobid, planid, cloudid, status, commandname, lastupdate) FROM stdin;
 \.
 
 
@@ -7730,7 +14606,7 @@ COPY public.mig_needed_in_cloud_app (id, taskid, appkey, created) FROM stdin;
 -- Data for Name: mig_plan; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.mig_plan (id, cloudid, planname, createdtime, lastupdate, starttime, endtime, executionstatus, message, completionpercent, doneresult, migrationid, migrationscopeid, activestatus, schedulerversion, migrationtag, migrationcreator, detailedstatus) FROM stdin;
+COPY public.mig_plan (id, cloudid, planname, createdtime, lastupdate, starttime, endtime, executionstatus, message, completionpercent, doneresult, migrationid, migrationscopeid, activestatus, schedulerversion, migrationtag, migrationcreator, detailedstatus, migrationprotocol, datamovementid, infraoptimisationstatus, isshadowmigration) FROM stdin;
 \.
 
 
@@ -7746,9 +14622,17 @@ COPY public.mig_sequences (sequence_name, next_val) FROM stdin;
 -- Data for Name: mig_space_statistic; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.mig_space_statistic (spaceid, sumofpageblogdraftcount, attachmentsize, attachmentcount, estimatedmigrationtime, lastupdated, lastcalculated) FROM stdin;
-131073	32	717008	20	569	2024-07-01 22:19:28.608	2024-07-01 22:19:28.740097
-131074	2	399592	11	95	2024-07-01 22:20:26.952	2024-07-02 16:43:10.003679
+COPY public.mig_space_statistic (spaceid, sumofpageblogdraftcount, attachmentsize, attachmentcount, estimatedmigrationtime, lastupdated, lastcalculated, teamcalendarcount) FROM stdin;
+131073	32	717008	20	569	2024-07-01 22:19:28.608	2025-04-01 21:41:30.772938	0
+131074	3	399592	11	109	2024-07-01 22:20:26.952	2025-04-01 21:41:30.772938	0
+\.
+
+
+--
+-- Data for Name: mig_space_status; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.mig_space_status (spacekey, cloudid, executionstatus, lastupdated, planid) FROM stdin;
 \.
 
 
@@ -7764,29 +14648,22 @@ COPY public.mig_spaces (spaceid, spacename, spacekey, cloud) FROM stdin;
 -- Data for Name: mig_stats; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.mig_stats (stattype, statname, collectedtime, statvalue, planid) FROM stdin;
-SITE	PAGES	2024-07-02 16:58:01.009997	11	\N
-SITE	BLOGPOSTS	2024-07-02 16:58:01.010024	0	\N
-SITE	DRAFTS	2024-07-02 16:58:01.010026	24	\N
-SITE	ATTACHMENTS	2024-07-02 16:58:01.010027	31	\N
-SITE	ATTACHMENT_AVG_SIZE	2024-07-02 16:58:01.010029	36019	\N
-SITE	ATTACHMENT_MAX_SIZE	2024-07-02 16:58:01.01003	264209	\N
-SITE	ATTACHMENT_MIN_SIZE	2024-07-02 16:58:01.010031	2131	\N
-SITE	ATTACHMENT_TOTAL_SIZE	2024-07-02 16:58:01.010032	1116600	\N
-SITE	SPACES	2024-07-02 16:58:01.010036	2	\N
-SITE	USERS	2024-07-02 16:58:01.010037	1	\N
-SITE	GROUPS	2024-07-02 16:58:01.010038	2	\N
-SITE	ESTIMATED_USER_GROUP_TIME	2024-07-02 16:58:01.010047	1791	\N
-SITE	ESTIMATED_TOTAL_SPACE_TIME	2024-07-02 16:58:01.010048	678	\N
-SITE	ESTIMATED_BANDWIDTH_KBPS	2024-07-02 16:58:01.010049	-1	\N
-\.
-
-
---
--- Data for Name: mig_task; Type: TABLE DATA; Schema: public; Owner: confluence
---
-
-COPY public.mig_task (id, planid, tasktype, taskindex, weight, spacekey, starttime, endtime, executionstatus, message, completionpercent, doneresult, scoped, globalentitytype, detailedstatus) FROM stdin;
+COPY public.mig_stats (stattype, statname, collectedtime, statvalue) FROM stdin;
+SITE	PAGES	2025-04-01 21:41:25.020305	11
+SITE	BLOGPOSTS	2025-04-01 21:41:25.020313	0
+SITE	DRAFTS	2025-04-01 21:41:25.020314	24
+SITE	ATTACHMENTS	2025-04-01 21:41:25.020315	31
+SITE	TEAM_CALENDARS	2025-04-01 21:41:25.020315	0
+SITE	ATTACHMENT_AVG_SIZE	2025-04-01 21:41:25.020317	36019
+SITE	ATTACHMENT_MAX_SIZE	2025-04-01 21:41:25.020318	264209
+SITE	ATTACHMENT_MIN_SIZE	2025-04-01 21:41:25.020318	2131
+SITE	ATTACHMENT_TOTAL_SIZE	2025-04-01 21:41:25.020318	1116600
+SITE	SPACES	2025-04-01 21:41:25.02033	2
+SITE	USERS	2025-04-01 21:41:25.020331	1
+SITE	GROUPS	2025-04-01 21:41:25.020331	2
+SITE	ESTIMATED_USER_GROUP_TIME	2025-04-01 21:41:25.020338	0
+SITE	ESTIMATED_TOTAL_SPACE_TIME	2025-04-01 21:41:25.02034	0
+SITE	ESTIMATED_BANDWIDTH_KBPS	2025-04-01 21:41:25.020341	0
 \.
 
 
@@ -7794,7 +14671,23 @@ COPY public.mig_task (id, planid, tasktype, taskindex, weight, spacekey, startti
 -- Data for Name: mig_step; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
-COPY public.mig_step (id, planid, taskid, stepindex, steptype, stepconfig, starttime, endtime, executionstatus, message, completionpercent, doneresult, node_id, node_heartbeat, node_execution_id, execution_state, detailedstatus, stepsubtype) FROM stdin;
+COPY public.mig_step (id, planid, taskid, stepindex, steptype, stepconfig, starttime, endtime, executionstatus, message, completionpercent, doneresult, node_id, node_heartbeat, node_execution_id, execution_state, detailedstatus, stepsubtype, transferid, stepmetadata) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mig_step_progress_properties; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.mig_step_progress_properties (stepid, progressproperties) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mig_task; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.mig_task (id, planid, tasktype, taskindex, weight, spacekey, starttime, endtime, executionstatus, message, completionpercent, doneresult, scoped, globalentitytype, detailedstatus, containerid) FROM stdin;
 \.
 
 
@@ -7839,6 +14732,24 @@ COPY public.most_used_labels_cache (spaceid, request_ts, expiration_ts, request_
 
 
 --
+-- Data for Name: node_infrastructure; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.node_infrastructure (node_id, ram_mb, cpu_count, storage_used_mb, storage_available_mb, operating_system) FROM stdin;
+non-clustered-server-node	6917	4	460	80308	GNU/Linux Ubuntu 24.04.2 LTS (Noble Numbat) build 6.8.0-55-generic
+\.
+
+
+--
+-- Data for Name: node_network; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.node_network (id, node_id, name, mtu_bps, in_errors_percent, out_errors_percent) FROM stdin;
+baf788d8-5426-420e-b57e-c7d3f80d58da	non-clustered-server-node	eth0	1500	0	0
+\.
+
+
+--
 -- Data for Name: notifications; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -7856,7 +14767,15 @@ COPY public.os_propertyentry (entity_name, entity_id, entity_key, key_type, bool
 confluence_ContentEntityObject	98361	confluence.inline.tasks.sequence.last	5	f	0	13		0	0	\N
 USERPROPS-4028408390705fdc01907061af0d0000	0	efi.store.onboarding.onboarding-state:introWorkflow	5	f	0	__complete__		0	0	\N
 USERPROPS-4028408390705fdc01907061af0d0000	0	confluence.macros.dashboard.selected.tab	5	f	0	all		0	0	\N
-USERPROPS-4028408390705fdc01907061af0d0000	0	confluence.user.runtime.recent-changes.size	2	f	0	\N		0	40	\N
+USERPROPS-4028408390705fdc01907061af0d0000	0	confluence.user.runtime.recent-changes.size	3	f	0	\N		40	0	\N
+\.
+
+
+--
+-- Data for Name: pagetemplates; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.pagetemplates (templateid, hibernateversion, templatename, templatedesc, pluginkey, modulekey, refpluginkey, refmodulekey, content, spaceid, prevver, version, creator, creationdate, lastmodifier, lastmoddate, bodytypeid) FROM stdin;
 \.
 
 
@@ -7874,6 +14793,7 @@ COPY public.plugindata (plugindataid, pluginkey, filename, lastmoddate, data) FR
 
 COPY public.remembermetoken (id, username, created, token) FROM stdin;
 622593	admin	1719872399489	1903264a7b2981d02ec12f179c542eb9580b7edc
+917505	admin	1743543706217	a2b808fa26ab22e044ef4b259b073cc28132ef25
 \.
 
 
@@ -8504,6 +15424,1346 @@ COPY public.scheduler_run_details (id, job_id, start_time, duration, outcome, me
 1048775	SearchAuditListener	2024-07-02 17:00:48.801	1	S	
 1048781	flushTaskIndexQueue	2024-07-02 17:00:59.048	5	S	
 1048787	JmxLoggingJob	2024-07-02 17:01:00.003	34	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114113	TunnelConnectionClusterSyncJob	2025-04-01 21:41:30.618	11	S	
+1114115	SearchAuditListener	2025-04-01 21:41:30.644	1	S	
+1114114	TunnelStatusCheckJob	2025-04-01 21:41:30.618	23	S	
+1114116	conversionLoader	2025-04-01 21:41:30.657	34	S	
+1114117	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:41:30.708	12	S	
+1114118	watchDogJobConfig	2025-04-01 21:41:30.722	0	S	
+1114119	synchronyStatusCheck	2025-04-01 21:41:30.726	3	S	
+1114120	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:41:30.733	0	S	
+1114121	BundledUpdateCheckJob-job	2025-04-01 21:41:30.734	3	S	
+1114122	LocalPluginLicenseNotificationJob-job	2025-04-01 21:41:30.738	125	S	
+1114124	PluginRequestCheckJob-job	2025-04-01 21:41:30.868	26	S	
+1114125	UpmConfigCheckJob-job	2025-04-01 21:41:30.906	0	S	
+1114123	migration-plugin:initial-space-statistic-calculation	2025-04-01 21:41:30.663	228	S	Ran initial space statistic calculation.
+1114126	migration-plugin:node-count-checker-job-id	2025-04-01 21:41:30.922	1	S	
+1114127	applink-status-analytics-job	2025-04-01 21:41:30.91	23	S	
+1114128	AnalyticsForConfluence.EventLimiter	2025-04-01 21:41:30.619	314	S	
+1114129	ConfigurationLoggerJob	2025-04-01 21:41:30.937	12	S	
+1114130	migration-plugin:node-status-checker-job-id	2025-04-01 21:41:30.933	19	S	
+1114131	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:41:30.937	16	S	
+1114132	FlushContentIndexScheduledJob	2025-04-01 21:41:30.956	3	S	
+1114133	MailQueueFlushJob	2025-04-01 21:41:30.96	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114134	DeferredFileDeletionJob	2025-04-01 21:41:30.964	0	S	
+1114135	ReIndexHouseKeepingScheduledJob	2025-04-01 21:41:30.961	7	S	
+1114136	ClusterSafetyJob	2025-04-01 21:41:30.953	15	S	
+1114137	08b11f54-2a3b-48d8-ad03-f5eeb81fcdfa	2025-04-01 21:41:30.658	361	S	
+1114138	FlushChangeIndexScheduledJob	2025-04-01 21:41:31.075	1	S	
+1114139	EhCacheCompactionJob	2025-04-01 21:41:31.063	18	S	
+1114140	LocalTaskQueueFlushJob	2025-04-01 21:41:31.103	1	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114141	onboardingSpaceCheckJob	2025-04-01 21:41:31.196	6	A	Job need not be executed again
+1114142	onboardingNumberOfUsersCheckJob	2025-04-01 21:41:31.268	6	A	Job need not be executed again
+1114143	jira-metadata-cache-config	2025-04-01 21:41:31.337	11	S	
+1114144	addonHouskeeperTrigger-v2	2025-04-01 21:41:31.355	1	S	
+1114145	flushTaskIndexQueue	2025-04-01 21:41:31.376	16	S	
+1114146	flushEdgeIndexQueue	2025-04-01 21:41:31.403	76	S	
+1114147	synchronyStatusCheck	2025-04-01 21:41:32.006	1	S	
+1114148	watchDogJobConfig	2025-04-01 21:41:32.009	4	S	
+1114149	conversionLoader	2025-04-01 21:41:32.02	0	S	
+1114150	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:41:32.454	11	S	Waiting a bit longer before sending analytics events
+1114151	migration-plugin:stale-checks-cleaner-job-id	2025-04-01 21:41:33.15	27	S	
+1114152	synchronyStatusCheck	2025-04-01 21:41:35.007	79	S	
+1114153	SearchAuditListener	2025-04-01 21:41:35.644	2	S	
+1114154	flushTaskIndexQueue	2025-04-01 21:41:36.382	4	S	
+1114155	LuceneChangeIndexFlusher	2025-04-01 21:41:36.075	830	S	Flush done
+1114156	LuceneContentIndexFlusher	2025-04-01 21:41:35.956	1245	S	Flush done
+1114157	OidcDiscoveryRefresh:SingleRun	2025-04-01 21:41:37.251	6	S	
+1114158	com.atlassian.analytics.client.upload.AnalyticsConfigStateRunner:job	2025-04-01 21:41:37.33	10	S	
+1114159	synchronyStatusCheck	2025-04-01 21:41:38.007	17	S	
+1114160	migration-plugin:detected-emails-weekly-job	2025-04-01 21:41:38.102	4	S	
+1114161	441818f5-61ab-4da1-9ec9-47fab88af981	2025-04-01 21:41:38.105	9	S	
+1114162	com.atlassian.analytics.client.upload.RemoteFilterReadRunner:job	2025-04-01 21:41:37.341	891	S	
+1114163	SearchAuditListener	2025-04-01 21:41:40.644	4	S	
+1114164	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:41:40.965	4	S	
+1114166	flushTaskIndexQueue	2025-04-01 21:41:41.382	2	S	
+1114168	conversionQueueMonitor	2025-04-01 21:41:45	21	S	
+1114170	flushTaskIndexQueue	2025-04-01 21:41:46.383	10	S	
+1114173	LuceneChangeIndexFlusher	2025-04-01 21:41:50.116	15	S	Flush done
+1114181	synchronyStatusCheck	2025-04-01 21:41:56.012	10	S	
+1114186	BackgroundJobServiceScheduledJob	2025-04-01 21:42:00.001	94	S	
+1114190	SearchAuditListener	2025-04-01 21:42:00.701	1	S	
+1114191	ClusterSafetyJob	2025-04-01 21:42:00.955	6	S	
+1114196	synchronyStatusCheck	2025-04-01 21:42:05.012	12	S	
+1114197	SearchAuditListener	2025-04-01 21:42:05.703	2	S	
+1114201	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:42:10.709	9	S	
+1114206	synchronyStatusCheck	2025-04-01 21:42:14.013	42	S	
+1114208	SearchAuditListener	2025-04-01 21:42:15.704	0	S	
+1114211	synchronyStatusCheck	2025-04-01 21:42:17.013	7	S	
+1114214	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:42:20.968	7	S	
+1114222	flushTaskIndexQueue	2025-04-01 21:42:26.388	9	S	
+1114224	SettingsReloaderJob	2025-04-01 21:42:27.498	29	S	
+1114233	MailQueueFlushJob	2025-04-01 21:42:30.96	11	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114246	LuceneContentIndexFlusher	2025-04-01 21:42:35.958	9	S	Flush done
+1114252	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:42:40.972	6	S	
+1114255	synchronyStatusCheck	2025-04-01 21:42:44.022	62	S	
+1114260	synchronyStatusCheck	2025-04-01 21:42:50.025	38	S	
+1114264	flushTaskIndexQueue	2025-04-01 21:42:51.394	6	S	
+1114276	JmxLoggingJob	2025-04-01 21:43:00.002	92	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114281	flushTaskIndexQueue	2025-04-01 21:43:01.395	6	S	
+1114286	flushTaskIndexQueue	2025-04-01 21:43:06.396	6	S	
+1114287	synchronyStatusCheck	2025-04-01 21:43:08.031	21	S	
+1114790	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:49:10.729	7	S	
+1114791	SearchAuditListener	2025-04-01 21:49:10.785	0	S	
+1114794	flushTaskIndexQueue	2025-04-01 21:49:11.45	2	S	
+1114800	com.addonengine.analytics.DataRetention	2025-04-01 21:49:16.776	13	S	Deleted 0 Events outside of data retention period.
+1114808	SearchAuditListener	2025-04-01 21:49:25.79	2	S	
+1114810	synchronyStatusCheck	2025-04-01 21:49:26.432	34	S	
+1114816	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:49:30.729	8	S	
+1114819	FlushContentIndexScheduledJob	2025-04-01 21:49:30.961	5	S	
+1114823	FlushChangeIndexScheduledJob	2025-04-01 21:49:31.081	2	S	
+1114828	synchronyStatusCheck	2025-04-01 21:49:32.435	15	S	
+1114829	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:49:32.457	17	S	Waiting a bit longer before sending analytics events
+1114853	synchronyStatusCheck	2025-04-01 21:49:56.453	29	S	
+1114865	JfrScheduledDumpTask	2025-04-01 21:50:00.001	447	S	
+1114875	SearchAuditListener	2025-04-01 21:50:05.796	2	S	
+1114892	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:50:21.005	4	S	
+1114909	ReIndexHouseKeepingScheduledJob	2025-04-01 21:50:30.962	1	S	
+1114922	LuceneContentIndexFlusher	2025-04-01 21:50:35.962	10	S	Flush done
+1114926	SearchAuditListener	2025-04-01 21:50:40.799	2	S	
+1114934	synchronyStatusCheck	2025-04-01 21:50:47.472	12	S	
+1114935	synchronyStatusCheck	2025-04-01 21:50:50.473	16	S	
+1114937	SearchAuditListener	2025-04-01 21:50:50.802	1	S	
+1114938	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:50:51.007	3	S	
+1114939	flushTaskIndexQueue	2025-04-01 21:50:51.473	4	S	
+1114945	BackgroundJobServiceScheduledJob	2025-04-01 21:51:00.002	12	S	
+1114946	contentJobQueueExecutorTrigger	2025-04-01 21:51:00.017	0	S	
+1114947	conversionQueueMonitor	2025-04-01 21:51:00.02	0	S	
+1114956	synchronyStatusCheck	2025-04-01 21:51:02.475	15	S	
+1114957	synchronyStatusCheck	2025-04-01 21:51:05.476	10	S	
+1114958	SearchAuditListener	2025-04-01 21:51:05.833	1	S	
+1114959	flushTaskIndexQueue	2025-04-01 21:51:06.474	15	S	
+1114961	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:51:10.732	17	S	
+1114968	conversionQueueMonitor	2025-04-01 21:51:15.002	4	S	
+1114970	flushTaskIndexQueue	2025-04-01 21:51:16.474	12	S	
+1114971	com.addonengine.analytics.DataRetention	2025-04-01 21:51:16.776	10	S	Deleted 0 Events outside of data retention period.
+1114973	synchronyStatusCheck	2025-04-01 21:51:20.479	20	S	
+1114977	flushTaskIndexQueue	2025-04-01 21:51:21.474	4	S	
+1114978	synchronyStatusCheck	2025-04-01 21:51:23.48	30	S	
+1114981	synchronyStatusCheck	2025-04-01 21:51:26.485	20	S	
+1114984	synchronyStatusCheck	2025-04-01 21:51:29.486	15	S	
+1114992	FlushContentIndexScheduledJob	2025-04-01 21:51:30.964	5	S	
+1114994	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:51:31.008	2	S	
+1114998	LocalTaskQueueFlushJob	2025-04-01 21:51:31.111	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1115000	flushEdgeIndexQueue	2025-04-01 21:51:31.412	2	S	
+1115009	synchronyStatusCheck	2025-04-01 21:51:38.487	30	S	
+1115013	synchronyStatusCheck	2025-04-01 21:51:41.487	54	S	
+1115016	SearchAuditListener	2025-04-01 21:51:45.84	2	S	
+1115020	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:51:50.736	5	S	
+1115021	SearchAuditListener	2025-04-01 21:51:50.841	0	S	
+1115025	synchronyStatusCheck	2025-04-01 21:51:53.493	14	S	
+1115028	synchronyStatusCheck	2025-04-01 21:51:56.493	21	S	
+1115034	JmxAppLoggingJob	2025-04-01 21:52:00.001	50	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1115276	synchronyStatusCheck	2025-04-01 21:54:59.565	15	S	
+1115285	JmxLoggingJob	2025-04-01 21:55:00.001	195	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1115290	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:55:01.02	2	S	
+1114165	synchronyStatusCheck	2025-04-01 21:41:41.007	50	S	
+1114172	synchronyStatusCheck	2025-04-01 21:41:50.01	37	S	
+1114176	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:41:50.709	10	S	
+1114179	synchronyStatusCheck	2025-04-01 21:41:53.012	27	S	
+1114183	synchronyStatusCheck	2025-04-01 21:41:59.012	37	S	
+1114184	ThreadLimiterAnalyticsJob	2025-04-01 21:42:00.001	85	S	
+1114185	contentJobQueueExecutorTrigger	2025-04-01 21:42:00.088	3	S	
+1114187	conversionQueueMonitor	2025-04-01 21:42:00.095	1	S	
+1114192	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:42:00.967	1	S	
+1114194	flushEdgeIndexQueue	2025-04-01 21:42:01.404	10	S	
+1114198	flushTaskIndexQueue	2025-04-01 21:42:06.387	7	S	
+1114200	SearchAuditListener	2025-04-01 21:42:10.703	3	S	
+1114202	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:42:10.967	4	S	
+1114204	flushTaskIndexQueue	2025-04-01 21:42:11.388	5	S	
+1114205	TunnelRefreshJob	2025-04-01 21:42:13.185	100	S	
+1114217	synchronyStatusCheck	2025-04-01 21:42:23.015	16	S	
+1114220	synchronyStatusCheck	2025-04-01 21:42:26.016	6	S	
+1114226	conversionQueueMonitor	2025-04-01 21:42:30.001	7	S	
+1114227	AnalyticsForConfluence.EventLimiter	2025-04-01 21:42:30.62	27	S	
+1114229	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:42:30.709	13	S	
+1114230	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:42:30.733	1	S	
+1114231	FlushContentIndexScheduledJob	2025-04-01 21:42:30.956	5	S	
+1114240	flushEdgeIndexQueue	2025-04-01 21:42:31.404	2	S	
+1114241	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:42:31.886	21	S	
+1114242	watchDogJobConfig	2025-04-01 21:42:32.009	3	S	
+1114244	synchronyStatusCheck	2025-04-01 21:42:35.017	24	S	
+1114253	synchronyStatusCheck	2025-04-01 21:42:41.019	19	S	
+1114256	conversionQueueMonitor	2025-04-01 21:42:45.001	8	S	
+1114261	SearchAuditListener	2025-04-01 21:42:50.708	1	S	
+1114263	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:42:50.973	9	S	
+1114265	totpCodes-cleanup	2025-04-01 21:42:52.518	23	S	
+1114267	SearchAuditListener	2025-04-01 21:42:55.708	3	S	
+1114269	flushTaskIndexQueue	2025-04-01 21:42:56.394	7	S	
+1114271	BackgroundJobServiceScheduledJob	2025-04-01 21:43:00.001	18	S	
+1114272	contentJobQueueExecutorTrigger	2025-04-01 21:43:00.032	1	S	
+1114274	conversionQueueMonitor	2025-04-01 21:43:00.037	1	S	
+1114277	SearchAuditListener	2025-04-01 21:43:00.708	2	S	
+1114278	migration-plugin:node-status-checker-job-id	2025-04-01 21:43:00.934	14	S	
+1114284	synchronyStatusCheck	2025-04-01 21:43:05.03	22	S	
+1114285	SearchAuditListener	2025-04-01 21:43:05.71	1	S	
+1114792	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:49:11.003	8	S	
+1114795	TunnelRefreshJob	2025-04-01 21:49:13.189	6	S	
+1114797	conversionQueueMonitor	2025-04-01 21:49:15.002	6	S	
+1114798	SearchAuditListener	2025-04-01 21:49:15.788	1	S	
+1114799	flushTaskIndexQueue	2025-04-01 21:49:16.45	4	S	
+1114801	synchronyStatusCheck	2025-04-01 21:49:17.429	26	S	
+1114803	SearchAuditListener	2025-04-01 21:49:20.79	2	S	
+1114818	MailQueueFlushJob	2025-04-01 21:49:30.962	4	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114830	synchronyStatusCheck	2025-04-01 21:49:35.436	48	S	
+1114831	SearchAuditListener	2025-04-01 21:49:35.791	0	S	
+1114832	LuceneContentIndexFlusher	2025-04-01 21:49:35.963	8	S	Flush done
+1114834	flushTaskIndexQueue	2025-04-01 21:49:36.452	2	S	
+1114837	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:49:41.003	11	S	
+1114838	flushTaskIndexQueue	2025-04-01 21:49:41.452	4	S	
+1114840	synchronyStatusCheck	2025-04-01 21:49:44.442	57	S	
+1114842	SearchAuditListener	2025-04-01 21:49:45.794	5	S	
+1114843	flushTaskIndexQueue	2025-04-01 21:49:46.464	17	S	
+1114844	synchronyStatusCheck	2025-04-01 21:49:47.445	107	S	
+1114849	flushTaskIndexQueue	2025-04-01 21:49:51.465	4	S	
+1114852	flushTaskIndexQueue	2025-04-01 21:49:56.465	3	S	
+1114856	JmxAppLoggingJob	2025-04-01 21:50:00.002	299	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114870	SynchronyEventsSoftRemovalScheduledJob	2025-04-01 21:50:00.303	723	S	
+1114871	flushEdgeIndexQueue	2025-04-01 21:50:01.411	7	S	
+1114872	flushTaskIndexQueue	2025-04-01 21:50:01.465	4	S	
+1114876	flushTaskIndexQueue	2025-04-01 21:50:06.465	5	S	
+1114877	synchronyStatusCheck	2025-04-01 21:50:08.458	20	S	
+1114881	flushTaskIndexQueue	2025-04-01 21:50:11.465	8	S	
+1114884	synchronyStatusCheck	2025-04-01 21:50:14.46	11	S	
+1114885	conversionQueueMonitor	2025-04-01 21:50:15.001	5	S	
+1114887	flushTaskIndexQueue	2025-04-01 21:50:16.465	3	S	
+1114889	synchronyStatusCheck	2025-04-01 21:50:17.461	11	S	
+1114893	LastAccessedTimeBatcherJob	2025-04-01 21:50:21.203	1	S	
+1114895	totpCodes-cleanup	2025-04-01 21:50:22.521	12	S	
+1114897	SearchAuditListener	2025-04-01 21:50:25.798	1	S	
+1114899	synchronyStatusCheck	2025-04-01 21:50:26.466	20	S	
+1114901	synchronyStatusCheck	2025-04-01 21:50:29.467	30	S	
+1114903	AnalyticsForConfluence.EventLimiter	2025-04-01 21:50:30.628	5	S	
+1114906	SearchAuditListener	2025-04-01 21:50:30.798	0	S	
+1114915	addonHouskeeperTrigger-v2	2025-04-01 21:50:31.363	3	S	
+1114916	flushEdgeIndexQueue	2025-04-01 21:50:31.411	7	S	
+1114918	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:50:31.889	32	S	
+1114925	synchronyStatusCheck	2025-04-01 21:50:38.47	20	S	
+1114929	synchronyStatusCheck	2025-04-01 21:50:41.47	14	S	
+1114933	flushTaskIndexQueue	2025-04-01 21:50:46.472	38	S	
+1114936	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:50:50.731	8	S	
+1114941	SearchAuditListener	2025-04-01 21:50:55.802	0	S	
+1114944	synchronyStatusCheck	2025-04-01 21:50:59.474	13	S	
+1114948	ThreadLimiterAnalyticsJob	2025-04-01 21:51:00.005	17	S	
+1114167	synchronyStatusCheck	2025-04-01 21:41:44.009	95	S	
+1114174	LuceneContentIndexFlusher	2025-04-01 21:41:50.147	102	S	Flush done
+1114175	SearchAuditListener	2025-04-01 21:41:50.645	2	S	
+1114177	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:41:50.967	5	S	
+1114178	flushTaskIndexQueue	2025-04-01 21:41:51.384	6	S	
+1114188	JmxAppLoggingJob	2025-04-01 21:42:00.001	141	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114195	synchronyStatusCheck	2025-04-01 21:42:02.012	10	S	
+1114199	synchronyStatusCheck	2025-04-01 21:42:08.012	21	S	
+1114203	synchronyStatusCheck	2025-04-01 21:42:11.013	9	S	
+1114207	conversionQueueMonitor	2025-04-01 21:42:15.001	6	S	
+1114209	flushTaskIndexQueue	2025-04-01 21:42:16.388	3	S	
+1114210	com.addonengine.analytics.DataRetention	2025-04-01 21:42:16.768	56	S	Deleted 0 Events outside of data retention period.
+1114212	synchronyStatusCheck	2025-04-01 21:42:20.015	22	S	
+1114213	SearchAuditListener	2025-04-01 21:42:20.705	2	S	
+1114219	SearchAuditListener	2025-04-01 21:42:25.705	7	S	
+1114221	DefaultPluginScheduler:com.atlassian.troubleshooting.healthcheck.scheduler.HealthCheckSchedulerImpl:job	2025-04-01 21:42:25.728	451	S	
+1114225	synchronyStatusCheck	2025-04-01 21:42:29.017	52	S	
+1114228	SearchAuditListener	2025-04-01 21:42:30.705	3	S	
+1114234	ClusterSafetyJob	2025-04-01 21:42:30.956	19	S	
+1114238	addonHouskeeperTrigger-v2	2025-04-01 21:42:31.356	5	S	
+1114243	synchronyStatusCheck	2025-04-01 21:42:32.017	19	S	
+1114245	SearchAuditListener	2025-04-01 21:42:35.706	2	S	
+1114247	LuceneChangeIndexFlusher	2025-04-01 21:42:36.078	9	S	Flush done
+1114248	flushTaskIndexQueue	2025-04-01 21:42:36.391	3	S	
+1114258	flushTaskIndexQueue	2025-04-01 21:42:46.392	13	S	
+1114262	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:42:50.709	16	S	
+1114268	synchronyStatusCheck	2025-04-01 21:42:56.027	20	S	
+1114270	synchronyStatusCheck	2025-04-01 21:42:59.027	15	S	
+1114275	JmxAppLoggingJob	2025-04-01 21:43:00.002	70	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114280	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:43:00.975	2	S	
+1114283	synchronyStatusCheck	2025-04-01 21:43:02.027	7	S	
+1114793	synchronyStatusCheck	2025-04-01 21:49:11.429	15	S	
+1114804	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:49:21.003	3	S	
+1114806	flushTaskIndexQueue	2025-04-01 21:49:21.45	7	S	
+1114809	flushTaskIndexQueue	2025-04-01 21:49:26.452	3	S	
+1114811	SettingsReloaderJob	2025-04-01 21:49:27.505	8	S	
+1114813	conversionQueueMonitor	2025-04-01 21:49:30	4	S	
+1114814	AnalyticsForConfluence.EventLimiter	2025-04-01 21:49:30.628	15	S	
+1114817	SearchAuditListener	2025-04-01 21:49:30.79	1	S	
+1114821	ClusterSafetyJob	2025-04-01 21:49:30.965	12	S	
+1114827	flushTaskIndexQueue	2025-04-01 21:49:31.452	2	S	
+1114835	synchronyStatusCheck	2025-04-01 21:49:38.439	36	S	
+1114836	SearchAuditListener	2025-04-01 21:49:40.793	1	S	
+1114841	conversionQueueMonitor	2025-04-01 21:49:45.002	7	S	
+1114845	synchronyStatusCheck	2025-04-01 21:49:50.445	16	S	
+1114846	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:49:50.73	12	S	
+1114848	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:49:51.004	48	S	
+1114850	synchronyStatusCheck	2025-04-01 21:49:53.446	15	S	
+1114851	SearchAuditListener	2025-04-01 21:49:55.796	1	S	
+1114855	BackgroundJobServiceScheduledJob	2025-04-01 21:50:00.001	7	S	
+1114857	JmxLoggingJob	2025-04-01 21:50:00.015	305	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114858	ThreadLimiterAnalyticsJob	2025-04-01 21:50:00.321	2	S	
+1114859	VersionSoftRemovalScheduledJob	2025-04-01 21:50:00.324	5	S	
+1114860	batchingJobConfig	2025-04-01 21:50:00.33	77	S	
+1114861	confluenceDavSessionInvalidatorJobTrigger	2025-04-01 21:50:00.41	2	S	
+1114862	contentJobQueueExecutorTrigger	2025-04-01 21:50:00.414	0	S	
+1114863	conversionQueueMonitor	2025-04-01 21:50:00.415	0	S	
+1114864	reminderJob	2025-04-01 21:50:00.416	0	S	
+1114868	ClusterSafetyJob	2025-04-01 21:50:00.965	5	S	
+1114869	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:50:01.004	1	S	
+1114878	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:50:10.731	12	S	
+1114879	SearchAuditListener	2025-04-01 21:50:10.797	0	S	
+1114880	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:50:11.004	23	S	
+1114886	SearchAuditListener	2025-04-01 21:50:15.797	1	S	
+1114888	com.addonengine.analytics.DataRetention	2025-04-01 21:50:16.776	12	S	Deleted 0 Events outside of data retention period.
+1114890	synchronyStatusCheck	2025-04-01 21:50:20.464	18	S	
+1114891	SearchAuditListener	2025-04-01 21:50:20.797	1	S	
+1114894	flushTaskIndexQueue	2025-04-01 21:50:21.466	5	S	
+1114900	SettingsReloaderJob	2025-04-01 21:50:27.507	15	S	
+1114904	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:50:30.731	2	S	
+1114908	MailQueueFlushJob	2025-04-01 21:50:30.962	0	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114911	ClusterSafetyJob	2025-04-01 21:50:30.965	5	S	
+1114913	FlushChangeIndexScheduledJob	2025-04-01 21:50:31.081	1	S	
+1114917	flushTaskIndexQueue	2025-04-01 21:50:31.467	4	S	
+1114919	synchronyStatusCheck	2025-04-01 21:50:32.468	13	S	
+1114921	SearchAuditListener	2025-04-01 21:50:35.799	2	S	
+1114923	LuceneChangeIndexFlusher	2025-04-01 21:50:36.082	8	S	Flush done
+1114924	flushTaskIndexQueue	2025-04-01 21:50:36.469	2	S	
+1114927	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:50:41.006	5	S	
+1114928	flushTaskIndexQueue	2025-04-01 21:50:41.47	3	S	
+1114932	SearchAuditListener	2025-04-01 21:50:45.801	7	S	
+1114942	flushTaskIndexQueue	2025-04-01 21:50:56.473	4	S	
+1114950	JmxLoggingJob	2025-04-01 21:51:00.003	103	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114952	ClusterSafetyJob	2025-04-01 21:51:00.965	8	S	
+1114955	flushTaskIndexQueue	2025-04-01 21:51:01.474	2	S	
+1114169	SearchAuditListener	2025-04-01 21:41:45.644	4	S	
+1114171	synchronyStatusCheck	2025-04-01 21:41:47.009	78	S	
+1114180	SearchAuditListener	2025-04-01 21:41:55.701	1	S	
+1114182	flushTaskIndexQueue	2025-04-01 21:41:56.385	3	S	
+1114189	JmxLoggingJob	2025-04-01 21:42:00.001	280	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114193	flushTaskIndexQueue	2025-04-01 21:42:01.386	8	S	
+1114215	LastAccessedTimeBatcherJob	2025-04-01 21:42:21.194	16	S	
+1114216	flushTaskIndexQueue	2025-04-01 21:42:21.388	3	S	
+1114218	infrastructure-metrics-job-id	2025-04-01 21:42:23.081	189	S	
+1114223	DefaultPluginScheduler:com.atlassian.mywork.host.batch.CleanerScheduler:job	2025-04-01 21:42:26.61	41	S	
+1114232	ReIndexHouseKeepingScheduledJob	2025-04-01 21:42:30.961	3	S	
+1114235	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:42:30.972	5	S	
+1114236	FlushChangeIndexScheduledJob	2025-04-01 21:42:31.077	5	S	
+1114237	LocalTaskQueueFlushJob	2025-04-01 21:42:31.103	3	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114239	flushTaskIndexQueue	2025-04-01 21:42:31.388	2	S	
+1114249	HistoryCleanupJob	2025-04-01 21:42:37.503	17	S	
+1114250	synchronyStatusCheck	2025-04-01 21:42:38.017	27	S	
+1114251	SearchAuditListener	2025-04-01 21:42:40.706	3	S	
+1114254	flushTaskIndexQueue	2025-04-01 21:42:41.392	5	S	
+1114257	SearchAuditListener	2025-04-01 21:42:45.707	4	S	
+1114259	synchronyStatusCheck	2025-04-01 21:42:47.023	39	S	
+1114266	synchronyStatusCheck	2025-04-01 21:42:53.026	20	S	
+1114273	ThreadLimiterAnalyticsJob	2025-04-01 21:43:00.004	29	S	
+1114279	ClusterSafetyJob	2025-04-01 21:43:00.956	7	S	
+1114282	flushEdgeIndexQueue	2025-04-01 21:43:01.404	3	S	
+1114288	SearchAuditListener	2025-04-01 21:43:10.711	3	S	
+1114289	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:43:10.711	7	S	
+1114290	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:43:10.978	7	S	
+1114291	synchronyStatusCheck	2025-04-01 21:43:11.031	16	S	
+1114292	flushTaskIndexQueue	2025-04-01 21:43:11.397	6	S	
+1114293	TunnelRefreshJob	2025-04-01 21:43:13.185	5	S	
+1114294	synchronyStatusCheck	2025-04-01 21:43:14.032	22	S	
+1114295	conversionQueueMonitor	2025-04-01 21:43:15.001	4	S	
+1114296	SearchAuditListener	2025-04-01 21:43:15.712	2	S	
+1114297	flushTaskIndexQueue	2025-04-01 21:43:16.397	5	S	
+1114298	com.addonengine.analytics.DataRetention	2025-04-01 21:43:16.769	11	S	Deleted 0 Events outside of data retention period.
+1114299	synchronyStatusCheck	2025-04-01 21:43:17.033	8	S	
+1114300	synchronyStatusCheck	2025-04-01 21:43:20.033	28	S	
+1114301	SearchAuditListener	2025-04-01 21:43:20.714	1	S	
+1114302	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:43:20.978	3	S	
+1114303	LastAccessedTimeBatcherJob	2025-04-01 21:43:21.195	19	S	
+1114304	flushTaskIndexQueue	2025-04-01 21:43:21.397	7	S	
+1114305	synchronyStatusCheck	2025-04-01 21:43:23.035	15	S	
+1114306	SearchAuditListener	2025-04-01 21:43:25.715	1	S	
+1114307	synchronyStatusCheck	2025-04-01 21:43:26.036	27	S	
+1114308	flushTaskIndexQueue	2025-04-01 21:43:26.398	5	S	
+1114309	DefaultPluginScheduler:com.atlassian.mywork.host.batch.NotificationCleanerTask:job	2025-04-01 21:43:26.623	36	S	
+1114310	SettingsReloaderJob	2025-04-01 21:43:27.499	15	S	
+1114311	synchronyStatusCheck	2025-04-01 21:43:29.037	5	S	
+1114312	conversionQueueMonitor	2025-04-01 21:43:30.001	2	S	
+1114313	AnalyticsForConfluence.EventLimiter	2025-04-01 21:43:30.621	17	S	
+1114314	SearchAuditListener	2025-04-01 21:43:30.715	1	S	
+1114315	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:43:30.712	5	S	
+1114316	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:43:30.733	4	S	
+1114317	FlushContentIndexScheduledJob	2025-04-01 21:43:30.957	4	S	
+1114318	MailQueueFlushJob	2025-04-01 21:43:30.96	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114319	ReIndexHouseKeepingScheduledJob	2025-04-01 21:43:30.961	2	S	
+1114320	ClusterSafetyJob	2025-04-01 21:43:30.956	15	S	
+1114321	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:43:30.979	7	S	
+1114322	FlushChangeIndexScheduledJob	2025-04-01 21:43:31.079	2	S	
+1114323	LocalTaskQueueFlushJob	2025-04-01 21:43:31.104	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114324	addonHouskeeperTrigger-v2	2025-04-01 21:43:31.357	4	S	
+1114325	flushTaskIndexQueue	2025-04-01 21:43:31.398	9	S	
+1114326	flushEdgeIndexQueue	2025-04-01 21:43:31.404	6	S	
+1114327	synchronyStatusCheck	2025-04-01 21:43:32.305	36	S	
+1114328	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:43:32.454	15	S	Waiting a bit longer before sending analytics events
+1114329	synchronyStatusCheck	2025-04-01 21:43:35.307	46	S	
+1114330	SearchAuditListener	2025-04-01 21:43:35.716	2	S	
+1114331	LuceneContentIndexFlusher	2025-04-01 21:43:35.959	21	S	Flush done
+1114332	LuceneChangeIndexFlusher	2025-04-01 21:43:36.08	7	S	Flush done
+1114333	flushTaskIndexQueue	2025-04-01 21:43:36.398	5	S	
+1114334	synchronyStatusCheck	2025-04-01 21:43:38.307	25	S	
+1114335	SearchAuditListener	2025-04-01 21:43:40.716	2	S	
+1114336	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:43:40.98	3	S	
+1114337	synchronyStatusCheck	2025-04-01 21:43:41.308	12	S	
+1114338	flushTaskIndexQueue	2025-04-01 21:43:41.398	3	S	
+1114339	synchronyStatusCheck	2025-04-01 21:43:44.309	129	S	
+1114340	conversionQueueMonitor	2025-04-01 21:43:45	15	S	
+1114341	SearchAuditListener	2025-04-01 21:43:45.717	3	S	
+1114342	flushTaskIndexQueue	2025-04-01 21:43:46.4	11	S	
+1114343	synchronyStatusCheck	2025-04-01 21:43:47.31	59	S	
+1114344	synchronyStatusCheck	2025-04-01 21:43:50.31	19	S	
+1114345	SearchAuditListener	2025-04-01 21:43:50.717	3	S	
+1114346	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:43:50.713	13	S	
+1114347	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:43:50.98	5	S	
+1114348	flushTaskIndexQueue	2025-04-01 21:43:51.401	3	S	
+1114349	synchronyStatusCheck	2025-04-01 21:43:53.311	6	S	
+1114354	BackgroundJobServiceScheduledJob	2025-04-01 21:44:00.001	28	S	
+1114357	contentJobQueueExecutorTrigger	2025-04-01 21:44:00.037	4	S	
+1114366	synchronyStatusCheck	2025-04-01 21:44:05.318	36	S	
+1114373	synchronyStatusCheck	2025-04-01 21:44:11.323	29	S	
+1114374	flushTaskIndexQueue	2025-04-01 21:44:11.405	4	S	
+1114378	SearchAuditListener	2025-04-01 21:44:15.725	1	S	
+1114381	synchronyStatusCheck	2025-04-01 21:44:17.325	22	S	
+1114385	LastAccessedTimeBatcherJob	2025-04-01 21:44:21.195	2	S	
+1114386	flushTaskIndexQueue	2025-04-01 21:44:21.407	4	S	
+1114391	flushTaskIndexQueue	2025-04-01 21:44:26.407	2	S	
+1114394	conversionQueueMonitor	2025-04-01 21:44:30	6	S	
+1114396	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:44:30.715	6	S	
+1114398	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:44:30.733	7	S	
+1114400	MailQueueFlushJob	2025-04-01 21:44:30.961	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114407	addonHouskeeperTrigger-v2	2025-04-01 21:44:31.357	1	S	
+1114412	synchronyStatusCheck	2025-04-01 21:44:35.33	52	S	
+1114414	LuceneContentIndexFlusher	2025-04-01 21:44:35.96	28	S	Flush done
+1114416	flushTaskIndexQueue	2025-04-01 21:44:36.408	5	S	
+1114420	synchronyStatusCheck	2025-04-01 21:44:41.331	19	S	
+1114422	synchronyStatusCheck	2025-04-01 21:44:44.333	140	S	
+1114423	conversionQueueMonitor	2025-04-01 21:44:45.001	5	S	
+1114433	SearchAuditListener	2025-04-01 21:44:55.729	1	S	
+1114435	flushTaskIndexQueue	2025-04-01 21:44:56.413	10	S	
+1114440	JmxLoggingJob	2025-04-01 21:45:00.002	544	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114441	contentJobQueueExecutorTrigger	2025-04-01 21:45:00.551	1	S	
+1114442	conversionQueueMonitor	2025-04-01 21:45:00.553	20	S	
+1114443	reminderJob	2025-04-01 21:45:00.577	2	S	
+1114446	SearchAuditListener	2025-04-01 21:45:00.73	0	S	
+1114450	flushEdgeIndexQueue	2025-04-01 21:45:01.405	3	S	
+1114796	synchronyStatusCheck	2025-04-01 21:49:14.429	27	S	
+1114802	synchronyStatusCheck	2025-04-01 21:49:20.431	22	S	
+1114805	LastAccessedTimeBatcherJob	2025-04-01 21:49:21.201	1	S	
+1114807	synchronyStatusCheck	2025-04-01 21:49:23.431	15	S	
+1114812	synchronyStatusCheck	2025-04-01 21:49:29.433	15	S	
+1114815	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:49:30.734	2	S	
+1114820	ReIndexHouseKeepingScheduledJob	2025-04-01 21:49:30.962	3	S	
+1114822	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:49:31.003	4	S	
+1114824	LocalTaskQueueFlushJob	2025-04-01 21:49:31.11	1	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114825	addonHouskeeperTrigger-v2	2025-04-01 21:49:31.362	1	S	
+1114826	flushEdgeIndexQueue	2025-04-01 21:49:31.411	3	S	
+1114833	LuceneChangeIndexFlusher	2025-04-01 21:49:36.082	6	S	Flush done
+1114839	synchronyStatusCheck	2025-04-01 21:49:41.44	35	S	
+1114847	SearchAuditListener	2025-04-01 21:49:50.795	1	S	
+1114854	synchronyStatusCheck	2025-04-01 21:49:59.455	16	S	
+1114866	BackupRestoreScheduledJob	2025-04-01 21:50:00.001	465	S	
+1114867	SearchAuditListener	2025-04-01 21:50:00.796	1	S	
+1114873	synchronyStatusCheck	2025-04-01 21:50:02.456	14	S	
+1114874	synchronyStatusCheck	2025-04-01 21:50:05.457	34	S	
+1114882	synchronyStatusCheck	2025-04-01 21:50:11.46	20	S	
+1114883	TunnelRefreshJob	2025-04-01 21:50:13.19	7	S	
+1114896	synchronyStatusCheck	2025-04-01 21:50:23.465	113	S	
+1114898	flushTaskIndexQueue	2025-04-01 21:50:26.466	3	S	
+1114902	conversionQueueMonitor	2025-04-01 21:50:30.002	3	S	
+1114905	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:50:30.734	0	S	
+1114907	migration-plugin:node-status-checker-job-id	2025-04-01 21:50:30.943	4	S	
+1114910	FlushContentIndexScheduledJob	2025-04-01 21:50:30.962	2	S	
+1114912	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:50:31.006	1	S	
+1114914	LocalTaskQueueFlushJob	2025-04-01 21:50:31.11	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114920	synchronyStatusCheck	2025-04-01 21:50:35.47	30	S	
+1114930	synchronyStatusCheck	2025-04-01 21:50:44.472	58	S	
+1114931	conversionQueueMonitor	2025-04-01 21:50:45.002	6	S	
+1114940	synchronyStatusCheck	2025-04-01 21:50:53.474	23	S	
+1114943	synchronyStatusCheck	2025-04-01 21:50:56.474	23	S	
+1114949	JmxAppLoggingJob	2025-04-01 21:51:00.002	56	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114951	SearchAuditListener	2025-04-01 21:51:00.832	2	S	
+1114953	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:51:01.007	2	S	
+1114954	flushEdgeIndexQueue	2025-04-01 21:51:01.412	2	S	
+1114962	SearchAuditListener	2025-04-01 21:51:10.833	2	S	
+1114966	TunnelRefreshJob	2025-04-01 21:51:13.192	4	S	
+1114969	SearchAuditListener	2025-04-01 21:51:15.833	2	S	
+1114974	SearchAuditListener	2025-04-01 21:51:20.833	1	S	
+1114976	LastAccessedTimeBatcherJob	2025-04-01 21:51:21.203	1	S	
+1114979	SearchAuditListener	2025-04-01 21:51:25.834	1	S	
+1114987	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:51:30.734	2	S	
+1114989	SearchAuditListener	2025-04-01 21:51:30.836	1	S	
+1114990	migration-plugin:node-count-checker-job-id	2025-04-01 21:51:30.923	0	S	
+1114993	ClusterSafetyJob	2025-04-01 21:51:30.965	11	S	
+1114997	FlushChangeIndexScheduledJob	2025-04-01 21:51:31.082	1	S	
+1115002	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:51:32.461	5	S	Waiting a bit longer before sending analytics events
+1115003	synchronyStatusCheck	2025-04-01 21:51:32.486	9	S	
+1115011	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:51:41.008	6	S	
+1115015	conversionQueueMonitor	2025-04-01 21:51:45.001	6	S	
+1115019	synchronyStatusCheck	2025-04-01 21:51:50.493	12	S	
+1115023	flushTaskIndexQueue	2025-04-01 21:51:51.477	4	S	
+1114350	SearchAuditListener	2025-04-01 21:43:55.723	11	S	
+1114352	flushTaskIndexQueue	2025-04-01 21:43:56.401	8	S	
+1114353	synchronyStatusCheck	2025-04-01 21:43:59.314	22	S	
+1114355	ThreadLimiterAnalyticsJob	2025-04-01 21:44:00.002	35	S	
+1114356	conversionQueueMonitor	2025-04-01 21:44:00.039	1	S	
+1114361	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:44:00.98	13	S	
+1114364	flushEdgeIndexQueue	2025-04-01 21:44:01.404	5	S	
+1114387	totpCodes-cleanup	2025-04-01 21:44:22.518	15	S	
+1114397	SearchAuditListener	2025-04-01 21:44:30.727	2	S	
+1114403	ClusterSafetyJob	2025-04-01 21:44:30.958	16	S	
+1114404	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:44:30.983	2	S	
+1114405	FlushChangeIndexScheduledJob	2025-04-01 21:44:31.079	3	S	
+1114409	flushTaskIndexQueue	2025-04-01 21:44:31.407	1	S	
+1114413	SearchAuditListener	2025-04-01 21:44:35.728	3	S	
+1114417	synchronyStatusCheck	2025-04-01 21:44:38.331	73	S	
+1114419	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:44:40.984	8	S	
+1114421	flushTaskIndexQueue	2025-04-01 21:44:41.409	4	S	
+1114427	synchronyStatusCheck	2025-04-01 21:44:50.335	52	S	
+1114428	SearchAuditListener	2025-04-01 21:44:50.729	1	S	
+1114436	synchronyStatusCheck	2025-04-01 21:44:59.338	21	S	
+1114447	JfrScheduledDumpTask	2025-04-01 21:45:00	736	S	
+1114451	flushTaskIndexQueue	2025-04-01 21:45:01.414	4	S	
+1114453	synchronyStatusCheck	2025-04-01 21:45:05.339	19	S	
+1114454	SearchAuditListener	2025-04-01 21:45:05.731	1	S	
+1114960	synchronyStatusCheck	2025-04-01 21:51:08.477	42	S	
+1114965	synchronyStatusCheck	2025-04-01 21:51:11.477	5	S	
+1114972	synchronyStatusCheck	2025-04-01 21:51:17.478	15	S	
+1114982	HistoryFlushJob	2025-04-01 21:51:27.5	2	S	
+1114983	SettingsReloaderJob	2025-04-01 21:51:27.507	10	S	
+1114986	AnalyticsForConfluence.EventLimiter	2025-04-01 21:51:30.63	12	S	
+1114988	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:51:30.734	5	S	
+1114991	MailQueueFlushJob	2025-04-01 21:51:30.964	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114996	EhCacheCompactionJob	2025-04-01 21:51:31.064	18	S	
+1115006	LuceneContentIndexFlusher	2025-04-01 21:51:35.966	8	S	Flush done
+1115008	flushTaskIndexQueue	2025-04-01 21:51:36.476	18	S	
+1115010	SearchAuditListener	2025-04-01 21:51:40.839	2	S	
+1115012	flushTaskIndexQueue	2025-04-01 21:51:41.476	4	S	
+1115033	ThreadLimiterAnalyticsJob	2025-04-01 21:52:00.005	31	S	
+1115038	ClusterSafetyJob	2025-04-01 21:52:00.966	12	S	
+1115041	flushTaskIndexQueue	2025-04-01 21:52:01.479	2	S	
+1115042	synchronyStatusCheck	2025-04-01 21:52:02.494	20	S	
+1115298	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:55:10.742	7	S	
+1115301	flushTaskIndexQueue	2025-04-01 21:55:11.507	4	S	
+1115304	synchronyStatusCheck	2025-04-01 21:55:14.567	22	S	
+1115309	synchronyStatusCheck	2025-04-01 21:55:17.567	12	S	
+1115312	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:55:21.023	5	S	
+1115316	SearchAuditListener	2025-04-01 21:55:25.881	1	S	
+1115317	flushTaskIndexQueue	2025-04-01 21:55:26.508	13	S	
+1115319	SettingsReloaderJob	2025-04-01 21:55:27.511	27	S	
+1115322	AnalyticsForConfluence.EventLimiter	2025-04-01 21:55:30.634	17	S	
+1115323	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:55:30.736	1	S	
+1115327	FlushContentIndexScheduledJob	2025-04-01 21:55:30.974	5	S	
+1115337	synchronyStatusCheck	2025-04-01 21:55:32.575	5	S	
+1115345	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:55:41.024	3	S	
+1115346	flushTaskIndexQueue	2025-04-01 21:55:41.51	1	S	
+1115351	flushTaskIndexQueue	2025-04-01 21:55:46.511	13	S	
+1115352	synchronyStatusCheck	2025-04-01 21:55:47.582	73	S	
+1115354	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:55:50.743	12	S	
+1115355	SearchAuditListener	2025-04-01 21:55:50.884	1	S	
+1115356	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:55:51.024	4	S	
+1115358	synchronyStatusCheck	2025-04-01 21:55:53.587	10	S	
+1115359	SearchAuditListener	2025-04-01 21:55:55.884	4	S	
+1115368	JmxLoggingJob	2025-04-01 21:56:00.002	164	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1115371	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:56:01.024	3	S	
+1115372	flushEdgeIndexQueue	2025-04-01 21:56:01.417	6	S	
+1115381	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:56:11.024	4	S	
+1115384	TunnelRefreshJob	2025-04-01 21:56:13.197	6	S	
+1115389	com.addonengine.analytics.DataRetention	2025-04-01 21:56:16.78	15	S	Deleted 0 Events outside of data retention period.
+1115406	TunnelStatusCheckJob	2025-04-01 21:56:30.618	2	S	
+1115410	SearchAuditListener	2025-04-01 21:56:30.89	1	S	
+1115411	UpmConfigCheckJob-job	2025-04-01 21:56:30.907	5	S	
+1115418	ClusterSafetyJob	2025-04-01 21:56:30.977	14	S	
+1115422	LocalTaskQueueFlushJob	2025-04-01 21:56:31.114	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1115425	flushEdgeIndexQueue	2025-04-01 21:56:31.417	3	S	
+1115426	flushTaskIndexQueue	2025-04-01 21:56:31.515	3	S	
+1115427	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:56:31.891	11	S	
+1115428	synchronyStatusCheck	2025-04-01 21:56:32.596	5	S	
+1115432	LuceneChangeIndexFlusher	2025-04-01 21:56:36.086	10	S	Flush done
+1115440	conversionQueueMonitor	2025-04-01 21:56:45.001	3	S	
+1115442	flushTaskIndexQueue	2025-04-01 21:56:46.517	5	S	
+1115445	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:56:50.747	12	S	
+1115446	SearchAuditListener	2025-04-01 21:56:50.891	1	S	
+1115449	synchronyStatusCheck	2025-04-01 21:56:53.606	35	S	
+1115451	flushTaskIndexQueue	2025-04-01 21:56:56.519	5	S	
+1114351	synchronyStatusCheck	2025-04-01 21:43:56.313	89	S	
+1114359	JmxLoggingJob	2025-04-01 21:44:00.001	109	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114360	SearchAuditListener	2025-04-01 21:44:00.724	8	S	
+1114365	synchronyStatusCheck	2025-04-01 21:44:02.314	46	S	
+1114367	SearchAuditListener	2025-04-01 21:44:05.725	2	S	
+1114369	synchronyStatusCheck	2025-04-01 21:44:08.318	60	S	
+1114371	SearchAuditListener	2025-04-01 21:44:10.725	0	S	
+1114376	synchronyStatusCheck	2025-04-01 21:44:14.324	21	S	
+1114377	conversionQueueMonitor	2025-04-01 21:44:15.001	5	S	
+1114379	flushTaskIndexQueue	2025-04-01 21:44:16.407	4	S	
+1114380	com.addonengine.analytics.DataRetention	2025-04-01 21:44:16.771	12	S	Deleted 0 Events outside of data retention period.
+1114382	synchronyStatusCheck	2025-04-01 21:44:20.326	16	S	
+1114389	SearchAuditListener	2025-04-01 21:44:25.727	2	S	
+1114393	synchronyStatusCheck	2025-04-01 21:44:29.328	35	S	
+1114399	migration-plugin:node-status-checker-job-id	2025-04-01 21:44:30.935	8	S	
+1114402	ReIndexHouseKeepingScheduledJob	2025-04-01 21:44:30.961	2	S	
+1114406	LocalTaskQueueFlushJob	2025-04-01 21:44:31.104	2	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114410	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:44:31.888	19	S	
+1114411	synchronyStatusCheck	2025-04-01 21:44:32.328	19	S	
+1114418	SearchAuditListener	2025-04-01 21:44:40.728	2	S	
+1114425	flushTaskIndexQueue	2025-04-01 21:44:46.411	21	S	
+1114426	synchronyStatusCheck	2025-04-01 21:44:47.333	41	S	
+1114429	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:44:50.716	16	S	
+1114432	synchronyStatusCheck	2025-04-01 21:44:53.336	19	S	
+1114437	BackgroundJobServiceScheduledJob	2025-04-01 21:45:00	9	S	
+1114438	ThreadLimiterAnalyticsJob	2025-04-01 21:45:00.019	18	S	
+1114445	TrashSoftRemovalScheduledJob	2025-04-01 21:45:00.044	629	S	
+1114448	ClusterSafetyJob	2025-04-01 21:45:00.959	33	S	
+1114452	synchronyStatusCheck	2025-04-01 21:45:02.338	46	S	
+1114455	flushTaskIndexQueue	2025-04-01 21:45:06.414	4	S	
+1114456	synchronyStatusCheck	2025-04-01 21:45:08.34	30	S	
+1114963	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:51:11.007	4	S	
+1114964	flushTaskIndexQueue	2025-04-01 21:51:11.474	1	S	
+1114967	synchronyStatusCheck	2025-04-01 21:51:14.478	27	S	
+1114975	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:51:21.007	3	S	
+1114980	flushTaskIndexQueue	2025-04-01 21:51:26.475	12	S	
+1114985	conversionQueueMonitor	2025-04-01 21:51:30	2	S	
+1114995	ReIndexHouseKeepingScheduledJob	2025-04-01 21:51:30.964	2	S	
+1114999	addonHouskeeperTrigger-v2	2025-04-01 21:51:31.363	1	S	
+1115001	flushTaskIndexQueue	2025-04-01 21:51:31.475	1	S	
+1115004	synchronyStatusCheck	2025-04-01 21:51:35.487	14	S	
+1115005	SearchAuditListener	2025-04-01 21:51:35.837	2	S	
+1115007	LuceneChangeIndexFlusher	2025-04-01 21:51:36.083	10	S	Flush done
+1115014	synchronyStatusCheck	2025-04-01 21:51:44.49	81	S	
+1115017	flushTaskIndexQueue	2025-04-01 21:51:46.477	14	S	
+1115018	synchronyStatusCheck	2025-04-01 21:51:47.492	10	S	
+1115022	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:51:51.009	4	S	
+1115024	totpCodes-cleanup	2025-04-01 21:51:52.524	11	S	
+1115026	SearchAuditListener	2025-04-01 21:51:55.842	2	S	
+1115027	flushTaskIndexQueue	2025-04-01 21:51:56.479	2	S	
+1115029	synchronyStatusCheck	2025-04-01 21:51:59.493	58	S	
+1115035	JmxLoggingJob	2025-04-01 21:52:00.002	66	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1115036	SearchAuditListener	2025-04-01 21:52:00.842	1	S	
+1115037	migration-plugin:node-status-checker-job-id	2025-04-01 21:52:00.944	5	S	
+1115044	SearchAuditListener	2025-04-01 21:52:05.843	2	S	
+1115046	synchronyStatusCheck	2025-04-01 21:52:08.494	16	S	
+1115299	SearchAuditListener	2025-04-01 21:55:10.88	4	S	
+1115300	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:55:11.021	6	S	
+1115305	conversionQueueMonitor	2025-04-01 21:55:15.001	2	S	
+1115306	SearchAuditListener	2025-04-01 21:55:15.88	2	S	
+1115308	com.addonengine.analytics.DataRetention	2025-04-01 21:55:16.779	10	S	Deleted 0 Events outside of data retention period.
+1115320	synchronyStatusCheck	2025-04-01 21:55:29.575	20	S	
+1115324	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:55:30.742	9	S	
+1115325	SearchAuditListener	2025-04-01 21:55:30.881	1	S	
+1115328	ReIndexHouseKeepingScheduledJob	2025-04-01 21:55:30.987	1	S	
+1115331	FlushChangeIndexScheduledJob	2025-04-01 21:55:31.084	1	S	
+1115335	flushTaskIndexQueue	2025-04-01 21:55:31.508	4	S	
+1115339	SearchAuditListener	2025-04-01 21:55:35.882	1	S	
+1115342	flushTaskIndexQueue	2025-04-01 21:55:36.509	4	S	
+1115347	synchronyStatusCheck	2025-04-01 21:55:41.58	9	S	
+1115349	conversionQueueMonitor	2025-04-01 21:55:45	8	S	
+1115357	flushTaskIndexQueue	2025-04-01 21:55:51.512	6	S	
+1115367	JmxAppLoggingJob	2025-04-01 21:56:00.001	112	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1115373	flushTaskIndexQueue	2025-04-01 21:56:01.513	3	S	
+1115377	flushTaskIndexQueue	2025-04-01 21:56:06.513	4	S	
+1115378	synchronyStatusCheck	2025-04-01 21:56:08.592	30	S	
+1115382	flushTaskIndexQueue	2025-04-01 21:56:11.513	4	S	
+1115383	synchronyStatusCheck	2025-04-01 21:56:11.593	33	S	
+1115385	synchronyStatusCheck	2025-04-01 21:56:14.593	22	S	
+1115388	flushTaskIndexQueue	2025-04-01 21:56:16.513	6	S	
+1115390	synchronyStatusCheck	2025-04-01 21:56:17.593	34	S	
+1115392	SearchAuditListener	2025-04-01 21:56:20.888	3	S	
+1115395	flushTaskIndexQueue	2025-04-01 21:56:21.513	5	S	
+1115398	SearchAuditListener	2025-04-01 21:56:25.889	6	S	
+1115399	flushTaskIndexQueue	2025-04-01 21:56:26.514	6	S	
+1115400	synchronyStatusCheck	2025-04-01 21:56:26.595	35	S	
+1115402	RateLimitReaperJob	2025-04-01 21:56:27.51	8	S	
+1115404	synchronyStatusCheck	2025-04-01 21:56:29.596	34	S	
+1114358	JmxAppLoggingJob	2025-04-01 21:44:00.001	81	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114362	ClusterSafetyJob	2025-04-01 21:44:00.957	38	S	
+1114363	flushTaskIndexQueue	2025-04-01 21:44:01.402	4	S	
+1114368	flushTaskIndexQueue	2025-04-01 21:44:06.404	7	S	
+1114370	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:44:10.714	8	S	
+1114372	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:44:10.982	8	S	
+1114375	TunnelRefreshJob	2025-04-01 21:44:13.185	15	S	
+1114383	SearchAuditListener	2025-04-01 21:44:20.726	1	S	
+1114384	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:44:20.983	1	S	
+1114388	synchronyStatusCheck	2025-04-01 21:44:23.326	26	S	
+1114390	synchronyStatusCheck	2025-04-01 21:44:26.328	12	S	
+1114392	SettingsReloaderJob	2025-04-01 21:44:27.5	14	S	
+1114395	AnalyticsForConfluence.EventLimiter	2025-04-01 21:44:30.622	17	S	
+1114401	FlushContentIndexScheduledJob	2025-04-01 21:44:30.958	5	S	
+1114408	flushEdgeIndexQueue	2025-04-01 21:44:31.404	2	S	
+1114415	LuceneChangeIndexFlusher	2025-04-01 21:44:36.08	21	S	Flush done
+1114424	SearchAuditListener	2025-04-01 21:44:45.728	8	S	
+1114430	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:44:50.988	7	S	
+1114431	flushTaskIndexQueue	2025-04-01 21:44:51.412	9	S	
+1114434	synchronyStatusCheck	2025-04-01 21:44:56.338	44	S	
+1114439	JmxAppLoggingJob	2025-04-01 21:45:00.001	542	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114444	confluenceDavSessionInvalidatorJobTrigger	2025-04-01 21:45:00.551	90	S	
+1114449	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:45:00.989	8	S	
+1114457	SearchAuditListener	2025-04-01 21:45:10.738	15	S	
+1114458	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:45:10.718	39	S	
+1114459	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:45:10.991	8	S	
+1114460	synchronyStatusCheck	2025-04-01 21:45:11.341	41	S	
+1114461	flushTaskIndexQueue	2025-04-01 21:45:11.415	9	S	
+1114462	TunnelRefreshJob	2025-04-01 21:45:13.186	10	S	
+1114463	synchronyStatusCheck	2025-04-01 21:45:14.342	34	S	
+1114464	conversionQueueMonitor	2025-04-01 21:45:15.002	6	S	
+1114465	SearchAuditListener	2025-04-01 21:45:15.739	2	S	
+1114466	flushTaskIndexQueue	2025-04-01 21:45:16.416	4	S	
+1114467	com.addonengine.analytics.DataRetention	2025-04-01 21:45:16.772	20	S	Deleted 0 Events outside of data retention period.
+1114468	synchronyStatusCheck	2025-04-01 21:45:17.343	23	S	
+1114469	synchronyStatusCheck	2025-04-01 21:45:20.345	31	S	
+1114470	SearchAuditListener	2025-04-01 21:45:20.742	5	S	
+1114471	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:45:20.992	5	S	
+1114472	LastAccessedTimeBatcherJob	2025-04-01 21:45:21.196	3	S	
+1114473	flushTaskIndexQueue	2025-04-01 21:45:21.417	5	S	
+1114474	synchronyStatusCheck	2025-04-01 21:45:23.346	8	S	
+1114475	SearchAuditListener	2025-04-01 21:45:25.742	1	S	
+1114476	synchronyStatusCheck	2025-04-01 21:45:26.348	49	S	
+1114477	flushTaskIndexQueue	2025-04-01 21:45:26.417	4	S	
+1114478	SettingsReloaderJob	2025-04-01 21:45:27.501	33	S	
+1114479	synchronyStatusCheck	2025-04-01 21:45:29.348	50	S	
+1114480	conversionQueueMonitor	2025-04-01 21:45:30.001	6	S	
+1114481	AnalyticsForConfluence.EventLimiter	2025-04-01 21:45:30.624	20	S	
+1114482	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:45:30.719	7	S	
+1114483	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:45:30.733	2	S	
+1114484	SearchAuditListener	2025-04-01 21:45:30.742	2	S	
+1114485	MailQueueFlushJob	2025-04-01 21:45:30.961	0	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114486	ReIndexHouseKeepingScheduledJob	2025-04-01 21:45:30.961	1	S	
+1114487	FlushContentIndexScheduledJob	2025-04-01 21:45:30.958	7	S	
+1114488	ClusterSafetyJob	2025-04-01 21:45:30.96	11	S	
+1114489	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:45:30.992	3	S	
+1114490	FlushChangeIndexScheduledJob	2025-04-01 21:45:31.079	3	S	
+1114491	LocalTaskQueueFlushJob	2025-04-01 21:45:31.105	1	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114492	addonHouskeeperTrigger-v2	2025-04-01 21:45:31.358	2	S	
+1114493	flushEdgeIndexQueue	2025-04-01 21:45:31.405	8	S	
+1114494	flushTaskIndexQueue	2025-04-01 21:45:31.417	6	S	
+1114495	synchronyStatusCheck	2025-04-01 21:45:32.348	18	S	
+1114496	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:45:32.456	11	S	Waiting a bit longer before sending analytics events
+1114497	synchronyStatusCheck	2025-04-01 21:45:35.349	16	S	
+1114498	SearchAuditListener	2025-04-01 21:45:35.745	3	S	
+1114499	LuceneContentIndexFlusher	2025-04-01 21:45:35.96	13	S	Flush done
+1114500	LuceneChangeIndexFlusher	2025-04-01 21:45:36.081	18	S	Flush done
+1114501	flushTaskIndexQueue	2025-04-01 21:45:36.418	1	S	
+1114502	synchronyStatusCheck	2025-04-01 21:45:38.35	30	S	
+1114503	SearchAuditListener	2025-04-01 21:45:40.745	4	S	
+1114504	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:45:40.992	6	S	
+1114505	synchronyStatusCheck	2025-04-01 21:45:41.351	38	S	
+1114506	flushTaskIndexQueue	2025-04-01 21:45:41.418	2	S	
+1114507	synchronyStatusCheck	2025-04-01 21:45:44.354	82	S	
+1114508	conversionQueueMonitor	2025-04-01 21:45:45.001	28	S	
+1114509	SearchAuditListener	2025-04-01 21:45:45.746	6	S	
+1114510	flushTaskIndexQueue	2025-04-01 21:45:46.418	4	S	
+1114511	synchronyStatusCheck	2025-04-01 21:45:47.354	19	S	
+1114512	synchronyStatusCheck	2025-04-01 21:45:50.355	36	S	
+1114513	SearchAuditListener	2025-04-01 21:45:50.746	1	S	
+1114514	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:45:50.719	40	S	
+1114515	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:45:50.992	4	S	
+1114516	flushTaskIndexQueue	2025-04-01 21:45:51.418	8	S	
+1114517	totpCodes-cleanup	2025-04-01 21:45:52.518	15	S	
+1114518	synchronyStatusCheck	2025-04-01 21:45:53.357	10	S	
+1114519	SearchAuditListener	2025-04-01 21:45:55.746	4	S	
+1114520	synchronyStatusCheck	2025-04-01 21:45:56.358	23	S	
+1114528	JmxLoggingJob	2025-04-01 21:46:00.002	124	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114531	ClusterSafetyJob	2025-04-01 21:46:00.961	21	S	
+1114540	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:46:10.72	35	S	
+1114546	synchronyStatusCheck	2025-04-01 21:46:14.361	32	S	
+1114549	flushTaskIndexQueue	2025-04-01 21:46:16.421	4	S	
+1114556	flushTaskIndexQueue	2025-04-01 21:46:21.422	7	S	
+1114572	MailQueueFlushJob	2025-04-01 21:46:30.961	3	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114577	LocalTaskQueueFlushJob	2025-04-01 21:46:31.105	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114578	addonHouskeeperTrigger-v2	2025-04-01 21:46:31.358	2	S	
+1114581	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:46:31.889	6	S	
+1114586	LuceneChangeIndexFlusher	2025-04-01 21:46:36.081	2	S	Flush done
+1114588	synchronyStatusCheck	2025-04-01 21:46:38.368	24	S	
+1114592	flushTaskIndexQueue	2025-04-01 21:46:41.424	1	S	
+1114594	conversionQueueMonitor	2025-04-01 21:46:45	8	S	
+1114595	SearchAuditListener	2025-04-01 21:46:45.764	1	S	
+1114603	synchronyStatusCheck	2025-04-01 21:46:53.372	15	S	
+1114608	BackgroundJobServiceScheduledJob	2025-04-01 21:47:00.001	14	S	
+1114609	contentJobQueueExecutorTrigger	2025-04-01 21:47:00.022	1	S	
+1114610	conversionQueueMonitor	2025-04-01 21:47:00.029	1	S	
+1114623	synchronyStatusCheck	2025-04-01 21:47:08.375	35	S	
+1115030	BackgroundJobServiceScheduledJob	2025-04-01 21:52:00.001	11	S	
+1115031	contentJobQueueExecutorTrigger	2025-04-01 21:52:00.025	1	S	
+1115032	conversionQueueMonitor	2025-04-01 21:52:00.031	2	S	
+1115039	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:52:01.009	2	S	
+1115040	flushEdgeIndexQueue	2025-04-01 21:52:01.412	4	S	
+1115043	synchronyStatusCheck	2025-04-01 21:52:05.494	14	S	
+1115045	flushTaskIndexQueue	2025-04-01 21:52:06.48	2	S	
+1115302	synchronyStatusCheck	2025-04-01 21:55:11.567	16	S	
+1115313	LastAccessedTimeBatcherJob	2025-04-01 21:55:21.205	3	S	
+1115315	synchronyStatusCheck	2025-04-01 21:55:23.57	14	S	
+1115318	synchronyStatusCheck	2025-04-01 21:55:26.574	81	S	
+1115321	conversionQueueMonitor	2025-04-01 21:55:30.002	8	S	
+1115329	ClusterSafetyJob	2025-04-01 21:55:30.976	16	S	
+1115332	LocalTaskQueueFlushJob	2025-04-01 21:55:31.114	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1115334	flushEdgeIndexQueue	2025-04-01 21:55:31.417	6	S	
+1115341	LuceneChangeIndexFlusher	2025-04-01 21:55:36.086	7	S	Flush done
+1115344	SearchAuditListener	2025-04-01 21:55:40.883	2	S	
+1115353	synchronyStatusCheck	2025-04-01 21:55:50.583	13	S	
+1115360	flushTaskIndexQueue	2025-04-01 21:55:56.512	13	S	
+1115363	BackgroundJobServiceScheduledJob	2025-04-01 21:56:00	23	S	
+1115364	contentJobQueueExecutorTrigger	2025-04-01 21:56:00.033	6	S	
+1115366	conversionQueueMonitor	2025-04-01 21:56:00.043	27	S	
+1115369	SearchAuditListener	2025-04-01 21:56:00.885	1	S	
+1115375	synchronyStatusCheck	2025-04-01 21:56:05.592	10	S	
+1115380	SearchAuditListener	2025-04-01 21:56:10.886	3	S	
+1115386	conversionQueueMonitor	2025-04-01 21:56:15	7	S	
+1115387	SearchAuditListener	2025-04-01 21:56:15.887	2	S	
+1115393	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:56:21.025	2	S	
+1115394	LastAccessedTimeBatcherJob	2025-04-01 21:56:21.206	1	S	
+1115397	synchronyStatusCheck	2025-04-01 21:56:23.595	8	S	
+1115401	HistoryFlushJob	2025-04-01 21:56:27.501	2	S	
+1115405	conversionQueueMonitor	2025-04-01 21:56:30	5	S	
+1115409	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:56:30.746	5	S	
+1115412	migration-plugin:node-count-checker-job-id	2025-04-01 21:56:30.923	1	S	
+1115417	ReIndexHouseKeepingScheduledJob	2025-04-01 21:56:30.987	1	S	
+1115419	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:56:31.026	5	S	
+1115421	EhCacheCompactionJob	2025-04-01 21:56:31.065	23	S	
+1115423	onboardingSpaceCheckJob	2025-04-01 21:56:31.197	3	A	Job need not be executed again
+1115424	addonHouskeeperTrigger-v2	2025-04-01 21:56:31.367	1	S	
+1115430	SearchAuditListener	2025-04-01 21:56:35.891	1	S	
+1115437	flushTaskIndexQueue	2025-04-01 21:56:41.517	1	S	
+1115443	synchronyStatusCheck	2025-04-01 21:56:47.604	14	S	
+1115447	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:56:51.028	4	S	
+1114521	flushTaskIndexQueue	2025-04-01 21:45:56.418	1	S	
+1114522	synchronyStatusCheck	2025-04-01 21:45:59.358	22	S	
+1114526	ThreadLimiterAnalyticsJob	2025-04-01 21:46:00.002	44	S	
+1114532	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:46:00.993	2	S	
+1114533	flushEdgeIndexQueue	2025-04-01 21:46:01.406	6	S	
+1114536	synchronyStatusCheck	2025-04-01 21:46:05.359	16	S	
+1114538	flushTaskIndexQueue	2025-04-01 21:46:06.42	3	S	
+1114539	synchronyStatusCheck	2025-04-01 21:46:08.36	32	S	
+1114541	SearchAuditListener	2025-04-01 21:46:10.754	1	S	
+1114545	TunnelRefreshJob	2025-04-01 21:46:13.186	6	S	
+1114548	SearchAuditListener	2025-04-01 21:46:15.755	1	S	
+1114550	com.addonengine.analytics.DataRetention	2025-04-01 21:46:16.773	5	S	Deleted 0 Events outside of data retention period.
+1114557	synchronyStatusCheck	2025-04-01 21:46:23.365	15	S	
+1114558	SearchAuditListener	2025-04-01 21:46:25.761	1	S	
+1114561	SettingsReloaderJob	2025-04-01 21:46:27.502	14	S	
+1114571	ReIndexHouseKeepingScheduledJob	2025-04-01 21:46:30.961	2	S	
+1114576	FlushChangeIndexScheduledJob	2025-04-01 21:46:31.08	1	S	
+1114589	SearchAuditListener	2025-04-01 21:46:40.763	1	S	
+1114590	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:46:40.996	6	S	
+1114596	flushTaskIndexQueue	2025-04-01 21:46:46.424	12	S	
+1114601	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:46:50.997	12	S	
+1114604	SearchAuditListener	2025-04-01 21:46:55.766	2	S	
+1114607	synchronyStatusCheck	2025-04-01 21:46:59.372	10	S	
+1114613	JmxLoggingJob	2025-04-01 21:47:00.001	65	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114618	flushTaskIndexQueue	2025-04-01 21:47:01.427	4	S	
+1114619	synchronyStatusCheck	2025-04-01 21:47:02.374	37	S	
+1115047	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:52:10.737	26	S	
+1115049	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:52:11.009	6	S	
+1115054	conversionQueueMonitor	2025-04-01 21:52:15	16	S	
+1115067	synchronyStatusCheck	2025-04-01 21:52:26.496	87	S	
+1115071	AnalyticsForConfluence.EventLimiter	2025-04-01 21:52:30.63	6	S	
+1115072	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:52:30.734	1	S	
+1115073	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:52:30.737	2	S	
+1115075	MailQueueFlushJob	2025-04-01 21:52:30.965	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1115079	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:52:31.01	1	S	
+1115086	synchronyStatusCheck	2025-04-01 21:52:32.497	13	S	
+1115093	SearchAuditListener	2025-04-01 21:52:40.853	1	S	
+1115094	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:52:41.011	3	S	
+1115095	flushTaskIndexQueue	2025-04-01 21:52:41.486	5	S	
+1115097	synchronyStatusCheck	2025-04-01 21:52:44.501	19	S	
+1115101	synchronyStatusCheck	2025-04-01 21:52:47.503	36	S	
+1115106	flushTaskIndexQueue	2025-04-01 21:52:51.489	4	S	
+1115111	synchronyStatusCheck	2025-04-01 21:52:59.507	10	S	
+1115115	ThreadLimiterAnalyticsJob	2025-04-01 21:53:00.003	15	S	
+1115120	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:53:01.012	3	S	
+1115130	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:53:11.012	2	S	
+1115132	synchronyStatusCheck	2025-04-01 21:53:11.511	10	S	
+1115133	TunnelRefreshJob	2025-04-01 21:53:13.193	3	S	
+1115135	conversionQueueMonitor	2025-04-01 21:53:15.001	4	S	
+1115136	SearchAuditListener	2025-04-01 21:53:15.859	2	S	
+1115139	synchronyStatusCheck	2025-04-01 21:53:17.512	17	S	
+1115145	totpCodes-cleanup	2025-04-01 21:53:22.524	10	S	
+1115147	SearchAuditListener	2025-04-01 21:53:25.861	2	S	
+1115148	flushTaskIndexQueue	2025-04-01 21:53:26.494	1	S	
+1115149	synchronyStatusCheck	2025-04-01 21:53:26.513	13	S	
+1115156	SearchAuditListener	2025-04-01 21:53:30.862	3	S	
+1115157	MailQueueFlushJob	2025-04-01 21:53:30.975	2	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1115160	ReIndexHouseKeepingScheduledJob	2025-04-01 21:53:30.987	1	S	
+1115164	LocalTaskQueueFlushJob	2025-04-01 21:53:31.112	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1115168	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:53:32.462	6	S	Waiting a bit longer before sending analytics events
+1115178	flushTaskIndexQueue	2025-04-01 21:53:41.497	2	S	
+1115180	synchronyStatusCheck	2025-04-01 21:53:44.52	76	S	
+1115200	JmxLoggingJob	2025-04-01 21:54:00.002	119	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1115203	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:54:01.017	2	S	
+1115208	SearchAuditListener	2025-04-01 21:54:05.869	2	S	
+1115209	flushTaskIndexQueue	2025-04-01 21:54:06.498	3	S	
+1115212	SearchAuditListener	2025-04-01 21:54:10.87	2	S	
+1115219	SearchAuditListener	2025-04-01 21:54:15.87	2	S	
+1115220	flushTaskIndexQueue	2025-04-01 21:54:16.501	7	S	
+1115223	synchronyStatusCheck	2025-04-01 21:54:20.529	26	S	
+1115230	flushTaskIndexQueue	2025-04-01 21:54:26.503	12	S	
+1115231	synchronyStatusCheck	2025-04-01 21:54:26.531	34	S	
+1115237	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:54:30.741	4	S	
+1115241	ClusterSafetyJob	2025-04-01 21:54:30.976	9	S	
+1115242	ReIndexHouseKeepingScheduledJob	2025-04-01 21:54:30.987	1	S	
+1115245	LocalTaskQueueFlushJob	2025-04-01 21:54:31.113	0	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1115246	addonHouskeeperTrigger-v2	2025-04-01 21:54:31.365	1	S	
+1115248	flushTaskIndexQueue	2025-04-01 21:54:31.503	3	S	
+1115251	synchronyStatusCheck	2025-04-01 21:54:35.534	10	S	
+1115254	LuceneChangeIndexFlusher	2025-04-01 21:54:36.085	9	S	Flush done
+1115264	flushTaskIndexQueue	2025-04-01 21:54:46.504	25	S	
+1115269	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:54:51.02	8	S	
+1115270	flushTaskIndexQueue	2025-04-01 21:54:51.504	4	S	
+1115271	totpCodes-cleanup	2025-04-01 21:54:52.528	11	S	
+1115274	flushTaskIndexQueue	2025-04-01 21:54:56.504	12	S	
+1114523	BackgroundJobServiceScheduledJob	2025-04-01 21:46:00.002	9	S	
+1114524	contentJobQueueExecutorTrigger	2025-04-01 21:46:00.028	2	S	
+1114525	conversionQueueMonitor	2025-04-01 21:46:00.036	1	S	
+1114529	SearchAuditListener	2025-04-01 21:46:00.751	2	S	
+1114535	synchronyStatusCheck	2025-04-01 21:46:02.359	55	S	
+1114542	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:46:10.994	20	S	
+1114553	SearchAuditListener	2025-04-01 21:46:20.76	2	S	
+1114554	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:46:20.994	4	S	
+1114555	LastAccessedTimeBatcherJob	2025-04-01 21:46:21.197	1	S	
+1114560	flushTaskIndexQueue	2025-04-01 21:46:26.422	2	S	
+1114563	synchronyStatusCheck	2025-04-01 21:46:29.366	14	S	
+1114566	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:46:30.721	3	S	
+1114567	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:46:30.733	2	S	
+1114568	SearchAuditListener	2025-04-01 21:46:30.761	1	S	
+1114569	migration-plugin:node-count-checker-job-id	2025-04-01 21:46:30.922	0	S	
+1114573	ClusterSafetyJob	2025-04-01 21:46:30.961	4	S	
+1114574	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:46:30.994	1	S	
+1114579	flushEdgeIndexQueue	2025-04-01 21:46:31.406	7	S	
+1114584	SearchAuditListener	2025-04-01 21:46:35.763	2	S	
+1114585	LuceneContentIndexFlusher	2025-04-01 21:46:35.961	6	S	Flush done
+1114587	flushTaskIndexQueue	2025-04-01 21:46:36.424	4	S	
+1114597	synchronyStatusCheck	2025-04-01 21:46:47.372	30	S	
+1114598	synchronyStatusCheck	2025-04-01 21:46:50.372	18	S	
+1114599	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:46:50.722	7	S	
+1114600	SearchAuditListener	2025-04-01 21:46:50.765	1	S	
+1114602	flushTaskIndexQueue	2025-04-01 21:46:51.426	1	S	
+1114611	ThreadLimiterAnalyticsJob	2025-04-01 21:47:00.002	30	S	
+1114614	SearchAuditListener	2025-04-01 21:47:00.766	2	S	
+1114615	ClusterSafetyJob	2025-04-01 21:47:00.963	8	S	
+1114617	flushEdgeIndexQueue	2025-04-01 21:47:01.407	8	S	
+1114620	synchronyStatusCheck	2025-04-01 21:47:05.374	16	S	
+1114621	SearchAuditListener	2025-04-01 21:47:05.767	1	S	
+1114622	flushTaskIndexQueue	2025-04-01 21:47:06.427	4	S	
+1115048	SearchAuditListener	2025-04-01 21:52:10.844	3	S	
+1115050	flushTaskIndexQueue	2025-04-01 21:52:11.48	4	S	
+1115061	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:52:21.009	5	S	
+1115068	SettingsReloaderJob	2025-04-01 21:52:27.507	21	S	
+1115074	SearchAuditListener	2025-04-01 21:52:30.851	2	S	
+1115077	FlushContentIndexScheduledJob	2025-04-01 21:52:30.965	8	S	
+1115087	synchronyStatusCheck	2025-04-01 21:52:35.497	15	S	
+1115090	LuceneChangeIndexFlusher	2025-04-01 21:52:36.085	8	S	Flush done
+1115096	synchronyStatusCheck	2025-04-01 21:52:41.5	22	S	
+1115099	SearchAuditListener	2025-04-01 21:52:45.854	4	S	
+1115100	flushTaskIndexQueue	2025-04-01 21:52:46.487	19	S	
+1115102	synchronyStatusCheck	2025-04-01 21:52:50.504	13	S	
+1115105	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:52:51.011	1	S	
+1115110	synchronyStatusCheck	2025-04-01 21:52:56.506	128	S	
+1115112	BackgroundJobServiceScheduledJob	2025-04-01 21:53:00.001	4	S	
+1115113	contentJobQueueExecutorTrigger	2025-04-01 21:53:00.006	0	S	
+1115114	conversionQueueMonitor	2025-04-01 21:53:00.01	1	S	
+1115118	SearchAuditListener	2025-04-01 21:53:00.856	1	S	
+1115122	flushTaskIndexQueue	2025-04-01 21:53:01.491	2	S	
+1115124	synchronyStatusCheck	2025-04-01 21:53:05.51	13	S	
+1115125	SearchAuditListener	2025-04-01 21:53:05.857	3	S	
+1115128	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:53:10.738	6	S	
+1115129	SearchAuditListener	2025-04-01 21:53:10.857	0	S	
+1115131	flushTaskIndexQueue	2025-04-01 21:53:11.493	1	S	
+1115137	flushTaskIndexQueue	2025-04-01 21:53:16.494	14	S	
+1115140	synchronyStatusCheck	2025-04-01 21:53:20.513	24	S	
+1115143	LastAccessedTimeBatcherJob	2025-04-01 21:53:21.204	1	S	
+1115150	SettingsReloaderJob	2025-04-01 21:53:27.508	17	S	
+1115152	conversionQueueMonitor	2025-04-01 21:53:30.001	6	S	
+1115153	AnalyticsForConfluence.EventLimiter	2025-04-01 21:53:30.63	12	S	
+1115154	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:53:30.735	2	S	
+1115158	migration-plugin:node-status-checker-job-id	2025-04-01 21:53:30.945	41	S	
+1115163	FlushChangeIndexScheduledJob	2025-04-01 21:53:31.084	2	S	
+1115165	addonHouskeeperTrigger-v2	2025-04-01 21:53:31.364	1	S	
+1115169	synchronyStatusCheck	2025-04-01 21:53:32.516	9	S	
+1115173	LuceneChangeIndexFlusher	2025-04-01 21:53:36.085	6	S	Flush done
+1115174	flushTaskIndexQueue	2025-04-01 21:53:36.496	5	S	
+1115177	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:53:41.014	4	S	
+1115183	flushTaskIndexQueue	2025-04-01 21:53:46.497	12	S	
+1115184	synchronyStatusCheck	2025-04-01 21:53:47.521	14	S	
+1115185	synchronyStatusCheck	2025-04-01 21:53:50.521	11	S	
+1115190	synchronyStatusCheck	2025-04-01 21:53:53.523	31	S	
+1115191	SearchAuditListener	2025-04-01 21:53:55.866	1	S	
+1115199	JmxAppLoggingJob	2025-04-01 21:54:00.002	78	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1115201	SearchAuditListener	2025-04-01 21:54:00.868	2	S	
+1115211	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:54:10.741	24	S	
+1115215	synchronyStatusCheck	2025-04-01 21:54:11.527	113	S	
+1115221	com.addonengine.analytics.DataRetention	2025-04-01 21:54:16.779	11	S	Deleted 0 Events outside of data retention period.
+1115232	SettingsReloaderJob	2025-04-01 21:54:27.508	13	S	
+1115236	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:54:30.735	3	S	
+1115238	SearchAuditListener	2025-04-01 21:54:30.871	1	S	
+1115239	MailQueueFlushJob	2025-04-01 21:54:30.975	0	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1115253	LuceneContentIndexFlusher	2025-04-01 21:54:35.975	9	S	Flush done
+1115256	synchronyStatusCheck	2025-04-01 21:54:38.535	23	S	
+1114527	JmxAppLoggingJob	2025-04-01 21:46:00.002	86	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114530	migration-plugin:node-status-checker-job-id	2025-04-01 21:46:00.936	26	S	
+1114534	flushTaskIndexQueue	2025-04-01 21:46:01.418	7	S	
+1114537	SearchAuditListener	2025-04-01 21:46:05.754	2	S	
+1114543	synchronyStatusCheck	2025-04-01 21:46:11.361	49	S	
+1114544	flushTaskIndexQueue	2025-04-01 21:46:11.42	3	S	
+1114547	conversionQueueMonitor	2025-04-01 21:46:15.001	7	S	
+1114551	synchronyStatusCheck	2025-04-01 21:46:17.362	19	S	
+1114552	synchronyStatusCheck	2025-04-01 21:46:20.363	76	S	
+1114559	synchronyStatusCheck	2025-04-01 21:46:26.365	32	S	
+1114562	HistoryFlushJob	2025-04-01 21:46:27.5	17	S	
+1114564	conversionQueueMonitor	2025-04-01 21:46:30	5	S	
+1114565	AnalyticsForConfluence.EventLimiter	2025-04-01 21:46:30.624	16	S	
+1114570	FlushContentIndexScheduledJob	2025-04-01 21:46:30.959	2	S	
+1114575	EhCacheCompactionJob	2025-04-01 21:46:31.063	11	S	
+1114580	flushTaskIndexQueue	2025-04-01 21:46:31.423	3	S	
+1114582	synchronyStatusCheck	2025-04-01 21:46:32.367	23	S	
+1114583	synchronyStatusCheck	2025-04-01 21:46:35.367	10	S	
+1114591	synchronyStatusCheck	2025-04-01 21:46:41.369	7	S	
+1114593	synchronyStatusCheck	2025-04-01 21:46:44.37	72	S	
+1114605	synchronyStatusCheck	2025-04-01 21:46:56.372	45	S	
+1114606	flushTaskIndexQueue	2025-04-01 21:46:56.427	7	S	
+1114612	JmxAppLoggingJob	2025-04-01 21:47:00.001	54	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114616	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:47:00.997	3	S	
+1114624	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:47:10.722	13	S	
+1114625	SearchAuditListener	2025-04-01 21:47:10.767	4	S	
+1114626	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:47:10.998	2	S	
+1114627	synchronyStatusCheck	2025-04-01 21:47:11.375	18	S	
+1114628	flushTaskIndexQueue	2025-04-01 21:47:11.428	3	S	
+1114629	TunnelRefreshJob	2025-04-01 21:47:13.187	5	S	
+1114630	synchronyStatusCheck	2025-04-01 21:47:14.375	28	S	
+1114631	conversionQueueMonitor	2025-04-01 21:47:15.002	5	S	
+1114632	SearchAuditListener	2025-04-01 21:47:15.768	3	S	
+1114633	flushTaskIndexQueue	2025-04-01 21:47:16.429	4	S	
+1114634	com.addonengine.analytics.DataRetention	2025-04-01 21:47:16.773	18	S	Deleted 0 Events outside of data retention period.
+1114635	synchronyStatusCheck	2025-04-01 21:47:17.376	7	S	
+1114636	synchronyStatusCheck	2025-04-01 21:47:20.376	20	S	
+1114637	SearchAuditListener	2025-04-01 21:47:20.769	1	S	
+1114638	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:47:20.999	3	S	
+1114639	LastAccessedTimeBatcherJob	2025-04-01 21:47:21.2	1	S	
+1114640	flushTaskIndexQueue	2025-04-01 21:47:21.43	3	S	
+1114641	totpCodes-cleanup	2025-04-01 21:47:22.519	14	S	
+1114642	synchronyStatusCheck	2025-04-01 21:47:23.377	33	S	
+1114643	SearchAuditListener	2025-04-01 21:47:25.771	4	S	
+1114644	synchronyStatusCheck	2025-04-01 21:47:26.378	37	S	
+1114645	flushTaskIndexQueue	2025-04-01 21:47:26.431	3	S	
+1114646	SettingsReloaderJob	2025-04-01 21:47:27.505	8	S	
+1114647	synchronyStatusCheck	2025-04-01 21:47:29.379	17	S	
+1114648	conversionQueueMonitor	2025-04-01 21:47:30.001	4	S	
+1114649	AnalyticsForConfluence.EventLimiter	2025-04-01 21:47:30.625	26	S	
+1114650	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:47:30.723	5	S	
+1114651	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:47:30.734	1	S	
+1114652	SearchAuditListener	2025-04-01 21:47:30.771	3	S	
+1114653	migration-plugin:node-status-checker-job-id	2025-04-01 21:47:30.937	6	S	
+1114654	MailQueueFlushJob	2025-04-01 21:47:30.961	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114655	ReIndexHouseKeepingScheduledJob	2025-04-01 21:47:30.962	1	S	
+1114656	FlushContentIndexScheduledJob	2025-04-01 21:47:30.96	6	S	
+1114657	ClusterSafetyJob	2025-04-01 21:47:30.963	11	S	
+1114658	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:47:31	4	S	
+1114659	FlushChangeIndexScheduledJob	2025-04-01 21:47:31.081	4	S	
+1114660	LocalTaskQueueFlushJob	2025-04-01 21:47:31.106	1	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114661	addonHouskeeperTrigger-v2	2025-04-01 21:47:31.359	2	S	
+1114662	flushEdgeIndexQueue	2025-04-01 21:47:31.407	9	S	
+1114663	flushTaskIndexQueue	2025-04-01 21:47:31.438	4	S	
+1114664	synchronyStatusCheck	2025-04-01 21:47:32.38	24	S	
+1114665	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:47:32.457	9	S	Waiting a bit longer before sending analytics events
+1114666	synchronyStatusCheck	2025-04-01 21:47:35.383	34	S	
+1114667	SearchAuditListener	2025-04-01 21:47:35.771	2	S	
+1114668	LuceneContentIndexFlusher	2025-04-01 21:47:35.962	12	S	Flush done
+1114669	LuceneChangeIndexFlusher	2025-04-01 21:47:36.082	13	S	Flush done
+1114670	flushTaskIndexQueue	2025-04-01 21:47:36.438	5	S	
+1114671	synchronyStatusCheck	2025-04-01 21:47:38.384	13	S	
+1114672	SearchAuditListener	2025-04-01 21:47:40.771	3	S	
+1114673	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:47:41	4	S	
+1114674	synchronyStatusCheck	2025-04-01 21:47:41.385	19	S	
+1114675	flushTaskIndexQueue	2025-04-01 21:47:41.439	3	S	
+1114676	synchronyStatusCheck	2025-04-01 21:47:44.386	100	S	
+1114677	conversionQueueMonitor	2025-04-01 21:47:45	10	S	
+1114678	SearchAuditListener	2025-04-01 21:47:45.772	7	S	
+1114679	flushTaskIndexQueue	2025-04-01 21:47:46.44	18	S	
+1114680	synchronyStatusCheck	2025-04-01 21:47:47.388	29	S	
+1114681	synchronyStatusCheck	2025-04-01 21:47:50.388	143	S	
+1114682	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:47:50.725	15	S	
+1114683	SearchAuditListener	2025-04-01 21:47:50.772	2	S	
+1114684	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:47:51.001	4	S	
+1114685	flushTaskIndexQueue	2025-04-01 21:47:51.441	10	S	
+1114686	synchronyStatusCheck	2025-04-01 21:47:53.39	22	S	
+1114688	flushTaskIndexQueue	2025-04-01 21:47:56.442	3	S	
+1114690	synchronyStatusCheck	2025-04-01 21:47:59.391	14	S	
+1114693	ThreadLimiterAnalyticsJob	2025-04-01 21:48:00.002	45	S	
+1114701	flushTaskIndexQueue	2025-04-01 21:48:01.442	9	S	
+1114702	synchronyStatusCheck	2025-04-01 21:48:02.392	27	S	
+1114707	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:48:10.726	13	S	
+1114711	flushTaskIndexQueue	2025-04-01 21:48:11.443	3	S	
+1114714	conversionQueueMonitor	2025-04-01 21:48:15.002	3	S	
+1114715	SearchAuditListener	2025-04-01 21:48:15.775	1	S	
+1114717	com.addonengine.analytics.DataRetention	2025-04-01 21:48:16.775	23	S	Deleted 0 Events outside of data retention period.
+1114720	SearchAuditListener	2025-04-01 21:48:20.777	2	S	
+1114726	flushTaskIndexQueue	2025-04-01 21:48:26.445	5	S	
+1114736	ReIndexHouseKeepingScheduledJob	2025-04-01 21:48:30.962	3	S	
+1114741	LocalTaskQueueFlushJob	2025-04-01 21:48:31.106	3	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1114742	addonHouskeeperTrigger-v2	2025-04-01 21:48:31.361	2	S	
+1114760	flushTaskIndexQueue	2025-04-01 21:48:46.446	7	S	
+1114761	synchronyStatusCheck	2025-04-01 21:48:47.41	43	S	
+1114765	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:48:51.002	3	S	
+1114766	flushTaskIndexQueue	2025-04-01 21:48:51.447	3	S	
+1114777	JmxAppLoggingJob	2025-04-01 21:49:00.002	78	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114787	SearchAuditListener	2025-04-01 21:49:05.784	2	S	
+1115051	synchronyStatusCheck	2025-04-01 21:52:11.494	26	S	
+1115052	TunnelRefreshJob	2025-04-01 21:52:13.192	6	S	
+1115053	synchronyStatusCheck	2025-04-01 21:52:14.495	77	S	
+1115055	SearchAuditListener	2025-04-01 21:52:15.845	1	S	
+1115059	synchronyStatusCheck	2025-04-01 21:52:20.496	9	S	
+1115060	SearchAuditListener	2025-04-01 21:52:20.846	1	S	
+1115062	LastAccessedTimeBatcherJob	2025-04-01 21:52:21.204	1	S	
+1115064	synchronyStatusCheck	2025-04-01 21:52:23.496	27	S	
+1115065	SearchAuditListener	2025-04-01 21:52:25.85	12	S	
+1115069	synchronyStatusCheck	2025-04-01 21:52:29.496	9	S	
+1115070	conversionQueueMonitor	2025-04-01 21:52:30	6	S	
+1115076	ReIndexHouseKeepingScheduledJob	2025-04-01 21:52:30.966	2	S	
+1115080	FlushChangeIndexScheduledJob	2025-04-01 21:52:31.083	4	S	
+1115085	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:52:31.889	15	S	
+1115088	SearchAuditListener	2025-04-01 21:52:35.852	1	S	
+1115091	flushTaskIndexQueue	2025-04-01 21:52:36.486	5	S	
+1115098	conversionQueueMonitor	2025-04-01 21:52:45.001	2	S	
+1115107	synchronyStatusCheck	2025-04-01 21:52:53.505	91	S	
+1115108	SearchAuditListener	2025-04-01 21:52:55.856	6	S	
+1115116	JmxAppLoggingJob	2025-04-01 21:53:00.002	28	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1115119	ClusterSafetyJob	2025-04-01 21:53:00.966	7	S	
+1115123	synchronyStatusCheck	2025-04-01 21:53:02.508	10	S	
+1115127	synchronyStatusCheck	2025-04-01 21:53:08.51	25	S	
+1115142	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:53:21.012	9	S	
+1115146	synchronyStatusCheck	2025-04-01 21:53:23.513	14	S	
+1115151	synchronyStatusCheck	2025-04-01 21:53:29.516	15	S	
+1115155	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:53:30.739	6	S	
+1115161	ClusterSafetyJob	2025-04-01 21:53:30.975	15	S	
+1115170	synchronyStatusCheck	2025-04-01 21:53:35.517	25	S	
+1115176	SearchAuditListener	2025-04-01 21:53:40.863	2	S	
+1115181	conversionQueueMonitor	2025-04-01 21:53:45	6	S	
+1115182	SearchAuditListener	2025-04-01 21:53:45.865	2	S	
+1115188	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:53:51.015	6	S	
+1115198	ThreadLimiterAnalyticsJob	2025-04-01 21:54:00.005	59	S	
+1115202	ClusterSafetyJob	2025-04-01 21:54:00.976	13	S	
+1115204	flushEdgeIndexQueue	2025-04-01 21:54:01.415	11	S	
+1115207	synchronyStatusCheck	2025-04-01 21:54:05.526	14	S	
+1115214	flushTaskIndexQueue	2025-04-01 21:54:11.498	5	S	
+1115216	TunnelRefreshJob	2025-04-01 21:54:13.193	2	S	
+1115218	conversionQueueMonitor	2025-04-01 21:54:15.002	14	S	
+1115222	synchronyStatusCheck	2025-04-01 21:54:17.529	18	S	
+1115225	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:54:21.018	2	S	
+1115227	flushTaskIndexQueue	2025-04-01 21:54:21.502	2	S	
+1115234	conversionQueueMonitor	2025-04-01 21:54:30.001	7	S	
+1115247	flushEdgeIndexQueue	2025-04-01 21:54:31.417	7	S	
+1115249	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:54:31.89	14	S	
+1115250	synchronyStatusCheck	2025-04-01 21:54:32.532	24	S	
+1115252	SearchAuditListener	2025-04-01 21:54:35.872	2	S	
+1115255	flushTaskIndexQueue	2025-04-01 21:54:36.504	5	S	
+1115257	SearchAuditListener	2025-04-01 21:54:40.872	2	S	
+1115266	synchronyStatusCheck	2025-04-01 21:54:50.557	96	S	
+1115286	JfrScheduledDumpTask	2025-04-01 21:55:00	377	S	
+1115288	migration-plugin:node-status-checker-job-id	2025-04-01 21:55:00.946	5	S	
+1115289	ClusterSafetyJob	2025-04-01 21:55:00.976	7	S	
+1115292	flushTaskIndexQueue	2025-04-01 21:55:01.505	13	S	
+1115303	TunnelRefreshJob	2025-04-01 21:55:13.196	5	S	
+1115307	flushTaskIndexQueue	2025-04-01 21:55:16.508	3	S	
+1115310	synchronyStatusCheck	2025-04-01 21:55:20.568	10	S	
+1115311	SearchAuditListener	2025-04-01 21:55:20.881	1	S	
+1115314	flushTaskIndexQueue	2025-04-01 21:55:21.508	5	S	
+1115326	MailQueueFlushJob	2025-04-01 21:55:30.975	3	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1115330	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:55:31.023	1	S	
+1115333	addonHouskeeperTrigger-v2	2025-04-01 21:55:31.365	2	S	
+1115336	migration-plugin:analytics-events-consumer-job-id	2025-04-01 21:55:32.462	5	S	Waiting a bit longer before sending analytics events
+1115338	synchronyStatusCheck	2025-04-01 21:55:35.578	14	S	
+1114687	SearchAuditListener	2025-04-01 21:47:55.772	2	S	
+1114691	BackgroundJobServiceScheduledJob	2025-04-01 21:48:00.001	26	S	
+1114692	contentJobQueueExecutorTrigger	2025-04-01 21:48:00.036	1	S	
+1114694	conversionQueueMonitor	2025-04-01 21:48:00.039	15	S	
+1114703	synchronyStatusCheck	2025-04-01 21:48:05.393	26	S	
+1114704	SearchAuditListener	2025-04-01 21:48:05.773	1	S	
+1114708	SearchAuditListener	2025-04-01 21:48:10.774	1	S	
+1114709	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:48:11.001	9	S	
+1114713	synchronyStatusCheck	2025-04-01 21:48:14.398	30	S	
+1114727	synchronyStatusCheck	2025-04-01 21:48:26.405	50	S	
+1114729	synchronyStatusCheck	2025-04-01 21:48:29.405	19	S	
+1114730	conversionQueueMonitor	2025-04-01 21:48:30	5	S	
+1114731	AnalyticsForConfluence.EventLimiter	2025-04-01 21:48:30.626	13	S	
+1114734	SearchAuditListener	2025-04-01 21:48:30.778	1	S	
+1114737	FlushContentIndexScheduledJob	2025-04-01 21:48:30.96	7	S	
+1114743	flushEdgeIndexQueue	2025-04-01 21:48:31.408	7	S	
+1114744	flushTaskIndexQueue	2025-04-01 21:48:31.445	14	S	
+1114747	synchronyStatusCheck	2025-04-01 21:48:35.407	48	S	
+1114748	SearchAuditListener	2025-04-01 21:48:35.778	0	S	
+1114752	synchronyStatusCheck	2025-04-01 21:48:38.408	28	S	
+1114753	SearchAuditListener	2025-04-01 21:48:40.778	1	S	
+1114754	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:48:41.001	3	S	
+1114758	conversionQueueMonitor	2025-04-01 21:48:45.002	4	S	
+1114759	SearchAuditListener	2025-04-01 21:48:45.779	3	S	
+1114763	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:48:50.728	13	S	
+1114764	SearchAuditListener	2025-04-01 21:48:50.78	0	S	
+1114769	SearchAuditListener	2025-04-01 21:48:55.782	1	S	
+1114772	synchronyStatusCheck	2025-04-01 21:48:59.426	9	S	
+1114778	JmxLoggingJob	2025-04-01 21:49:00.002	362	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114779	SearchAuditListener	2025-04-01 21:49:00.784	1	S	
+1114780	migration-plugin:node-status-checker-job-id	2025-04-01 21:49:00.942	30	S	
+1114782	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:49:01.003	2	S	
+1114784	flushTaskIndexQueue	2025-04-01 21:49:01.448	4	S	
+1114786	synchronyStatusCheck	2025-04-01 21:49:05.428	13	S	
+1115056	flushTaskIndexQueue	2025-04-01 21:52:16.481	16	S	
+1115057	com.addonengine.analytics.DataRetention	2025-04-01 21:52:16.777	15	S	Deleted 0 Events outside of data retention period.
+1115058	synchronyStatusCheck	2025-04-01 21:52:17.496	20	S	
+1115063	flushTaskIndexQueue	2025-04-01 21:52:21.483	5	S	
+1115066	flushTaskIndexQueue	2025-04-01 21:52:26.485	8	S	
+1115078	ClusterSafetyJob	2025-04-01 21:52:30.966	26	S	
+1115081	LocalTaskQueueFlushJob	2025-04-01 21:52:31.111	1	S	Executed tasks for queue com.atlassian.core.task.DefaultTaskQueue@4f39d9d6
+1115082	addonHouskeeperTrigger-v2	2025-04-01 21:52:31.364	2	S	
+1115083	flushEdgeIndexQueue	2025-04-01 21:52:31.412	3	S	
+1115084	flushTaskIndexQueue	2025-04-01 21:52:31.485	3	S	
+1115089	LuceneContentIndexFlusher	2025-04-01 21:52:35.967	10	S	Flush done
+1115092	synchronyStatusCheck	2025-04-01 21:52:38.499	22	S	
+1115103	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:52:50.737	16	S	
+1115340	LuceneContentIndexFlusher	2025-04-01 21:55:35.975	8	S	Flush done
+1115343	synchronyStatusCheck	2025-04-01 21:55:38.58	36	S	
+1115348	synchronyStatusCheck	2025-04-01 21:55:44.581	31	S	
+1115350	SearchAuditListener	2025-04-01 21:55:45.884	2	S	
+1115361	synchronyStatusCheck	2025-04-01 21:55:56.589	32	S	
+1115362	synchronyStatusCheck	2025-04-01 21:55:59.59	15	S	
+1115365	ThreadLimiterAnalyticsJob	2025-04-01 21:56:00.003	66	S	
+1115370	ClusterSafetyJob	2025-04-01 21:56:00.976	16	S	
+1115374	synchronyStatusCheck	2025-04-01 21:56:02.592	23	S	
+1115376	SearchAuditListener	2025-04-01 21:56:05.886	1	S	
+1115379	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:56:10.745	19	S	
+1115391	synchronyStatusCheck	2025-04-01 21:56:20.594	11	S	
+1115396	totpCodes-cleanup	2025-04-01 21:56:22.528	8	S	
+1115403	SettingsReloaderJob	2025-04-01 21:56:27.511	11	S	
+1115407	AnalyticsForConfluence.EventLimiter	2025-04-01 21:56:30.635	11	S	
+1115413	migration-plugin:node-status-checker-job-id	2025-04-01 21:56:30.946	7	S	
+1115414	DeferredFileDeletionJob	2025-04-01 21:56:30.964	1	S	
+1115415	MailQueueFlushJob	2025-04-01 21:56:30.976	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1115429	synchronyStatusCheck	2025-04-01 21:56:35.6	32	S	
+1115431	LuceneContentIndexFlusher	2025-04-01 21:56:35.977	11	S	Flush done
+1115433	flushTaskIndexQueue	2025-04-01 21:56:36.516	4	S	
+1115434	synchronyStatusCheck	2025-04-01 21:56:38.601	25	S	
+1115435	SearchAuditListener	2025-04-01 21:56:40.891	1	S	
+1115438	synchronyStatusCheck	2025-04-01 21:56:41.602	15	S	
+1115439	synchronyStatusCheck	2025-04-01 21:56:44.604	25	S	
+1115441	SearchAuditListener	2025-04-01 21:56:45.891	2	S	
+1115448	flushTaskIndexQueue	2025-04-01 21:56:51.517	4	S	
+1115450	SearchAuditListener	2025-04-01 21:56:55.891	2	S	
+1115452	synchronyStatusCheck	2025-04-01 21:56:56.607	18	S	
+1114689	synchronyStatusCheck	2025-04-01 21:47:56.391	84	S	
+1114696	JmxLoggingJob	2025-04-01 21:48:00.002	122	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1114698	ClusterSafetyJob	2025-04-01 21:48:00.963	14	S	
+1114710	synchronyStatusCheck	2025-04-01 21:48:11.395	28	S	
+1114721	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:48:21.001	4	S	
+1114723	flushTaskIndexQueue	2025-04-01 21:48:21.445	13	S	
+1114724	synchronyStatusCheck	2025-04-01 21:48:23.401	20	S	
+1114725	SearchAuditListener	2025-04-01 21:48:25.778	2	S	
+1114738	ClusterSafetyJob	2025-04-01 21:48:30.963	16	S	
+1114739	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:48:31.001	14	S	
+1114740	FlushChangeIndexScheduledJob	2025-04-01 21:48:31.081	4	S	
+1114755	synchronyStatusCheck	2025-04-01 21:48:41.409	22	S	
+1114756	flushTaskIndexQueue	2025-04-01 21:48:41.446	7	S	
+1114757	synchronyStatusCheck	2025-04-01 21:48:44.41	567	S	
+1114767	totpCodes-cleanup	2025-04-01 21:48:52.52	10	S	
+1114771	synchronyStatusCheck	2025-04-01 21:48:56.413	72	S	
+1114773	BackgroundJobServiceScheduledJob	2025-04-01 21:49:00.002	17	S	
+1114774	contentJobQueueExecutorTrigger	2025-04-01 21:49:00.031	1	S	
+1115104	SearchAuditListener	2025-04-01 21:52:50.854	0	S	
+1115109	flushTaskIndexQueue	2025-04-01 21:52:56.49	26	S	
+1115117	JmxLoggingJob	2025-04-01 21:53:00.002	64	S	JMX instruments have been flushed to atlassian-confluence-jmx.log
+1115121	flushEdgeIndexQueue	2025-04-01 21:53:01.413	4	S	
+1115126	flushTaskIndexQueue	2025-04-01 21:53:06.492	5	S	
+1115134	synchronyStatusCheck	2025-04-01 21:53:14.512	20	S	
+1115138	com.addonengine.analytics.DataRetention	2025-04-01 21:53:16.779	29	S	Deleted 0 Events outside of data retention period.
+1115141	SearchAuditListener	2025-04-01 21:53:20.86	2	S	
+1115144	flushTaskIndexQueue	2025-04-01 21:53:21.494	5	S	
+1115159	FlushContentIndexScheduledJob	2025-04-01 21:53:30.974	12	S	
+1115162	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:53:31.013	2	S	
+1115166	flushEdgeIndexQueue	2025-04-01 21:53:31.414	3	S	
+1115167	flushTaskIndexQueue	2025-04-01 21:53:31.496	1	S	
+1115171	SearchAuditListener	2025-04-01 21:53:35.862	1	S	
+1115172	LuceneContentIndexFlusher	2025-04-01 21:53:35.979	8	S	Flush done
+1115175	synchronyStatusCheck	2025-04-01 21:53:38.518	18	S	
+1115179	synchronyStatusCheck	2025-04-01 21:53:41.518	5	S	
+1115186	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:53:50.739	24	S	
+1115187	SearchAuditListener	2025-04-01 21:53:50.865	2	S	
+1115189	flushTaskIndexQueue	2025-04-01 21:53:51.497	1	S	
+1115192	flushTaskIndexQueue	2025-04-01 21:53:56.498	4	S	
+1115193	synchronyStatusCheck	2025-04-01 21:53:56.524	43	S	
+1115194	synchronyStatusCheck	2025-04-01 21:53:59.524	17	S	
+1115195	BackgroundJobServiceScheduledJob	2025-04-01 21:54:00.002	18	S	
+1115196	contentJobQueueExecutorTrigger	2025-04-01 21:54:00.023	1	S	
+1115197	conversionQueueMonitor	2025-04-01 21:54:00.038	17	S	
+1115205	flushTaskIndexQueue	2025-04-01 21:54:01.498	4	S	
+1115206	synchronyStatusCheck	2025-04-01 21:54:02.525	11	S	
+1115210	synchronyStatusCheck	2025-04-01 21:54:08.527	22	S	
+1115213	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:54:11.017	14	S	
+1115217	synchronyStatusCheck	2025-04-01 21:54:14.528	27	S	
+1115224	SearchAuditListener	2025-04-01 21:54:20.87	1	S	
+1115226	LastAccessedTimeBatcherJob	2025-04-01 21:54:21.205	0	S	
+1115228	synchronyStatusCheck	2025-04-01 21:54:23.531	6	S	
+1115229	SearchAuditListener	2025-04-01 21:54:25.87	6	S	
+1115233	synchronyStatusCheck	2025-04-01 21:54:29.531	8	S	
+1115235	AnalyticsForConfluence.EventLimiter	2025-04-01 21:54:30.631	14	S	
+1115240	FlushContentIndexScheduledJob	2025-04-01 21:54:30.974	4	S	
+1115243	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:54:31.019	1	S	
+1115244	FlushChangeIndexScheduledJob	2025-04-01 21:54:31.084	1	S	
+1115258	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:54:41.019	3	S	
+1115261	synchronyStatusCheck	2025-04-01 21:54:44.553	100	S	
+1115263	SearchAuditListener	2025-04-01 21:54:45.873	3	S	
+1115265	synchronyStatusCheck	2025-04-01 21:54:47.556	46	S	
+1115272	synchronyStatusCheck	2025-04-01 21:54:53.559	15	S	
+1115273	SearchAuditListener	2025-04-01 21:54:55.876	4	S	
+1115277	BackgroundJobServiceScheduledJob	2025-04-01 21:55:00	4	S	
+1115279	ThreadLimiterAnalyticsJob	2025-04-01 21:55:00.006	151	S	
+1115280	confluenceDavSessionInvalidatorJobTrigger	2025-04-01 21:55:00.162	3	S	
+1115282	contentJobQueueExecutorTrigger	2025-04-01 21:55:00.167	0	S	
+1115287	SearchAuditListener	2025-04-01 21:55:00.877	0	S	
+1115293	synchronyStatusCheck	2025-04-01 21:55:02.566	28	S	
+1115295	SearchAuditListener	2025-04-01 21:55:05.879	2	S	
+1115297	synchronyStatusCheck	2025-04-01 21:55:08.567	27	S	
+1115408	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:56:30.736	2	S	
+1115416	FlushContentIndexScheduledJob	2025-04-01 21:56:30.975	4	S	
+1115420	FlushChangeIndexScheduledJob	2025-04-01 21:56:31.084	2	S	
+1115436	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:56:41.026	6	S	
+1115444	synchronyStatusCheck	2025-04-01 21:56:50.605	16	S	
+1114695	JmxAppLoggingJob	2025-04-01 21:48:00.001	88	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1114697	SearchAuditListener	2025-04-01 21:48:00.773	1	S	
+1114699	SystemMaintenanceTaskQueueFlusherScheduledJob	2025-04-01 21:48:01.001	3	S	
+1114700	flushEdgeIndexQueue	2025-04-01 21:48:01.407	5	S	
+1114705	flushTaskIndexQueue	2025-04-01 21:48:06.442	3	S	
+1114706	synchronyStatusCheck	2025-04-01 21:48:08.394	40	S	
+1114712	TunnelRefreshJob	2025-04-01 21:48:13.188	8	S	
+1114716	flushTaskIndexQueue	2025-04-01 21:48:16.444	7	S	
+1114718	synchronyStatusCheck	2025-04-01 21:48:17.399	21	S	
+1114719	synchronyStatusCheck	2025-04-01 21:48:20.399	37	S	
+1114722	LastAccessedTimeBatcherJob	2025-04-01 21:48:21.2	2	S	
+1114728	SettingsReloaderJob	2025-04-01 21:48:27.505	19	S	
+1114732	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:48:30.727	4	S	
+1114733	com.atlassian.plugins.authentication.basicauth.job.UpdateBasicAuthConfigJob:job	2025-04-01 21:48:30.734	0	S	
+1114735	MailQueueFlushJob	2025-04-01 21:48:30.962	1	S	Executed tasks for queue com.atlassian.core.task.ErrorQueuedTaskQueue@702ebe9c
+1114745	com.atlassian.confluence.impl.user.crowd.directory.ConfluenceDirectoryMonitorRefresherStarter-job	2025-04-01 21:48:31.889	16	S	
+1114746	synchronyStatusCheck	2025-04-01 21:48:32.406	56	S	
+1114749	LuceneContentIndexFlusher	2025-04-01 21:48:35.961	36	S	Flush done
+1114750	LuceneChangeIndexFlusher	2025-04-01 21:48:36.084	3	S	Flush done
+1114751	flushTaskIndexQueue	2025-04-01 21:48:36.446	16	S	
+1114762	synchronyStatusCheck	2025-04-01 21:48:50.411	26	S	
+1114768	synchronyStatusCheck	2025-04-01 21:48:53.412	17	S	
+1114770	flushTaskIndexQueue	2025-04-01 21:48:56.447	8	S	
+1114775	ThreadLimiterAnalyticsJob	2025-04-01 21:49:00.008	24	S	
+1114776	conversionQueueMonitor	2025-04-01 21:49:00.043	11	S	
+1114781	ClusterSafetyJob	2025-04-01 21:49:00.964	18	S	
+1114783	flushEdgeIndexQueue	2025-04-01 21:49:01.409	14	S	
+1114785	synchronyStatusCheck	2025-04-01 21:49:02.427	55	S	
+1114788	flushTaskIndexQueue	2025-04-01 21:49:06.45	2	S	
+1114789	synchronyStatusCheck	2025-04-01 21:49:08.428	26	S	
+1115259	flushTaskIndexQueue	2025-04-01 21:54:41.504	3	S	
+1115260	synchronyStatusCheck	2025-04-01 21:54:41.535	13	S	
+1115262	conversionQueueMonitor	2025-04-01 21:54:45.002	14	S	
+1115267	migration-plugin:mapi-status-consumer-job-id	2025-04-01 21:54:50.741	16	S	
+1115268	SearchAuditListener	2025-04-01 21:54:50.874	1	S	
+1115275	synchronyStatusCheck	2025-04-01 21:54:56.564	58	S	
+1115278	JmxAppLoggingJob	2025-04-01 21:55:00	157	S	JMX instruments have been flushed to atlassian-confluence-app-monitoring.log
+1115281	TrashSoftRemovalScheduledJob	2025-04-01 21:55:00.158	8	S	
+1115283	conversionQueueMonitor	2025-04-01 21:55:00.167	1	S	
+1115284	reminderJob	2025-04-01 21:55:00.168	1	S	
+1115291	flushEdgeIndexQueue	2025-04-01 21:55:01.417	5	S	
+1115294	synchronyStatusCheck	2025-04-01 21:55:05.567	13	S	
+1115296	flushTaskIndexQueue	2025-04-01 21:55:06.506	2	S	
 \.
 
 
@@ -8616,6 +16876,16 @@ COPY public.spacepermissions (permid, spaceid, permtype, permgroupname, permuser
 
 
 --
+-- Data for Name: spaces; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.spaces (spaceid, spacename, spacekey, lowerspacekey, spacedescid, homepage, creator, creationdate, lastmodifier, lastmoddate, spacetype, spacestatus) FROM stdin;
+131073	Demonstration Space	ds	ds	98357	98319	\N	2020-04-14 11:55:11.912	\N	2024-07-01 22:19:28.154	global	CURRENT
+131074	test	TEST	test	98362	98361	4028408390705fdc01907061af0d0000	2024-07-01 22:20:26.308	4028408390705fdc01907061af0d0000	2024-07-01 22:20:26.447	global	CURRENT
+\.
+
+
+--
 -- Data for Name: thiswillnotbecreated; Type: TABLE DATA; Schema: public; Owner: confluence
 --
 
@@ -8636,6 +16906,16 @@ COPY public.trustedapp (trustedappid, name, timeout, public_key_id) FROM stdin;
 --
 
 COPY public.trustedapprestriction (trustedapprestrictionid, type, restriction, trustedappid) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_mapping; Type: TABLE DATA; Schema: public; Owner: confluence
+--
+
+COPY public.user_mapping (user_key, username, lower_username) FROM stdin;
+4028408390705fdc01907061af0d0000	admin	admin
+4028408390705fdc01907062915d0001	exporter	exporter
 \.
 
 
@@ -8717,7 +16997,7 @@ SELECT pg_catalog.setval('public."AO_4789DD_DISABLED_CHECKS_ID_seq"', 1, false);
 -- Name: AO_4789DD_HEALTH_CHECK_STATUS_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_4789DD_HEALTH_CHECK_STATUS_ID_seq"', 1, false);
+SELECT pg_catalog.setval('public."AO_4789DD_HEALTH_CHECK_STATUS_ID_seq"', 1, true);
 
 
 --
@@ -8738,7 +17018,7 @@ SELECT pg_catalog.setval('public."AO_4789DD_PROPERTIES_ID_seq"', 1, true);
 -- Name: AO_4789DD_READ_NOTIFICATIONS_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_4789DD_READ_NOTIFICATIONS_ID_seq"', 1, false);
+SELECT pg_catalog.setval('public."AO_4789DD_READ_NOTIFICATIONS_ID_seq"', 1, true);
 
 
 --
@@ -8829,14 +17109,28 @@ SELECT pg_catalog.setval('public."AO_5F3884_FEATURE_DISCOVERY_ID_seq"', 1, false
 -- Name: AO_6384AB_DISCOVERED_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_6384AB_DISCOVERED_ID_seq"', 1, false);
+SELECT pg_catalog.setval('public."AO_6384AB_DISCOVERED_ID_seq"', 5, true);
 
 
 --
 -- Name: AO_6384AB_FEATURE_METADATA_AO_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_6384AB_FEATURE_METADATA_AO_ID_seq"', 5307, true);
+SELECT pg_catalog.setval('public."AO_6384AB_FEATURE_METADATA_AO_ID_seq"', 6066, true);
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_6ABCE4_TUNNEL_CONNECTION_ID_seq"', 1, true);
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_6ABCE4_TUNNEL_ID_seq"', 1, false);
 
 
 --
@@ -8906,7 +17200,7 @@ SELECT pg_catalog.setval('public."AO_7CDE43_SERVER_PARAM_ID_seq"', 1, false);
 -- Name: AO_81F455_PERSONAL_TOKEN_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_81F455_PERSONAL_TOKEN_ID_seq"', 1, true);
+SELECT pg_catalog.setval('public."AO_81F455_PERSONAL_TOKEN_ID_seq"', 2, true);
 
 
 --
@@ -9043,6 +17337,13 @@ SELECT pg_catalog.setval('public."AO_950DC3_TC_SUBCALS_PROPS_ID_seq"', 1, false)
 
 
 --
+-- Name: AO_954A21_MOBILE_OAUTH2_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_954A21_MOBILE_OAUTH2_ID_seq"', 1, false);
+
+
+--
 -- Name: AO_A0B856_WEBHOOK_CONFIG_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
@@ -9088,14 +17389,14 @@ SELECT pg_catalog.setval('public."AO_BAF3AA_AOINLINE_TASK_GLOBAL_ID_seq"', 4, tr
 -- Name: AO_C77861_AUDIT_ACTION_CACHE_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_C77861_AUDIT_ACTION_CACHE_ID_seq"', 22, true);
+SELECT pg_catalog.setval('public."AO_C77861_AUDIT_ACTION_CACHE_ID_seq"', 25, true);
 
 
 --
 -- Name: AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq"', 13, true);
+SELECT pg_catalog.setval('public."AO_C77861_AUDIT_CATEGORY_CACHE_ID_seq"', 16, true);
 
 
 --
@@ -9109,7 +17410,28 @@ SELECT pg_catalog.setval('public."AO_C77861_AUDIT_DENY_LISTED_ID_seq"', 1, false
 -- Name: AO_C77861_AUDIT_ENTITY_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public."AO_C77861_AUDIT_ENTITY_ID_seq"', 169, true);
+SELECT pg_catalog.setval('public."AO_C77861_AUDIT_ENTITY_ID_seq"', 176, true);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_CC7F60_SEC_MON_ALERT_ID_seq"', 1, true);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_CC7F60_SEC_MON_SCHEDULE_JOB_ID_seq"', 1, true);
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_CC7F60_SEC_MON_THREAT_EVENT_ID_seq"', 1, true);
 
 
 --
@@ -9127,10 +17449,24 @@ SELECT pg_catalog.setval('public."AO_ED669C_IDP_CONFIG_ID_seq"', 1, false);
 
 
 --
+-- Name: AO_ED669C_SEALED_ENTITY_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_ED669C_SEALED_ENTITY_ID_seq"', 1, false);
+
+
+--
 -- Name: AO_ED669C_SEEN_ASSERTIONS_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
 SELECT pg_catalog.setval('public."AO_ED669C_SEEN_ASSERTIONS_ID_seq"', 1, false);
+
+
+--
+-- Name: AO_ED669C_TOTP_CODES_ID_seq; Type: SEQUENCE SET; Schema: public; Owner: confluence
+--
+
+SELECT pg_catalog.setval('public."AO_ED669C_TOTP_CODES_ID_seq"', 1, false);
 
 
 --
@@ -9158,7 +17494,7 @@ SELECT pg_catalog.setval('public.denormalised_space_change_log_id_seq', 1, false
 -- Name: seq_journal_entry_id; Type: SEQUENCE SET; Schema: public; Owner: confluence
 --
 
-SELECT pg_catalog.setval('public.seq_journal_entry_id', 15, true);
+SELECT pg_catalog.setval('public.seq_journal_entry_id', 16, true);
 
 
 --
@@ -9175,7 +17511,5370 @@ SELECT pg_catalog.lo_open('18948', 131072);
 SELECT pg_catalog.lowrite(0, '\x7b2274696d657374616d70223a313731393837323336383737322c226576656e7454797065223a224f5045524154494f4e414c222c22757365724964223a6e756c6c2c2261747472696275746573223a7b2270726f6475637446616d696c79223a22636f6e666c75656e6365222c22696e636c756465486973746f726963616c44617461223a747275652c226e756d6265724f66537061636573223a312c226d6967726174696f6e54797065223a225332435f4d4947524154494f4e222c226e756d6265724f6642617463686573223a312c22626174636853697a654c696d6974223a313030302c2274696d6554616b656e546f45786563757465223a33392c22636f6e666c75656e636556657273696f6e223a22382e362e32222c226a6f624964223a226d6967726174696f6e2d706c7567696e3a696e697469616c2d73706163652d7374617469737469632d63616c63756c6174696f6e222c226461746162617365223a7b2274797065223a22506f737467726553514c222c2276657273696f6e223a2231352e37202844656269616e2031352e372d312e706764673132302b3129227d2c22706c7567696e56657273696f6e223a22332e372e30222c226d6967726174696f6e223a747275652c22746f74616c54696d6554616b656e223a34312c22737461727454696d65223a22323032342d30372d30315432323a31393a32382e3732355a222c2273746f7054696d65223a22323032342d30372d30315432323a31393a32382e3736365a222c2274696d6554616b656e546f5375626d6974223a322c2253454e223a2253454e2d4c3230333632363939227d2c22636c6f75644964223a6e756c6c2c2273756250726f64756374223a6e756c6c2c22736f75726365223a22737061636553746174697374696343616c63756c6174696f6e222c22636f6e7461696e6572223a7b22636f6e7461696e657254797065223a22657865637574696f6e222c22636f6e7461696e65724964223a2266333034666135392d636438642d343930312d626264392d323464653935643730353730227d2c226f626a656374223a6e756c6c2c22616374696f6e5375626a6563744964223a6e756c6c2c22616374696f6e5375626a656374223a226a6f62457865637574696f6e222c22616374696f6e223a22636f6d706c65746564227d');
 SELECT pg_catalog.lo_close(0);
 
+SELECT pg_catalog.lo_open('19099', 131072);
+SELECT pg_catalog.lowrite(0, '\x7b2274696d657374616d70223a313734333534333639303835382c226576656e7454797065223a224f5045524154494f4e414c222c22757365724964223a6e756c6c2c2261747472696275746573223a7b2270726f6475637446616d696c79223a22636f6e666c75656e6365222c22696e636c756465486973746f726963616c44617461223a747275652c226e756d6265724f66537061636573223a322c226d6967726174696f6e54797065223a225332435f4d4947524154494f4e222c226e756d6265724f6642617463686573223a312c22626174636853697a654c696d6974223a313030302c2274696d6554616b656e546f45786563757465223a3131332c22636f6e666c75656e636556657273696f6e223a22392e342e30222c226a6f624964223a226d6967726174696f6e2d706c7567696e3a696e697469616c2d73706163652d7374617469737469632d63616c63756c6174696f6e222c226461746162617365223a7b2274797065223a22506f737467726553514c222c2276657273696f6e223a2231352e3132202844656269616e2031352e31322d312e706764673132302b3129227d2c22706c7567696e56657273696f6e223a22332e31312e35222c226d6967726174696f6e223a747275652c22746f74616c54696d6554616b656e223a3133332c22737461727454696d65223a22323032352d30342d30315432313a34313a33302e3731395a222c2273746f7054696d65223a22323032352d30342d30315432313a34313a33302e3835325a222c2274696d6554616b656e546f5375626d6974223a32302c2253454e223a2253454e2d4c3230333632363939227d2c22636c6f75644964223a6e756c6c2c2273756250726f64756374223a6e756c6c2c22736f75726365223a22737061636553746174697374696343616c63756c6174696f6e222c22636f6e7461696e6572223a7b22636f6e7461696e657254797065223a22657865637574696f6e222c22636f6e7461696e65724964223a2264323962316464392d323131362d346261372d386336612d623238383764346434363437227d2c226f626a656374223a6e756c6c2c22616374696f6e5375626a6563744964223a6e756c6c2c22616374696f6e5375626a656374223a226a6f62457865637574696f6e222c22616374696f6e223a22636f6d706c65746564222c226f72674964223a6e756c6c2c22776f726b73706163654964223a6e756c6c7d');
+SELECT pg_catalog.lo_close(0);
+
 COMMIT;
+
+--
+-- Name: AO_187CCC_SIDEBAR_LINK AO_187CCC_SIDEBAR_LINK_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_187CCC_SIDEBAR_LINK"
+    ADD CONSTRAINT "AO_187CCC_SIDEBAR_LINK_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_21D670_WHITELIST_RULES AO_21D670_WHITELIST_RULES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_21D670_WHITELIST_RULES"
+    ADD CONSTRAINT "AO_21D670_WHITELIST_RULES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_21F425_MESSAGE_AO AO_21F425_MESSAGE_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_21F425_MESSAGE_AO"
+    ADD CONSTRAINT "AO_21F425_MESSAGE_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_21F425_MESSAGE_MAPPING_AO AO_21F425_MESSAGE_MAPPING_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_21F425_MESSAGE_MAPPING_AO"
+    ADD CONSTRAINT "AO_21F425_MESSAGE_MAPPING_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_21F425_USER_PROPERTY_AO AO_21F425_USER_PROPERTY_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_21F425_USER_PROPERTY_AO"
+    ADD CONSTRAINT "AO_21F425_USER_PROPERTY_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_32184F_RECONCILIATIONS AO_32184F_RECONCILIATIONS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_32184F_RECONCILIATIONS"
+    ADD CONSTRAINT "AO_32184F_RECONCILIATIONS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_32184F_SYNCHRONY_REQUESTS AO_32184F_SYNCHRONY_REQUESTS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_32184F_SYNCHRONY_REQUESTS"
+    ADD CONSTRAINT "AO_32184F_SYNCHRONY_REQUESTS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_38321B_CUSTOM_CONTENT_LINK AO_38321B_CUSTOM_CONTENT_LINK_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_38321B_CUSTOM_CONTENT_LINK"
+    ADD CONSTRAINT "AO_38321B_CUSTOM_CONTENT_LINK_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_4789DD_DISABLED_CHECKS AO_4789DD_DISABLED_CHECKS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_DISABLED_CHECKS"
+    ADD CONSTRAINT "AO_4789DD_DISABLED_CHECKS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_STATUS AO_4789DD_HEALTH_CHECK_STATUS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_HEALTH_CHECK_STATUS"
+    ADD CONSTRAINT "AO_4789DD_HEALTH_CHECK_STATUS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_WATCHER AO_4789DD_HEALTH_CHECK_WATCHER_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_HEALTH_CHECK_WATCHER"
+    ADD CONSTRAINT "AO_4789DD_HEALTH_CHECK_WATCHER_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_4789DD_PROPERTIES AO_4789DD_PROPERTIES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_PROPERTIES"
+    ADD CONSTRAINT "AO_4789DD_PROPERTIES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_4789DD_READ_NOTIFICATIONS AO_4789DD_READ_NOTIFICATIONS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_READ_NOTIFICATIONS"
+    ADD CONSTRAINT "AO_4789DD_READ_NOTIFICATIONS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_4789DD_SHORTENED_KEY AO_4789DD_SHORTENED_KEY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_SHORTENED_KEY"
+    ADD CONSTRAINT "AO_4789DD_SHORTENED_KEY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_4789DD_TASK_MONITOR AO_4789DD_TASK_MONITOR_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_TASK_MONITOR"
+    ADD CONSTRAINT "AO_4789DD_TASK_MONITOR_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_54C900_CONTENT_BLUEPRINT_AO AO_54C900_CONTENT_BLUEPRINT_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_CONTENT_BLUEPRINT_AO"
+    ADD CONSTRAINT "AO_54C900_CONTENT_BLUEPRINT_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF AO_54C900_C_TEMPLATE_REF_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_C_TEMPLATE_REF"
+    ADD CONSTRAINT "AO_54C900_C_TEMPLATE_REF_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_54C900_SPACE_BLUEPRINT_AO AO_54C900_SPACE_BLUEPRINT_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_SPACE_BLUEPRINT_AO"
+    ADD CONSTRAINT "AO_54C900_SPACE_BLUEPRINT_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY AO_563AEE_ACTIVITY_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTIVITY_ENTITY"
+    ADD CONSTRAINT "AO_563AEE_ACTIVITY_ENTITY_pkey" PRIMARY KEY ("ACTIVITY_ID");
+
+
+--
+-- Name: AO_563AEE_ACTOR_ENTITY AO_563AEE_ACTOR_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTOR_ENTITY"
+    ADD CONSTRAINT "AO_563AEE_ACTOR_ENTITY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_563AEE_MEDIA_LINK_ENTITY AO_563AEE_MEDIA_LINK_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_MEDIA_LINK_ENTITY"
+    ADD CONSTRAINT "AO_563AEE_MEDIA_LINK_ENTITY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_563AEE_OBJECT_ENTITY AO_563AEE_OBJECT_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_OBJECT_ENTITY"
+    ADD CONSTRAINT "AO_563AEE_OBJECT_ENTITY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_563AEE_TARGET_ENTITY AO_563AEE_TARGET_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_TARGET_ENTITY"
+    ADD CONSTRAINT "AO_563AEE_TARGET_ENTITY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_59F889_ZDU_CLUSTER_NODES AO_59F889_ZDU_CLUSTER_NODES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_59F889_ZDU_CLUSTER_NODES"
+    ADD CONSTRAINT "AO_59F889_ZDU_CLUSTER_NODES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_5F3884_FEATURE_DISCOVERY AO_5F3884_FEATURE_DISCOVERY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_5F3884_FEATURE_DISCOVERY"
+    ADD CONSTRAINT "AO_5F3884_FEATURE_DISCOVERY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_6384AB_DISCOVERED AO_6384AB_DISCOVERED_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6384AB_DISCOVERED"
+    ADD CONSTRAINT "AO_6384AB_DISCOVERED_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_6384AB_FEATURE_METADATA_AO AO_6384AB_FEATURE_METADATA_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6384AB_FEATURE_METADATA_AO"
+    ADD CONSTRAINT "AO_6384AB_FEATURE_METADATA_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION AO_6ABCE4_TUNNEL_CONNECTION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL_CONNECTION"
+    ADD CONSTRAINT "AO_6ABCE4_TUNNEL_CONNECTION_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL AO_6ABCE4_TUNNEL_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL"
+    ADD CONSTRAINT "AO_6ABCE4_TUNNEL_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_723324_CLIENT_CONFIG AO_723324_CLIENT_CONFIG_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_723324_CLIENT_CONFIG"
+    ADD CONSTRAINT "AO_723324_CLIENT_CONFIG_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_723324_CLIENT_TOKEN AO_723324_CLIENT_TOKEN_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_723324_CLIENT_TOKEN"
+    ADD CONSTRAINT "AO_723324_CLIENT_TOKEN_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7B47A5_EVENT AO_7B47A5_EVENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7B47A5_EVENT"
+    ADD CONSTRAINT "AO_7B47A5_EVENT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7B47A5_SETTINGS AO_7B47A5_SETTINGS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7B47A5_SETTINGS"
+    ADD CONSTRAINT "AO_7B47A5_SETTINGS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7CDE43_EVENT AO_7CDE43_EVENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_EVENT"
+    ADD CONSTRAINT "AO_7CDE43_EVENT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7CDE43_FILTER_PARAM AO_7CDE43_FILTER_PARAM_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_FILTER_PARAM"
+    ADD CONSTRAINT "AO_7CDE43_FILTER_PARAM_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7CDE43_NOTIFICATION_SCHEME AO_7CDE43_NOTIFICATION_SCHEME_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_NOTIFICATION_SCHEME"
+    ADD CONSTRAINT "AO_7CDE43_NOTIFICATION_SCHEME_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7CDE43_NOTIFICATION AO_7CDE43_NOTIFICATION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_NOTIFICATION"
+    ADD CONSTRAINT "AO_7CDE43_NOTIFICATION_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7CDE43_RECIPIENT AO_7CDE43_RECIPIENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_RECIPIENT"
+    ADD CONSTRAINT "AO_7CDE43_RECIPIENT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7CDE43_SERVER_CONFIG AO_7CDE43_SERVER_CONFIG_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_SERVER_CONFIG"
+    ADD CONSTRAINT "AO_7CDE43_SERVER_CONFIG_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_7CDE43_SERVER_PARAM AO_7CDE43_SERVER_PARAM_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_SERVER_PARAM"
+    ADD CONSTRAINT "AO_7CDE43_SERVER_PARAM_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_81F455_PERSONAL_TOKEN AO_81F455_PERSONAL_TOKEN_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_81F455_PERSONAL_TOKEN"
+    ADD CONSTRAINT "AO_81F455_PERSONAL_TOKEN_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_CONFIG AO_8752F1_DATA_PIPELINE_CONFIG_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_8752F1_DATA_PIPELINE_CONFIG"
+    ADD CONSTRAINT "AO_8752F1_DATA_PIPELINE_CONFIG_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_EOO AO_8752F1_DATA_PIPELINE_EOO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_8752F1_DATA_PIPELINE_EOO"
+    ADD CONSTRAINT "AO_8752F1_DATA_PIPELINE_EOO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_JOB AO_8752F1_DATA_PIPELINE_JOB_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_8752F1_DATA_PIPELINE_JOB"
+    ADD CONSTRAINT "AO_8752F1_DATA_PIPELINE_JOB_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_88BB94_BATCH_NOTIFICATION AO_88BB94_BATCH_NOTIFICATION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_88BB94_BATCH_NOTIFICATION"
+    ADD CONSTRAINT "AO_88BB94_BATCH_NOTIFICATION_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_92296B_AORECENTLY_VIEWED AO_92296B_AORECENTLY_VIEWED_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_92296B_AORECENTLY_VIEWED"
+    ADD CONSTRAINT "AO_92296B_AORECENTLY_VIEWED_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_9412A1_AONOTIFICATION AO_9412A1_AONOTIFICATION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AONOTIFICATION"
+    ADD CONSTRAINT "AO_9412A1_AONOTIFICATION_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_9412A1_AOREGISTRATION AO_9412A1_AOREGISTRATION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AOREGISTRATION"
+    ADD CONSTRAINT "AO_9412A1_AOREGISTRATION_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_9412A1_AOTASK AO_9412A1_AOTASK_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AOTASK"
+    ADD CONSTRAINT "AO_9412A1_AOTASK_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_9412A1_AOUSER AO_9412A1_AOUSER_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AOUSER"
+    ADD CONSTRAINT "AO_9412A1_AOUSER_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_9412A1_USER_APP_LINK AO_9412A1_USER_APP_LINK_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_USER_APP_LINK"
+    ADD CONSTRAINT "AO_9412A1_USER_APP_LINK_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_CUSTOM_EV_TYPES AO_950DC3_TC_CUSTOM_EV_TYPES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_CUSTOM_EV_TYPES"
+    ADD CONSTRAINT "AO_950DC3_TC_CUSTOM_EV_TYPES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_DISABLE_EV_TYPES AO_950DC3_TC_DISABLE_EV_TYPES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_DISABLE_EV_TYPES"
+    ADD CONSTRAINT "AO_950DC3_TC_DISABLE_EV_TYPES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS_EXCL AO_950DC3_TC_EVENTS_EXCL_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_EVENTS_EXCL"
+    ADD CONSTRAINT "AO_950DC3_TC_EVENTS_EXCL_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS_INVITEES AO_950DC3_TC_EVENTS_INVITEES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_EVENTS_INVITEES"
+    ADD CONSTRAINT "AO_950DC3_TC_EVENTS_INVITEES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_EVENTS AO_950DC3_TC_EVENTS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_EVENTS"
+    ADD CONSTRAINT "AO_950DC3_TC_EVENTS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_JIRA_REMI_EVENTS AO_950DC3_TC_JIRA_REMI_EVENTS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_JIRA_REMI_EVENTS"
+    ADD CONSTRAINT "AO_950DC3_TC_JIRA_REMI_EVENTS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_REMINDER_SETTINGS AO_950DC3_TC_REMINDER_SETTINGS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_REMINDER_SETTINGS"
+    ADD CONSTRAINT "AO_950DC3_TC_REMINDER_SETTINGS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_REMINDER_USERS AO_950DC3_TC_REMINDER_USERS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_REMINDER_USERS"
+    ADD CONSTRAINT "AO_950DC3_TC_REMINDER_USERS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_IN_SPACE AO_950DC3_TC_SUBCALS_IN_SPACE_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_IN_SPACE"
+    ADD CONSTRAINT "AO_950DC3_TC_SUBCALS_IN_SPACE_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_GRP AO_950DC3_TC_SUBCALS_PRIV_GRP_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_PRIV_GRP"
+    ADD CONSTRAINT "AO_950DC3_TC_SUBCALS_PRIV_GRP_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PRIV_USR AO_950DC3_TC_SUBCALS_PRIV_USR_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_PRIV_USR"
+    ADD CONSTRAINT "AO_950DC3_TC_SUBCALS_PRIV_USR_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_PROPS AO_950DC3_TC_SUBCALS_PROPS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_PROPS"
+    ADD CONSTRAINT "AO_950DC3_TC_SUBCALS_PROPS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS AO_950DC3_TC_SUBCALS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS"
+    ADD CONSTRAINT "AO_950DC3_TC_SUBCALS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_954A21_MOBILE_OAUTH2 AO_954A21_MOBILE_OAUTH2_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_954A21_MOBILE_OAUTH2"
+    ADD CONSTRAINT "AO_954A21_MOBILE_OAUTH2_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_954A21_PUSH_NOTIFICATION_AO AO_954A21_PUSH_NOTIFICATION_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_954A21_PUSH_NOTIFICATION_AO"
+    ADD CONSTRAINT "AO_954A21_PUSH_NOTIFICATION_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_A0B856_DAILY_COUNTS AO_A0B856_DAILY_COUNTS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_DAILY_COUNTS"
+    ADD CONSTRAINT "AO_A0B856_DAILY_COUNTS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_A0B856_HIST_INVOCATION AO_A0B856_HIST_INVOCATION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_HIST_INVOCATION"
+    ADD CONSTRAINT "AO_A0B856_HIST_INVOCATION_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_A0B856_WEBHOOK_CONFIG AO_A0B856_WEBHOOK_CONFIG_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEBHOOK_CONFIG"
+    ADD CONSTRAINT "AO_A0B856_WEBHOOK_CONFIG_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_A0B856_WEBHOOK_EVENT AO_A0B856_WEBHOOK_EVENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEBHOOK_EVENT"
+    ADD CONSTRAINT "AO_A0B856_WEBHOOK_EVENT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_A0B856_WEBHOOK AO_A0B856_WEBHOOK_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEBHOOK"
+    ADD CONSTRAINT "AO_A0B856_WEBHOOK_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_A0B856_WEB_HOOK_LISTENER_AO AO_A0B856_WEB_HOOK_LISTENER_AO_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_A0B856_WEB_HOOK_LISTENER_AO"
+    ADD CONSTRAINT "AO_A0B856_WEB_HOOK_LISTENER_AO_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_AC3877_RL_USER_COUNTER AO_AC3877_RL_USER_COUNTER_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_AC3877_RL_USER_COUNTER"
+    ADD CONSTRAINT "AO_AC3877_RL_USER_COUNTER_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_AC3877_SETTINGS_VERSION AO_AC3877_SETTINGS_VERSION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_AC3877_SETTINGS_VERSION"
+    ADD CONSTRAINT "AO_AC3877_SETTINGS_VERSION_pkey" PRIMARY KEY ("TYPE");
+
+
+--
+-- Name: AO_AC3877_SYSTEM_RL_SETTINGS AO_AC3877_SYSTEM_RL_SETTINGS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_AC3877_SYSTEM_RL_SETTINGS"
+    ADD CONSTRAINT "AO_AC3877_SYSTEM_RL_SETTINGS_pkey" PRIMARY KEY ("NAME");
+
+
+--
+-- Name: AO_AC3877_USER_RL_SETTINGS AO_AC3877_USER_RL_SETTINGS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_AC3877_USER_RL_SETTINGS"
+    ADD CONSTRAINT "AO_AC3877_USER_RL_SETTINGS_pkey" PRIMARY KEY ("USER_ID");
+
+
+--
+-- Name: AO_BAF3AA_AOINLINE_TASK AO_BAF3AA_AOINLINE_TASK_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_BAF3AA_AOINLINE_TASK"
+    ADD CONSTRAINT "AO_BAF3AA_AOINLINE_TASK_pkey" PRIMARY KEY ("GLOBAL_ID");
+
+
+--
+-- Name: AO_C77861_AUDIT_ACTION_CACHE AO_C77861_AUDIT_ACTION_CACHE_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_ACTION_CACHE"
+    ADD CONSTRAINT "AO_C77861_AUDIT_ACTION_CACHE_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_C77861_AUDIT_CATEGORY_CACHE AO_C77861_AUDIT_CATEGORY_CACHE_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_CATEGORY_CACHE"
+    ADD CONSTRAINT "AO_C77861_AUDIT_CATEGORY_CACHE_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_C77861_AUDIT_DENY_LISTED AO_C77861_AUDIT_DENY_LISTED_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_DENY_LISTED"
+    ADD CONSTRAINT "AO_C77861_AUDIT_DENY_LISTED_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_C77861_AUDIT_ENTITY AO_C77861_AUDIT_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_C77861_AUDIT_ENTITY"
+    ADD CONSTRAINT "AO_C77861_AUDIT_ENTITY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_ALERT AO_CC7F60_SEC_MON_ALERT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_ALERT"
+    ADD CONSTRAINT "AO_CC7F60_SEC_MON_ALERT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_SCHEDULE_JOB AO_CC7F60_SEC_MON_SCHEDULE_JOB_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_SCHEDULE_JOB"
+    ADD CONSTRAINT "AO_CC7F60_SEC_MON_SCHEDULE_JOB_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT AO_CC7F60_SEC_MON_THREAT_EVENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_THREAT_EVENT"
+    ADD CONSTRAINT "AO_CC7F60_SEC_MON_THREAT_EVENT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_DC98AE_AOHELP_TIP AO_DC98AE_AOHELP_TIP_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_DC98AE_AOHELP_TIP"
+    ADD CONSTRAINT "AO_DC98AE_AOHELP_TIP_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_ED669C_IDP_CONFIG AO_ED669C_IDP_CONFIG_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG"
+    ADD CONSTRAINT "AO_ED669C_IDP_CONFIG_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY AO_ED669C_SEALED_ENTITY_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEALED_ENTITY"
+    ADD CONSTRAINT "AO_ED669C_SEALED_ENTITY_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_ED669C_SEEN_ASSERTIONS AO_ED669C_SEEN_ASSERTIONS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEEN_ASSERTIONS"
+    ADD CONSTRAINT "AO_ED669C_SEEN_ASSERTIONS_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_ED669C_TOTP_CODES AO_ED669C_TOTP_CODES_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_TOTP_CODES"
+    ADD CONSTRAINT "AO_ED669C_TOTP_CODES_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_ED669C_TOTP_USER_ENROLLMENT AO_ED669C_TOTP_USER_ENROLLMENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_TOTP_USER_ENROLLMENT"
+    ADD CONSTRAINT "AO_ED669C_TOTP_USER_ENROLLMENT_pkey" PRIMARY KEY ("USER_KEY");
+
+
+--
+-- Name: AO_FE1BC5_ACCESS_TOKEN AO_FE1BC5_ACCESS_TOKEN_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_ACCESS_TOKEN"
+    ADD CONSTRAINT "AO_FE1BC5_ACCESS_TOKEN_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_FE1BC5_AUTHORIZATION AO_FE1BC5_AUTHORIZATION_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_AUTHORIZATION"
+    ADD CONSTRAINT "AO_FE1BC5_AUTHORIZATION_pkey" PRIMARY KEY ("AUTHORIZATION_CODE");
+
+
+--
+-- Name: AO_FE1BC5_CLIENT AO_FE1BC5_CLIENT_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_CLIENT"
+    ADD CONSTRAINT "AO_FE1BC5_CLIENT_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_FE1BC5_REDIRECT_URI AO_FE1BC5_REDIRECT_URI_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_REDIRECT_URI"
+    ADD CONSTRAINT "AO_FE1BC5_REDIRECT_URI_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: AO_FE1BC5_REFRESH_TOKEN AO_FE1BC5_REFRESH_TOKEN_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_REFRESH_TOKEN"
+    ADD CONSTRAINT "AO_FE1BC5_REFRESH_TOKEN_pkey" PRIMARY KEY ("ID");
+
+
+--
+-- Name: EVENTS EVENTS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."EVENTS"
+    ADD CONSTRAINT "EVENTS_pkey" PRIMARY KEY (rev, history);
+
+
+--
+-- Name: SECRETS SECRETS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."SECRETS"
+    ADD CONSTRAINT "SECRETS_pkey" PRIMARY KEY (key);
+
+
+--
+-- Name: SNAPSHOTS SNAPSHOTS_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."SNAPSHOTS"
+    ADD CONSTRAINT "SNAPSHOTS_pkey" PRIMARY KEY (key);
+
+
+--
+-- Name: attachmentdata attachmentdata_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.attachmentdata
+    ADD CONSTRAINT attachmentdata_pkey PRIMARY KEY (attachmentdataid);
+
+
+--
+-- Name: audit_affected_object audit_affected_object_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.audit_affected_object
+    ADD CONSTRAINT audit_affected_object_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: audit_changed_value audit_changed_value_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.audit_changed_value
+    ADD CONSTRAINT audit_changed_value_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auditrecord auditrecord_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.auditrecord
+    ADD CONSTRAINT auditrecord_pkey PRIMARY KEY (auditrecordid);
+
+
+--
+-- Name: background_job_archived background_job_archived_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.background_job_archived
+    ADD CONSTRAINT background_job_archived_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: background_job background_job_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.background_job
+    ADD CONSTRAINT background_job_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: backup_restore_job_details backup_restore_job_details_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.backup_restore_job_details
+    ADD CONSTRAINT backup_restore_job_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: backup_restore_job_settings backup_restore_job_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.backup_restore_job_settings
+    ADD CONSTRAINT backup_restore_job_settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: backup_restore_job_statistics backup_restore_job_statistics_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.backup_restore_job_statistics
+    ADD CONSTRAINT backup_restore_job_statistics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bandana bandana_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.bandana
+    ADD CONSTRAINT bandana_pkey PRIMARY KEY (bandanaid);
+
+
+--
+-- Name: bandana bandana_unique_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.bandana
+    ADD CONSTRAINT bandana_unique_key UNIQUE (bandanacontext, bandanakey);
+
+
+--
+-- Name: bodycontent bodycontent_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.bodycontent
+    ADD CONSTRAINT bodycontent_pkey PRIMARY KEY (bodycontentid);
+
+
+--
+-- Name: browser_metrics browser_metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.browser_metrics
+    ADD CONSTRAINT browser_metrics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_relation c2c_relation_unique; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_relation
+    ADD CONSTRAINT c2c_relation_unique UNIQUE (targetcontentid, sourcecontentid, relationname);
+
+
+--
+-- Name: clustersafety clustersafety_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.clustersafety
+    ADD CONSTRAINT clustersafety_pkey PRIMARY KEY (clustersafetyid);
+
+
+--
+-- Name: confancestors confancestors_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.confancestors
+    ADD CONSTRAINT confancestors_pkey PRIMARY KEY (descendentid, ancestorposition);
+
+
+--
+-- Name: confversion confversion_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.confversion
+    ADD CONSTRAINT confversion_pkey PRIMARY KEY (confversionid);
+
+
+--
+-- Name: confzdu confzdu_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.confzdu
+    ADD CONSTRAINT confzdu_pkey PRIMARY KEY (confzduid);
+
+
+--
+-- Name: content_label content_label_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_label
+    ADD CONSTRAINT content_label_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_perm content_perm_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm
+    ADD CONSTRAINT content_perm_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_perm_set content_perm_set_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm_set
+    ADD CONSTRAINT content_perm_set_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content content_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT content_pkey PRIMARY KEY (contentid);
+
+
+--
+-- Name: content_relation content_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_relation
+    ADD CONSTRAINT content_relation_pkey PRIMARY KEY (relationid);
+
+
+--
+-- Name: contentproperties contentproperties_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.contentproperties
+    ADD CONSTRAINT contentproperties_pkey PRIMARY KEY (propertyid);
+
+
+--
+-- Name: content_perm cp_unique_group; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm
+    ADD CONSTRAINT cp_unique_group UNIQUE (cps_id, cp_type, groupname);
+
+
+--
+-- Name: content_perm cp_unique_user; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm
+    ADD CONSTRAINT cp_unique_user UNIQUE (cps_id, cp_type, username);
+
+
+--
+-- Name: content_perm_set cps_unique_type; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm_set
+    ADD CONSTRAINT cps_unique_type UNIQUE (content_id, cont_perm_type);
+
+
+--
+-- Name: cwd_app_dir_group_mapping cwd_app_dir_group_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_group_mapping
+    ADD CONSTRAINT cwd_app_dir_group_mapping_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_app_dir_mapping cwd_app_dir_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_mapping
+    ADD CONSTRAINT cwd_app_dir_mapping_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_app_dir_operation cwd_app_dir_operation_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_operation
+    ADD CONSTRAINT cwd_app_dir_operation_pkey PRIMARY KEY (app_dir_mapping_id, operation_type);
+
+
+--
+-- Name: cwd_application_address cwd_application_address_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_application_address
+    ADD CONSTRAINT cwd_application_address_pkey PRIMARY KEY (application_id, remote_address);
+
+
+--
+-- Name: cwd_application_attribute cwd_application_attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_application_attribute
+    ADD CONSTRAINT cwd_application_attribute_pkey PRIMARY KEY (application_id, attribute_name);
+
+
+--
+-- Name: cwd_application cwd_application_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_application
+    ADD CONSTRAINT cwd_application_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_directory_attribute cwd_directory_attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_directory_attribute
+    ADD CONSTRAINT cwd_directory_attribute_pkey PRIMARY KEY (directory_id, attribute_name);
+
+
+--
+-- Name: cwd_directory_operation cwd_directory_operation_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_directory_operation
+    ADD CONSTRAINT cwd_directory_operation_pkey PRIMARY KEY (directory_id, operation_type);
+
+
+--
+-- Name: cwd_directory cwd_directory_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_directory
+    ADD CONSTRAINT cwd_directory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_group_attribute cwd_group_attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_group_attribute
+    ADD CONSTRAINT cwd_group_attribute_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_group cwd_group_name_dir_id; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_group
+    ADD CONSTRAINT cwd_group_name_dir_id UNIQUE (lower_group_name, directory_id);
+
+
+--
+-- Name: cwd_group cwd_group_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_group
+    ADD CONSTRAINT cwd_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_membership cwd_membership_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_membership
+    ADD CONSTRAINT cwd_membership_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_synchronisation_status cwd_synchronisation_status_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_synchronisation_status
+    ADD CONSTRAINT cwd_synchronisation_status_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_synchronisation_token cwd_synchronisation_token_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_synchronisation_token
+    ADD CONSTRAINT cwd_synchronisation_token_pkey PRIMARY KEY (directory_id);
+
+
+--
+-- Name: cwd_tombstone cwd_tombstone_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_tombstone
+    ADD CONSTRAINT cwd_tombstone_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_membership cwd_unique_group_membership; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_membership
+    ADD CONSTRAINT cwd_unique_group_membership UNIQUE (parent_id, child_group_id);
+
+
+--
+-- Name: cwd_group_attribute cwd_unique_grp_attr; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_group_attribute
+    ADD CONSTRAINT cwd_unique_grp_attr UNIQUE (directory_id, group_id, attribute_name, attribute_lower_value);
+
+
+--
+-- Name: cwd_membership cwd_unique_user_membership; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_membership
+    ADD CONSTRAINT cwd_unique_user_membership UNIQUE (parent_id, child_user_id);
+
+
+--
+-- Name: cwd_user_attribute cwd_unique_usr_attr; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user_attribute
+    ADD CONSTRAINT cwd_unique_usr_attr UNIQUE (directory_id, user_id, attribute_name, attribute_lower_value);
+
+
+--
+-- Name: cwd_user_attribute cwd_user_attribute_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user_attribute
+    ADD CONSTRAINT cwd_user_attribute_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_user_credential_record cwd_user_credential_record_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user_credential_record
+    ADD CONSTRAINT cwd_user_credential_record_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cwd_user cwd_user_name_dir_id; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user
+    ADD CONSTRAINT cwd_user_name_dir_id UNIQUE (lower_user_name, directory_id);
+
+
+--
+-- Name: cwd_user cwd_user_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user
+    ADD CONSTRAINT cwd_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: decorator decorator_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.decorator
+    ADD CONSTRAINT decorator_pkey PRIMARY KEY (decoratorid);
+
+
+--
+-- Name: denormalised_content_change_log denormalised_content_change_log_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_content_change_log
+    ADD CONSTRAINT denormalised_content_change_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: denormalised_content denormalised_content_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_content
+    ADD CONSTRAINT denormalised_content_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: denormalised_content_view_permissions denormalised_content_view_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_content_view_permissions
+    ADD CONSTRAINT denormalised_content_view_permissions_pkey PRIMARY KEY (sid_id, content_id);
+
+
+--
+-- Name: denormalised_service_lock denormalised_service_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_service_lock
+    ADD CONSTRAINT denormalised_service_lock_pkey PRIMARY KEY (lock_name);
+
+
+--
+-- Name: denormalised_sid denormalised_sid_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_sid
+    ADD CONSTRAINT denormalised_sid_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: denormalised_space_change_log denormalised_space_change_log_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_space_change_log
+    ADD CONSTRAINT denormalised_space_change_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: denormalised_space_edit_permissions denormalised_space_edit_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_space_edit_permissions
+    ADD CONSTRAINT denormalised_space_edit_permissions_pkey PRIMARY KEY (sid_id, space_id);
+
+
+--
+-- Name: denormalised_space_view_permissions denormalised_space_view_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_space_view_permissions
+    ADD CONSTRAINT denormalised_space_view_permissions_pkey PRIMARY KEY (sid_id, space_id);
+
+
+--
+-- Name: denormalised_state_change_log denormalised_state_change_log_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_state_change_log
+    ADD CONSTRAINT denormalised_state_change_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: denormalised_state denormalised_state_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.denormalised_state
+    ADD CONSTRAINT denormalised_state_pkey PRIMARY KEY (service_type);
+
+
+--
+-- Name: diagnostics_alerts diagnostics_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.diagnostics_alerts
+    ADD CONSTRAINT diagnostics_alerts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: follow_connections follow_connections_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.follow_connections
+    ADD CONSTRAINT follow_connections_pkey PRIMARY KEY (connectionid);
+
+
+--
+-- Name: gr_response_group gr_response_group_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.gr_response_group
+    ADD CONSTRAINT gr_response_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: guardrails_response guardrails_response_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.guardrails_response
+    ADD CONSTRAINT guardrails_response_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: imagedetails imagedetails_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.imagedetails
+    ADD CONSTRAINT imagedetails_pkey PRIMARY KEY (attachmentid);
+
+
+--
+-- Name: incremental_sync_subscription incremental_sync_subscription_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.incremental_sync_subscription
+    ADD CONSTRAINT incremental_sync_subscription_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inst_analysis_ctrl inst_analysis_ctrl_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.inst_analysis_ctrl
+    ADD CONSTRAINT inst_analysis_ctrl_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: journalentry journalentry_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.journalentry
+    ADD CONSTRAINT journalentry_pkey PRIMARY KEY (entry_id);
+
+
+--
+-- Name: keystore keystore_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.keystore
+    ADD CONSTRAINT keystore_pkey PRIMARY KEY (keyid);
+
+
+--
+-- Name: label label_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.label
+    ADD CONSTRAINT label_pkey PRIMARY KEY (labelid);
+
+
+--
+-- Name: likes likes_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT likes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: links links_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.links
+    ADD CONSTRAINT links_pkey PRIMARY KEY (linkid);
+
+
+--
+-- Name: logininfo logininfo_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.logininfo
+    ADD CONSTRAINT logininfo_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_analytics_event mig_analytics_event_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_analytics_event
+    ADD CONSTRAINT mig_analytics_event_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_app_access_scope mig_app_access_scope_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_app_access_scope
+    ADD CONSTRAINT mig_app_access_scope_pkey PRIMARY KEY (serverappkey, accessscope);
+
+
+--
+-- Name: mig_app_assessment_info mig_app_assessment_info_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_app_assessment_info
+    ADD CONSTRAINT mig_app_assessment_info_pkey PRIMARY KEY (appkey);
+
+
+--
+-- Name: mig_attachment mig_attachment_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_attachment
+    ADD CONSTRAINT mig_attachment_pkey PRIMARY KEY (cloudid, attachmentid);
+
+
+--
+-- Name: mig_check_override mig_check_override_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_check_override
+    ADD CONSTRAINT mig_check_override_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_check_override mig_check_override_unique; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_check_override
+    ADD CONSTRAINT mig_check_override_unique UNIQUE (executionid, checktype);
+
+
+--
+-- Name: mig_check_result mig_check_result_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_check_result
+    ADD CONSTRAINT mig_check_result_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_cloud_site mig_cloud_site_cloudurl_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_cloud_site
+    ADD CONSTRAINT mig_cloud_site_cloudurl_key UNIQUE (cloudurl);
+
+
+--
+-- Name: mig_cloud_site mig_cloud_site_containertoken_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_cloud_site
+    ADD CONSTRAINT mig_cloud_site_containertoken_key UNIQUE (containertoken);
+
+
+--
+-- Name: mig_cloud_site mig_cloud_site_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_cloud_site
+    ADD CONSTRAINT mig_cloud_site_pkey PRIMARY KEY (cloudid);
+
+
+--
+-- Name: mig_config mig_config_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_config
+    ADD CONSTRAINT mig_config_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_corrected_email mig_corrected_email_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_corrected_email
+    ADD CONSTRAINT mig_corrected_email_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_db_changelog_lock mig_db_changelog_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_db_changelog_lock
+    ADD CONSTRAINT mig_db_changelog_lock_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_detected_event_log mig_detected_event_log_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_detected_event_log
+    ADD CONSTRAINT mig_detected_event_log_pkey PRIMARY KEY (cloudid, email);
+
+
+--
+-- Name: mig_exclude_app mig_exclude_app_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_exclude_app
+    ADD CONSTRAINT mig_exclude_app_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_exclude_app mig_exclude_app_unique; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_exclude_app
+    ADD CONSTRAINT mig_exclude_app_unique UNIQUE (taskid, appkey);
+
+
+--
+-- Name: mig_export_cache mig_export_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_export_cache
+    ADD CONSTRAINT mig_export_cache_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_incorrect_email mig_incorrect_email_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_incorrect_email
+    ADD CONSTRAINT mig_incorrect_email_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_invalid_email_user mig_invalid_email_user_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_invalid_email_user
+    ADD CONSTRAINT mig_invalid_email_user_pkey PRIMARY KEY (username);
+
+
+--
+-- Name: mig_mapi_plan_mapping mig_mapi_plan_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_mapi_plan_mapping
+    ADD CONSTRAINT mig_mapi_plan_mapping_pkey PRIMARY KEY (jobid);
+
+
+--
+-- Name: mig_mapi_task_mapping mig_mapi_task_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_mapi_task_mapping
+    ADD CONSTRAINT mig_mapi_task_mapping_pkey PRIMARY KEY (taskid);
+
+
+--
+-- Name: mig_needed_in_cloud_app mig_needed_in_cloud_app_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_needed_in_cloud_app
+    ADD CONSTRAINT mig_needed_in_cloud_app_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_needed_in_cloud_app mig_needed_in_cloud_app_unique; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_needed_in_cloud_app
+    ADD CONSTRAINT mig_needed_in_cloud_app_unique UNIQUE (taskid, appkey);
+
+
+--
+-- Name: mig_plan mig_plan_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_plan
+    ADD CONSTRAINT mig_plan_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_sequences mig_sequences_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_sequences
+    ADD CONSTRAINT mig_sequences_pkey PRIMARY KEY (sequence_name);
+
+
+--
+-- Name: mig_space_statistic mig_space_statistic_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_space_statistic
+    ADD CONSTRAINT mig_space_statistic_pkey PRIMARY KEY (spaceid);
+
+
+--
+-- Name: mig_space_status mig_space_status_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_space_status
+    ADD CONSTRAINT mig_space_status_pkey PRIMARY KEY (spacekey, cloudid);
+
+
+--
+-- Name: mig_stats mig_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_stats
+    ADD CONSTRAINT mig_stats_pkey PRIMARY KEY (stattype, statname);
+
+
+--
+-- Name: mig_step mig_step_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_step
+    ADD CONSTRAINT mig_step_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_step_progress_properties mig_step_progress_properties_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_step_progress_properties
+    ADD CONSTRAINT mig_step_progress_properties_pkey PRIMARY KEY (stepid);
+
+
+--
+-- Name: mig_task mig_task_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_task
+    ADD CONSTRAINT mig_task_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_tombstone_account mig_tombstone_account_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_tombstone_account
+    ADD CONSTRAINT mig_tombstone_account_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_user_domain_rules mig_user_domain_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_user_domain_rules
+    ADD CONSTRAINT mig_user_domain_rules_pkey PRIMARY KEY (domain_name);
+
+
+--
+-- Name: mig_userbase_scan mig_userbase_scan_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_userbase_scan
+    ADD CONSTRAINT mig_userbase_scan_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mig_work_item mig_work_item_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_work_item
+    ADD CONSTRAINT mig_work_item_pkey PRIMARY KEY (itemid);
+
+
+--
+-- Name: mig_work_item mig_work_item_refid_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_work_item
+    ADD CONSTRAINT mig_work_item_refid_key UNIQUE (refid);
+
+
+--
+-- Name: most_used_labels_cache most_used_labels_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.most_used_labels_cache
+    ADD CONSTRAINT most_used_labels_cache_pkey PRIMARY KEY (spaceid);
+
+
+--
+-- Name: node_infrastructure node_infrastructure_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.node_infrastructure
+    ADD CONSTRAINT node_infrastructure_pkey PRIMARY KEY (node_id);
+
+
+--
+-- Name: node_network node_network_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.node_network
+    ADD CONSTRAINT node_network_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (notificationid);
+
+
+--
+-- Name: os_propertyentry os_propertyentry_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.os_propertyentry
+    ADD CONSTRAINT os_propertyentry_pkey PRIMARY KEY (entity_name, entity_id, entity_key);
+
+
+--
+-- Name: pagetemplates pagetemplates_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.pagetemplates
+    ADD CONSTRAINT pagetemplates_pkey PRIMARY KEY (templateid);
+
+
+--
+-- Name: mig_mapi_artifacts pk_mapi_artifacts; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_mapi_artifacts
+    ADD CONSTRAINT pk_mapi_artifacts PRIMARY KEY (taskid, checkname);
+
+
+--
+-- Name: mig_plan plan_name_uniqueness; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_plan
+    ADD CONSTRAINT plan_name_uniqueness UNIQUE (planname);
+
+
+--
+-- Name: plugindata plugindata_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.plugindata
+    ADD CONSTRAINT plugindata_pkey PRIMARY KEY (plugindataid);
+
+
+--
+-- Name: remembermetoken remembermetoken_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.remembermetoken
+    ADD CONSTRAINT remembermetoken_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scheduler_clustered_jobs scheduler_clustered_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.scheduler_clustered_jobs
+    ADD CONSTRAINT scheduler_clustered_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scheduler_run_details scheduler_run_details_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.scheduler_run_details
+    ADD CONSTRAINT scheduler_run_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: spacepermissions spacepermissions_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spacepermissions
+    ADD CONSTRAINT spacepermissions_pkey PRIMARY KEY (permid);
+
+
+--
+-- Name: spaces spaces_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spaces
+    ADD CONSTRAINT spaces_pkey PRIMARY KEY (spaceid);
+
+
+--
+-- Name: thiswillnotbecreated thiswillnotbecreated_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.thiswillnotbecreated
+    ADD CONSTRAINT thiswillnotbecreated_pkey PRIMARY KEY (keyid);
+
+
+--
+-- Name: trustedapp trustedapp_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.trustedapp
+    ADD CONSTRAINT trustedapp_pkey PRIMARY KEY (trustedappid);
+
+
+--
+-- Name: trustedapprestriction trustedapprestriction_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.trustedapprestriction
+    ADD CONSTRAINT trustedapprestriction_pkey PRIMARY KEY (trustedapprestrictionid);
+
+
+--
+-- Name: usercontent_relation u2c_relation_unique; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.usercontent_relation
+    ADD CONSTRAINT u2c_relation_unique UNIQUE (targetcontentid, sourceuser, relationname);
+
+
+--
+-- Name: user_relation u2u_relation_unique; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_relation
+    ADD CONSTRAINT u2u_relation_unique UNIQUE (sourceuser, targetuser, relationname);
+
+
+--
+-- Name: AO_4789DD_DISABLED_CHECKS u_ao_4789dd_disable1943052426; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_DISABLED_CHECKS"
+    ADD CONSTRAINT u_ao_4789dd_disable1943052426 UNIQUE ("HEALTH_CHECK_KEY");
+
+
+--
+-- Name: AO_4789DD_HEALTH_CHECK_WATCHER u_ao_4789dd_health_432053140; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_HEALTH_CHECK_WATCHER"
+    ADD CONSTRAINT u_ao_4789dd_health_432053140 UNIQUE ("USER_KEY");
+
+
+--
+-- Name: AO_4789DD_SHORTENED_KEY u_ao_4789dd_shortened_key_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_SHORTENED_KEY"
+    ADD CONSTRAINT u_ao_4789dd_shortened_key_key UNIQUE ("KEY");
+
+
+--
+-- Name: AO_4789DD_TASK_MONITOR u_ao_4789dd_task_mo1827547914; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_4789DD_TASK_MONITOR"
+    ADD CONSTRAINT u_ao_4789dd_task_mo1827547914 UNIQUE ("TASK_ID");
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL_CONNECTION u_ao_6abce4_tunnel_945247985; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL_CONNECTION"
+    ADD CONSTRAINT u_ao_6abce4_tunnel_945247985 UNIQUE ("NODE_ID");
+
+
+--
+-- Name: AO_6ABCE4_TUNNEL u_ao_6abce4_tunnel_name; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_6ABCE4_TUNNEL"
+    ADD CONSTRAINT u_ao_6abce4_tunnel_name UNIQUE ("NAME");
+
+
+--
+-- Name: AO_723324_CLIENT_CONFIG u_ao_723324_client_config_name; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_723324_CLIENT_CONFIG"
+    ADD CONSTRAINT u_ao_723324_client_config_name UNIQUE ("NAME");
+
+
+--
+-- Name: AO_7B47A5_SETTINGS u_ao_7b47a5_settings_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7B47A5_SETTINGS"
+    ADD CONSTRAINT u_ao_7b47a5_settings_key UNIQUE ("KEY");
+
+
+--
+-- Name: AO_8752F1_DATA_PIPELINE_CONFIG u_ao_8752f1_data_pi710125765; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_8752F1_DATA_PIPELINE_CONFIG"
+    ADD CONSTRAINT u_ao_8752f1_data_pi710125765 UNIQUE ("KEY");
+
+
+--
+-- Name: AO_9412A1_AOUSER u_ao_9412a1_aouser_username; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_AOUSER"
+    ADD CONSTRAINT u_ao_9412a1_aouser_username UNIQUE ("USERNAME");
+
+
+--
+-- Name: AO_ED669C_IDP_CONFIG u_ao_ed669c_idp_con1454004950; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG"
+    ADD CONSTRAINT u_ao_ed669c_idp_con1454004950 UNIQUE ("BUTTON_TEXT");
+
+
+--
+-- Name: AO_ED669C_IDP_CONFIG u_ao_ed669c_idp_config_issuer; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG"
+    ADD CONSTRAINT u_ao_ed669c_idp_config_issuer UNIQUE ("ISSUER");
+
+
+--
+-- Name: AO_ED669C_IDP_CONFIG u_ao_ed669c_idp_config_name; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_IDP_CONFIG"
+    ADD CONSTRAINT u_ao_ed669c_idp_config_name UNIQUE ("NAME");
+
+
+--
+-- Name: AO_ED669C_SEALED_ENTITY u_ao_ed669c_sealed_entity_key; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEALED_ENTITY"
+    ADD CONSTRAINT u_ao_ed669c_sealed_entity_key UNIQUE ("KEY");
+
+
+--
+-- Name: AO_ED669C_SEEN_ASSERTIONS u_ao_ed669c_seen_as1055534769; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_ED669C_SEEN_ASSERTIONS"
+    ADD CONSTRAINT u_ao_ed669c_seen_as1055534769 UNIQUE ("ASSERTION_ID");
+
+
+--
+-- Name: AO_FE1BC5_CLIENT u_ao_fe1bc5_client_1625323162; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_CLIENT"
+    ADD CONSTRAINT u_ao_fe1bc5_client_1625323162 UNIQUE ("CLIENT_SECRET");
+
+
+--
+-- Name: AO_FE1BC5_CLIENT u_ao_fe1bc5_client_client_id; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_CLIENT"
+    ADD CONSTRAINT u_ao_fe1bc5_client_client_id UNIQUE ("CLIENT_ID");
+
+
+--
+-- Name: AO_FE1BC5_CLIENT u_ao_fe1bc5_client_name; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_FE1BC5_CLIENT"
+    ADD CONSTRAINT u_ao_fe1bc5_client_name UNIQUE ("NAME");
+
+
+--
+-- Name: plugindata uk_6i3f2odnxreeous9k1baxbc0a; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.plugindata
+    ADD CONSTRAINT uk_6i3f2odnxreeous9k1baxbc0a UNIQUE (pluginkey);
+
+
+--
+-- Name: logininfo uk_cxh64nyrevdya903riaky8hs0; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.logininfo
+    ADD CONSTRAINT uk_cxh64nyrevdya903riaky8hs0 UNIQUE (username);
+
+
+--
+-- Name: plugindata uk_dg9b9idpgjdj5ljfmnld9lshn; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.plugindata
+    ADD CONSTRAINT uk_dg9b9idpgjdj5ljfmnld9lshn UNIQUE (filename);
+
+
+--
+-- Name: cwd_application uk_esg7ywl12bt4wt5h1ka27m6u3; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_application
+    ADD CONSTRAINT uk_esg7ywl12bt4wt5h1ka27m6u3 UNIQUE (lower_application_name);
+
+
+--
+-- Name: trustedapp uk_f48dl9nadsqeudry5cyura0du; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.trustedapp
+    ADD CONSTRAINT uk_f48dl9nadsqeudry5cyura0du UNIQUE (name);
+
+
+--
+-- Name: scheduler_clustered_jobs uk_h41yn0carypy2jdlo4oapqo7m; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.scheduler_clustered_jobs
+    ADD CONSTRAINT uk_h41yn0carypy2jdlo4oapqo7m UNIQUE (job_id);
+
+
+--
+-- Name: spaces uk_jp1ad5yufsih5r7lqrygakpug; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spaces
+    ADD CONSTRAINT uk_jp1ad5yufsih5r7lqrygakpug UNIQUE (spacekey);
+
+
+--
+-- Name: trustedapp uk_mqknjsql47jf4ue5kn4sdtbj0; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.trustedapp
+    ADD CONSTRAINT uk_mqknjsql47jf4ue5kn4sdtbj0 UNIQUE (public_key_id);
+
+
+--
+-- Name: attachmentdata uk_mxrudo8qrpxb7w28dnoo64aec; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.attachmentdata
+    ADD CONSTRAINT uk_mxrudo8qrpxb7w28dnoo64aec UNIQUE (attachmentid);
+
+
+--
+-- Name: cwd_directory uk_ojmqo7ksu5dlpaqs0b9qf0k37; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_directory
+    ADD CONSTRAINT uk_ojmqo7ksu5dlpaqs0b9qf0k37 UNIQUE (lower_directory_name);
+
+
+--
+-- Name: confversion uk_osprt1myxoltvtd8yodb0besm; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.confversion
+    ADD CONSTRAINT uk_osprt1myxoltvtd8yodb0besm UNIQUE (buildnumber);
+
+
+--
+-- Name: mig_check_result uniq_executionid_checktype; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_check_result
+    ADD CONSTRAINT uniq_executionid_checktype UNIQUE (executionid, checktype);
+
+
+--
+-- Name: user_mapping unq_lwr_username; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_mapping
+    ADD CONSTRAINT unq_lwr_username UNIQUE (lower_username);
+
+
+--
+-- Name: user_mapping user_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_mapping
+    ADD CONSTRAINT user_mapping_pkey PRIMARY KEY (user_key);
+
+
+--
+-- Name: user_relation user_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_relation
+    ADD CONSTRAINT user_relation_pkey PRIMARY KEY (relationid);
+
+
+--
+-- Name: usercontent_relation usercontent_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.usercontent_relation
+    ADD CONSTRAINT usercontent_relation_pkey PRIMARY KEY (relationid);
+
+
+--
+-- Name: a_author_key_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX a_author_key_idx ON public.auditrecord USING btree (authorkey);
+
+
+--
+-- Name: a_category_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX a_category_idx ON public.auditrecord USING btree (category);
+
+
+--
+-- Name: a_date_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX a_date_idx ON public.auditrecord USING btree (creationdate);
+
+
+--
+-- Name: a_objects_parent_index; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX a_objects_parent_index ON public.audit_affected_object USING btree (auditrecordid);
+
+
+--
+-- Name: a_values_parent_index; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX a_values_parent_index ON public.audit_changed_value USING btree (auditrecordid);
+
+
+--
+-- Name: al_is_comp_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX al_is_comp_id_idx ON public.diagnostics_alerts USING btree (issue_component_id);
+
+
+--
+-- Name: al_issue_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX al_issue_id_idx ON public.diagnostics_alerts USING btree (issue_id);
+
+
+--
+-- Name: al_issue_severity_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX al_issue_severity_idx ON public.diagnostics_alerts USING btree (issue_severity);
+
+
+--
+-- Name: al_node_name_lower_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX al_node_name_lower_idx ON public.diagnostics_alerts USING btree (node_name_lower);
+
+
+--
+-- Name: al_timetamp_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX al_timetamp_idx ON public.diagnostics_alerts USING btree ("timestamp");
+
+
+--
+-- Name: al_trigger_plug_key_lower_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX al_trigger_plug_key_lower_idx ON public.diagnostics_alerts USING btree (trigger_plugin_key_lower);
+
+
+--
+-- Name: attch_idver_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX attch_idver_idx ON public.attachmentdata USING btree (attversion, attachmentid);
+
+
+--
+-- Name: band_cont_key_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX band_cont_key_idx ON public.bandana USING btree (bandanacontext, bandanakey);
+
+
+--
+-- Name: band_context_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX band_context_idx ON public.bandana USING btree (bandanacontext);
+
+
+--
+-- Name: body_content_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX body_content_idx ON public.bodycontent USING btree (contentid);
+
+
+--
+-- Name: browser_metrics_userkey_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX browser_metrics_userkey_idx ON public.browser_metrics USING btree (userkey);
+
+
+--
+-- Name: c_ancestorid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_ancestorid_idx ON public.confancestors USING btree (ancestorid);
+
+
+--
+-- Name: c_contentproperties_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_contentproperties_idx ON public.contentproperties USING btree (contentid);
+
+
+--
+-- Name: c_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_creator_idx ON public.content USING btree (creator);
+
+
+--
+-- Name: c_draftpageid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_draftpageid_idx ON public.content USING btree (draftpageid);
+
+
+--
+-- Name: c_drafttype_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_drafttype_idx ON public.content USING btree (drafttype);
+
+
+--
+-- Name: c_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_lastmodifier_idx ON public.content USING btree (lastmodifier);
+
+
+--
+-- Name: c_ltitle_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_ltitle_idx ON public.content USING btree (lowertitle);
+
+
+--
+-- Name: c_pageid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_pageid_idx ON public.content USING btree (pageid);
+
+
+--
+-- Name: c_parentccid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_parentccid_idx ON public.content USING btree (parentccid);
+
+
+--
+-- Name: c_parentcommid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_parentcommid_idx ON public.content USING btree (parentcommentid);
+
+
+--
+-- Name: c_parentid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_parentid_idx ON public.content USING btree (parentid);
+
+
+--
+-- Name: c_prevver_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_prevver_idx ON public.content USING btree (prevver);
+
+
+--
+-- Name: c_si_ct_pv_cs_cd_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_si_ct_pv_cs_cd_idx ON public.content USING btree (spaceid, contenttype, prevver, content_status, creationdate);
+
+
+--
+-- Name: c_spaceid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_spaceid_idx ON public.content USING btree (spaceid);
+
+
+--
+-- Name: c_title_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_title_idx ON public.content USING btree (title);
+
+
+--
+-- Name: c_trustedappid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_trustedappid_idx ON public.trustedapprestriction USING btree (trustedappid);
+
+
+--
+-- Name: c_username_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX c_username_idx ON public.content USING btree (username);
+
+
+--
+-- Name: cl_contentid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cl_contentid_idx ON public.content_label USING btree (contentid);
+
+
+--
+-- Name: cl_labelable_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cl_labelable_idx ON public.content_label USING btree (labelableid, labelabletype);
+
+
+--
+-- Name: cl_labelid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cl_labelid_idx ON public.content_label USING btree (labelid);
+
+
+--
+-- Name: cl_lastmoddate_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cl_lastmoddate_idx ON public.content_label USING btree (lastmoddate);
+
+
+--
+-- Name: cl_owner_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cl_owner_idx ON public.content_label USING btree (owner);
+
+
+--
+-- Name: cl_pagetemplateid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cl_pagetemplateid_idx ON public.content_label USING btree (pagetemplateid);
+
+
+--
+-- Name: cn_followee_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cn_followee_idx ON public.follow_connections USING btree (followee);
+
+
+--
+-- Name: cn_follower_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cn_follower_idx ON public.follow_connections USING btree (follower);
+
+
+--
+-- Name: content_prop_date_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX content_prop_date_idx ON public.contentproperties USING btree (dateval);
+
+
+--
+-- Name: content_prop_long_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX content_prop_long_idx ON public.contentproperties USING btree (longval);
+
+
+--
+-- Name: content_prop_name_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX content_prop_name_idx ON public.contentproperties USING btree (propertyname);
+
+
+--
+-- Name: content_prop_str_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX content_prop_str_idx ON public.contentproperties USING btree (stringval);
+
+
+--
+-- Name: cp_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cp_creator_idx ON public.content_perm USING btree (creator);
+
+
+--
+-- Name: cp_gn_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cp_gn_idx ON public.content_perm USING btree (groupname);
+
+
+--
+-- Name: cp_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cp_lastmodifier_idx ON public.content_perm USING btree (lastmodifier);
+
+
+--
+-- Name: cp_os_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cp_os_idx ON public.content_perm USING btree (cps_id);
+
+
+--
+-- Name: cp_un_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cp_un_idx ON public.content_perm USING btree (username);
+
+
+--
+-- Name: cps_content_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cps_content_idx ON public.content_perm_set USING btree (content_id);
+
+
+--
+-- Name: cps_permtype_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX cps_permtype_idx ON public.content_perm_set USING btree (cont_perm_type);
+
+
+--
+-- Name: create_time_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX create_time_idx ON public.backup_restore_job_details USING btree (create_time);
+
+
+--
+-- Name: dec_key_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX dec_key_idx ON public.decorator USING btree (spacekey);
+
+
+--
+-- Name: dec_name_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX dec_name_idx ON public.decorator USING btree (decoratorname);
+
+
+--
+-- Name: denorm_content_parent_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX denorm_content_parent_id_idx ON public.denormalised_content USING btree (parent_id);
+
+
+--
+-- Name: denorm_content_space_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX denorm_content_space_id_idx ON public.denormalised_content USING btree (space_id);
+
+
+--
+-- Name: denormalised_content_view_permissions_denorm_content_sid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX denormalised_content_view_permissions_denorm_content_sid_idx ON public.denormalised_content_view_permissions USING btree (content_id, sid_id);
+
+
+--
+-- Name: denormalised_sid_name_type_uniq_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE UNIQUE INDEX denormalised_sid_name_type_uniq_idx ON public.denormalised_sid USING btree (name, type);
+
+
+--
+-- Name: denormalised_space_edit_permissions_denorm_space_sid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX denormalised_space_edit_permissions_denorm_space_sid_idx ON public.denormalised_space_edit_permissions USING btree (space_id, sid_id);
+
+
+--
+-- Name: denormalised_space_view_permissions_denorm_space_sid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX denormalised_space_view_permissions_denorm_space_sid_idx ON public.denormalised_space_view_permissions USING btree (space_id, sid_id);
+
+
+--
+-- Name: e_c_i_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX e_c_i_idx ON public."EVENTS" USING btree (contentid, inserted);
+
+
+--
+-- Name: e_h_p_s_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE UNIQUE INDEX e_h_p_s_idx ON public."EVENTS" USING btree (history, partition, sequence);
+
+
+--
+-- Name: e_h_r_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE UNIQUE INDEX e_h_r_idx ON public."EVENTS" USING btree (history, rev);
+
+
+--
+-- Name: e_i_c_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX e_i_c_idx ON public."EVENTS" USING btree (inserted, contentid);
+
+
+--
+-- Name: file_state_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX file_state_idx ON public.backup_restore_job_details USING btree (file_delete_time, file_exists);
+
+
+--
+-- Name: idx_app_active; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_app_active ON public.cwd_application USING btree (active);
+
+
+--
+-- Name: idx_app_dir_app; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_app_dir_app ON public.cwd_app_dir_mapping USING btree (application_id);
+
+
+--
+-- Name: idx_app_dir_dir; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_app_dir_dir ON public.cwd_app_dir_mapping USING btree (directory_id);
+
+
+--
+-- Name: idx_app_dir_group_app; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_app_dir_group_app ON public.cwd_app_dir_group_mapping USING btree (application_id);
+
+
+--
+-- Name: idx_app_dir_group_group_dir; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_app_dir_group_group_dir ON public.cwd_app_dir_group_mapping USING btree (directory_id, group_name);
+
+
+--
+-- Name: idx_app_dir_group_mapping; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_app_dir_group_mapping ON public.cwd_app_dir_group_mapping USING btree (app_dir_mapping_id);
+
+
+--
+-- Name: idx_app_type; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_app_type ON public.cwd_application USING btree (application_type);
+
+
+--
+-- Name: idx_dir_active; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_dir_active ON public.cwd_directory USING btree (active);
+
+
+--
+-- Name: idx_dir_l_impl_class; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_dir_l_impl_class ON public.cwd_directory USING btree (lower_impl_class);
+
+
+--
+-- Name: idx_dir_type; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_dir_type ON public.cwd_directory USING btree (directory_type);
+
+
+--
+-- Name: idx_directory_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_directory_id ON public.cwd_synchronisation_status USING btree (directory_id);
+
+
+--
+-- Name: idx_group_active; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_group_active ON public.cwd_group USING btree (active, directory_id);
+
+
+--
+-- Name: idx_group_attr_dir_name_lval; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_group_attr_dir_name_lval ON public.cwd_group_attribute USING btree (directory_id, attribute_name, attribute_lower_value);
+
+
+--
+-- Name: idx_group_attr_group_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_group_attr_group_id ON public.cwd_group_attribute USING btree (group_id);
+
+
+--
+-- Name: idx_group_dir_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_group_dir_id ON public.cwd_group USING btree (directory_id);
+
+
+--
+-- Name: idx_group_external_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_group_external_id ON public.cwd_group USING btree (external_id);
+
+
+--
+-- Name: idx_mem_dir_child; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_mem_dir_child ON public.cwd_membership USING btree (child_group_id, child_user_id);
+
+
+--
+-- Name: idx_mem_dir_child_user; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_mem_dir_child_user ON public.cwd_membership USING btree (child_user_id);
+
+
+--
+-- Name: idx_mem_dir_parent; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_mem_dir_parent ON public.cwd_membership USING btree (parent_id);
+
+
+--
+-- Name: idx_mem_dir_parent_child; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_mem_dir_parent_child ON public.cwd_membership USING btree (parent_id, child_group_id, child_user_id);
+
+
+--
+-- Name: idx_sync_end; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_sync_end ON public.cwd_synchronisation_status USING btree (sync_end);
+
+
+--
+-- Name: idx_sync_status_node_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_sync_status_node_id ON public.cwd_synchronisation_status USING btree (node_id);
+
+
+--
+-- Name: idx_tombstone_type_timestamp; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_tombstone_type_timestamp ON public.cwd_tombstone USING btree (tombstone_type, tombstone_timestamp);
+
+
+--
+-- Name: idx_unique_label_name_owner_not_null_namespace; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE UNIQUE INDEX idx_unique_label_name_owner_not_null_namespace ON public.label USING btree (name, owner_not_null, namespace);
+
+
+--
+-- Name: idx_user_active; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_active ON public.cwd_user USING btree (active, directory_id);
+
+
+--
+-- Name: idx_user_attr_dir_name_lval; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_attr_dir_name_lval ON public.cwd_user_attribute USING btree (directory_id, attribute_name, attribute_lower_value);
+
+
+--
+-- Name: idx_user_attr_user_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_attr_user_id ON public.cwd_user_attribute USING btree (user_id);
+
+
+--
+-- Name: idx_user_cred_record_user_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_cred_record_user_id ON public.cwd_user_credential_record USING btree (user_id);
+
+
+--
+-- Name: idx_user_external_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_external_id ON public.cwd_user USING btree (external_id);
+
+
+--
+-- Name: idx_user_lower_display_name; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_lower_display_name ON public.cwd_user USING btree (lower_display_name, directory_id);
+
+
+--
+-- Name: idx_user_lower_email_address; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_lower_email_address ON public.cwd_user USING btree (lower_email_address, directory_id);
+
+
+--
+-- Name: idx_user_lower_first_name; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_lower_first_name ON public.cwd_user USING btree (lower_first_name, directory_id);
+
+
+--
+-- Name: idx_user_lower_last_name; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_lower_last_name ON public.cwd_user USING btree (lower_last_name, directory_id);
+
+
+--
+-- Name: idx_user_lower_user_name; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_lower_user_name ON public.cwd_user USING btree (lower_user_name);
+
+
+--
+-- Name: idx_user_name_dir_id; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX idx_user_name_dir_id ON public.cwd_user USING btree (directory_id);
+
+
+--
+-- Name: inc_sync_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX inc_sync_creator_idx ON public.incremental_sync_subscription USING btree (subscription_creator);
+
+
+--
+-- Name: index_ao_21f425_mes1965715920; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_21f425_mes1965715920 ON public."AO_21F425_MESSAGE_MAPPING_AO" USING btree ("MESSAGE_ID");
+
+
+--
+-- Name: index_ao_21f425_mes223897723; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_21f425_mes223897723 ON public."AO_21F425_MESSAGE_MAPPING_AO" USING btree ("USER_HASH");
+
+
+--
+-- Name: index_ao_21f425_use1458667739; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_21f425_use1458667739 ON public."AO_21F425_USER_PROPERTY_AO" USING btree ("USER");
+
+
+--
+-- Name: index_ao_32184f_rec1103397526; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_32184f_rec1103397526 ON public."AO_32184F_RECONCILIATIONS" USING btree ("INSERTED");
+
+
+--
+-- Name: index_ao_32184f_rec210212237; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_32184f_rec210212237 ON public."AO_32184F_RECONCILIATIONS" USING btree ("CONTENT_ID");
+
+
+--
+-- Name: index_ao_32184f_syn1707491631; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_32184f_syn1707491631 ON public."AO_32184F_SYNCHRONY_REQUESTS" USING btree ("CONTENT_ID");
+
+
+--
+-- Name: index_ao_32184f_syn38261542; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_32184f_syn38261542 ON public."AO_32184F_SYNCHRONY_REQUESTS" USING btree ("INSERTED");
+
+
+--
+-- Name: index_ao_38321b_cus1828044926; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_38321b_cus1828044926 ON public."AO_38321B_CUSTOM_CONTENT_LINK" USING btree ("CONTENT_KEY");
+
+
+--
+-- Name: index_ao_4789dd_tas42846517; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_4789dd_tas42846517 ON public."AO_4789DD_TASK_MONITOR" USING btree ("TASK_MONITOR_KIND");
+
+
+--
+-- Name: index_ao_54c900_c_t1381246324; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_54c900_c_t1381246324 ON public."AO_54C900_C_TEMPLATE_REF" USING btree ("UUID");
+
+
+--
+-- Name: index_ao_54c900_c_t667820477; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_54c900_c_t667820477 ON public."AO_54C900_C_TEMPLATE_REF" USING btree ("CB_INDEX_PARENTID");
+
+
+--
+-- Name: index_ao_54c900_c_t757546442; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_54c900_c_t757546442 ON public."AO_54C900_C_TEMPLATE_REF" USING btree ("CB_PARENTID");
+
+
+--
+-- Name: index_ao_54c900_c_t852152353; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_54c900_c_t852152353 ON public."AO_54C900_C_TEMPLATE_REF" USING btree ("PARENT_ID");
+
+
+--
+-- Name: index_ao_54c900_spa357134289; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_54c900_spa357134289 ON public."AO_54C900_SPACE_BLUEPRINT_AO" USING btree ("HOME_PAGE_ID");
+
+
+--
+-- Name: index_ao_563aee_act1642652291; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_563aee_act1642652291 ON public."AO_563AEE_ACTIVITY_ENTITY" USING btree ("OBJECT_ID");
+
+
+--
+-- Name: index_ao_563aee_act1978295567; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_563aee_act1978295567 ON public."AO_563AEE_ACTIVITY_ENTITY" USING btree ("TARGET_ID");
+
+
+--
+-- Name: index_ao_563aee_act972488439; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_563aee_act972488439 ON public."AO_563AEE_ACTIVITY_ENTITY" USING btree ("ICON_ID");
+
+
+--
+-- Name: index_ao_563aee_act995325379; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_563aee_act995325379 ON public."AO_563AEE_ACTIVITY_ENTITY" USING btree ("ACTOR_ID");
+
+
+--
+-- Name: index_ao_563aee_obj696886343; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_563aee_obj696886343 ON public."AO_563AEE_OBJECT_ENTITY" USING btree ("IMAGE_ID");
+
+
+--
+-- Name: index_ao_563aee_tar521440921; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_563aee_tar521440921 ON public."AO_563AEE_TARGET_ENTITY" USING btree ("IMAGE_ID");
+
+
+--
+-- Name: index_ao_6384ab_dis59056004; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_6384ab_dis59056004 ON public."AO_6384AB_DISCOVERED" USING btree ("USER_KEY");
+
+
+--
+-- Name: index_ao_6384ab_fea1458039816; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_6384ab_fea1458039816 ON public."AO_6384AB_FEATURE_METADATA_AO" USING btree ("CONTEXT", "KEY");
+
+
+--
+-- Name: index_ao_7b47a5_eve1148682696; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7b47a5_eve1148682696 ON public."AO_7B47A5_EVENT" USING btree ("NAME", "CONTAINER_ID", "EVENT_AT");
+
+
+--
+-- Name: index_ao_7b47a5_eve1927422530; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7b47a5_eve1927422530 ON public."AO_7B47A5_EVENT" USING btree ("EVENT_AT", "ID");
+
+
+--
+-- Name: index_ao_7b47a5_eve2068276537; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7b47a5_eve2068276537 ON public."AO_7B47A5_EVENT" USING btree ("NAME", "SPACE_KEY", "EVENT_AT");
+
+
+--
+-- Name: index_ao_7b47a5_eve731223880; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7b47a5_eve731223880 ON public."AO_7B47A5_EVENT" USING btree ("SPACE_KEY");
+
+
+--
+-- Name: index_ao_7cde43_eve1433596955; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7cde43_eve1433596955 ON public."AO_7CDE43_EVENT" USING btree ("NOTIFICATION_ID");
+
+
+--
+-- Name: index_ao_7cde43_fil1140550715; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7cde43_fil1140550715 ON public."AO_7CDE43_FILTER_PARAM" USING btree ("NOTIFICATION_ID");
+
+
+--
+-- Name: index_ao_7cde43_not7362182; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7cde43_not7362182 ON public."AO_7CDE43_NOTIFICATION" USING btree ("NOTIFICATION_SCHEME_ID");
+
+
+--
+-- Name: index_ao_7cde43_rec1271577318; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7cde43_rec1271577318 ON public."AO_7CDE43_RECIPIENT" USING btree ("NOTIFICATION_ID");
+
+
+--
+-- Name: index_ao_7cde43_ser828034299; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_7cde43_ser828034299 ON public."AO_7CDE43_SERVER_PARAM" USING btree ("SERVER_CONFIG_ID");
+
+
+--
+-- Name: index_ao_81f455_per1449732247; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_81f455_per1449732247 ON public."AO_81F455_PERSONAL_TOKEN" USING btree ("TOKEN_ID", "EXPIRING_AT");
+
+
+--
+-- Name: index_ao_8752f1_dat1803576496; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_8752f1_dat1803576496 ON public."AO_8752F1_DATA_PIPELINE_JOB" USING btree ("STATUS");
+
+
+--
+-- Name: index_ao_92296b_aor1216492770; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_92296b_aor1216492770 ON public."AO_92296B_AORECENTLY_VIEWED" USING btree ("CONTENT_ID");
+
+
+--
+-- Name: index_ao_92296b_aor1615591099; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_92296b_aor1615591099 ON public."AO_92296B_AORECENTLY_VIEWED" USING btree ("SPACE_KEY");
+
+
+--
+-- Name: index_ao_92296b_aor205355936; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_92296b_aor205355936 ON public."AO_92296B_AORECENTLY_VIEWED" USING btree ("LAST_VIEW_DATE");
+
+
+--
+-- Name: index_ao_92296b_aor426054036; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_92296b_aor426054036 ON public."AO_92296B_AORECENTLY_VIEWED" USING btree ("USER_KEY");
+
+
+--
+-- Name: index_ao_92296b_aor818798913; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_92296b_aor818798913 ON public."AO_92296B_AORECENTLY_VIEWED" USING btree ("CONTENT_TYPE");
+
+
+--
+-- Name: index_ao_9412a1_aon1547032463; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_9412a1_aon1547032463 ON public."AO_9412A1_AONOTIFICATION" USING btree ("CREATED");
+
+
+--
+-- Name: index_ao_9412a1_aon648423710; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_9412a1_aon648423710 ON public."AO_9412A1_AONOTIFICATION" USING btree ("USER");
+
+
+--
+-- Name: index_ao_9412a1_aon849931648; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_9412a1_aon849931648 ON public."AO_9412A1_AONOTIFICATION" USING btree ("GLOBAL_ID");
+
+
+--
+-- Name: index_ao_9412a1_aot1465568358; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_9412a1_aot1465568358 ON public."AO_9412A1_AOTASK" USING btree ("GLOBAL_ID");
+
+
+--
+-- Name: index_ao_9412a1_aotask_user; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_9412a1_aotask_user ON public."AO_9412A1_AOTASK" USING btree ("USER");
+
+
+--
+-- Name: index_ao_9412a1_use1222319987; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_9412a1_use1222319987 ON public."AO_9412A1_USER_APP_LINK" USING btree ("USER_ID");
+
+
+--
+-- Name: index_ao_9412a1_use643533071; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_9412a1_use643533071 ON public."AO_9412A1_USER_APP_LINK" USING btree ("APPLICATION_LINK_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_100715625; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_100715625 ON public."AO_950DC3_TC_EVENTS_INVITEES" USING btree ("EVENT_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1063578969; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1063578969 ON public."AO_950DC3_TC_SUBCALS_IN_SPACE" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_122365134; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_122365134 ON public."AO_950DC3_TC_REMINDER_USERS" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1286773626; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1286773626 ON public."AO_950DC3_TC_EVENTS" USING btree ("REMINDER_SETTING_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1297323317; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1297323317 ON public."AO_950DC3_TC_JIRA_REMI_EVENTS" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1329118146; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1329118146 ON public."AO_950DC3_TC_SUBCALS_IN_SPACE" USING btree ("SPACE_KEY");
+
+
+--
+-- Name: index_ao_950dc3_tc_1437233256; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1437233256 ON public."AO_950DC3_TC_CUSTOM_EV_TYPES" USING btree ("BELONG_SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1526147574; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1526147574 ON public."AO_950DC3_TC_EVENTS" USING btree ("UTC_START");
+
+
+--
+-- Name: index_ao_950dc3_tc_1566630573; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1566630573 ON public."AO_950DC3_TC_JIRA_REMI_EVENTS" USING btree ("KEY_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1684546011; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1684546011 ON public."AO_950DC3_TC_REMINDER_SETTINGS" USING btree ("PERIOD");
+
+
+--
+-- Name: index_ao_950dc3_tc_1709841361; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1709841361 ON public."AO_950DC3_TC_EVENTS" USING btree ("START");
+
+
+--
+-- Name: index_ao_950dc3_tc_1806144629; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1806144629 ON public."AO_950DC3_TC_DISABLE_EV_TYPES" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1847876863; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1847876863 ON public."AO_950DC3_TC_SUBCALS_PROPS" USING btree ("KEY");
+
+
+--
+-- Name: index_ao_950dc3_tc_1861854175; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1861854175 ON public."AO_950DC3_TC_SUBCALS_PROPS" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1886631335; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1886631335 ON public."AO_950DC3_TC_REMINDER_SETTINGS" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1891203755; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1891203755 ON public."AO_950DC3_TC_SUBCALS_PRIV_GRP" USING btree ("TYPE");
+
+
+--
+-- Name: index_ao_950dc3_tc_1977525806; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1977525806 ON public."AO_950DC3_TC_EVENTS_EXCL" USING btree ("EVENT_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_1978066438; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_1978066438 ON public."AO_950DC3_TC_SUBCALS_PRIV_USR" USING btree ("TYPE");
+
+
+--
+-- Name: index_ao_950dc3_tc_2015126094; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_2015126094 ON public."AO_950DC3_TC_JIRA_REMI_EVENTS" USING btree ("UTC_END");
+
+
+--
+-- Name: index_ao_950dc3_tc_2073603249; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_2073603249 ON public."AO_950DC3_TC_REMINDER_SETTINGS" USING btree ("CUSTOM_EVENT_TYPE_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_2091184233; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_2091184233 ON public."AO_950DC3_TC_SUBCALS" USING btree ("SPACE_KEY");
+
+
+--
+-- Name: index_ao_950dc3_tc_363043564; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_363043564 ON public."AO_950DC3_TC_EVENTS" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_38648977; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_38648977 ON public."AO_950DC3_TC_EVENTS" USING btree ("UTC_END");
+
+
+--
+-- Name: index_ao_950dc3_tc_480965355; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_480965355 ON public."AO_950DC3_TC_JIRA_REMI_EVENTS" USING btree ("UTC_START");
+
+
+--
+-- Name: index_ao_950dc3_tc_525483330; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_525483330 ON public."AO_950DC3_TC_SUBCALS_PRIV_GRP" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_554676722; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_554676722 ON public."AO_950DC3_TC_SUBCALS" USING btree ("STORE_KEY");
+
+
+--
+-- Name: index_ao_950dc3_tc_786531555; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_786531555 ON public."AO_950DC3_TC_REMINDER_SETTINGS" USING btree ("STORE_KEY");
+
+
+--
+-- Name: index_ao_950dc3_tc_836865362; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_836865362 ON public."AO_950DC3_TC_SUBCALS" USING btree ("SUBSCRIPTION_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_851944294; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_851944294 ON public."AO_950DC3_TC_EVENTS" USING btree ("VEVENT_UID");
+
+
+--
+-- Name: index_ao_950dc3_tc_932705473; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_932705473 ON public."AO_950DC3_TC_SUBCALS" USING btree ("PARENT_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_997641231; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_997641231 ON public."AO_950DC3_TC_SUBCALS_PRIV_USR" USING btree ("SUB_CALENDAR_ID");
+
+
+--
+-- Name: index_ao_950dc3_tc_events_end; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_950dc3_tc_events_end ON public."AO_950DC3_TC_EVENTS" USING btree ("END");
+
+
+--
+-- Name: index_ao_954a21_pus160381072; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_954a21_pus160381072 ON public."AO_954A21_PUSH_NOTIFICATION_AO" USING btree ("USER_NAME");
+
+
+--
+-- Name: index_ao_954a21_pus1665669807; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_954a21_pus1665669807 ON public."AO_954A21_PUSH_NOTIFICATION_AO" USING btree ("STATUS_UPDATED_TIME");
+
+
+--
+-- Name: index_ao_a0b856_dai694282958; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_dai694282958 ON public."AO_A0B856_DAILY_COUNTS" USING btree ("WEBHOOK_ID", "EVENT_ID");
+
+
+--
+-- Name: index_ao_a0b856_his1962104142; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_his1962104142 ON public."AO_A0B856_HIST_INVOCATION" USING btree ("WEBHOOK_ID", "OUTCOME");
+
+
+--
+-- Name: index_ao_a0b856_his695669752; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_his695669752 ON public."AO_A0B856_HIST_INVOCATION" USING btree ("FINISH");
+
+
+--
+-- Name: index_ao_a0b856_his695685969; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_his695685969 ON public."AO_A0B856_HIST_INVOCATION" USING btree ("WEBHOOK_ID", "EVENT_ID", "OUTCOME");
+
+
+--
+-- Name: index_ao_a0b856_web1050270930; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_web1050270930 ON public."AO_A0B856_WEBHOOK_CONFIG" USING btree ("WEBHOOKID");
+
+
+--
+-- Name: index_ao_a0b856_web110787824; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_a0b856_web110787824 ON public."AO_A0B856_WEBHOOK_EVENT" USING btree ("WEBHOOKID");
+
+
+--
+-- Name: index_ao_ac3877_rl_1696242418; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_ac3877_rl_1696242418 ON public."AO_AC3877_RL_USER_COUNTER" USING btree ("INTERVAL_START");
+
+
+--
+-- Name: index_ao_ac3877_rl_2023752663; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_ac3877_rl_2023752663 ON public."AO_AC3877_RL_USER_COUNTER" USING btree ("USER_ID");
+
+
+--
+-- Name: index_ao_baf3aa_aoi1066945234; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_baf3aa_aoi1066945234 ON public."AO_BAF3AA_AOINLINE_TASK" USING btree ("CONTENT_ID");
+
+
+--
+-- Name: index_ao_baf3aa_aoi1143751131; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_baf3aa_aoi1143751131 ON public."AO_BAF3AA_AOINLINE_TASK" USING btree ("TASK_STATUS");
+
+
+--
+-- Name: index_ao_baf3aa_aoi1389674752; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_baf3aa_aoi1389674752 ON public."AO_BAF3AA_AOINLINE_TASK" USING btree ("CREATE_DATE");
+
+
+--
+-- Name: index_ao_baf3aa_aoi1395974671; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_baf3aa_aoi1395974671 ON public."AO_BAF3AA_AOINLINE_TASK" USING btree ("CREATOR_USER_KEY");
+
+
+--
+-- Name: index_ao_baf3aa_aoi1978441610; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_baf3aa_aoi1978441610 ON public."AO_BAF3AA_AOINLINE_TASK" USING btree ("DUE_DATE");
+
+
+--
+-- Name: index_ao_baf3aa_aoi866493194; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_baf3aa_aoi866493194 ON public."AO_BAF3AA_AOINLINE_TASK" USING btree ("ASSIGNEE_USER_KEY");
+
+
+--
+-- Name: index_ao_c77861_aud1143993171; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud1143993171 ON public."AO_C77861_AUDIT_CATEGORY_CACHE" USING btree ("CATEGORY");
+
+
+--
+-- Name: index_ao_c77861_aud148201205; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud148201205 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("CATEGORY");
+
+
+--
+-- Name: index_ao_c77861_aud1486016429; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud1486016429 ON public."AO_C77861_AUDIT_ACTION_CACHE" USING btree ("ACTION");
+
+
+--
+-- Name: index_ao_c77861_aud1490488814; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud1490488814 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("USER_ID", "ENTITY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_c77861_aud1896469708; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud1896469708 ON public."AO_C77861_AUDIT_ACTION_CACHE" USING btree ("ACTION_T_KEY");
+
+
+--
+-- Name: index_ao_c77861_aud2071685161; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud2071685161 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("ENTITY_TIMESTAMP", "ID");
+
+
+--
+-- Name: index_ao_c77861_aud237541374; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud237541374 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("PRIMARY_RESOURCE_ID", "PRIMARY_RESOURCE_TYPE", "ENTITY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_c77861_aud265617021; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud265617021 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("ACTION");
+
+
+--
+-- Name: index_ao_c77861_aud470300084; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud470300084 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("SECONDARY_RESOURCE_ID", "SECONDARY_RESOURCE_TYPE", "ENTITY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_c77861_aud477310041; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud477310041 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("RESOURCE_ID_3", "RESOURCE_TYPE_3", "ENTITY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_c77861_aud617238068; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud617238068 ON public."AO_C77861_AUDIT_CATEGORY_CACHE" USING btree ("CATEGORY_T_KEY");
+
+
+--
+-- Name: index_ao_c77861_aud737336300; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud737336300 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("RESOURCE_ID_4", "RESOURCE_TYPE_4", "ENTITY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_c77861_aud76822836; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud76822836 ON public."AO_C77861_AUDIT_DENY_LISTED" USING btree ("ACTION");
+
+
+--
+-- Name: index_ao_c77861_aud96775159; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_c77861_aud96775159 ON public."AO_C77861_AUDIT_ENTITY" USING btree ("RESOURCE_ID_5", "RESOURCE_TYPE_5", "ENTITY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_cc7f60_sec1333700976; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec1333700976 ON public."AO_CC7F60_SEC_MON_ALERT" USING btree ("ALERT_TIMESTAMP");
+
+
+--
+-- Name: index_ao_cc7f60_sec1518281912; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec1518281912 ON public."AO_CC7F60_SEC_MON_ALERT" USING btree ("ALERT_STATUS");
+
+
+--
+-- Name: index_ao_cc7f60_sec1891279861; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec1891279861 ON public."AO_CC7F60_SEC_MON_THREAT_EVENT" USING btree ("ALERT_ID");
+
+
+--
+-- Name: index_ao_cc7f60_sec498379974; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec498379974 ON public."AO_CC7F60_SEC_MON_SCHEDULE_JOB" USING btree ("JOB_KEY");
+
+
+--
+-- Name: index_ao_cc7f60_sec665389423; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec665389423 ON public."AO_CC7F60_SEC_MON_ALERT" USING btree ("UUID");
+
+
+--
+-- Name: index_ao_cc7f60_sec772108013; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_cc7f60_sec772108013 ON public."AO_CC7F60_SEC_MON_THREAT_EVENT" USING btree ("TRIGGERING_USER_KEY");
+
+
+--
+-- Name: index_ao_dc98ae_aoh1533992358; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_dc98ae_aoh1533992358 ON public."AO_DC98AE_AOHELP_TIP" USING btree ("USER_KEY");
+
+
+--
+-- Name: index_ao_dc98ae_aoh411805038; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_dc98ae_aoh411805038 ON public."AO_DC98AE_AOHELP_TIP" USING btree ("DISMISSED_HELP_TIP");
+
+
+--
+-- Name: index_ao_ed669c_see20117222; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_ed669c_see20117222 ON public."AO_ED669C_SEEN_ASSERTIONS" USING btree ("EXPIRY_TIMESTAMP");
+
+
+--
+-- Name: index_ao_ed669c_tot1573649372; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_ed669c_tot1573649372 ON public."AO_ED669C_TOTP_CODES" USING btree ("TOTP_CODE_HASH", "USER_KEY");
+
+
+--
+-- Name: index_ao_ed669c_tot886769927; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX index_ao_ed669c_tot886769927 ON public."AO_ED669C_TOTP_CODES" USING btree ("EXPIRY_TIMESTAMP");
+
+
+--
+-- Name: instance_analysis_control_analysis_type_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX instance_analysis_control_analysis_type_idx ON public.inst_analysis_ctrl USING btree (analysistype);
+
+
+--
+-- Name: j_creationdate_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX j_creationdate_idx ON public.journalentry USING btree (creationdate);
+
+
+--
+-- Name: j_j_name_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX j_j_name_idx ON public.journalentry USING btree (journal_name);
+
+
+--
+-- Name: job_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX job_id_idx ON public.scheduler_run_details USING btree (job_id);
+
+
+--
+-- Name: job_id_start_time_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX job_id_start_time_idx ON public.scheduler_run_details USING btree (job_id, start_time);
+
+
+--
+-- Name: job_last_touch_time_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX job_last_touch_time_idx ON public.background_job_archived USING btree (completion_time);
+
+
+--
+-- Name: job_run_at_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX job_run_at_idx ON public.background_job USING btree (run_at);
+
+
+--
+-- Name: job_runner_key_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX job_runner_key_idx ON public.scheduler_clustered_jobs USING btree (job_runner_key);
+
+
+--
+-- Name: l_contentid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_contentid_idx ON public.links USING btree (contentid);
+
+
+--
+-- Name: l_destpgtitle_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_destpgtitle_idx ON public.links USING btree (destpagetitle);
+
+
+--
+-- Name: l_destspacekey_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_destspacekey_idx ON public.links USING btree (destspacekey);
+
+
+--
+-- Name: l_ldestpgtitle_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_ldestpgtitle_idx ON public.links USING btree (lowerdestpagetitle);
+
+
+--
+-- Name: l_ldestspacekey_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_ldestspacekey_idx ON public.links USING btree (lowerdestspacekey);
+
+
+--
+-- Name: l_name_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_name_idx ON public.label USING btree (name);
+
+
+--
+-- Name: l_namespace_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_namespace_idx ON public.label USING btree (namespace);
+
+
+--
+-- Name: l_owner_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX l_owner_idx ON public.label USING btree (owner);
+
+
+--
+-- Name: like_cdate_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX like_cdate_idx ON public.likes USING btree (creationdate);
+
+
+--
+-- Name: like_cid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX like_cid_idx ON public.likes USING btree (contentid);
+
+
+--
+-- Name: like_username_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX like_username_idx ON public.likes USING btree (username);
+
+
+--
+-- Name: links_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX links_creator_idx ON public.links USING btree (creator);
+
+
+--
+-- Name: links_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX links_lastmodifier_idx ON public.links USING btree (lastmodifier);
+
+
+--
+-- Name: mig_attachment_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_attachment_id_idx ON public.mig_attachment USING btree (attachmentid);
+
+
+--
+-- Name: mig_plan_status_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_plan_status_idx ON public.mig_plan USING btree (executionstatus);
+
+
+--
+-- Name: mig_scan_type_name_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_scan_type_name_idx ON public.mig_incorrect_email USING btree (scanid, checktype, username);
+
+
+--
+-- Name: mig_space_statistic_attachmentcount_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_space_statistic_attachmentcount_idx ON public.mig_space_statistic USING btree (attachmentcount);
+
+
+--
+-- Name: mig_space_statistic_attachmentsize_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_space_statistic_attachmentsize_idx ON public.mig_space_statistic USING btree (attachmentsize);
+
+
+--
+-- Name: mig_space_statistic_estimatedmigrationtime_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_space_statistic_estimatedmigrationtime_idx ON public.mig_space_statistic USING btree (estimatedmigrationtime);
+
+
+--
+-- Name: mig_space_statistic_lastupdated_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_space_statistic_lastupdated_idx ON public.mig_space_statistic USING btree (lastupdated);
+
+
+--
+-- Name: mig_space_statistic_sumofpageblogdraftcount_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_space_statistic_sumofpageblogdraftcount_idx ON public.mig_space_statistic USING btree (sumofpageblogdraftcount);
+
+
+--
+-- Name: mig_space_statistic_teamcalendarcount_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_space_statistic_teamcalendarcount_idx ON public.mig_space_statistic USING btree (teamcalendarcount);
+
+
+--
+-- Name: mig_spaces_cloud_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_spaces_cloud_idx ON public.mig_spaces USING btree (spaceid, cloud);
+
+
+--
+-- Name: mig_step_plan_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_step_plan_idx ON public.mig_step USING btree (planid);
+
+
+--
+-- Name: mig_step_plan_status_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_step_plan_status_idx ON public.mig_step USING btree (planid, executionstatus);
+
+
+--
+-- Name: mig_step_task_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_step_task_id_idx ON public.mig_step USING btree (taskid);
+
+
+--
+-- Name: mig_step_task_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_step_task_idx ON public.mig_step USING btree (taskid, stepindex);
+
+
+--
+-- Name: mig_step_type_plan_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_step_type_plan_id_idx ON public.mig_step USING btree (planid, steptype);
+
+
+--
+-- Name: mig_task_plan_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_task_plan_id_idx ON public.mig_task USING btree (planid);
+
+
+--
+-- Name: mig_task_plan_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_task_plan_idx ON public.mig_task USING btree (planid, taskindex);
+
+
+--
+-- Name: mig_tombstone_account_userkey_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_tombstone_account_userkey_idx ON public.mig_tombstone_account USING btree (userkey);
+
+
+--
+-- Name: mig_work_item_type_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX mig_work_item_type_idx ON public.mig_work_item USING btree (itemtype);
+
+
+--
+-- Name: n_contentid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX n_contentid_idx ON public.notifications USING btree (contentid);
+
+
+--
+-- Name: n_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX n_creator_idx ON public.notifications USING btree (creator);
+
+
+--
+-- Name: n_labelid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX n_labelid_idx ON public.notifications USING btree (labelid);
+
+
+--
+-- Name: n_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX n_lastmodifier_idx ON public.notifications USING btree (lastmodifier);
+
+
+--
+-- Name: n_spaceid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX n_spaceid_idx ON public.notifications USING btree (spaceid);
+
+
+--
+-- Name: n_username_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX n_username_idx ON public.notifications USING btree (username);
+
+
+--
+-- Name: next_run_time_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX next_run_time_idx ON public.scheduler_clustered_jobs USING btree (next_run_time);
+
+
+--
+-- Name: ospe_entityid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX ospe_entityid_idx ON public.os_propertyentry USING btree (entity_id);
+
+
+--
+-- Name: owner_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX owner_idx ON public.backup_restore_job_details USING btree (owner);
+
+
+--
+-- Name: pt_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX pt_creator_idx ON public.pagetemplates USING btree (creator);
+
+
+--
+-- Name: pt_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX pt_lastmodifier_idx ON public.pagetemplates USING btree (lastmodifier);
+
+
+--
+-- Name: pt_prevver_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX pt_prevver_idx ON public.pagetemplates USING btree (prevver);
+
+
+--
+-- Name: pt_spaceid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX pt_spaceid_idx ON public.pagetemplates USING btree (spaceid);
+
+
+--
+-- Name: r_c2c_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX r_c2c_creator_idx ON public.content_relation USING btree (creator);
+
+
+--
+-- Name: r_c2c_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX r_c2c_lastmodifier_idx ON public.content_relation USING btree (lastmodifier);
+
+
+--
+-- Name: r_u2c_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX r_u2c_creator_idx ON public.usercontent_relation USING btree (creator);
+
+
+--
+-- Name: r_u2c_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX r_u2c_lastmodifier_idx ON public.usercontent_relation USING btree (lastmodifier);
+
+
+--
+-- Name: r_u2u_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX r_u2u_creator_idx ON public.user_relation USING btree (creator);
+
+
+--
+-- Name: r_u2u_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX r_u2u_lastmodifier_idx ON public.user_relation USING btree (lastmodifier);
+
+
+--
+-- Name: relation_c2c_cdate_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_c2c_cdate_idx ON public.content_relation USING btree (creationdate);
+
+
+--
+-- Name: relation_c2c_relationname_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_c2c_relationname_idx ON public.content_relation USING btree (relationname);
+
+
+--
+-- Name: relation_c2c_sourcecontent_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_c2c_sourcecontent_idx ON public.content_relation USING btree (sourcecontentid);
+
+
+--
+-- Name: relation_c2c_sourcetype_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_c2c_sourcetype_idx ON public.content_relation USING btree (sourcetype);
+
+
+--
+-- Name: relation_c2c_targetcontent_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_c2c_targetcontent_idx ON public.content_relation USING btree (targetcontentid);
+
+
+--
+-- Name: relation_c2c_targettype_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_c2c_targettype_idx ON public.content_relation USING btree (targettype);
+
+
+--
+-- Name: relation_u2c_cdate_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2c_cdate_idx ON public.usercontent_relation USING btree (creationdate);
+
+
+--
+-- Name: relation_u2c_relationname_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2c_relationname_idx ON public.usercontent_relation USING btree (relationname);
+
+
+--
+-- Name: relation_u2c_sourceuser_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2c_sourceuser_idx ON public.usercontent_relation USING btree (sourceuser);
+
+
+--
+-- Name: relation_u2c_targetcontent_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2c_targetcontent_idx ON public.usercontent_relation USING btree (targetcontentid);
+
+
+--
+-- Name: relation_u2c_targettype_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2c_targettype_idx ON public.usercontent_relation USING btree (targettype);
+
+
+--
+-- Name: relation_u2u_cdate_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2u_cdate_idx ON public.user_relation USING btree (creationdate);
+
+
+--
+-- Name: relation_u2u_relationname_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2u_relationname_idx ON public.user_relation USING btree (relationname);
+
+
+--
+-- Name: relation_u2u_sourceuser_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2u_sourceuser_idx ON public.user_relation USING btree (sourceuser);
+
+
+--
+-- Name: relation_u2u_targetuser_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX relation_u2u_targetuser_idx ON public.user_relation USING btree (targetuser);
+
+
+--
+-- Name: rmt_username_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX rmt_username_idx ON public.remembermetoken USING btree (username);
+
+
+--
+-- Name: s_c_i_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_c_i_idx ON public."SNAPSHOTS" USING btree (contentid, inserted);
+
+
+--
+-- Name: s_creationdate_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_creationdate_idx ON public.spaces USING btree (creationdate);
+
+
+--
+-- Name: s_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_creator_idx ON public.spaces USING btree (creator);
+
+
+--
+-- Name: s_homepage_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_homepage_idx ON public.spaces USING btree (homepage);
+
+
+--
+-- Name: s_i_c_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_i_c_idx ON public."SNAPSHOTS" USING btree (inserted, contentid);
+
+
+--
+-- Name: s_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_lastmodifier_idx ON public.spaces USING btree (lastmodifier);
+
+
+--
+-- Name: s_lspacekey_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_lspacekey_idx ON public.spaces USING btree (lowerspacekey);
+
+
+--
+-- Name: s_spacedescid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_spacedescid_idx ON public.spaces USING btree (spacedescid);
+
+
+--
+-- Name: s_spacestatus_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX s_spacestatus_idx ON public.spaces USING btree (spacestatus);
+
+
+--
+-- Name: single_space_key_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX single_space_key_idx ON public.backup_restore_job_details USING btree (single_space_key);
+
+
+--
+-- Name: sp_comp_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sp_comp_idx ON public.spacepermissions USING btree (permtype, permgroupname);
+
+
+--
+-- Name: sp_creator_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sp_creator_idx ON public.spacepermissions USING btree (creator);
+
+
+--
+-- Name: sp_lastmodifier_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sp_lastmodifier_idx ON public.spacepermissions USING btree (lastmodifier);
+
+
+--
+-- Name: sp_permtype_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sp_permtype_idx ON public.spacepermissions USING btree (permtype);
+
+
+--
+-- Name: sp_pgname_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sp_pgname_idx ON public.spacepermissions USING btree (permgroupname);
+
+
+--
+-- Name: sp_puname_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sp_puname_idx ON public.spacepermissions USING btree (permusername);
+
+
+--
+-- Name: sp_spaceid_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sp_spaceid_idx ON public.spacepermissions USING btree (spaceid);
+
+
+--
+-- Name: space_id_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX space_id_idx ON public.denormalised_space_change_log USING btree (space_id);
+
+
+--
+-- Name: start_time_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX start_time_idx ON public.scheduler_run_details USING btree (start_time);
+
+
+--
+-- Name: start_time_outcome_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX start_time_outcome_idx ON public.scheduler_run_details USING btree (start_time, outcome);
+
+
+--
+-- Name: sync_context_key_idx; Type: INDEX; Schema: public; Owner: confluence
+--
+
+CREATE INDEX sync_context_key_idx ON public.incremental_sync_subscription USING btree (subscription_context_key);
+
+
+--
+-- Name: content_perm_set denormalised_content_perm_set_trigger_on_delete; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_content_perm_set_trigger_on_delete AFTER DELETE ON public.content_perm_set FOR EACH ROW EXECUTE FUNCTION public.content_perm_set_function_for_denormalised_permissions();
+
+
+--
+-- Name: content_perm denormalised_content_permission_trigger_on_delete; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_content_permission_trigger_on_delete AFTER DELETE ON public.content_perm FOR EACH ROW EXECUTE FUNCTION public.content_permission_function_for_denormalised_permissions();
+
+
+--
+-- Name: content_perm denormalised_content_permission_trigger_on_insert; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_content_permission_trigger_on_insert AFTER INSERT ON public.content_perm FOR EACH ROW EXECUTE FUNCTION public.content_permission_function_for_denormalised_permissions();
+
+
+--
+-- Name: content_perm denormalised_content_permission_trigger_on_update; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_content_permission_trigger_on_update AFTER UPDATE ON public.content_perm FOR EACH ROW EXECUTE FUNCTION public.content_permission_function_for_denormalised_permissions();
+
+
+--
+-- Name: content denormalised_content_trigger_on_delete; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_content_trigger_on_delete AFTER DELETE ON public.content FOR EACH ROW EXECUTE FUNCTION public.content_function_for_denormalised_permissions();
+
+
+--
+-- Name: content denormalised_content_trigger_on_insert; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_content_trigger_on_insert AFTER INSERT ON public.content FOR EACH ROW EXECUTE FUNCTION public.content_function_for_denormalised_permissions();
+
+
+--
+-- Name: content denormalised_content_trigger_on_update; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_content_trigger_on_update AFTER UPDATE ON public.content FOR EACH ROW EXECUTE FUNCTION public.content_function_for_denormalised_permissions();
+
+
+--
+-- Name: spacepermissions denormalised_space_permission_trigger_on_delete; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_space_permission_trigger_on_delete AFTER DELETE ON public.spacepermissions FOR EACH ROW EXECUTE FUNCTION public.space_permission_function_for_denormalised_permissions();
+
+
+--
+-- Name: spacepermissions denormalised_space_permission_trigger_on_insert; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_space_permission_trigger_on_insert AFTER INSERT ON public.spacepermissions FOR EACH ROW EXECUTE FUNCTION public.space_permission_function_for_denormalised_permissions();
+
+
+--
+-- Name: spacepermissions denormalised_space_permission_trigger_on_update; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_space_permission_trigger_on_update AFTER UPDATE ON public.spacepermissions FOR EACH ROW EXECUTE FUNCTION public.space_permission_function_for_denormalised_permissions();
+
+
+--
+-- Name: spaces denormalised_space_trigger_on_delete; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_space_trigger_on_delete AFTER DELETE ON public.spaces FOR EACH ROW EXECUTE FUNCTION public.space_function_for_denormalised_permissions();
+
+
+--
+-- Name: spaces denormalised_space_trigger_on_insert; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_space_trigger_on_insert AFTER INSERT ON public.spaces FOR EACH ROW EXECUTE FUNCTION public.space_function_for_denormalised_permissions();
+
+
+--
+-- Name: spaces denormalised_space_trigger_on_update; Type: TRIGGER; Schema: public; Owner: confluence
+--
+
+CREATE TRIGGER denormalised_space_trigger_on_update AFTER UPDATE ON public.spaces FOR EACH ROW EXECUTE FUNCTION public.space_function_for_denormalised_permissions();
+
+
+--
+-- Name: pagetemplates fk18a1d37pvq2o9hu5x3tps97mx; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.pagetemplates
+    ADD CONSTRAINT fk18a1d37pvq2o9hu5x3tps97mx FOREIGN KEY (spaceid) REFERENCES public.spaces(spaceid);
+
+
+--
+-- Name: imagedetails fk2301qiciuq6sc32jaj8tysg3s; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.imagedetails
+    ADD CONSTRAINT fk2301qiciuq6sc32jaj8tysg3s FOREIGN KEY (attachmentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: content_label fk28kifokt21qd9ges0q0wv0fb9; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_label
+    ADD CONSTRAINT fk28kifokt21qd9ges0q0wv0fb9 FOREIGN KEY (pagetemplateid) REFERENCES public.pagetemplates(templateid);
+
+
+--
+-- Name: content_perm_set fk2buunk1hor0i3k0m3nt03hw1w; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm_set
+    ADD CONSTRAINT fk2buunk1hor0i3k0m3nt03hw1w FOREIGN KEY (content_id) REFERENCES public.content(contentid);
+
+
+--
+-- Name: cwd_user_credential_record fk2rfdh2ap00b8mholdsy1b785b; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user_credential_record
+    ADD CONSTRAINT fk2rfdh2ap00b8mholdsy1b785b FOREIGN KEY (user_id) REFERENCES public.cwd_user(id);
+
+
+--
+-- Name: contentproperties fk3fly21xfk13rqh63txw2t6k2v; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.contentproperties
+    ADD CONSTRAINT fk3fly21xfk13rqh63txw2t6k2v FOREIGN KEY (contentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: notifications fk4tccrjamrjvmd2aogl3hklpfj; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk4tccrjamrjvmd2aogl3hklpfj FOREIGN KEY (labelid) REFERENCES public.label(labelid);
+
+
+--
+-- Name: pagetemplates fk4wgwy1dqci8rcwad4tnqbglt8; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.pagetemplates
+    ADD CONSTRAINT fk4wgwy1dqci8rcwad4tnqbglt8 FOREIGN KEY (prevver) REFERENCES public.pagetemplates(templateid);
+
+
+--
+-- Name: spaces fk7ndewmrl3hqcpwc8eydn9mv8j; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spaces
+    ADD CONSTRAINT fk7ndewmrl3hqcpwc8eydn9mv8j FOREIGN KEY (spacedescid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: content_label fk91v3v5nemr532qq4gla9sj9tf; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_label
+    ADD CONSTRAINT fk91v3v5nemr532qq4gla9sj9tf FOREIGN KEY (labelid) REFERENCES public.label(labelid);
+
+
+--
+-- Name: audit_affected_object fk_affected_object_record; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.audit_affected_object
+    ADD CONSTRAINT fk_affected_object_record FOREIGN KEY (auditrecordid) REFERENCES public.auditrecord(auditrecordid);
+
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF fk_ao_54c900_c_template_ref_cb_index_parentid; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_C_TEMPLATE_REF"
+    ADD CONSTRAINT fk_ao_54c900_c_template_ref_cb_index_parentid FOREIGN KEY ("CB_INDEX_PARENTID") REFERENCES public."AO_54C900_CONTENT_BLUEPRINT_AO"("ID");
+
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF fk_ao_54c900_c_template_ref_cb_parentid; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_C_TEMPLATE_REF"
+    ADD CONSTRAINT fk_ao_54c900_c_template_ref_cb_parentid FOREIGN KEY ("CB_PARENTID") REFERENCES public."AO_54C900_CONTENT_BLUEPRINT_AO"("ID");
+
+
+--
+-- Name: AO_54C900_C_TEMPLATE_REF fk_ao_54c900_c_template_ref_parent_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_C_TEMPLATE_REF"
+    ADD CONSTRAINT fk_ao_54c900_c_template_ref_parent_id FOREIGN KEY ("PARENT_ID") REFERENCES public."AO_54C900_C_TEMPLATE_REF"("ID");
+
+
+--
+-- Name: AO_54C900_SPACE_BLUEPRINT_AO fk_ao_54c900_space_blueprint_ao_home_page_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_54C900_SPACE_BLUEPRINT_AO"
+    ADD CONSTRAINT fk_ao_54c900_space_blueprint_ao_home_page_id FOREIGN KEY ("HOME_PAGE_ID") REFERENCES public."AO_54C900_C_TEMPLATE_REF"("ID");
+
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY fk_ao_563aee_activity_entity_actor_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTIVITY_ENTITY"
+    ADD CONSTRAINT fk_ao_563aee_activity_entity_actor_id FOREIGN KEY ("ACTOR_ID") REFERENCES public."AO_563AEE_ACTOR_ENTITY"("ID");
+
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY fk_ao_563aee_activity_entity_icon_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTIVITY_ENTITY"
+    ADD CONSTRAINT fk_ao_563aee_activity_entity_icon_id FOREIGN KEY ("ICON_ID") REFERENCES public."AO_563AEE_MEDIA_LINK_ENTITY"("ID");
+
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY fk_ao_563aee_activity_entity_object_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTIVITY_ENTITY"
+    ADD CONSTRAINT fk_ao_563aee_activity_entity_object_id FOREIGN KEY ("OBJECT_ID") REFERENCES public."AO_563AEE_OBJECT_ENTITY"("ID");
+
+
+--
+-- Name: AO_563AEE_ACTIVITY_ENTITY fk_ao_563aee_activity_entity_target_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_ACTIVITY_ENTITY"
+    ADD CONSTRAINT fk_ao_563aee_activity_entity_target_id FOREIGN KEY ("TARGET_ID") REFERENCES public."AO_563AEE_TARGET_ENTITY"("ID");
+
+
+--
+-- Name: AO_563AEE_OBJECT_ENTITY fk_ao_563aee_object_entity_image_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_OBJECT_ENTITY"
+    ADD CONSTRAINT fk_ao_563aee_object_entity_image_id FOREIGN KEY ("IMAGE_ID") REFERENCES public."AO_563AEE_MEDIA_LINK_ENTITY"("ID");
+
+
+--
+-- Name: AO_563AEE_TARGET_ENTITY fk_ao_563aee_target_entity_image_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_563AEE_TARGET_ENTITY"
+    ADD CONSTRAINT fk_ao_563aee_target_entity_image_id FOREIGN KEY ("IMAGE_ID") REFERENCES public."AO_563AEE_MEDIA_LINK_ENTITY"("ID");
+
+
+--
+-- Name: AO_7CDE43_EVENT fk_ao_7cde43_event_notification_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_EVENT"
+    ADD CONSTRAINT fk_ao_7cde43_event_notification_id FOREIGN KEY ("NOTIFICATION_ID") REFERENCES public."AO_7CDE43_NOTIFICATION"("ID");
+
+
+--
+-- Name: AO_7CDE43_FILTER_PARAM fk_ao_7cde43_filter_param_notification_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_FILTER_PARAM"
+    ADD CONSTRAINT fk_ao_7cde43_filter_param_notification_id FOREIGN KEY ("NOTIFICATION_ID") REFERENCES public."AO_7CDE43_NOTIFICATION"("ID");
+
+
+--
+-- Name: AO_7CDE43_NOTIFICATION fk_ao_7cde43_notification_notification_scheme_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_NOTIFICATION"
+    ADD CONSTRAINT fk_ao_7cde43_notification_notification_scheme_id FOREIGN KEY ("NOTIFICATION_SCHEME_ID") REFERENCES public."AO_7CDE43_NOTIFICATION_SCHEME"("ID");
+
+
+--
+-- Name: AO_7CDE43_RECIPIENT fk_ao_7cde43_recipient_notification_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_RECIPIENT"
+    ADD CONSTRAINT fk_ao_7cde43_recipient_notification_id FOREIGN KEY ("NOTIFICATION_ID") REFERENCES public."AO_7CDE43_NOTIFICATION"("ID");
+
+
+--
+-- Name: AO_7CDE43_SERVER_PARAM fk_ao_7cde43_server_param_server_config_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_7CDE43_SERVER_PARAM"
+    ADD CONSTRAINT fk_ao_7cde43_server_param_server_config_id FOREIGN KEY ("SERVER_CONFIG_ID") REFERENCES public."AO_7CDE43_SERVER_CONFIG"("ID");
+
+
+--
+-- Name: AO_9412A1_USER_APP_LINK fk_ao_9412a1_user_app_link_user_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_9412A1_USER_APP_LINK"
+    ADD CONSTRAINT fk_ao_9412a1_user_app_link_user_id FOREIGN KEY ("USER_ID") REFERENCES public."AO_9412A1_AOUSER"("ID");
+
+
+--
+-- Name: AO_950DC3_TC_CUSTOM_EV_TYPES fk_ao_950dc3_tc_custom_ev_types_belong_sub_calendar_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_CUSTOM_EV_TYPES"
+    ADD CONSTRAINT fk_ao_950dc3_tc_custom_ev_types_belong_sub_calendar_id FOREIGN KEY ("BELONG_SUB_CALENDAR_ID") REFERENCES public."AO_950DC3_TC_SUBCALS"("ID");
+
+
+--
+-- Name: AO_950DC3_TC_DISABLE_EV_TYPES fk_ao_950dc3_tc_disable_ev_types_sub_calendar_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_DISABLE_EV_TYPES"
+    ADD CONSTRAINT fk_ao_950dc3_tc_disable_ev_types_sub_calendar_id FOREIGN KEY ("SUB_CALENDAR_ID") REFERENCES public."AO_950DC3_TC_SUBCALS"("ID");
+
+
+--
+-- Name: AO_950DC3_TC_JIRA_REMI_EVENTS fk_ao_950dc3_tc_jira_remi_events_sub_calendar_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_JIRA_REMI_EVENTS"
+    ADD CONSTRAINT fk_ao_950dc3_tc_jira_remi_events_sub_calendar_id FOREIGN KEY ("SUB_CALENDAR_ID") REFERENCES public."AO_950DC3_TC_SUBCALS"("ID");
+
+
+--
+-- Name: AO_950DC3_TC_REMINDER_USERS fk_ao_950dc3_tc_reminder_users_sub_calendar_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_REMINDER_USERS"
+    ADD CONSTRAINT fk_ao_950dc3_tc_reminder_users_sub_calendar_id FOREIGN KEY ("SUB_CALENDAR_ID") REFERENCES public."AO_950DC3_TC_SUBCALS"("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS_IN_SPACE fk_ao_950dc3_tc_subcals_in_space_sub_calendar_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS_IN_SPACE"
+    ADD CONSTRAINT fk_ao_950dc3_tc_subcals_in_space_sub_calendar_id FOREIGN KEY ("SUB_CALENDAR_ID") REFERENCES public."AO_950DC3_TC_SUBCALS"("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS fk_ao_950dc3_tc_subcals_parent_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS"
+    ADD CONSTRAINT fk_ao_950dc3_tc_subcals_parent_id FOREIGN KEY ("PARENT_ID") REFERENCES public."AO_950DC3_TC_SUBCALS"("ID");
+
+
+--
+-- Name: AO_950DC3_TC_SUBCALS fk_ao_950dc3_tc_subcals_subscription_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_950DC3_TC_SUBCALS"
+    ADD CONSTRAINT fk_ao_950dc3_tc_subcals_subscription_id FOREIGN KEY ("SUBSCRIPTION_ID") REFERENCES public."AO_950DC3_TC_SUBCALS"("ID");
+
+
+--
+-- Name: AO_CC7F60_SEC_MON_THREAT_EVENT fk_ao_cc7f60_sec_mon_threat_event_alert_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public."AO_CC7F60_SEC_MON_THREAT_EVENT"
+    ADD CONSTRAINT fk_ao_cc7f60_sec_mon_threat_event_alert_id FOREIGN KEY ("ALERT_ID") REFERENCES public."AO_CC7F60_SEC_MON_ALERT"("ID");
+
+
+--
+-- Name: cwd_app_dir_mapping fk_app_dir_dir; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_mapping
+    ADD CONSTRAINT fk_app_dir_dir FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: cwd_app_dir_group_mapping fk_app_dir_group_app; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_group_mapping
+    ADD CONSTRAINT fk_app_dir_group_app FOREIGN KEY (application_id) REFERENCES public.cwd_application(id);
+
+
+--
+-- Name: cwd_app_dir_group_mapping fk_app_dir_group_dir; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_group_mapping
+    ADD CONSTRAINT fk_app_dir_group_dir FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: cwd_app_dir_group_mapping fk_app_dir_group_mapping; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_group_mapping
+    ADD CONSTRAINT fk_app_dir_group_mapping FOREIGN KEY (app_dir_mapping_id) REFERENCES public.cwd_app_dir_mapping(id);
+
+
+--
+-- Name: cwd_app_dir_operation fk_app_dir_mapping; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_operation
+    ADD CONSTRAINT fk_app_dir_mapping FOREIGN KEY (app_dir_mapping_id) REFERENCES public.cwd_app_dir_mapping(id);
+
+
+--
+-- Name: cwd_application_address fk_application_address; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_application_address
+    ADD CONSTRAINT fk_application_address FOREIGN KEY (application_id) REFERENCES public.cwd_application(id);
+
+
+--
+-- Name: cwd_application_attribute fk_application_attribute; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_application_attribute
+    ADD CONSTRAINT fk_application_attribute FOREIGN KEY (application_id) REFERENCES public.cwd_application(id);
+
+
+--
+-- Name: content_relation fk_c2crelation_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_relation
+    ADD CONSTRAINT fk_c2crelation_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: content_relation fk_c2crelation_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_relation
+    ADD CONSTRAINT fk_c2crelation_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: audit_changed_value fk_changed_value_record; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.audit_changed_value
+    ADD CONSTRAINT fk_changed_value_record FOREIGN KEY (auditrecordid) REFERENCES public.auditrecord(auditrecordid);
+
+
+--
+-- Name: cwd_membership fk_child_grp; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_membership
+    ADD CONSTRAINT fk_child_grp FOREIGN KEY (child_group_id) REFERENCES public.cwd_group(id);
+
+
+--
+-- Name: cwd_membership fk_child_user; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_membership
+    ADD CONSTRAINT fk_child_user FOREIGN KEY (child_user_id) REFERENCES public.cwd_user(id);
+
+
+--
+-- Name: content fk_content_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fk_content_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: content_label fk_content_label_owner; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_label
+    ADD CONSTRAINT fk_content_label_owner FOREIGN KEY (owner) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: content fk_content_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fk_content_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: content_perm fk_content_perm_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm
+    ADD CONSTRAINT fk_content_perm_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: content_perm fk_content_perm_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm
+    ADD CONSTRAINT fk_content_perm_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: content_perm fk_content_perm_username; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm
+    ADD CONSTRAINT fk_content_perm_username FOREIGN KEY (username) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: content fk_content_username; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fk_content_username FOREIGN KEY (username) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: cwd_directory_attribute fk_directory_attribute; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_directory_attribute
+    ADD CONSTRAINT fk_directory_attribute FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: cwd_group fk_directory_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_group
+    ADD CONSTRAINT fk_directory_id FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: cwd_directory_operation fk_directory_operation; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_directory_operation
+    ADD CONSTRAINT fk_directory_operation FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: follow_connections fk_follow_connections_followee; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.follow_connections
+    ADD CONSTRAINT fk_follow_connections_followee FOREIGN KEY (followee) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: follow_connections fk_follow_connections_follower; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.follow_connections
+    ADD CONSTRAINT fk_follow_connections_follower FOREIGN KEY (follower) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: cwd_group_attribute fk_group_attr_dir_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_group_attribute
+    ADD CONSTRAINT fk_group_attr_dir_id FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: cwd_group_attribute fk_group_attr_id_group_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_group_attribute
+    ADD CONSTRAINT fk_group_attr_id_group_id FOREIGN KEY (group_id) REFERENCES public.cwd_group(id);
+
+
+--
+-- Name: incremental_sync_subscription fk_inc_sync_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.incremental_sync_subscription
+    ADD CONSTRAINT fk_inc_sync_creator FOREIGN KEY (subscription_creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: label fk_label_owner; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.label
+    ADD CONSTRAINT fk_label_owner FOREIGN KEY (owner) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: likes fk_likes_username; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT fk_likes_username FOREIGN KEY (username) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: links fk_links_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.links
+    ADD CONSTRAINT fk_links_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: links fk_links_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.links
+    ADD CONSTRAINT fk_links_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: logininfo fk_logininfo_username; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.logininfo
+    ADD CONSTRAINT fk_logininfo_username FOREIGN KEY (username) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: node_network fk_node_network_node_infrastructure; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.node_network
+    ADD CONSTRAINT fk_node_network_node_infrastructure FOREIGN KEY (node_id) REFERENCES public.node_infrastructure(node_id);
+
+
+--
+-- Name: notifications fk_notifications_content; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_notifications_content FOREIGN KEY (contentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: notifications fk_notifications_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_notifications_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: notifications fk_notifications_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_notifications_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: notifications fk_notifications_username; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_notifications_username FOREIGN KEY (username) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: pagetemplates fk_pagetemplates_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.pagetemplates
+    ADD CONSTRAINT fk_pagetemplates_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: pagetemplates fk_pagetemplates_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.pagetemplates
+    ADD CONSTRAINT fk_pagetemplates_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: cwd_membership fk_parent_grp; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_membership
+    ADD CONSTRAINT fk_parent_grp FOREIGN KEY (parent_id) REFERENCES public.cwd_group(id);
+
+
+--
+-- Name: usercontent_relation fk_relation_u2cuser; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.usercontent_relation
+    ADD CONSTRAINT fk_relation_u2cuser FOREIGN KEY (sourceuser) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: user_relation fk_relation_u2ususer; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_relation
+    ADD CONSTRAINT fk_relation_u2ususer FOREIGN KEY (sourceuser) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: user_relation fk_relation_u2utuser; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_relation
+    ADD CONSTRAINT fk_relation_u2utuser FOREIGN KEY (targetuser) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: spacepermissions fk_spacepermissions_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spacepermissions
+    ADD CONSTRAINT fk_spacepermissions_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: spacepermissions fk_spacepermissions_lastmodifi; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spacepermissions
+    ADD CONSTRAINT fk_spacepermissions_lastmodifi FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: spacepermissions fk_spacepermissions_permuserna; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spacepermissions
+    ADD CONSTRAINT fk_spacepermissions_permuserna FOREIGN KEY (permusername) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: spaces fk_spaces_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spaces
+    ADD CONSTRAINT fk_spaces_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: spaces fk_spaces_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spaces
+    ADD CONSTRAINT fk_spaces_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: cwd_synchronisation_status fk_sync_status_dir; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_synchronisation_status
+    ADD CONSTRAINT fk_sync_status_dir FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: cwd_synchronisation_token fk_sync_token_dir; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_synchronisation_token
+    ADD CONSTRAINT fk_sync_token_dir FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: usercontent_relation fk_u2crelation_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.usercontent_relation
+    ADD CONSTRAINT fk_u2crelation_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: usercontent_relation fk_u2crelation_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.usercontent_relation
+    ADD CONSTRAINT fk_u2crelation_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: user_relation fk_u2urelation_creator; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_relation
+    ADD CONSTRAINT fk_u2urelation_creator FOREIGN KEY (creator) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: user_relation fk_u2urelation_lastmodifier; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.user_relation
+    ADD CONSTRAINT fk_u2urelation_lastmodifier FOREIGN KEY (lastmodifier) REFERENCES public.user_mapping(user_key);
+
+
+--
+-- Name: cwd_user_attribute fk_user_attr_dir_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user_attribute
+    ADD CONSTRAINT fk_user_attr_dir_id FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: cwd_user_attribute fk_user_attribute_id_user_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user_attribute
+    ADD CONSTRAINT fk_user_attribute_id_user_id FOREIGN KEY (user_id) REFERENCES public.cwd_user(id);
+
+
+--
+-- Name: cwd_user fk_user_dir_id; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_user
+    ADD CONSTRAINT fk_user_dir_id FOREIGN KEY (directory_id) REFERENCES public.cwd_directory(id);
+
+
+--
+-- Name: content fkal6o8xwypd4mdgid9b9nw1q51; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fkal6o8xwypd4mdgid9b9nw1q51 FOREIGN KEY (parentcommentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: likes fkbdoiwi70i7o3tc7hpbu4vnlmy; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT fkbdoiwi70i7o3tc7hpbu4vnlmy FOREIGN KEY (contentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: spacepermissions fkbi3x723m8fbgoko3s84f9oddl; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spacepermissions
+    ADD CONSTRAINT fkbi3x723m8fbgoko3s84f9oddl FOREIGN KEY (spaceid) REFERENCES public.spaces(spaceid);
+
+
+--
+-- Name: content_perm fkde5wl1cur1se9281gc0dsawtb; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_perm
+    ADD CONSTRAINT fkde5wl1cur1se9281gc0dsawtb FOREIGN KEY (cps_id) REFERENCES public.content_perm_set(id);
+
+
+--
+-- Name: content_relation fke2a00urqyxmyaj3jop48ub8qd; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_relation
+    ADD CONSTRAINT fke2a00urqyxmyaj3jop48ub8qd FOREIGN KEY (sourcecontentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: content fkfiyhka48c7e776qj90klbpm9q; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fkfiyhka48c7e776qj90klbpm9q FOREIGN KEY (parentccid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: content_label fki8cvahsu6d2y285vtrp4nhc3w; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_label
+    ADD CONSTRAINT fki8cvahsu6d2y285vtrp4nhc3w FOREIGN KEY (contentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: content_relation fkipr00838mkln699cimd7rg17x; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content_relation
+    ADD CONSTRAINT fkipr00838mkln699cimd7rg17x FOREIGN KEY (targetcontentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: spaces fkj4cu5838aqcbw57wy7ckt0t7o; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.spaces
+    ADD CONSTRAINT fkj4cu5838aqcbw57wy7ckt0t7o FOREIGN KEY (homepage) REFERENCES public.content(contentid);
+
+
+--
+-- Name: attachmentdata fkjnh4yvwen0176qsvh4rpsry2j; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.attachmentdata
+    ADD CONSTRAINT fkjnh4yvwen0176qsvh4rpsry2j FOREIGN KEY (attachmentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: trustedapprestriction fkjofk5643721eftow3njwr73aa; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.trustedapprestriction
+    ADD CONSTRAINT fkjofk5643721eftow3njwr73aa FOREIGN KEY (trustedappid) REFERENCES public.trustedapp(trustedappid);
+
+
+--
+-- Name: content fkk6kbb7suqeloj82nx7xdcd803; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fkk6kbb7suqeloj82nx7xdcd803 FOREIGN KEY (prevver) REFERENCES public.content(contentid);
+
+
+--
+-- Name: confancestors fklmhsipswol8imeqsg906ih62x; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.confancestors
+    ADD CONSTRAINT fklmhsipswol8imeqsg906ih62x FOREIGN KEY (descendentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: content fklmweu06nft59g7mw1i1myorys; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fklmweu06nft59g7mw1i1myorys FOREIGN KEY (spaceid) REFERENCES public.spaces(spaceid);
+
+
+--
+-- Name: trustedapp fkm7n581y7groa49tygapkmnfiv; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.trustedapp
+    ADD CONSTRAINT fkm7n581y7groa49tygapkmnfiv FOREIGN KEY (public_key_id) REFERENCES public.keystore(keyid);
+
+
+--
+-- Name: bodycontent fkmbyiayesfp1eiq6gmol3mk3yl; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.bodycontent
+    ADD CONSTRAINT fkmbyiayesfp1eiq6gmol3mk3yl FOREIGN KEY (contentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: notifications fkmqe1phe52xwqc4hk4ib8p9eh6; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fkmqe1phe52xwqc4hk4ib8p9eh6 FOREIGN KEY (spaceid) REFERENCES public.spaces(spaceid);
+
+
+--
+-- Name: links fkn8mycko8frerne7brh5nr1csr; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.links
+    ADD CONSTRAINT fkn8mycko8frerne7brh5nr1csr FOREIGN KEY (contentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: content fkoxtt893weujkyh0iicoxsm37v; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fkoxtt893weujkyh0iicoxsm37v FOREIGN KEY (parentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: usercontent_relation fkpwgl85a266iie5i0adu8bdbcv; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.usercontent_relation
+    ADD CONSTRAINT fkpwgl85a266iie5i0adu8bdbcv FOREIGN KEY (targetcontentid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: confancestors fksqb1af9h7fvqtgy73o8jdcuue; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.confancestors
+    ADD CONSTRAINT fksqb1af9h7fvqtgy73o8jdcuue FOREIGN KEY (ancestorid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: cwd_app_dir_mapping fkstekj41875rgsw8otffrayhpl; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.cwd_app_dir_mapping
+    ADD CONSTRAINT fkstekj41875rgsw8otffrayhpl FOREIGN KEY (application_id) REFERENCES public.cwd_application(id);
+
+
+--
+-- Name: content fkwjyn6091q3l1gl7bh143ma2a; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT fkwjyn6091q3l1gl7bh143ma2a FOREIGN KEY (pageid) REFERENCES public.content(contentid);
+
+
+--
+-- Name: mig_attachment mig_attachment_site_fk; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_attachment
+    ADD CONSTRAINT mig_attachment_site_fk FOREIGN KEY (cloudid) REFERENCES public.mig_cloud_site(cloudid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: mig_plan mig_plan_site_fk; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_plan
+    ADD CONSTRAINT mig_plan_site_fk FOREIGN KEY (cloudid) REFERENCES public.mig_cloud_site(cloudid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: mig_step mig_step_plan_fk; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_step
+    ADD CONSTRAINT mig_step_plan_fk FOREIGN KEY (planid) REFERENCES public.mig_plan(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: mig_step mig_step_task_fk; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_step
+    ADD CONSTRAINT mig_step_task_fk FOREIGN KEY (taskid) REFERENCES public.mig_task(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- Name: mig_task mig_task_plan_fk; Type: FK CONSTRAINT; Schema: public; Owner: confluence
+--
+
+ALTER TABLE ONLY public.mig_task
+    ADD CONSTRAINT mig_task_plan_fk FOREIGN KEY (planid) REFERENCES public.mig_plan(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 
 --
 -- PostgreSQL database dump complete
