@@ -8,10 +8,10 @@ type ConfluenceUser struct {
 }
 
 type confluenceUserList struct {
-	Start   int
-	Limit   int
-	Size    int
-	Results []ConfluenceUser
+	Start   int              `json:"start"`
+	Limit   int              `json:"limit"`
+	Size    int              `json:"size"`
+	Results []ConfluenceUser `json:"results"`
 }
 
 type ConfluenceGroup struct {
@@ -20,10 +20,10 @@ type ConfluenceGroup struct {
 }
 
 type confluenceGroupList struct {
-	Start   int
-	Limit   int
-	Size    int
-	Results []ConfluenceGroup
+	Start   int               `json:"start"`
+	Limit   int               `json:"limit"`
+	Size    int               `json:"size"`
+	Results []ConfluenceGroup `json:"results"`
 }
 
 type ConfluenceSpaceDescriptionValue struct {
@@ -44,10 +44,10 @@ type ConfluenceSpace struct {
 }
 
 type confluenceSpaceList struct {
-	Start   int
-	Limit   int
-	Size    int
-	Results []ConfluenceSpace
+	Start   int               `json:"start"`
+	Limit   int               `json:"limit"`
+	Size    int               `json:"size"`
+	Results []ConfluenceSpace `json:"results"`
 }
 
 type ConfluenceSpacePermission struct {
