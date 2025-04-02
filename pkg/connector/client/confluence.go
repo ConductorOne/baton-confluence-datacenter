@@ -523,11 +523,10 @@ func (c *ConfluenceClient) delete(
 
 func (c *ConfluenceClient) genURLNonPaginated(
 	path string,
-	pathParameters ...any,
+	pathParameters ...string,
 ) (*url.URL, error) {
 	for _, param := range pathParameters {
-		escaped := url.PathEscape(param.(string))
-		path = strings.Replace(path, "%s", escaped, 1)
+		path = strings.Replace(path, "%s", param, 1)
 	}
 	parsed, err := url.Parse(path)
 	if err != nil {
@@ -540,11 +539,10 @@ func (c *ConfluenceClient) genURLNonPaginated(
 func (c *ConfluenceClient) genURL(
 	pageToken string,
 	path string,
-	pathParameters ...any,
+	pathParameters ...string,
 ) (*url.URL, error) {
 	for _, param := range pathParameters {
-		escaped := url.PathEscape(param.(string))
-		path = strings.Replace(path, "%s", escaped, 1)
+		path = strings.Replace(path, "%s", param, 1)
 	}
 	parsed, err := url.Parse(path)
 	if err != nil {
