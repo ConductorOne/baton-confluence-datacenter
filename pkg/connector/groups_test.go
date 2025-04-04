@@ -73,20 +73,12 @@ func TestGroupsList(t *testing.T) {
 	})
 
 	t.Run("should get users", func(t *testing.T) {
-		MakeGetUsersCall = func(
-			ctx context.Context,
-			confluenceClient client.ConfluenceClient,
-			pageToken string,
-		) (
-			[]client.ConfluenceUser,
-			string,
-			*v2.RateLimitDescription,
-			error,
-		) {
+		MakeGetUsersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
 			users := []client.ConfluenceUser{
 				{
-					DisplayName: "marcos",
-					UserKey:     "1",
+					Username:    "user1",
+					UserKey:     "key1",
+					DisplayName: "User One",
 				},
 			}
 			return users, "", nil, nil
@@ -103,5 +95,250 @@ func TestGroupsList(t *testing.T) {
 		require.NotNil(t, token)
 		AssertNoRatelimitAnnotations(t, annotations)
 		require.Nil(t, err)
+	})
+}
+
+// TestGroupsWithSlashes tests the groups with slashes functionality
+func TestGroupsWithSlashes(t *testing.T) {
+	ctx := context.Background()
+
+	// Test 1 - List: Enable slash support when group with slash is found
+	t.Run("should enable slash support when group with slash is found", func(t *testing.T) {
+		// Reset the global state
+		enableSupportSlashInGroupName = false
+		ResetGroupMembersCache()
+
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		// Mock the GetGroups call to return a group with a slash
+		MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			groups := []client.ConfluenceGroup{
+				{
+					Name: "team/engineering",
+					Type: "group",
+				},
+			}
+			return groups, "", nil, nil
+		}
+
+		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
+
+		require.NoError(t, err)
+		require.True(t, enableSupportSlashInGroupName)
+		require.Len(t, resources, 1)
+		require.Equal(t, "team/engineering", resources[0].DisplayName)
+	})
+
+	// Test 2 - List: Do not enable slash support if there are no groups with slashes
+	t.Run("should not enable slash support if there are no groups with slashes", func(t *testing.T) {
+		// Reset the global state
+		enableSupportSlashInGroupName = false
+		ResetGroupMembersCache()
+
+		MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			return []client.ConfluenceGroup{
+				{
+					Name: "team",
+					Type: "group",
+				},
+			}, "", nil, nil
+		}
+
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
+
+		require.NoError(t, err)
+		require.False(t, enableSupportSlashInGroupName)
+		require.Len(t, resources, 1)
+		require.Equal(t, "team", resources[0].DisplayName)
+	})
+
+	// Test 3 - Grants: Not use cache if slash support is disabled
+	t.Run("should not use cache if slash support is disabled", func(t *testing.T) {
+		// Reset the global state
+		enableSupportSlashInGroupName = false
+		ResetGroupMembersCache()
+
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		MakeGetGroupMembersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
+			return []client.ConfluenceUser{
+				{
+					Username:    "user1",
+					UserKey:     "key1",
+					DisplayName: "User One",
+				},
+			}, "", nil, nil
+		}
+
+		grants, _, _, err := groupBuilder.Grants(ctx, &v2.Resource{
+			Id: &v2.ResourceId{
+				Resource: "team",
+			},
+			DisplayName: "team",
+		}, &pagination.Token{})
+
+		require.NoError(t, err)
+		require.Len(t, grants, 1)
+		require.Equal(t, "key1", grants[0].Principal.Id.Resource)
+		require.Equal(t, "team", grants[0].Entitlement.Resource.DisplayName)
+	})
+
+	// Test 4 - Grants: Use cache if slash support is enabled
+	t.Run("should use cache for groups with slashes", func(t *testing.T) {
+		// Reset the global state
+		enableSupportSlashInGroupName = true
+		ResetGroupMembersCache()
+
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		// Mock GetUsers to return test users
+		MakeGetUsersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
+			users := []client.ConfluenceUser{
+				{
+					Username:    "user1",
+					UserKey:     "key1",
+					DisplayName: "User One",
+				},
+			}
+			return users, "", nil, nil
+		}
+
+		// Mock GetGroupsByUserKey to return groups for the user
+		MakeGetGroupsByUserKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, userKey string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			groups := []client.ConfluenceGroup{
+				{
+					Name: "team/engineering",
+					Type: "group",
+				},
+			}
+			return groups, "", nil, nil
+		}
+
+		grants, _, _, err := groupBuilder.Grants(ctx, &v2.Resource{
+			Id: &v2.ResourceId{
+				Resource: "team/engineering",
+			},
+			DisplayName: "team/engineering",
+		}, &pagination.Token{})
+
+		require.NoError(t, err)
+		require.Len(t, grants, 1)
+		require.Equal(t, "key1", grants[0].Principal.Id.Resource)
+		require.Equal(t, "team/engineering", grants[0].Entitlement.Resource.DisplayName)
+	})
+
+	// Test 5 - Grant: Reject grant operation for group with slash
+	t.Run("should reject grant operation for group with slash", func(t *testing.T) {
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		_, err := groupBuilder.Grant(ctx, &v2.Resource{
+			Id: &v2.ResourceId{
+				ResourceType: userResourceType.Id,
+				Resource:     "user1",
+			},
+		}, &v2.Entitlement{
+			Resource: &v2.Resource{
+				Id: &v2.ResourceId{
+					Resource: "team/engineering",
+				},
+			},
+		})
+
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "groups containing '/' in their name are not supported for grant operations")
+	})
+
+	// Test 6 - Grant: Reject grant operation for user with slash
+	t.Run("should reject grant operation for user with slash", func(t *testing.T) {
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		MakeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
+			return &client.ConfluenceUser{
+				Username:    "user1/engineering",
+				UserKey:     "user1/engineering",
+				DisplayName: "User One",
+			}, nil
+		}
+		_, err := groupBuilder.Grant(ctx, &v2.Resource{
+			Id: &v2.ResourceId{
+				ResourceType: userResourceType.Id,
+				Resource:     "user1/engineering",
+			},
+		}, &v2.Entitlement{
+			Resource: &v2.Resource{
+				Id: &v2.ResourceId{
+					Resource: "team engineering",
+				},
+			},
+		})
+
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "users with '/' in their username are not supported for grant operations")
+	})
+
+	// Test 7 - Revoke: Reject revoke operation for group with slash
+	t.Run("should reject revoke operation for group with slash", func(t *testing.T) {
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		_, err := groupBuilder.Revoke(ctx, &v2.Grant{
+			Principal: &v2.Resource{
+				Id: &v2.ResourceId{
+					ResourceType: userResourceType.Id,
+					Resource:     "user1",
+				},
+			},
+			Entitlement: &v2.Entitlement{
+				Resource: &v2.Resource{
+					Id: &v2.ResourceId{
+						Resource: "team/engineering",
+					},
+				},
+			},
+		})
+
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "groups with '/' in their name are not supported for revoke operations")
+	})
+
+	// Test 8 - Revoke: Reject revoke operation for user with slash
+	t.Run("should reject revoke operation for user with slash", func(t *testing.T) {
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient)
+
+		MakeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
+			return &client.ConfluenceUser{
+				Username:    "user1/engineering",
+				UserKey:     "user1/engineering",
+				DisplayName: "User One",
+			}, nil
+		}
+
+		_, err := groupBuilder.Revoke(ctx, &v2.Grant{
+			Principal: &v2.Resource{
+				Id: &v2.ResourceId{
+					ResourceType: userResourceType.Id,
+					Resource:     "user1/engineering",
+				},
+			},
+			Entitlement: &v2.Entitlement{
+				Resource: &v2.Resource{
+					Id: &v2.ResourceId{
+						Resource: "team engineering",
+					},
+				},
+			},
+		})
+
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "users with '/' in their username are not supported for revoke operations")
 	})
 }

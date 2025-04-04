@@ -42,6 +42,11 @@ func (o *groupBuilder) ResourceType(_ context.Context) *v2.ResourceType {
 	return groupResourceType
 }
 
+// MakeGetGroupsCall is a hook for mocking the client in tests.
+var MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+	return confluenceClient.GetGroups(ctx, pageToken)
+}
+
 // List returns all the groups from the database as resource objects.
 // Groups include a GroupTrait because they are the 'shape' of a standard group.
 func (o *groupBuilder) List(
@@ -62,7 +67,7 @@ func (o *groupBuilder) List(
 		enableSupportSlashInGroupName = false
 	}
 
-	groups, nextToken, ratelimitData, err := o.client.GetGroups(ctx, pToken.Token)
+	groups, nextToken, ratelimitData, err := MakeGetGroupsCall(ctx, o.client, pToken.Token)
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	if err != nil {
 		return nil, "", outputAnnotations, err
@@ -129,6 +134,10 @@ func (o *groupBuilder) Entitlements(
 	return entitlements, "", nil, nil
 }
 
+var MakeGetGroupMembersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
+	return confluenceClient.GetGroupMembers(ctx, pageToken, groupName)
+}
+
 // Grants the grants for a given group are the current memberships.
 func (o *groupBuilder) Grants(
 	ctx context.Context,
@@ -176,8 +185,9 @@ func (o *groupBuilder) Grants(
 		}
 
 		var ratelimitData *v2.RateLimitDescription
-		users, token, ratelimitData, err = o.client.GetGroupMembers(
+		users, token, ratelimitData, err = MakeGetGroupMembersCall(
 			ctx,
+			o.client,
 			bag.PageToken(),
 			resource.DisplayName,
 		)
@@ -205,6 +215,11 @@ func (o *groupBuilder) Grants(
 	}
 
 	return groups, nextPage, outputAnnotations, nil
+}
+
+// MakeGetUserByKeyCall is a hook for mocking the client in tests.
+var MakeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
+	return confluenceClient.GetUserByKey(ctx, userKey)
 }
 
 func (o *groupBuilder) Grant(
@@ -235,7 +250,7 @@ func (o *groupBuilder) Grant(
 		)
 	}
 
-	userDetail, err := o.client.GetUserByKey(ctx, principal.Id.Resource)
+	userDetail, err := MakeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
 	if err != nil {
 		return nil, err
 	}
@@ -291,7 +306,7 @@ func (o *groupBuilder) Revoke(
 		)
 	}
 
-	userDetail, err := o.client.GetUserByKey(ctx, principal.Id.Resource)
+	userDetail, err := MakeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
 	if err != nil {
 		return nil, err
 	}
@@ -371,6 +386,11 @@ func ResetGroupMembersCache() {
 	groupMembersCacheOnce = sync.Once{}
 }
 
+// MakeGetGroupsByUserKeyCall is a hook for mocking the client in tests.
+var MakeGetGroupsByUserKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, userKey string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+	return confluenceClient.GetGroupsByUserKey(ctx, pageToken, userKey)
+}
+
 // GetGroupMembersList uses the cache.
 func (c *groupMembersCache) GetGroupMembersList(ctx context.Context) (map[string][]client.ConfluenceUser, error) {
 	c.mutex.RLock()
@@ -393,7 +413,7 @@ func (c *groupMembersCache) GetGroupMembersList(ctx context.Context) (map[string
 	userPageToken := ""
 	// Paginate through all users
 	for {
-		users, userNextToken, _, err := c.client.GetUsers(ctx, userPageToken)
+		users, userNextToken, _, err := MakeGetUsersCall(ctx, c.client, userPageToken)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get users: %w", err)
 		}
@@ -403,7 +423,7 @@ func (c *groupMembersCache) GetGroupMembersList(ctx context.Context) (map[string
 			groupPageToken := ""
 			// Paginate through all groups for the user is member of
 			for {
-				groups, groupNextToken, _, err := c.client.GetGroupsByUserKey(ctx, groupPageToken, user.UserKey)
+				groups, groupNextToken, _, err := MakeGetGroupsByUserKeyCall(ctx, c.client, groupPageToken, user.UserKey)
 				if err != nil {
 					return nil, fmt.Errorf("failed to get groups for user %s: %w", user.Username, err)
 				}
