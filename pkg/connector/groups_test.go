@@ -98,18 +98,43 @@ func TestGroupsList(t *testing.T) {
 	})
 }
 
-// TestGroupsWithSlashes tests the groups with slashes functionality
+// TestGroupsWithSlashes tests the groups with slashes functionality.
 func TestGroupsWithSlashes(t *testing.T) {
 	ctx := context.Background()
 
-	// Test 1 - List: Enable slash support when group with slash is found
-	t.Run("should enable slash support when group with slash is found", func(t *testing.T) {
+	// Test 1.1 - List: Not set hasGroupWithSlash to true when group with slash is found and disableSlashSupportGroupName is true
+	t.Run("should not set hasGroupWithSlash to true when group with slash is found and disableSlashSupportGroupName is true", func(t *testing.T) {
 		// Reset the global state
-		enableSupportSlashInGroupName = false
+		hasGroupWithSlash = false
 		ResetGroupMembersCache()
 
 		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
+		groupBuilder := newGroupBuilder(mockClient, true)
+
+		MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			return []client.ConfluenceGroup{
+				{
+					Name: "team/engineering",
+					Type: "group",
+				},
+			}, "", nil, nil
+		}
+
+		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
+		require.NoError(t, err)
+		require.False(t, hasGroupWithSlash)
+		require.Len(t, resources, 1)
+		require.Equal(t, "team/engineering", resources[0].DisplayName)
+	})
+
+	// Test 1.2 - List: Set hasGroupWithSlash to true when group with slash is found and disableSlashSupportGroupName is false
+	t.Run("should set hasGroupWithSlash to true when group with slash is found and disableSlashSupportGroupName is false", func(t *testing.T) {
+		// Reset the global state
+		hasGroupWithSlash = false
+		ResetGroupMembersCache()
+
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		// Mock the GetGroups call to return a group with a slash
 		MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
@@ -125,16 +150,19 @@ func TestGroupsWithSlashes(t *testing.T) {
 		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
 
 		require.NoError(t, err)
-		require.True(t, enableSupportSlashInGroupName)
+		require.True(t, hasGroupWithSlash)
 		require.Len(t, resources, 1)
 		require.Equal(t, "team/engineering", resources[0].DisplayName)
 	})
 
-	// Test 2 - List: Do not enable slash support if there are no groups with slashes
-	t.Run("should not enable slash support if there are no groups with slashes", func(t *testing.T) {
+	// Test 1.3 - List: Do not set hasGroupWithSlash to true if there are no groups with slashes and disableSlashSupportGroupName is false
+	t.Run("should not set hasGroupWithSlash to true if there are no groups with slashes and disableSlashSupportGroupName is false", func(t *testing.T) {
 		// Reset the global state
-		enableSupportSlashInGroupName = false
+		hasGroupWithSlash = false
 		ResetGroupMembersCache()
+
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
 			return []client.ConfluenceGroup{
@@ -145,25 +173,47 @@ func TestGroupsWithSlashes(t *testing.T) {
 			}, "", nil, nil
 		}
 
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
-
 		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
 
 		require.NoError(t, err)
-		require.False(t, enableSupportSlashInGroupName)
+		require.False(t, hasGroupWithSlash)
 		require.Len(t, resources, 1)
 		require.Equal(t, "team", resources[0].DisplayName)
 	})
 
-	// Test 3 - Grants: Not use cache if slash support is disabled
-	t.Run("should not use cache if slash support is disabled", func(t *testing.T) {
+	// Test 2.1 - Grants: Not use cache if disableSlashSupportGroupName is true
+	t.Run("should not use cache if disableSlashSupportGroupName is true", func(t *testing.T) {
 		// Reset the global state
-		enableSupportSlashInGroupName = false
+		hasGroupWithSlash = true // Set to true to test that it is not used
 		ResetGroupMembersCache()
 
 		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
+		groupBuilder := newGroupBuilder(mockClient, true)
+
+		MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			return []client.ConfluenceGroup{
+				{
+					Name: "team",
+					Type: "group",
+				},
+			}, "", nil, nil
+		}
+
+		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
+
+		require.NoError(t, err)
+		require.Len(t, resources, 1)
+		require.Equal(t, "team", resources[0].DisplayName)
+	})
+
+	// Test 2.2 - Grants: Not use cache if there are no groups with slashes and disableSlashSupportGroupName is false
+	t.Run("should not use cache if there are no groups with slashes and disableSlashSupportGroupName is false", func(t *testing.T) {
+		// Reset the global state
+		hasGroupWithSlash = false
+		ResetGroupMembersCache()
+
+		mockClient := client.ConfluenceClient{}
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		MakeGetGroupMembersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
 			return []client.ConfluenceUser{
@@ -188,14 +238,14 @@ func TestGroupsWithSlashes(t *testing.T) {
 		require.Equal(t, "team", grants[0].Entitlement.Resource.DisplayName)
 	})
 
-	// Test 4 - Grants: Use cache if slash support is enabled
-	t.Run("should use cache for groups with slashes", func(t *testing.T) {
+	// Test 2.3 - Grants: Use cache if there are groups with slashes and disableSlashSupportGroupName is false
+	t.Run("should use cache if there are groups with slashes and disableSlashSupportGroupName is false", func(t *testing.T) {
 		// Reset the global state
-		enableSupportSlashInGroupName = true
+		hasGroupWithSlash = true
 		ResetGroupMembersCache()
 
 		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		// Mock GetUsers to return test users
 		MakeGetUsersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
@@ -210,7 +260,17 @@ func TestGroupsWithSlashes(t *testing.T) {
 		}
 
 		// Mock GetGroupsByUserKey to return groups for the user
-		MakeGetGroupsByUserKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, userKey string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+		MakeGetGroupsByUserKeyCall = func(
+			ctx context.Context,
+			confluenceClient client.ConfluenceClient,
+			pageToken,
+			userKey string,
+		) (
+			[]client.ConfluenceGroup,
+			string,
+			*v2.RateLimitDescription,
+			error,
+		) {
 			groups := []client.ConfluenceGroup{
 				{
 					Name: "team/engineering",
@@ -233,10 +293,10 @@ func TestGroupsWithSlashes(t *testing.T) {
 		require.Equal(t, "team/engineering", grants[0].Entitlement.Resource.DisplayName)
 	})
 
-	// Test 5 - Grant: Reject grant operation for group with slash
+	// Test 3.1 - Grant: Reject grant operation for group with slash
 	t.Run("should reject grant operation for group with slash", func(t *testing.T) {
 		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		_, err := groupBuilder.Grant(ctx, &v2.Resource{
 			Id: &v2.ResourceId{
@@ -255,10 +315,10 @@ func TestGroupsWithSlashes(t *testing.T) {
 		require.Contains(t, err.Error(), "groups containing '/' in their name are not supported for grant operations")
 	})
 
-	// Test 6 - Grant: Reject grant operation for user with slash
+	// Test 3.2 - Grant: Reject grant operation for user with slash
 	t.Run("should reject grant operation for user with slash", func(t *testing.T) {
 		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		MakeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
 			return &client.ConfluenceUser{
@@ -284,10 +344,10 @@ func TestGroupsWithSlashes(t *testing.T) {
 		require.Contains(t, err.Error(), "users with '/' in their username are not supported for grant operations")
 	})
 
-	// Test 7 - Revoke: Reject revoke operation for group with slash
+	// Test 4.1 - Revoke: Reject revoke operation for group with slash
 	t.Run("should reject revoke operation for group with slash", func(t *testing.T) {
 		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		_, err := groupBuilder.Revoke(ctx, &v2.Grant{
 			Principal: &v2.Resource{
@@ -309,10 +369,10 @@ func TestGroupsWithSlashes(t *testing.T) {
 		require.Contains(t, err.Error(), "groups with '/' in their name are not supported for revoke operations")
 	})
 
-	// Test 8 - Revoke: Reject revoke operation for user with slash
+	// Test 4.2 - Revoke: Reject revoke operation for user with slash
 	t.Run("should reject revoke operation for user with slash", func(t *testing.T) {
 		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient)
+		groupBuilder := newGroupBuilder(mockClient, false)
 
 		MakeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
 			return &client.ConfluenceUser{

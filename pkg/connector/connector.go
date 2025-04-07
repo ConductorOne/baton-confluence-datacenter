@@ -12,18 +12,20 @@ import (
 )
 
 type Config struct {
-	AccessToken string
-	Hostname    string
-	UserName    string
-	Password    string
+	AccessToken                  string
+	Hostname                     string
+	UserName                     string
+	Password                     string
+	DisableSlashSupportGroupName bool
 }
 
 type Confluence struct {
-	client      client.ConfluenceClient
-	accessToken string
-	hostname    string
-	password    string
-	userName    string
+	client                       client.ConfluenceClient
+	accessToken                  string
+	hostname                     string
+	password                     string
+	userName                     string
+	disableSlashSupportGroupName bool
 }
 
 func New(ctx context.Context, config Config) (*Confluence, error) {
@@ -38,11 +40,12 @@ func New(ctx context.Context, config Config) (*Confluence, error) {
 		return nil, err
 	}
 	rv := &Confluence{
-		accessToken: config.AccessToken,
-		client:      *confluenceClient,
-		hostname:    config.Hostname,
-		userName:    config.UserName,
-		password:    config.Password,
+		accessToken:                  config.AccessToken,
+		client:                       *confluenceClient,
+		hostname:                     config.Hostname,
+		userName:                     config.UserName,
+		password:                     config.Password,
+		disableSlashSupportGroupName: config.DisableSlashSupportGroupName,
 	}
 	return rv, nil
 }
@@ -76,7 +79,7 @@ func (c *Confluence) Asset(ctx context.Context, asset *v2.AssetRef) (string, io.
 func (c *Confluence) ResourceSyncers(ctx context.Context) []connectorbuilder.ResourceSyncer {
 	return []connectorbuilder.ResourceSyncer{
 		newUserBuilder(c.client),
-		newGroupBuilder(c.client),
+		newGroupBuilder(c.client, c.disableSlashSupportGroupName),
 		newSpaceBuilder(c.client),
 	}
 }

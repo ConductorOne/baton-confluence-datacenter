@@ -22,9 +22,9 @@ const (
 )
 
 var (
-	groupMembersCacheOnce         sync.Once
-	groupMembersCacheInstance     *groupMembersCache
-	enableSupportSlashInGroupName bool
+	groupMembersCacheOnce     sync.Once
+	groupMembersCacheInstance *groupMembersCache
+	hasGroupWithSlash         bool
 )
 
 type groupMembersCache struct {
@@ -34,8 +34,9 @@ type groupMembersCache struct {
 }
 
 type groupBuilder struct {
-	client client.ConfluenceClient
-	cache  *groupMembersCache
+	client                       client.ConfluenceClient
+	cache                        *groupMembersCache
+	disableSlashSupportGroupName bool
 }
 
 func (o *groupBuilder) ResourceType(_ context.Context) *v2.ResourceType {
@@ -62,9 +63,9 @@ func (o *groupBuilder) List(
 	logger := ctxzap.Extract(ctx)
 	// Reset the cache if we're starting a new sync.
 	// This cache is a workaround for a Confluence API limitation. See: https://jira.atlassian.com/browse/CONFCLOUD-68869
-	if pToken.Token == "" {
+	if !o.disableSlashSupportGroupName && pToken.Token == "" {
 		ResetGroupMembersCache()
-		enableSupportSlashInGroupName = false
+		hasGroupWithSlash = false
 	}
 
 	groups, nextToken, ratelimitData, err := MakeGetGroupsCall(ctx, o.client, pToken.Token)
@@ -77,12 +78,12 @@ func (o *groupBuilder) List(
 	for _, group := range groups {
 		// If the group name contains a slash and support slash in group name is not enabled, enable it
 		// This is a workaround for a Confluence API limitation. See: https://jira.atlassian.com/browse/CONFCLOUD-68869
-		if !enableSupportSlashInGroupName && strings.Contains(group.Name, "/") {
+		if !o.disableSlashSupportGroupName && !hasGroupWithSlash && strings.Contains(group.Name, "/") {
 			logger.Info(
 				"baton-confluence-datacenter: support slash in group name is enabled, this is a workaround for a Confluence API limitation. See: https://jira.atlassian.com/browse/CONFCLOUD-68869",
 				zap.String("group_name", group.Name),
 			)
-			enableSupportSlashInGroupName = true
+			hasGroupWithSlash = true
 		}
 
 		groupCopy := group
@@ -161,7 +162,7 @@ func (o *groupBuilder) Grants(
 	// 1. Lists all users in the system
 	// 2. For each user, fetches their group memberships
 	// 3. Builds a reverse mapping of group -> members
-	if enableSupportSlashInGroupName {
+	if !o.disableSlashSupportGroupName && hasGroupWithSlash {
 		logger.Debug("baton-confluence-datacenter: using cached group members list due to Confluence API limitation")
 		groupMembers, err := getGroupMembersCache(o.client).GetGroupMembersList(ctx)
 		if err != nil {
@@ -332,10 +333,11 @@ func (o *groupBuilder) Revoke(
 	return outputAnnotations, err
 }
 
-func newGroupBuilder(cclient client.ConfluenceClient) *groupBuilder {
+func newGroupBuilder(cclient client.ConfluenceClient, disableSlashSupportGroupName bool) *groupBuilder {
 	return &groupBuilder{
-		client: cclient,
-		cache:  getGroupMembersCache(cclient),
+		client:                       cclient,
+		cache:                        getGroupMembersCache(cclient),
+		disableSlashSupportGroupName: disableSlashSupportGroupName,
 	}
 }
 
