@@ -15,7 +15,7 @@ import (
 )
 
 type spaceBuilder struct {
-	client client.ConfluenceClient
+	confluenceService client.ConfluenceService
 }
 
 func (o *spaceBuilder) ResourceType(_ context.Context) *v2.ResourceType {
@@ -33,7 +33,7 @@ func (o *spaceBuilder) List(
 	annotations.Annotations,
 	error,
 ) {
-	spaces, nextToken, ratelimitData, err := o.client.GetSpaces(ctx, pToken.Token)
+	spaces, nextToken, ratelimitData, err := o.confluenceService.GetSpaces(ctx, pToken.Token)
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	if err != nil {
 		return nil, "", outputAnnotations, err
@@ -65,7 +65,7 @@ func (o *spaceBuilder) Entitlements(
 	var entitlements []*v2.Entitlement
 	spaceKey := resource.Id.Resource
 
-	permissionsList, rlData, err := o.client.GetSpacePermissions(
+	permissionsList, rlData, err := o.confluenceService.GetSpacePermissions(
 		ctx,
 		spaceKey,
 	)
@@ -116,7 +116,7 @@ func (o *spaceBuilder) Grants(
 	error,
 ) {
 	spaceKey := resource.Id.Resource
-	permissionsList, rlData, err := o.client.GetSpacePermissions(
+	permissionsList, rlData, err := o.confluenceService.GetSpacePermissions(
 		ctx,
 		spaceKey,
 	)
@@ -180,7 +180,7 @@ func (o *spaceBuilder) Grant(
 		return nil, err
 	}
 
-	permissionsList, rlData, err := o.client.GetSpacePermissions(
+	permissionsList, rlData, err := o.confluenceService.GetSpacePermissions(
 		ctx,
 		spaceKey,
 	)
@@ -210,7 +210,7 @@ func (o *spaceBuilder) Grant(
 		},
 	)
 
-	ratelimitData, err := o.client.UpdateSpacePermissions(
+	ratelimitData, err := o.confluenceService.UpdateSpacePermissions(
 		ctx,
 		currentOperations,
 		spaceKey,
@@ -255,7 +255,7 @@ func (o *spaceBuilder) Revoke(
 		return nil, err
 	}
 
-	permissionsList, rlData, err := o.client.GetSpacePermissions(
+	permissionsList, rlData, err := o.confluenceService.GetSpacePermissions(
 		ctx,
 		spaceKey,
 	)
@@ -281,7 +281,7 @@ func (o *spaceBuilder) Revoke(
 		}
 	}
 
-	ratelimitData, err := o.client.UpdateSpacePermissions(
+	ratelimitData, err := o.confluenceService.UpdateSpacePermissions(
 		ctx,
 		currentOperations,
 		spaceKey,
@@ -298,7 +298,7 @@ func (o *spaceBuilder) Revoke(
 
 func newSpaceBuilder(c client.ConfluenceClient) *spaceBuilder {
 	return &spaceBuilder{
-		client: c,
+		confluenceService: client.NewConfluenceService(c),
 	}
 }
 

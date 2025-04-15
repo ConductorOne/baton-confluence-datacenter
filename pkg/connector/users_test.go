@@ -13,15 +13,27 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Helper function to create a test builder with mocks
+func newTestUserBuilder() (*userBuilder, *client.MockConfluenceService) {
+	mockClient := client.ConfluenceClient{}
+	mockClientService := &client.MockConfluenceService{}
+
+	builder := newUserBuilder(mockClient)
+	// Replace the service with our mock
+	builder.confluenceService = mockClientService
+
+	return builder, mockClientService
+}
+
 func TestUsersList(t *testing.T) {
 	ctx := context.Background()
 
-	userBuilder := newUserBuilder(client.ConfluenceClient{})
-
 	t.Run("should get ratelimit annotations", func(t *testing.T) {
-		makeGetUsersCall = func(
+		// Create a new user builder with a mock client service
+		userBuilder, mockClientService := newTestUserBuilder()
+
+		mockClientService.GetUsersFunc = func(
 			ctx context.Context,
-			confluenceClient client.ConfluenceClient,
 			pageToken string,
 		) (
 			[]client.ConfluenceUser,
@@ -53,10 +65,12 @@ func TestUsersList(t *testing.T) {
 	})
 
 	t.Run("should get passed a pagination token", func(t *testing.T) {
+		// Create a new user builder with a mock client service
+		userBuilder, mockClientService := newTestUserBuilder()
+
 		startToken := "1234"
-		makeGetUsersCall = func(
+		mockClientService.GetUsersFunc = func(
 			ctx context.Context,
-			confluenceClient client.ConfluenceClient,
 			pageToken string,
 		) (
 			[]client.ConfluenceUser,
@@ -68,14 +82,15 @@ func TestUsersList(t *testing.T) {
 			return nil, "", nil, nil
 		}
 
-		userBuilder := newUserBuilder(client.ConfluenceClient{})
 		_, _, _, _ = userBuilder.List(ctx, nil, &pagination.Token{Token: startToken})
 	})
 
 	t.Run("should get users", func(t *testing.T) {
-		makeGetUsersCall = func(
+		// Create a new user builder with a mock client service
+		userBuilder, mockClientService := newTestUserBuilder()
+
+		mockClientService.GetUsersFunc = func(
 			ctx context.Context,
-			confluenceClient client.ConfluenceClient,
 			pageToken string,
 		) (
 			[]client.ConfluenceUser,
@@ -92,7 +107,6 @@ func TestUsersList(t *testing.T) {
 			return users, "", nil, nil
 		}
 
-		userBuilder := newUserBuilder(client.ConfluenceClient{})
 		resources, token, annotations, err := userBuilder.List(ctx, nil, &pagination.Token{})
 
 		// Assert the returned user has an ID.

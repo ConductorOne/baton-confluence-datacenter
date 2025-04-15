@@ -23,7 +23,7 @@ const (
 )
 
 type groupBuilder struct {
-	client client.ConfluenceClient
+	confluenceService client.ConfluenceService
 	// If true, we will not support groups with slashes in the name
 	disableSlashSupportConfig bool
 	// We use variable to track if we've detected a group with a slash in the name
@@ -37,11 +37,6 @@ type groupBuilder struct {
 
 func (o *groupBuilder) ResourceType(_ context.Context) *v2.ResourceType {
 	return groupResourceType
-}
-
-// makeGetGroupsCall is a hook for mocking the client in tests.
-var makeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
-	return confluenceClient.GetGroups(ctx, pageToken)
 }
 
 // List returns all the groups from the database as resource objects.
@@ -64,7 +59,7 @@ func (o *groupBuilder) List(
 		o.cleanCache()
 	}
 
-	groups, nextToken, ratelimitData, err := makeGetGroupsCall(ctx, o.client, pToken.Token)
+	groups, nextToken, ratelimitData, err := o.confluenceService.GetGroups(ctx, pToken.Token)
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	if err != nil {
 		return nil, "", outputAnnotations, err
@@ -131,10 +126,6 @@ func (o *groupBuilder) Entitlements(
 	return entitlements, "", nil, nil
 }
 
-var makeGetGroupMembersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
-	return confluenceClient.GetGroupMembers(ctx, pageToken, groupName)
-}
-
 // Grants the grants for a given group are the current memberships.
 func (o *groupBuilder) Grants(
 	ctx context.Context,
@@ -182,9 +173,8 @@ func (o *groupBuilder) Grants(
 		}
 
 		var ratelimitData *v2.RateLimitDescription
-		users, token, ratelimitData, err = makeGetGroupMembersCall(
+		users, token, ratelimitData, err = o.confluenceService.GetGroupMembers(
 			ctx,
-			o.client,
 			bag.PageToken(),
 			resource.DisplayName,
 		)
@@ -212,11 +202,6 @@ func (o *groupBuilder) Grants(
 	}
 
 	return groups, nextPage, outputAnnotations, nil
-}
-
-// makeGetUserByKeyCall is a hook for mocking the client in tests.
-var makeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
-	return confluenceClient.GetUserByKey(ctx, userKey)
 }
 
 func (o *groupBuilder) Grant(
@@ -247,7 +232,7 @@ func (o *groupBuilder) Grant(
 		)
 	}
 
-	userDetail, err := makeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
+	userDetail, err := o.confluenceService.GetUserByKey(ctx, principal.Id.Resource)
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +249,7 @@ func (o *groupBuilder) Grant(
 		)
 	}
 
-	ratelimitData, err := o.client.AddGroupMember(
+	ratelimitData, err := o.confluenceService.AddGroupMember(
 		ctx,
 		userDetail.Username,
 		entitlement.Resource.Id.Resource,
@@ -303,7 +288,7 @@ func (o *groupBuilder) Revoke(
 		)
 	}
 
-	userDetail, err := makeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
+	userDetail, err := o.confluenceService.GetUserByKey(ctx, principal.Id.Resource)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +305,7 @@ func (o *groupBuilder) Revoke(
 		)
 	}
 
-	ratelimitData, err := o.client.RemoveGroupMember(
+	ratelimitData, err := o.confluenceService.RemoveGroupMember(
 		ctx,
 		userDetail.Username,
 		ent.Resource.Id.Resource,
@@ -331,7 +316,7 @@ func (o *groupBuilder) Revoke(
 
 func newGroupBuilder(cclient client.ConfluenceClient, disableSlashSupportConfig bool) *groupBuilder {
 	return &groupBuilder{
-		client:                    cclient,
+		confluenceService:         client.NewConfluenceService(cclient),
 		disableSlashSupportConfig: disableSlashSupportConfig,
 		slashInGroupNameDetected:  false,
 		groupToMembersCache:       make(map[string][]client.ConfluenceUser),
@@ -407,11 +392,6 @@ func (o *groupBuilder) getGroupToMembersCache(ctx context.Context) (map[string][
 	return o.groupToMembersCache, nil
 }
 
-// makeGetGroupsByUserKeyCall is a hook for mocking the client in tests.
-var makeGetGroupsByUserKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, userKey string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
-	return confluenceClient.GetGroupsByUserKey(ctx, pageToken, userKey)
-}
-
 // getGroupMembershipsForUser fetches all groups a user belongs to and updates the cache map
 func (o *groupBuilder) getGroupMembershipsForUser(
 	ctx context.Context,
@@ -422,7 +402,7 @@ func (o *groupBuilder) getGroupMembershipsForUser(
 
 	for {
 		// Get the groups this user belongs to
-		groups, nextToken, ratelimitData, err := makeGetGroupsByUserKeyCall(ctx, o.client, pageToken, user.UserKey)
+		groups, nextToken, ratelimitData, err := o.confluenceService.GetGroupsByUserKey(ctx, pageToken, user.UserKey)
 
 		// Handle rate limit errors specifically
 		if err != nil {
@@ -481,7 +461,7 @@ func (o *groupBuilder) buildGroupMembershipCache(ctx context.Context) (map[strin
 	// Process all users in the system
 	for {
 		// Get a page of users
-		users, nextToken, ratelimitData, err := makeGetUsersCall(ctx, o.client, pageToken)
+		users, nextToken, ratelimitData, err := o.confluenceService.GetUsers(ctx, pageToken)
 
 		// Handle rate limit errors specifically
 		if err != nil {

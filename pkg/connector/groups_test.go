@@ -13,18 +13,30 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Helper function to create a test builder with mocks
+func newTestGroupBuilder(disableSlashSupportConfig bool) (*groupBuilder, *client.MockConfluenceService) {
+	mockClient := client.ConfluenceClient{}
+	mockClientService := &client.MockConfluenceService{}
+
+	builder := newGroupBuilder(mockClient, disableSlashSupportConfig)
+	// Replace the service with our mock
+	builder.confluenceService = mockClientService
+
+	return builder, mockClientService
+}
+
 func TestGroupsList(t *testing.T) {
 	ctx := context.Background()
 
-	userBuilder := newUserBuilder(client.ConfluenceClient{})
-
 	t.Run("should get ratelimit annotations", func(t *testing.T) {
-		makeGetUsersCall = func(
+		// Create a new user builder with a mock client service
+		groupBuilder, mockService := newTestGroupBuilder(false)
+
+		mockService.GetGroupsFunc = func(
 			ctx context.Context,
-			confluenceClient client.ConfluenceClient,
 			pageToken string,
 		) (
-			[]client.ConfluenceUser,
+			[]client.ConfluenceGroup,
 			string,
 			*v2.RateLimitDescription,
 			error,
@@ -36,7 +48,7 @@ func TestGroupsList(t *testing.T) {
 			return nil, "", &rateLimitData, err
 		}
 
-		resources, token, annotations, err := userBuilder.List(ctx, nil, &pagination.Token{})
+		resources, token, annotations, err := groupBuilder.List(ctx, nil, &pagination.Token{})
 
 		require.Nil(t, resources)
 		require.Empty(t, token)
@@ -53,13 +65,15 @@ func TestGroupsList(t *testing.T) {
 	})
 
 	t.Run("should get passed a pagination token", func(t *testing.T) {
+		// Create a new user builder with a mock client service
+		groupBuilder, mockService := newTestGroupBuilder(false)
+
 		startToken := "1234"
-		makeGetUsersCall = func(
+		mockService.GetGroupsFunc = func(
 			ctx context.Context,
-			confluenceClient client.ConfluenceClient,
 			pageToken string,
 		) (
-			[]client.ConfluenceUser,
+			[]client.ConfluenceGroup,
 			string,
 			*v2.RateLimitDescription,
 			error,
@@ -68,24 +82,24 @@ func TestGroupsList(t *testing.T) {
 			return nil, "", nil, nil
 		}
 
-		userBuilder := newUserBuilder(client.ConfluenceClient{})
-		_, _, _, _ = userBuilder.List(ctx, nil, &pagination.Token{Token: startToken})
+		_, _, _, _ = groupBuilder.List(ctx, nil, &pagination.Token{Token: startToken})
 	})
 
 	t.Run("should get users", func(t *testing.T) {
-		makeGetUsersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
-			users := []client.ConfluenceUser{
+		// Create a new user builder with a mock client service
+		groupBuilder, mockService := newTestGroupBuilder(false)
+
+		mockService.GetGroupsFunc = func(ctx context.Context, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			groups := []client.ConfluenceGroup{
 				{
-					Username:    "user1",
-					UserKey:     "key1",
-					DisplayName: "User One",
+					Name: "group1",
+					Type: "group",
 				},
 			}
-			return users, "", nil, nil
+			return groups, "", nil, nil
 		}
 
-		userBuilder := newUserBuilder(client.ConfluenceClient{})
-		resources, token, annotations, err := userBuilder.List(ctx, nil, &pagination.Token{})
+		resources, token, annotations, err := groupBuilder.List(ctx, nil, &pagination.Token{})
 
 		// Assert the returned user has an ID.
 		require.NotNil(t, resources)
@@ -104,16 +118,18 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 1.1 - List: Not set slashInGroupNameDetected to true when group with slash is found and disableSlashSupportConfig is true
 	t.Run("should not set slashInGroupNameDetected to true when group with slash is found and disableSlashSupportConfig is true", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, true)
+		// Replace the service with our mock
+		groupBuilder, mockClientService := newTestGroupBuilder(true)
 
-		makeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
-			return []client.ConfluenceGroup{
+		// Mock the GetGroups call to return a group with a slash
+		mockClientService.GetGroupsFunc = func(ctx context.Context, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			groups := []client.ConfluenceGroup{
 				{
 					Name: "team/engineering",
 					Type: "group",
 				},
-			}, "", nil, nil
+			}
+			return groups, "", nil, nil
 		}
 
 		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
@@ -125,11 +141,11 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 1.2 - List: Set slashInGroupNameDetected to true when group with slash is found and disableSlashSupportConfig is false
 	t.Run("should set slashInGroupNameDetected to true when group with slash is found and disableSlashSupportConfig is false", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(false)
 
 		// Mock the GetGroups call to return a group with a slash
-		makeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+		mockService.GetGroupsFunc = func(ctx context.Context, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
 			groups := []client.ConfluenceGroup{
 				{
 					Name: "team/engineering",
@@ -149,16 +165,18 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 1.3 - List: Do not set slashInGroupNameDetected to true if there are no groups with slashes and disableSlashSupportConfig is false
 	t.Run("should not set slashInGroupNameDetected to true if there are no groups with slashes and disableSlashSupportConfig is false", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(false)
 
-		makeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
-			return []client.ConfluenceGroup{
+		// Mock the GetGroups call to return a group with a slash
+		mockService.GetGroupsFunc = func(ctx context.Context, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			groups := []client.ConfluenceGroup{
 				{
 					Name: "team",
 					Type: "group",
 				},
-			}, "", nil, nil
+			}
+			return groups, "", nil, nil
 		}
 
 		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
@@ -171,17 +189,18 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 2.1 - Grants: Not use cache if disableSlashSupportConfig is true
 	t.Run("should not use cache if disableSlashSupportConfig is true", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, true)
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(true)
 		groupBuilder.slashInGroupNameDetected = true // Set to true to test that it is not used
 
-		makeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
-			return []client.ConfluenceGroup{
+		mockService.GetGroupsFunc = func(ctx context.Context, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+			groups := []client.ConfluenceGroup{
 				{
 					Name: "team",
 					Type: "group",
 				},
-			}, "", nil, nil
+			}
+			return groups, "", nil, nil
 		}
 
 		resources, _, _, err := groupBuilder.List(ctx, nil, &pagination.Token{})
@@ -193,17 +212,18 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 2.2 - Grants: Not use cache if there are no groups with slashes and disableSlashSupportConfig is false
 	t.Run("should not use cache if there are no groups with slashes and disableSlashSupportConfig is false", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(false)
 
-		makeGetGroupMembersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
-			return []client.ConfluenceUser{
+		mockService.GetGroupMembersFunc = func(ctx context.Context, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
+			users := []client.ConfluenceUser{
 				{
 					Username:    "user1",
 					UserKey:     "key1",
 					DisplayName: "User One",
 				},
-			}, "", nil, nil
+			}
+			return users, "", nil, nil
 		}
 
 		grants, _, _, err := groupBuilder.Grants(ctx, &v2.Resource{
@@ -219,14 +239,14 @@ func TestGroupsWithSlashes(t *testing.T) {
 		require.Equal(t, "team", grants[0].Entitlement.Resource.DisplayName)
 	})
 
-	// Test 2.3 - Grants: Use cache if there are groups with slashes and disableSlashSupportGroupName is false
+	// Test 2.3 - Grants: Use cache if there are groups with slashes and disableSlashSupportConfig is false
 	t.Run("should use cache if there are groups with slashes and disableSlashSupportConfig is false", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(false)
 		groupBuilder.slashInGroupNameDetected = true // Set to true to test that it is used
 
 		// Mock GetUsers to return test users
-		makeGetUsersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
+		mockService.GetUsersFunc = func(ctx context.Context, pageToken string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
 			users := []client.ConfluenceUser{
 				{
 					Username:    "user1",
@@ -238,9 +258,8 @@ func TestGroupsWithSlashes(t *testing.T) {
 		}
 
 		// Mock GetGroupsByUserKey to return groups for the user
-		makeGetGroupsByUserKeyCall = func(
+		mockService.GetGroupsByUserKeyFunc = func(
 			ctx context.Context,
-			confluenceClient client.ConfluenceClient,
 			pageToken,
 			userKey string,
 		) (
@@ -273,8 +292,8 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 3.1 - Grant: Reject grant operation for group with slash
 	t.Run("should reject grant operation for group with slash", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, _ := newTestGroupBuilder(false)
 
 		_, err := groupBuilder.Grant(ctx, &v2.Resource{
 			Id: &v2.ResourceId{
@@ -295,16 +314,18 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 3.2 - Grant: Reject grant operation for user with slash
 	t.Run("should reject grant operation for user with slash", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(false)
 
-		makeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
-			return &client.ConfluenceUser{
+		mockService.GetUserByKeyFunc = func(ctx context.Context, userKey string) (*client.ConfluenceUser, error) {
+			user := &client.ConfluenceUser{
 				Username:    "user1/engineering",
 				UserKey:     "user1/engineering",
 				DisplayName: "User One",
-			}, nil
+			}
+			return user, nil
 		}
+
 		_, err := groupBuilder.Grant(ctx, &v2.Resource{
 			Id: &v2.ResourceId{
 				ResourceType: userResourceType.Id,
@@ -324,8 +345,8 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 4.1 - Revoke: Reject revoke operation for group with slash
 	t.Run("should reject revoke operation for group with slash", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, _ := newTestGroupBuilder(false)
 
 		_, err := groupBuilder.Revoke(ctx, &v2.Grant{
 			Principal: &v2.Resource{
@@ -349,15 +370,16 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 	// Test 4.2 - Revoke: Reject revoke operation for user with slash
 	t.Run("should reject revoke operation for user with slash", func(t *testing.T) {
-		mockClient := client.ConfluenceClient{}
-		groupBuilder := newGroupBuilder(mockClient, false)
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(false)
 
-		makeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
-			return &client.ConfluenceUser{
+		mockService.GetUserByKeyFunc = func(ctx context.Context, userKey string) (*client.ConfluenceUser, error) {
+			user := &client.ConfluenceUser{
 				Username:    "user1/engineering",
 				UserKey:     "user1/engineering",
 				DisplayName: "User One",
-			}, nil
+			}
+			return user, nil
 		}
 
 		_, err := groupBuilder.Revoke(ctx, &v2.Grant{
@@ -378,5 +400,85 @@ func TestGroupsWithSlashes(t *testing.T) {
 
 		require.Error(t, err)
 		require.Contains(t, err.Error(), "users with '/' in their username are not supported for revoke operations")
+	})
+
+	// Test 4.1 - Cache: Ensure buildGroupMembershipCache constructs a complete group-to-members map by iterating over all users.
+	// Also verifies that the cache-building logic correctly handles and retries on rate limit errors.
+	t.Run("should handle rate limit errors while building group cache", func(t *testing.T) {
+		// Replace the service with our mock
+		groupBuilder, mockService := newTestGroupBuilder(false)
+		groupBuilder.slashInGroupNameDetected = true // Set to true to test that it is used
+
+		// Track number of calls to GetUsers and GetGroupsByUserKey to verify retry behavior
+		callCountGetUsers := 0
+		callCountGetGroupsByUserKey := 0
+
+		// Mock GetUsers to return rate limit error first, then succeed
+		mockService.GetUsersFunc = func(ctx context.Context, pageToken string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
+			callCountGetUsers++
+
+			if callCountGetUsers == 1 {
+				// First call returns rate limit error
+				rateLimitData := v2.RateLimitDescription{
+					Status:  v2.RateLimitDescription_STATUS_OVERLIMIT,
+					ResetAt: timestamppb.New(time.Now().Add(2 * time.Second)),
+				}
+				return nil, "", &rateLimitData, fmt.Errorf("rate limit error")
+			}
+
+			// Subsequent call succeeds
+			users := []client.ConfluenceUser{
+				{
+					Username:    "user1",
+					UserKey:     "key1",
+					DisplayName: "User One",
+				},
+			}
+			return users, "", nil, nil
+		}
+
+		// Mock GetGroupsByUserKey to return rate limit error first, then succeed
+		mockService.GetGroupsByUserKeyFunc = func(
+			ctx context.Context,
+			pageToken,
+			userKey string,
+		) (
+			[]client.ConfluenceGroup,
+			string,
+			*v2.RateLimitDescription,
+			error,
+		) {
+			callCountGetGroupsByUserKey++
+
+			if callCountGetGroupsByUserKey == 1 {
+				rateLimitData := v2.RateLimitDescription{
+					Status:  v2.RateLimitDescription_STATUS_OVERLIMIT,
+					ResetAt: timestamppb.New(time.Now().Add(2 * time.Second)),
+				}
+				return nil, "", &rateLimitData, fmt.Errorf("rate limit error")
+			}
+
+			groups := []client.ConfluenceGroup{
+				{
+					Name: "team/engineering",
+					Type: "group",
+				},
+			}
+			return groups, "", nil, nil
+		}
+
+		// Test successful retry after rate limit
+		cache, err := groupBuilder.buildGroupMembershipCache(ctx)
+
+		// Verify the cache was built correctly after retry
+		require.NoError(t, err)
+		require.Len(t, cache, 1)
+		require.Contains(t, cache, "team/engineering")
+		require.Len(t, cache["team/engineering"], 1)
+		require.Equal(t, "key1", cache["team/engineering"][0].UserKey)
+
+		// Verify the number of calls matches our expectation (1 failed + 1 successful)
+		require.Equal(t, 2, callCountGetUsers, "Expected exactly 2 calls to GetUsers")
+		require.Equal(t, 2, callCountGetGroupsByUserKey, "Expected exactly 2 calls to GetGroupsByUserKey")
 	})
 }
