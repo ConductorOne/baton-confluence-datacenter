@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
@@ -21,30 +22,25 @@ const (
 	groupMemberEntitlement = "member"
 )
 
-var (
-	groupMembersCacheOnce     sync.Once
-	groupMembersCacheInstance *groupMembersCache
-	hasGroupWithSlash         bool
-)
-
-type groupMembersCache struct {
-	cache  map[string][]client.ConfluenceUser
-	client client.ConfluenceClient
-	mutex  sync.RWMutex
-}
-
 type groupBuilder struct {
-	client                       client.ConfluenceClient
-	cache                        *groupMembersCache
-	disableSlashSupportGroupName bool
+	client client.ConfluenceClient
+	// If true, we will not support groups with slashes in the name
+	disableSlashSupportConfig bool
+	// We use variable to track if we've detected a group with a slash in the name
+	slashInGroupNameDetected bool
+	// We use a map to cache group to members
+	groupToMembersCache      map[string][]client.ConfluenceUser
+	groupToMembersCacheMutex sync.RWMutex
+	groupToMembersCacheTTL   time.Duration
+	cacheLastUpdated         time.Time
 }
 
 func (o *groupBuilder) ResourceType(_ context.Context) *v2.ResourceType {
 	return groupResourceType
 }
 
-// MakeGetGroupsCall is a hook for mocking the client in tests.
-var MakeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+// makeGetGroupsCall is a hook for mocking the client in tests.
+var makeGetGroupsCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
 	return confluenceClient.GetGroups(ctx, pageToken)
 }
 
@@ -63,12 +59,12 @@ func (o *groupBuilder) List(
 	logger := ctxzap.Extract(ctx)
 	// Reset the cache if we're starting a new sync.
 	// This cache is a workaround for a Confluence API limitation. See: https://jira.atlassian.com/browse/CONFCLOUD-68869
-	if !o.disableSlashSupportGroupName && pToken.Token == "" {
-		ResetGroupMembersCache()
-		hasGroupWithSlash = false
+	if !o.disableSlashSupportConfig && pToken.Token == "" {
+		o.slashInGroupNameDetected = false
+		o.cleanCache()
 	}
 
-	groups, nextToken, ratelimitData, err := MakeGetGroupsCall(ctx, o.client, pToken.Token)
+	groups, nextToken, ratelimitData, err := makeGetGroupsCall(ctx, o.client, pToken.Token)
 	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
 	if err != nil {
 		return nil, "", outputAnnotations, err
@@ -78,12 +74,12 @@ func (o *groupBuilder) List(
 	for _, group := range groups {
 		// If the group name contains a slash and support slash in group name is not enabled, enable it
 		// This is a workaround for a Confluence API limitation. See: https://jira.atlassian.com/browse/CONFCLOUD-68869
-		if !o.disableSlashSupportGroupName && !hasGroupWithSlash && strings.Contains(group.Name, "/") {
+		if !o.disableSlashSupportConfig && !o.slashInGroupNameDetected && strings.Contains(group.Name, "/") {
 			logger.Info(
 				"baton-confluence-datacenter: support slash in group name is enabled, this is a workaround for a Confluence API limitation. See: https://jira.atlassian.com/browse/CONFCLOUD-68869",
 				zap.String("group_name", group.Name),
 			)
-			hasGroupWithSlash = true
+			o.slashInGroupNameDetected = true
 		}
 
 		groupCopy := group
@@ -135,7 +131,7 @@ func (o *groupBuilder) Entitlements(
 	return entitlements, "", nil, nil
 }
 
-var MakeGetGroupMembersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
+var makeGetGroupMembersCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, groupName string) ([]client.ConfluenceUser, string, *v2.RateLimitDescription, error) {
 	return confluenceClient.GetGroupMembers(ctx, pageToken, groupName)
 }
 
@@ -162,9 +158,9 @@ func (o *groupBuilder) Grants(
 	// 1. Lists all users in the system
 	// 2. For each user, fetches their group memberships
 	// 3. Builds a reverse mapping of group -> members
-	if !o.disableSlashSupportGroupName && hasGroupWithSlash {
+	if !o.disableSlashSupportConfig && o.slashInGroupNameDetected {
 		logger.Debug("baton-confluence-datacenter: using cached group members list due to Confluence API limitation")
-		groupMembers, err := getGroupMembersCache(o.client).GetGroupMembersList(ctx)
+		groupMembers, err := o.getGroupToMembersCache(ctx)
 		if err != nil {
 			return nil, "", nil, err
 		}
@@ -186,7 +182,7 @@ func (o *groupBuilder) Grants(
 		}
 
 		var ratelimitData *v2.RateLimitDescription
-		users, token, ratelimitData, err = MakeGetGroupMembersCall(
+		users, token, ratelimitData, err = makeGetGroupMembersCall(
 			ctx,
 			o.client,
 			bag.PageToken(),
@@ -218,8 +214,8 @@ func (o *groupBuilder) Grants(
 	return groups, nextPage, outputAnnotations, nil
 }
 
-// MakeGetUserByKeyCall is a hook for mocking the client in tests.
-var MakeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
+// makeGetUserByKeyCall is a hook for mocking the client in tests.
+var makeGetUserByKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, userKey string) (*client.ConfluenceUser, error) {
 	return confluenceClient.GetUserByKey(ctx, userKey)
 }
 
@@ -251,7 +247,7 @@ func (o *groupBuilder) Grant(
 		)
 	}
 
-	userDetail, err := MakeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
+	userDetail, err := makeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +303,7 @@ func (o *groupBuilder) Revoke(
 		)
 	}
 
-	userDetail, err := MakeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
+	userDetail, err := makeGetUserByKeyCall(ctx, o.client, principal.Id.Resource)
 	if err != nil {
 		return nil, err
 	}
@@ -333,11 +329,15 @@ func (o *groupBuilder) Revoke(
 	return outputAnnotations, err
 }
 
-func newGroupBuilder(cclient client.ConfluenceClient, disableSlashSupportGroupName bool) *groupBuilder {
+func newGroupBuilder(cclient client.ConfluenceClient, disableSlashSupportConfig bool) *groupBuilder {
 	return &groupBuilder{
-		client:                       cclient,
-		cache:                        getGroupMembersCache(cclient),
-		disableSlashSupportGroupName: disableSlashSupportGroupName,
+		client:                    cclient,
+		disableSlashSupportConfig: disableSlashSupportConfig,
+		slashInGroupNameDetected:  false,
+		groupToMembersCache:       make(map[string][]client.ConfluenceUser),
+		groupToMembersCacheMutex:  sync.RWMutex{},
+		groupToMembersCacheTTL:    GroupMembersCacheTTL,
+		cacheLastUpdated:          time.Time{},
 	}
 }
 
@@ -370,89 +370,167 @@ func groupResource(_ context.Context, group *client.ConfluenceGroup) (*v2.Resour
 // users and their group memberships.
 // ******************************************
 
-// getGroupMembersCache returns a singleton instance of the groupMembersCache.
-func getGroupMembersCache(cclient client.ConfluenceClient) *groupMembersCache {
-	groupMembersCacheOnce.Do(func() {
-		groupMembersCacheInstance = &groupMembersCache{
-			cache:  make(map[string][]client.ConfluenceUser),
-			client: cclient,
-			mutex:  sync.RWMutex{},
-		}
-	})
-	return groupMembersCacheInstance
+// isCacheValid checks if the cache is still valid based on TTL and content
+func (o *groupBuilder) isCacheValid() bool {
+	return time.Since(o.cacheLastUpdated) < o.groupToMembersCacheTTL && len(o.groupToMembersCache) > 0
 }
 
-// ResetGroupMembersCache replaces the Once instance with a new one.
-func ResetGroupMembersCache() {
-	groupMembersCacheInstance = nil
-	groupMembersCacheOnce = sync.Once{}
+// getGroupToMembersCache retrieves the group membership cache, rebuilding if necessary
+func (o *groupBuilder) getGroupToMembersCache(ctx context.Context) (map[string][]client.ConfluenceUser, error) {
+	// First try with read lock for efficiency
+	o.groupToMembersCacheMutex.RLock()
+	if o.isCacheValid() {
+		defer o.groupToMembersCacheMutex.RUnlock()
+		return o.groupToMembersCache, nil
+	}
+	o.groupToMembersCacheMutex.RUnlock()
+
+	// Cache invalid or empty, acquire write lock to update it
+	o.groupToMembersCacheMutex.Lock()
+	defer o.groupToMembersCacheMutex.Unlock()
+
+	// Double-check after acquiring write lock (standard double-checked locking pattern)
+	if o.isCacheValid() {
+		return o.groupToMembersCache, nil
+	}
+
+	// Cache needs to be updated
+	newCache, err := o.buildGroupMembershipCache(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to build group membership cache: %w", err)
+	}
+
+	// Update the cache
+	o.groupToMembersCache = newCache
+	o.cacheLastUpdated = time.Now()
+
+	return o.groupToMembersCache, nil
 }
 
-// MakeGetGroupsByUserKeyCall is a hook for mocking the client in tests.
-var MakeGetGroupsByUserKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, userKey string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
+// makeGetGroupsByUserKeyCall is a hook for mocking the client in tests.
+var makeGetGroupsByUserKeyCall = func(ctx context.Context, confluenceClient client.ConfluenceClient, pageToken, userKey string) ([]client.ConfluenceGroup, string, *v2.RateLimitDescription, error) {
 	return confluenceClient.GetGroupsByUserKey(ctx, pageToken, userKey)
 }
 
-// GetGroupMembersList uses the cache.
-func (c *groupMembersCache) GetGroupMembersList(ctx context.Context) (map[string][]client.ConfluenceUser, error) {
-	c.mutex.RLock()
-	if len(c.cache) > 0 {
-		defer c.mutex.RUnlock()
-		return c.cache, nil
-	}
-	c.mutex.RUnlock()
+// getGroupMembershipsForUser fetches all groups a user belongs to and updates the cache map
+func (o *groupBuilder) getGroupMembershipsForUser(
+	ctx context.Context,
+	user client.ConfluenceUser,
+	groupMembers map[string][]client.ConfluenceUser,
+) error {
+	pageToken := ""
 
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-
-	// Double-check after acquiring write lock
-	if len(c.cache) > 0 {
-		return c.cache, nil
-	}
-
-	// Existing GetGroupMembersList logic here, but store result in c.cache
-	groupMembers := make(map[string][]client.ConfluenceUser)
-	userPageToken := ""
-	// Paginate through all users
 	for {
-		users, userNextToken, _, err := MakeGetUsersCall(ctx, c.client, userPageToken)
+		// Get the groups this user belongs to
+		groups, nextToken, ratelimitData, err := makeGetGroupsByUserKeyCall(ctx, o.client, pageToken, user.UserKey)
+
+		// Handle rate limit errors specifically
 		if err != nil {
+			// Check if this is a rate limit error by examining the status
+			if ratelimitData != nil && (ratelimitData.Status == v2.RateLimitDescription_STATUS_OVERLIMIT) {
+				logger := ctxzap.Extract(ctx)
+				waitTime := time.Until(ratelimitData.ResetAt.AsTime())
+
+				// Log that we're waiting for rate limit to reset
+				logger.Info(
+					"Rate limit hit while fetching group memberships, waiting before retry",
+					zap.String("username", user.Username),
+					zap.Duration("wait_time", waitTime),
+					zap.Time("reset_at", ratelimitData.ResetAt.AsTime()),
+				)
+
+				// Wait until reset time plus a small buffer
+				select {
+				case <-time.After(waitTime + 1*time.Second):
+					// Continue the loop without advancing the pageToken
+					continue
+				case <-ctx.Done():
+					// Context was canceled while waiting
+					return ctx.Err()
+				}
+			}
+
+			// For non-rate-limit errors, return with proper context
+			return fmt.Errorf("failed to get groups for user %s: %w", user.Username, err)
+		}
+
+		// Add this user to each group they belong to
+		for _, group := range groups {
+			if _, exists := groupMembers[group.Name]; !exists {
+				groupMembers[group.Name] = make([]client.ConfluenceUser, 0)
+			}
+			groupMembers[group.Name] = append(groupMembers[group.Name], user)
+		}
+
+		// If no more pages, exit loop
+		if nextToken == "" {
+			break
+		}
+		pageToken = nextToken
+	}
+
+	return nil
+}
+
+// buildGroupMembershipCache creates a complete map of group->members by processing all users
+func (o *groupBuilder) buildGroupMembershipCache(ctx context.Context) (map[string][]client.ConfluenceUser, error) {
+	// Initialize empty cache
+	groupMembers := make(map[string][]client.ConfluenceUser)
+	pageToken := ""
+
+	// Process all users in the system
+	for {
+		// Get a page of users
+		users, nextToken, ratelimitData, err := makeGetUsersCall(ctx, o.client, pageToken)
+
+		// Handle rate limit errors specifically
+		if err != nil {
+			// Check if this is a rate limit error by examining the status
+			if ratelimitData != nil && (ratelimitData.Status == v2.RateLimitDescription_STATUS_OVERLIMIT) {
+				logger := ctxzap.Extract(ctx)
+				waitTime := time.Until(ratelimitData.ResetAt.AsTime())
+
+				// Log that we're waiting for rate limit to reset
+				logger.Info(
+					"Rate limit hit while building group cache, waiting before retry",
+					zap.Duration("wait_time", waitTime),
+					zap.Time("reset_at", ratelimitData.ResetAt.AsTime()),
+				)
+
+				// Wait until reset time plus a small buffer
+				select {
+				case <-time.After(waitTime + 1*time.Second):
+					// Continue the loop without advancing the pageToken
+					continue
+				case <-ctx.Done():
+					// Context was canceled while waiting
+					return nil, ctx.Err()
+				}
+			}
+
+			// For non-rate-limit errors, return with proper context
 			return nil, fmt.Errorf("failed to get users: %w", err)
 		}
 
-		// Process users in current page
+		// For each user, get their group memberships
 		for _, user := range users {
-			groupPageToken := ""
-			// Paginate through all groups for the user is member of
-			for {
-				groups, groupNextToken, _, err := MakeGetGroupsByUserKeyCall(ctx, c.client, groupPageToken, user.UserKey)
-				if err != nil {
-					return nil, fmt.Errorf("failed to get groups for user %s: %w", user.Username, err)
-				}
-
-				// Add user to each group they belong to
-				for _, group := range groups {
-					if _, exists := groupMembers[group.Name]; !exists {
-						groupMembers[group.Name] = make([]client.ConfluenceUser, 0)
-					}
-					groupMembers[group.Name] = append(groupMembers[group.Name], user)
-				}
-
-				// Break if no more pages
-				if groupNextToken == "" {
-					break
-				}
-				groupPageToken = groupNextToken
+			if err := o.getGroupMembershipsForUser(ctx, user, groupMembers); err != nil {
+				return nil, err
 			}
 		}
 
-		// Break if no more pages
-		if userNextToken == "" {
+		// If no more pages of users, we're done
+		if nextToken == "" {
 			break
 		}
-		userPageToken = userNextToken
+		pageToken = nextToken
 	}
 
-	c.cache = groupMembers
 	return groupMembers, nil
+}
+
+// cleanCache cleans the cache
+func (o *groupBuilder) cleanCache() {
+	o.groupToMembersCache = make(map[string][]client.ConfluenceUser)
+	o.cacheLastUpdated = time.Time{}
 }

@@ -26,8 +26,8 @@ func (o *userBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
 	return userResourceType
 }
 
-// MakeGetUsersCall is a hook for mocking the client in tests.
-var MakeGetUsersCall = func(
+// makeGetUsersCall is a hook for mocking the client in tests.
+var makeGetUsersCall = func(
 	ctx context.Context,
 	client client.ConfluenceClient,
 	pageToken string,
@@ -52,7 +52,7 @@ func (o *userBuilder) List(
 		"Starting call to Users.List",
 		zap.String("pToken", pToken.Token),
 	)
-	users, nextToken, rateLimitData, err := MakeGetUsersCall(ctx, o.client, pToken.Token)
+	users, nextToken, rateLimitData, err := makeGetUsersCall(ctx, o.client, pToken.Token)
 	outputAnnotations := WithRateLimitAnnotations(rateLimitData)
 	if err != nil {
 		return nil, "", outputAnnotations, err

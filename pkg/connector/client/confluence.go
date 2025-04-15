@@ -153,15 +153,11 @@ func (c *ConfluenceClient) GetGroupsByUserKey(
 	userMemberOfUrl, err := c.genURL(
 		pageToken,
 		userMemberOfUrlPath,
-		nil,
+		map[string]string{"key": userKey},
 	)
 	if err != nil {
 		return nil, "", nil, err
 	}
-
-	q := userMemberOfUrl.Query()
-	q.Set("key", userKey)
-	userMemberOfUrl.RawQuery = q.Encode()
 
 	var response *confluenceGroupList
 	ratelimitData, err := c.get(ctx, userMemberOfUrl, &response)

@@ -19,7 +19,7 @@ func TestUsersList(t *testing.T) {
 	userBuilder := newUserBuilder(client.ConfluenceClient{})
 
 	t.Run("should get ratelimit annotations", func(t *testing.T) {
-		MakeGetUsersCall = func(
+		makeGetUsersCall = func(
 			ctx context.Context,
 			confluenceClient client.ConfluenceClient,
 			pageToken string,
@@ -54,7 +54,7 @@ func TestUsersList(t *testing.T) {
 
 	t.Run("should get passed a pagination token", func(t *testing.T) {
 		startToken := "1234"
-		MakeGetUsersCall = func(
+		makeGetUsersCall = func(
 			ctx context.Context,
 			confluenceClient client.ConfluenceClient,
 			pageToken string,
@@ -73,7 +73,7 @@ func TestUsersList(t *testing.T) {
 	})
 
 	t.Run("should get users", func(t *testing.T) {
-		MakeGetUsersCall = func(
+		makeGetUsersCall = func(
 			ctx context.Context,
 			confluenceClient client.ConfluenceClient,
 			pageToken string,
