@@ -48,7 +48,13 @@ func (m *MockConfluenceService) GetSpacePermissions(ctx context.Context, spaceKe
 	return m.GetSpacePermissionsFunc(ctx, spaceKey)
 }
 
-func (m *MockConfluenceService) UpdateSpacePermissions(ctx context.Context, currentOperations []PermissionOperation, spaceKey string, userKey string, groupName string) (*v2.RateLimitDescription, error) {
+func (m *MockConfluenceService) UpdateSpacePermissions(
+	ctx context.Context,
+	currentOperations []PermissionOperation,
+	spaceKey string,
+	userKey string,
+	groupName string,
+) (*v2.RateLimitDescription, error) {
 	return m.UpdateSpacePermissionsFunc(ctx, currentOperations, spaceKey, userKey, groupName)
 }
 

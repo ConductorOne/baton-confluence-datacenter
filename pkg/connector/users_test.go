@@ -13,13 +13,13 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// Helper function to create a test builder with mocks
+// Helper function to create a test builder with mocks.
 func newTestUserBuilder() (*userBuilder, *client.MockConfluenceService) {
 	mockClient := client.ConfluenceClient{}
 	mockClientService := &client.MockConfluenceService{}
 
 	builder := newUserBuilder(mockClient)
-	// Replace the service with our mock
+	// Replace the service with our mock.
 	builder.confluenceService = mockClientService
 
 	return builder, mockClientService
@@ -29,7 +29,7 @@ func TestUsersList(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("should get ratelimit annotations", func(t *testing.T) {
-		// Create a new user builder with a mock client service
+		// Create a new user builder with a mock client service.
 		userBuilder, mockClientService := newTestUserBuilder()
 
 		mockClientService.GetUsersFunc = func(
@@ -65,7 +65,7 @@ func TestUsersList(t *testing.T) {
 	})
 
 	t.Run("should get passed a pagination token", func(t *testing.T) {
-		// Create a new user builder with a mock client service
+		// Create a new user builder with a mock client service.
 		userBuilder, mockClientService := newTestUserBuilder()
 
 		startToken := "1234"
@@ -86,7 +86,7 @@ func TestUsersList(t *testing.T) {
 	})
 
 	t.Run("should get users", func(t *testing.T) {
-		// Create a new user builder with a mock client service
+		// Create a new user builder with a mock client service.
 		userBuilder, mockClientService := newTestUserBuilder()
 
 		mockClientService.GetUsersFunc = func(

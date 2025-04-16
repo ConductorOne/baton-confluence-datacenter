@@ -6,7 +6,7 @@ import (
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 )
 
-// ConfluenceService defines the interface for group operations
+// ConfluenceService defines the interface for group operations.
 type ConfluenceService interface {
 	GetUsers(ctx context.Context, pageToken string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error)
 	GetUserByKey(ctx context.Context, userKey string) (*ConfluenceUser, error)
@@ -20,7 +20,7 @@ type ConfluenceService interface {
 	RemoveGroupMember(ctx context.Context, userKey, groupName string) (*v2.RateLimitDescription, error)
 }
 
-// ConfluenceServiceImpl is the default implementation that calls the actual API
+// ConfluenceServiceImpl is the default implementation that calls the actual API.
 type ConfluenceServiceImpl struct {
 	client ConfluenceClient
 }
@@ -57,7 +57,13 @@ func (s *ConfluenceServiceImpl) GetSpacePermissions(ctx context.Context, spaceKe
 	return s.client.GetSpacePermissions(ctx, spaceKey)
 }
 
-func (s *ConfluenceServiceImpl) UpdateSpacePermissions(ctx context.Context, currentOperations []PermissionOperation, spaceKey string, userKey string, groupName string) (*v2.RateLimitDescription, error) {
+func (s *ConfluenceServiceImpl) UpdateSpacePermissions(
+	ctx context.Context,
+	currentOperations []PermissionOperation,
+	spaceKey string,
+	userKey string,
+	groupName string,
+) (*v2.RateLimitDescription, error) {
 	return s.client.UpdateSpacePermissions(ctx, currentOperations, spaceKey, userKey, groupName)
 }
 

@@ -355,14 +355,14 @@ func groupResource(_ context.Context, group *client.ConfluenceGroup) (*v2.Resour
 // users and their group memberships.
 // ******************************************
 
-// isCacheValid checks if the cache is still valid based on TTL and content
+// isCacheValid checks if the cache is still valid based on TTL and content.
 func (o *groupBuilder) isCacheValid() bool {
 	return time.Since(o.cacheLastUpdated) < o.groupToMembersCacheTTL && len(o.groupToMembersCache) > 0
 }
 
-// getGroupToMembersCache retrieves the group membership cache, rebuilding if necessary
+// getGroupToMembersCache retrieves the group membership cache, rebuilding if necessary.
 func (o *groupBuilder) getGroupToMembersCache(ctx context.Context) (map[string][]client.ConfluenceUser, error) {
-	// First try with read lock for efficiency
+	// First try with read lock for efficiency.
 	o.groupToMembersCacheMutex.RLock()
 	if o.isCacheValid() {
 		defer o.groupToMembersCacheMutex.RUnlock()
@@ -370,29 +370,29 @@ func (o *groupBuilder) getGroupToMembersCache(ctx context.Context) (map[string][
 	}
 	o.groupToMembersCacheMutex.RUnlock()
 
-	// Cache invalid or empty, acquire write lock to update it
+	// Cache invalid or empty, acquire write lock to update it.
 	o.groupToMembersCacheMutex.Lock()
 	defer o.groupToMembersCacheMutex.Unlock()
 
-	// Double-check after acquiring write lock (standard double-checked locking pattern)
+	// Double-check after acquiring write lock (standard double-checked locking pattern).
 	if o.isCacheValid() {
 		return o.groupToMembersCache, nil
 	}
 
-	// Cache needs to be updated
+	// Cache needs to be updated.
 	newCache, err := o.buildGroupMembershipCache(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to build group membership cache: %w", err)
 	}
 
-	// Update the cache
+	// Update the cache.
 	o.groupToMembersCache = newCache
 	o.cacheLastUpdated = time.Now()
 
 	return o.groupToMembersCache, nil
 }
 
-// getGroupMembershipsForUser fetches all groups a user belongs to and updates the cache map
+// getGroupMembershipsForUser fetches all groups a user belongs to and updates the cache map.
 func (o *groupBuilder) getGroupMembershipsForUser(
 	ctx context.Context,
 	user client.ConfluenceUser,
@@ -401,12 +401,12 @@ func (o *groupBuilder) getGroupMembershipsForUser(
 	pageToken := ""
 
 	for {
-		// Get the groups this user belongs to
+		// Get the groups this user belongs to.
 		groups, nextToken, ratelimitData, err := o.confluenceService.GetGroupsByUserKey(ctx, pageToken, user.UserKey)
 
-		// Handle rate limit errors specifically
+		// Handle rate limit errors specifically.
 		if err != nil {
-			// Check if this is a rate limit error by examining the status
+			// Check if this is a rate limit error by examining the status.
 			if ratelimitData != nil && (ratelimitData.Status == v2.RateLimitDescription_STATUS_OVERLIMIT) {
 				logger := ctxzap.Extract(ctx)
 				waitTime := time.Until(ratelimitData.ResetAt.AsTime())
@@ -422,10 +422,10 @@ func (o *groupBuilder) getGroupMembershipsForUser(
 				// Wait until reset time plus a small buffer
 				select {
 				case <-time.After(waitTime + 1*time.Second):
-					// Continue the loop without advancing the pageToken
+					// Continue the loop without advancing the pageToken.
 					continue
 				case <-ctx.Done():
-					// Context was canceled while waiting
+					// Context was canceled while waiting.
 					return ctx.Err()
 				}
 			}
@@ -434,7 +434,7 @@ func (o *groupBuilder) getGroupMembershipsForUser(
 			return fmt.Errorf("failed to get groups for user %s: %w", user.Username, err)
 		}
 
-		// Add this user to each group they belong to
+		// Add this user to each group they belong to.
 		for _, group := range groups {
 			if _, exists := groupMembers[group.Name]; !exists {
 				groupMembers[group.Name] = make([]client.ConfluenceUser, 0)
@@ -442,7 +442,7 @@ func (o *groupBuilder) getGroupMembershipsForUser(
 			groupMembers[group.Name] = append(groupMembers[group.Name], user)
 		}
 
-		// If no more pages, exit loop
+		// If no more pages, exit loop.
 		if nextToken == "" {
 			break
 		}
@@ -452,54 +452,54 @@ func (o *groupBuilder) getGroupMembershipsForUser(
 	return nil
 }
 
-// buildGroupMembershipCache creates a complete map of group->members by processing all users
+// buildGroupMembershipCache creates a complete map of group->members by processing all users.
 func (o *groupBuilder) buildGroupMembershipCache(ctx context.Context) (map[string][]client.ConfluenceUser, error) {
-	// Initialize empty cache
+	// Initialize empty cache.
 	groupMembers := make(map[string][]client.ConfluenceUser)
 	pageToken := ""
 
-	// Process all users in the system
+	// Process all users in the system.
 	for {
-		// Get a page of users
+		// Get a page of users.
 		users, nextToken, ratelimitData, err := o.confluenceService.GetUsers(ctx, pageToken)
 
-		// Handle rate limit errors specifically
+		// Handle rate limit errors specifically.
 		if err != nil {
-			// Check if this is a rate limit error by examining the status
+			// Check if this is a rate limit error by examining the status.
 			if ratelimitData != nil && (ratelimitData.Status == v2.RateLimitDescription_STATUS_OVERLIMIT) {
 				logger := ctxzap.Extract(ctx)
 				waitTime := time.Until(ratelimitData.ResetAt.AsTime())
 
-				// Log that we're waiting for rate limit to reset
+				// Log that we're waiting for rate limit to reset.
 				logger.Info(
 					"Rate limit hit while building group cache, waiting before retry",
 					zap.Duration("wait_time", waitTime),
 					zap.Time("reset_at", ratelimitData.ResetAt.AsTime()),
 				)
 
-				// Wait until reset time plus a small buffer
+				// Wait until reset time plus a small buffer.
 				select {
 				case <-time.After(waitTime + 1*time.Second):
-					// Continue the loop without advancing the pageToken
+					// Continue the loop without advancing the pageToken.
 					continue
 				case <-ctx.Done():
-					// Context was canceled while waiting
+					// Context was canceled while waiting.
 					return nil, ctx.Err()
 				}
 			}
 
-			// For non-rate-limit errors, return with proper context
+			// For non-rate-limit errors, return with proper context.
 			return nil, fmt.Errorf("failed to get users: %w", err)
 		}
 
-		// For each user, get their group memberships
+		// For each user, get their group memberships.
 		for _, user := range users {
 			if err := o.getGroupMembershipsForUser(ctx, user, groupMembers); err != nil {
 				return nil, err
 			}
 		}
 
-		// If no more pages of users, we're done
+		// If no more pages of users, we're done.
 		if nextToken == "" {
 			break
 		}
@@ -509,7 +509,7 @@ func (o *groupBuilder) buildGroupMembershipCache(ctx context.Context) (map[strin
 	return groupMembers, nil
 }
 
-// cleanCache cleans the cache
+// cleanCache cleans the cache.
 func (o *groupBuilder) cleanCache() {
 	o.groupToMembersCache = make(map[string][]client.ConfluenceUser)
 	o.cacheLastUpdated = time.Time{}
