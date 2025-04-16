@@ -30,12 +30,13 @@ const (
 	currentUserUrlPath                = "/rest/api/user/current"
 	getUserDetailByKeyUrlPath         = "/rest/api/user?key=%s" // %s is the placeholder for the user key. This specific EP won't work with the username
 	groupsListUrlPath                 = "/rest/api/group"
-	groupsMemberUpdateUrlPath         = "/rest/api/user/%s/group/%s"
-	groupsMembersListUrlPath          = "/rest/api/group/%s/member"
+	groupsMemberUpdateUrlPath         = "/rest/api/user/%s/group/%s" // This endpoint does not support slash in group name and username.
+	groupsMembersListUrlPath          = "/rest/api/group/%s/member"  // This endpoint does support slash in group name.
 	rfc7231RateLimitHeader            = "Retry-After"
 	spaceUpdateUrlPath                = "/rest/api/space/%s"
 	spacesListUrlPath                 = "/rest/api/space"
 	usersListUrlPath                  = "/rest/api/user/list"
+	userMemberOfUrlPath               = "/rest/api/user/memberof"
 )
 
 type ConfluenceSpaceEntitlement struct {
@@ -121,7 +122,7 @@ func (c *ConfluenceClient) GetUsers(
 	*v2.RateLimitDescription,
 	error,
 ) {
-	usersListUrl, err := c.genURL(pageToken, usersListUrlPath)
+	usersListUrl, err := c.genURL(pageToken, usersListUrlPath, nil)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -138,6 +139,38 @@ func (c *ConfluenceClient) GetUsers(
 	return users, nextToken, nil, nil
 }
 
+// GetGroupsByUserKey uses pagination to get a list of groups that a given user is member of.
+func (c *ConfluenceClient) GetGroupsByUserKey(
+	ctx context.Context,
+	pageToken string,
+	userKey string,
+) (
+	[]ConfluenceGroup,
+	string,
+	*v2.RateLimitDescription,
+	error,
+) {
+	userMemberOfUrl, err := c.genURL(
+		pageToken,
+		userMemberOfUrlPath,
+		map[string]string{"key": userKey},
+	)
+	if err != nil {
+		return nil, "", nil, err
+	}
+
+	var response *confluenceGroupList
+	ratelimitData, err := c.get(ctx, userMemberOfUrl, &response)
+	if err != nil {
+		return nil, "", ratelimitData, err
+	}
+
+	groups := response.Results
+	nextToken := incToken(pageToken, len(groups))
+
+	return groups, nextToken, ratelimitData, nil
+}
+
 // GetGroups uses pagination to get a list of groups from the global list.
 func (c *ConfluenceClient) GetGroups(
 	ctx context.Context,
@@ -148,7 +181,7 @@ func (c *ConfluenceClient) GetGroups(
 	*v2.RateLimitDescription,
 	error,
 ) {
-	groupsListUrl, err := c.genURL(pageToken, groupsListUrlPath)
+	groupsListUrl, err := c.genURL(pageToken, groupsListUrlPath, nil)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -180,6 +213,7 @@ func (c *ConfluenceClient) GetGroupMembers(
 	groupMembersUrl, err := c.genURL(
 		pageToken,
 		groupsMembersListUrlPath,
+		nil,
 		group,
 	)
 	if err != nil {
@@ -249,7 +283,7 @@ func (c *ConfluenceClient) GetSpaces(
 	*v2.RateLimitDescription,
 	error,
 ) {
-	spacesListUrl, err := c.genURL(pageToken, spacesListUrlPath)
+	spacesListUrl, err := c.genURL(pageToken, spacesListUrlPath, nil)
 	if err != nil {
 		return nil, "", nil, err
 	}
@@ -539,6 +573,7 @@ func (c *ConfluenceClient) genURLNonPaginated(
 func (c *ConfluenceClient) genURL(
 	pageToken string,
 	path string,
+	queryParams map[string]string,
 	pathParameters ...string,
 ) (*url.URL, error) {
 	for _, param := range pathParameters {
@@ -552,6 +587,9 @@ func (c *ConfluenceClient) genURL(
 	u := c.apiBase.ResolveReference(parsed)
 
 	q := u.Query()
+	for key, value := range queryParams {
+		q.Set(key, value)
+	}
 	q.Set("start", pageToken)
 	q.Set("limit", strconv.Itoa(ResourcesPageSize))
 	u.RawQuery = q.Encode()

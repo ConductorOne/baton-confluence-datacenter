@@ -19,25 +19,11 @@ func annotationsForUserResourceType() annotations.Annotations {
 }
 
 type userBuilder struct {
-	client client.ConfluenceClient
+	confluenceService client.ConfluenceService
 }
 
 func (o *userBuilder) ResourceType(ctx context.Context) *v2.ResourceType {
 	return userResourceType
-}
-
-// MakeGetUsersCall is a hook for mocking the client in tests.
-var MakeGetUsersCall = func(
-	ctx context.Context,
-	client client.ConfluenceClient,
-	pageToken string,
-) (
-	[]client.ConfluenceUser,
-	string,
-	*v2.RateLimitDescription,
-	error,
-) {
-	return client.GetUsers(ctx, pageToken)
 }
 
 // List returns all the users from the database as resource objects.
@@ -52,7 +38,7 @@ func (o *userBuilder) List(
 		"Starting call to Users.List",
 		zap.String("pToken", pToken.Token),
 	)
-	users, nextToken, rateLimitData, err := MakeGetUsersCall(ctx, o.client, pToken.Token)
+	users, nextToken, rateLimitData, err := o.confluenceService.GetUsers(ctx, pToken.Token)
 	outputAnnotations := WithRateLimitAnnotations(rateLimitData)
 	if err != nil {
 		return nil, "", outputAnnotations, err
@@ -89,9 +75,9 @@ func (o *userBuilder) Grants(
 	return nil, "", nil, nil
 }
 
-func newUserBuilder(client client.ConfluenceClient) *userBuilder {
+func newUserBuilder(cclient client.ConfluenceClient) *userBuilder {
 	return &userBuilder{
-		client: client,
+		confluenceService: client.NewConfluenceService(cclient),
 	}
 }
 
