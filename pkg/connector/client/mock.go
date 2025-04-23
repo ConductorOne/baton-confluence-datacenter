@@ -11,7 +11,6 @@ type MockConfluenceService struct {
 	GetUsersFunc               func(ctx context.Context, pageToken string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error)
 	GetUserByKeyFunc           func(ctx context.Context, userKey string) (*ConfluenceUser, error)
 	GetGroupsFunc              func(ctx context.Context, pageToken string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error)
-	GetGroupMembersFunc        func(ctx context.Context, pageToken, groupName string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error)
 	GetGroupsByUserKeyFunc     func(ctx context.Context, pageToken, userKey string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error)
 	GetSpacesFunc              func(ctx context.Context, pageToken string) ([]ConfluenceSpace, string, *v2.RateLimitDescription, error)
 	GetSpacePermissionsFunc    func(ctx context.Context, spaceKey string) ([]ConfluenceSpacePermission, *v2.RateLimitDescription, error)
@@ -30,10 +29,6 @@ func (m *MockConfluenceService) GetUserByKey(ctx context.Context, userKey string
 
 func (m *MockConfluenceService) GetGroups(ctx context.Context, pageToken string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error) {
 	return m.GetGroupsFunc(ctx, pageToken)
-}
-
-func (m *MockConfluenceService) GetGroupMembers(ctx context.Context, pageToken, groupName string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error) {
-	return m.GetGroupMembersFunc(ctx, pageToken, groupName)
 }
 
 func (m *MockConfluenceService) GetGroupsByUserKey(ctx context.Context, pageToken, userKey string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error) {
