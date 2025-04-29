@@ -31,7 +31,6 @@ const (
 	getUserDetailByKeyUrlPath         = "/rest/api/user?key=%s" // %s is the placeholder for the user key. This specific EP won't work with the username
 	groupsListUrlPath                 = "/rest/api/group"
 	groupsMemberUpdateUrlPath         = "/rest/api/user/%s/group/%s" // This endpoint does not support slash in group name and username.
-	groupsMembersListUrlPath          = "/rest/api/group/%s/member"  // This endpoint does support slash in group name.
 	rfc7231RateLimitHeader            = "Retry-After"
 	spaceUpdateUrlPath                = "/rest/api/space/%s"
 	spacesListUrlPath                 = "/rest/api/space"
@@ -134,7 +133,7 @@ func (c *ConfluenceClient) GetUsers(
 	}
 
 	users := response.Results
-	nextToken := incToken(pageToken, len(users))
+	nextToken := incToken(pageToken, response.Size)
 
 	return users, nextToken, nil, nil
 }
@@ -166,7 +165,7 @@ func (c *ConfluenceClient) GetGroupsByUserKey(
 	}
 
 	groups := response.Results
-	nextToken := incToken(pageToken, len(groups))
+	nextToken := incToken(pageToken, response.Size)
 
 	return groups, nextToken, ratelimitData, nil
 }
@@ -194,42 +193,9 @@ func (c *ConfluenceClient) GetGroups(
 
 	groups := response.Results
 
-	nextToken := incToken(pageToken, len(groups))
+	nextToken := incToken(pageToken, response.Size)
 
 	return groups, nextToken, ratelimitData, nil
-}
-
-// GetGroupMembers uses pagination to get a list of users that belong to a given group.
-func (c *ConfluenceClient) GetGroupMembers(
-	ctx context.Context,
-	pageToken string,
-	group string,
-) (
-	[]ConfluenceUser,
-	string,
-	*v2.RateLimitDescription,
-	error,
-) {
-	groupMembersUrl, err := c.genURL(
-		pageToken,
-		groupsMembersListUrlPath,
-		nil,
-		group,
-	)
-	if err != nil {
-		return nil, "", nil, err
-	}
-
-	var response *confluenceUserList
-	ratelimitData, err := c.get(ctx, groupMembersUrl, &response)
-	if err != nil {
-		return nil, "", ratelimitData, err
-	}
-
-	users := response.Results
-	nextToken := incToken(pageToken, len(users))
-
-	return users, nextToken, ratelimitData, nil
 }
 
 // AddGroupMember makes an idempotent PUT call.
@@ -296,7 +262,7 @@ func (c *ConfluenceClient) GetSpaces(
 
 	spaces := response.Results
 
-	nextToken := incToken(pageToken, len(spaces))
+	nextToken := incToken(pageToken, response.Size)
 
 	return spaces, nextToken, ratelimitData, nil
 }

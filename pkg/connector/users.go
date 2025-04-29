@@ -7,6 +7,7 @@ import (
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 	"github.com/conductorone/baton-sdk/pkg/annotations"
 	"github.com/conductorone/baton-sdk/pkg/pagination"
+	"github.com/conductorone/baton-sdk/pkg/types/grant"
 	"github.com/conductorone/baton-sdk/pkg/types/resource"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
 	"go.uber.org/zap"
@@ -14,7 +15,6 @@ import (
 
 func annotationsForUserResourceType() annotations.Annotations {
 	annos := annotations.Annotations{}
-	annos.Update(&v2.SkipEntitlementsAndGrants{})
 	return annos
 }
 
@@ -59,20 +59,48 @@ func (o *userBuilder) List(
 
 // Entitlements always returns an empty slice for users.
 func (o *userBuilder) Entitlements(
-	_ context.Context,
+	ctx context.Context,
 	resource *v2.Resource,
 	_ *pagination.Token,
 ) ([]*v2.Entitlement, string, annotations.Annotations, error) {
 	return nil, "", nil, nil
 }
 
-// Grants always returns an empty slice for users since they don't have any entitlements.
+// Grants returns a user's group memberships by querying the "/rest/api/user/memberof?key={{userKey}}" endpoint.
+//
+// The implementation uses the user endpoint instead of "/rest/api/group/{{groupName}}/member"
+// because the latter doesn't support group names containing forward slashes ('/'). This approach:
+//   - Avoids additional API calls for membership checks
+//   - Eliminates group-user relationship caching
+//   - Supports all group name formats, including those with slashes
 func (o *userBuilder) Grants(
 	ctx context.Context,
 	resource *v2.Resource,
 	pToken *pagination.Token,
 ) ([]*v2.Grant, string, annotations.Annotations, error) {
-	return nil, "", nil, nil
+	groups, nextPage, ratelimitData, err := o.confluenceService.GetGroupsByUserKey(ctx, pToken.Token, resource.Id.Resource)
+	outputAnnotations := WithRateLimitAnnotations(ratelimitData)
+	if err != nil {
+		return nil, "", outputAnnotations, err
+	}
+
+	var rv []*v2.Grant
+	for _, group := range groups {
+		groupResource := &v2.Resource{
+			Id: &v2.ResourceId{
+				ResourceType: groupResourceType.Id,
+				Resource:     group.Name,
+			},
+		}
+
+		rv = append(rv, grant.NewGrant(
+			groupResource,
+			groupMemberEntitlement,
+			resource,
+		))
+	}
+
+	return rv, nextPage, outputAnnotations, nil
 }
 
 func newUserBuilder(cclient client.ConfluenceClient) *userBuilder {

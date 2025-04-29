@@ -11,7 +11,6 @@ type ConfluenceService interface {
 	GetUsers(ctx context.Context, pageToken string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error)
 	GetUserByKey(ctx context.Context, userKey string) (*ConfluenceUser, error)
 	GetGroups(ctx context.Context, pageToken string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error)
-	GetGroupMembers(ctx context.Context, pageToken, groupName string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error)
 	GetGroupsByUserKey(ctx context.Context, pageToken, userKey string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error)
 	GetSpaces(ctx context.Context, pageToken string) ([]ConfluenceSpace, string, *v2.RateLimitDescription, error)
 	GetSpacePermissions(ctx context.Context, spaceKey string) ([]ConfluenceSpacePermission, *v2.RateLimitDescription, error)
@@ -39,10 +38,6 @@ func (s *ConfluenceServiceImpl) GetUserByKey(ctx context.Context, userKey string
 
 func (s *ConfluenceServiceImpl) GetGroups(ctx context.Context, pageToken string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error) {
 	return s.client.GetGroups(ctx, pageToken)
-}
-
-func (s *ConfluenceServiceImpl) GetGroupMembers(ctx context.Context, pageToken, groupName string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error) {
-	return s.client.GetGroupMembers(ctx, pageToken, groupName)
 }
 
 func (s *ConfluenceServiceImpl) GetGroupsByUserKey(ctx context.Context, pageToken, userKey string) ([]ConfluenceGroup, string, *v2.RateLimitDescription, error) {
