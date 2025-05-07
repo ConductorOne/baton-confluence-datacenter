@@ -17,6 +17,7 @@ type ConfluenceService interface {
 	UpdateSpacePermissions(ctx context.Context, currentOperations []PermissionOperation, spaceKey string, userKey string, groupName string) (*v2.RateLimitDescription, error)
 	AddGroupMember(ctx context.Context, userKey, groupName string) (*v2.RateLimitDescription, error)
 	RemoveGroupMember(ctx context.Context, userKey, groupName string) (*v2.RateLimitDescription, error)
+	CreateUser(ctx context.Context, username string, email string, fullname string, password string) (string, *v2.RateLimitDescription, error)
 }
 
 // ConfluenceServiceImpl is the default implementation that calls the actual API.
@@ -68,4 +69,8 @@ func (s *ConfluenceServiceImpl) AddGroupMember(ctx context.Context, userKey, gro
 
 func (s *ConfluenceServiceImpl) RemoveGroupMember(ctx context.Context, userKey, groupName string) (*v2.RateLimitDescription, error) {
 	return s.client.RemoveGroupMember(ctx, userKey, groupName)
+}
+
+func (s *ConfluenceServiceImpl) CreateUser(ctx context.Context, username, email, fullname, password string) (string, *v2.RateLimitDescription, error) {
+	return s.client.CreateUser(ctx, username, email, fullname, password)
 }

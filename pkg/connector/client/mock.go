@@ -17,6 +17,7 @@ type MockConfluenceService struct {
 	UpdateSpacePermissionsFunc func(ctx context.Context, currentOperations []PermissionOperation, spaceKey string, userKey string, groupName string) (*v2.RateLimitDescription, error)
 	AddGroupMemberFunc         func(ctx context.Context, userKey, groupName string) (*v2.RateLimitDescription, error)
 	RemoveGroupMemberFunc      func(ctx context.Context, userKey, groupName string) (*v2.RateLimitDescription, error)
+	CreateUserFunc             func(ctx context.Context, username string, email string, fullname string, password string) (string, *v2.RateLimitDescription, error)
 }
 
 func (m *MockConfluenceService) GetUsers(ctx context.Context, pageToken string) ([]ConfluenceUser, string, *v2.RateLimitDescription, error) {
@@ -59,4 +60,8 @@ func (m *MockConfluenceService) AddGroupMember(ctx context.Context, userKey, gro
 
 func (m *MockConfluenceService) RemoveGroupMember(ctx context.Context, userKey, groupName string) (*v2.RateLimitDescription, error) {
 	return m.RemoveGroupMemberFunc(ctx, userKey, groupName)
+}
+
+func (m *MockConfluenceService) CreateUser(ctx context.Context, username string, email string, fullname string, password string) (string, *v2.RateLimitDescription, error) {
+	return m.CreateUserFunc(ctx, username, email, fullname, password)
 }
