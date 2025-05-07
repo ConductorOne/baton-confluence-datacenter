@@ -2,10 +2,12 @@ package connector
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/conductorone/baton-confluence-datacenter/pkg/connector/client"
 	v2 "github.com/conductorone/baton-sdk/pb/c1/connector/v2"
 	"github.com/conductorone/baton-sdk/pkg/annotations"
+	"github.com/conductorone/baton-sdk/pkg/connectorbuilder"
 	"github.com/conductorone/baton-sdk/pkg/pagination"
 	"github.com/conductorone/baton-sdk/pkg/types/grant"
 	"github.com/conductorone/baton-sdk/pkg/types/resource"
@@ -101,6 +103,50 @@ func (o *userBuilder) Grants(
 	}
 
 	return rv, nextPage, outputAnnotations, nil
+}
+
+func (o *userBuilder) CreateAccount(
+	ctx context.Context,
+	accountInfo *v2.AccountInfo,
+	credentialOptions *v2.CredentialOptions,
+) (connectorbuilder.CreateAccountResponse, []*v2.PlaintextData, annotations.Annotations, error) {
+	profile := accountInfo.Profile.AsMap()
+
+	username, _ := profile["username"].(string)
+	fullname, _ := profile["fullname"].(string)
+	email, _ := profile["email"].(string)
+	password, _ := profile["password"].(string)
+
+	userkey, rt, err := o.confluenceService.CreateUser(ctx, username, email, fullname, password)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	outputAnnotations := annotations.New()
+	outputAnnotations.WithRateLimiting(rt)
+
+	user, err := o.confluenceService.GetUserByKey(ctx, userkey)
+	if err != nil {
+		return nil, nil, nil, fmt.Errorf("creation of user '%s' failed, error: %w", username, err)
+	}
+
+	rsc, err := userResource(ctx, user)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	return &v2.CreateAccountResponse_SuccessResult{
+		Resource: rsc,
+	}, nil, outputAnnotations, nil
+}
+
+func (o *userBuilder) CreateAccountCapabilityDetails(ctx context.Context) (*v2.CredentialDetailsAccountProvisioning, annotations.Annotations, error) {
+	return &v2.CredentialDetailsAccountProvisioning{
+		SupportedCredentialOptions: []v2.CapabilityDetailCredentialOption{
+			v2.CapabilityDetailCredentialOption_CAPABILITY_DETAIL_CREDENTIAL_OPTION_NO_PASSWORD,
+		},
+		PreferredCredentialOption: v2.CapabilityDetailCredentialOption_CAPABILITY_DETAIL_CREDENTIAL_OPTION_NO_PASSWORD,
+	}, nil, nil
 }
 
 func newUserBuilder(cclient client.ConfluenceClient) *userBuilder {
