@@ -6,11 +6,11 @@ import (
 )
 
 var (
-	forbiddenChars       = regexp.MustCompile(`\\|,|\+|<|>|'|"`)
-	forbiddenName        = regexp.MustCompile(`(?mi)anonymous`)
+	forbiddenChars       = regexp.MustCompile(`[\\,+<>'\"]`)
+	forbiddenName        = regexp.MustCompile(`(?i)anonymous`)
 	forbiddenUpperCase   = regexp.MustCompile(`(?m)\p{Lu}`)
 	forbiddenWhitespaces = regexp.MustCompile(`(?m)\s`)
-	validEmail           = regexp.MustCompile(`[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}`)
+	validEmail           = regexp.MustCompile(`^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$`)
 )
 
 func validateUserName(username string) error {

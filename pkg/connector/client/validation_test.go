@@ -65,6 +65,9 @@ func TestValidateUserName(t *testing.T) {
 			if tc.Error == "" {
 				assert.Nil(t, err)
 			} else {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.Error)
+				}
 				assert.Contains(t, err.Error(), tc.Error)
 			}
 		})
@@ -109,6 +112,9 @@ func TestValidateFullName(t *testing.T) {
 			if tc.Error == "" {
 				assert.Nil(t, err)
 			} else {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.Error)
+				}
 				assert.Contains(t, err.Error(), tc.Error)
 			}
 		})
@@ -130,6 +136,36 @@ func TestValidateEmail(t *testing.T) {
 			Name:  "failure - email address is blank",
 			Error: "cannot be blank",
 		},
+		{
+			Name:  "failure - email address has multiple @ character",
+			Input: "john@exam@pl@e.com",
+			Error: "email address is invalid",
+		},
+		{
+			Name:  "failure - email without domain part",
+			Input: "john@",
+			Error: "email address is invalid",
+		},
+		{
+			Name:  "failure - email with invalid TLD",
+			Input: "john@example.c",
+			Error: "email address is invalid",
+		},
+		{
+			Name:  "failure - email with unicode character",
+			Input: "jóhn@example.com",
+			Error: "email address is invalid",
+		},
+		{
+			Name:  "failure - email without @ character",
+			Input: "john.example.com",
+			Error: "email address is invalid",
+		},
+		{
+			Name:  "failure - email with trailing dot",
+			Input: "john@example.com.",
+			Error: "email address is invalid",
+		},
 	}
 
 	for _, tc := range cases {
@@ -138,6 +174,9 @@ func TestValidateEmail(t *testing.T) {
 			if tc.Error == "" {
 				assert.Nil(t, err)
 			} else {
+				if err == nil {
+					t.Fatalf("expected error containing %q, got nil", tc.Error)
+				}
 				assert.Contains(t, err.Error(), tc.Error)
 			}
 		})
