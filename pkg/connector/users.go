@@ -116,7 +116,7 @@ func (o *userBuilder) CreateAccount(
 	username, _ := profile["username"].(string)
 	fullname, _ := profile["fullname"].(string)
 	email, _ := profile["email"].(string)
-	password, _ := profile["password"].(string)
+	password := ""
 
 	credOpts := credentialOptions.GetRandomPassword()
 	if credOpts != nil {
