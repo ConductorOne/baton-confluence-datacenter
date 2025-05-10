@@ -147,6 +147,15 @@ func (o *userBuilder) CreateAccount(
 		return nil, nil, nil, err
 	}
 
+	if password != "" {
+		pass := &v2.PlaintextData{
+			Name:  "password",
+			Bytes: []byte(password),
+		}
+
+		return &v2.CreateAccountResponse_SuccessResult{Resource: rsc}, []*v2.PlaintextData{pass}, outputAnnotations, nil
+	}
+
 	return &v2.CreateAccountResponse_SuccessResult{
 		Resource: rsc,
 	}, nil, outputAnnotations, nil
