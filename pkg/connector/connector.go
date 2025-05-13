@@ -57,6 +57,28 @@ func (c *Confluence) Metadata(ctx context.Context) (*v2.ConnectorMetadata, error
 		DisplayName: "Confluence Data Center",
 		Description: "Connector syncing Confluence users and groups to Baton",
 		Annotations: annos,
+		AccountCreationSchema: &v2.ConnectorAccountCreationSchema{
+			FieldMap: map[string]*v2.ConnectorAccountCreationSchema_Field{
+				"username": {
+					DisplayName: "User Name",
+					Required:    true,
+					Description: "This username will be used as the login for the user.",
+					Field:       &v2.ConnectorAccountCreationSchema_Field_StringField{},
+				},
+				"fullname": {
+					DisplayName: "Full name",
+					Required:    true,
+					Description: "Full name of the user.",
+					Field:       &v2.ConnectorAccountCreationSchema_Field_StringField{},
+				},
+				"email": {
+					DisplayName: "Email",
+					Required:    true,
+					Description: "Email address of the user.",
+					Field:       &v2.ConnectorAccountCreationSchema_Field_StringField{},
+				},
+			},
+		},
 	}, nil
 }
 

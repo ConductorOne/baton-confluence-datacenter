@@ -36,6 +36,7 @@ const (
 	spacesListUrlPath                 = "/rest/api/space"
 	usersListUrlPath                  = "/rest/api/user/list"
 	userMemberOfUrlPath               = "/rest/api/user/memberof"
+	adminUserUrlPath                  = "/rest/api/admin/user"
 )
 
 type ConfluenceSpaceEntitlement struct {
@@ -374,6 +375,57 @@ func (c *ConfluenceClient) UpdateSpacePermissions(ctx context.Context, operation
 	}
 
 	return ratelimitData, nil
+}
+
+type createUserRequest struct {
+	UserName       string `json:"userName"`
+	FullName       string `json:"fullName"`
+	Email          string `json:"email"`
+	Password       string `json:"password"`
+	NotifyViaEmail bool   `json:"notifyViaEmail"`
+}
+
+type createUserResponse struct {
+	UserKey string `json:"userKey"`
+}
+
+func (c *ConfluenceClient) CreateUser(ctx context.Context, username, email, fullName, password string) (string, *v2.RateLimitDescription, error) {
+	invalidUsername := validateUserName(username)
+	invalidEmail := validateEmailAddress(email)
+	invalidFullName := validateFullName(fullName)
+
+	if invalidUsername != nil {
+		return "", nil, invalidUsername
+	}
+
+	if invalidEmail != nil {
+		return "", nil, invalidEmail
+	}
+
+	if invalidFullName != nil {
+		return "", nil, invalidFullName
+	}
+
+	notifyViaEmail := password == ""
+
+	requestURL, err := c.genURLNonPaginated(adminUserUrlPath)
+	if err != nil {
+		return "", nil, err
+	}
+
+	var target createUserResponse
+	rt, err := c.post(ctx, requestURL, &target, &createUserRequest{
+		UserName:       username,
+		FullName:       fullName,
+		Email:          email,
+		Password:       password,
+		NotifyViaEmail: notifyViaEmail,
+	})
+	if err != nil {
+		return "", nil, err
+	}
+
+	return target.UserKey, rt, nil
 }
 
 func buildBody(operations []PermissionOperation, userKey string, groupName string) (interface{}, error) {
