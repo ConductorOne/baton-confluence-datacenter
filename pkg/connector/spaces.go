@@ -190,9 +190,10 @@ func (o *spaceBuilder) Grant(
 	}
 
 	var userKey, groupName string
-	if principal.Id.ResourceType == userResourceType.Id {
+	switch principal.Id.ResourceType {
+	case userResourceType.Id:
 		userKey = principal.Id.Resource
-	} else if principal.Id.ResourceType == groupResourceType.Id {
+	case groupResourceType.Id:
 		groupName = principal.Id.Resource
 	}
 
@@ -265,9 +266,10 @@ func (o *spaceBuilder) Revoke(
 	}
 
 	var userKey, groupName string
-	if principal.Id.ResourceType == userResourceType.Id {
+	switch principal.Id.ResourceType {
+	case userResourceType.Id:
 		userKey = principal.Id.Resource
-	} else if principal.Id.ResourceType == groupResourceType.Id {
+	case groupResourceType.Id:
 		groupName = principal.Id.Resource
 	}
 
