@@ -32,9 +32,9 @@ func (m *localCompactor) ShouldDebug() bool {
 func (m *localCompactor) Next(ctx context.Context) (*v1.Task, time.Duration, error) {
 	var task *v1.Task
 	m.o.Do(func() {
-		task = &v1.Task{
-			TaskType: &v1.Task_CompactSyncs_{},
-		}
+		task = v1.Task_builder{
+			CompactSyncs: &v1.Task_CompactSyncs{},
+		}.Build()
 	})
 	return task, 0, nil
 }
@@ -44,10 +44,14 @@ func (m *localCompactor) Process(ctx context.Context, task *v1.Task, cc types.Co
 	defer span.End()
 	log := ctxzap.Extract(ctx)
 
-	compactor, err := synccompactor.NewCompactor(ctx, m.outputPath, m.compactableSyncs)
+	compactor, cleanup, err := synccompactor.NewCompactor(ctx, m.outputPath, m.compactableSyncs)
 	if err != nil {
 		return err
 	}
+	defer func() {
+		_ = cleanup()
+	}()
+
 	compacted, err := compactor.Compact(ctx)
 	if err != nil {
 		return err

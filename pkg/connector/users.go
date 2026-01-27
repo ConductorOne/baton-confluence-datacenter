@@ -109,7 +109,7 @@ func (o *userBuilder) Grants(
 func (o *userBuilder) CreateAccount(
 	ctx context.Context,
 	accountInfo *v2.AccountInfo,
-	credentialOptions *v2.CredentialOptions,
+	credentialOptions *v2.LocalCredentialOptions,
 ) (connectorbuilder.CreateAccountResponse, []*v2.PlaintextData, annotations.Annotations, error) {
 	profile := accountInfo.Profile.AsMap()
 
@@ -121,7 +121,7 @@ func (o *userBuilder) CreateAccount(
 	credOpts := credentialOptions.GetRandomPassword()
 	if credOpts != nil {
 		var err error
-		password, err = crypto.GenerateRandomPassword(&v2.CredentialOptions_RandomPassword{
+		password, err = crypto.GenerateRandomPassword(&v2.LocalCredentialOptions_RandomPassword{
 			Length: min(8, credOpts.GetLength()),
 		})
 		if err != nil {
@@ -153,11 +153,12 @@ func (o *userBuilder) CreateAccount(
 			Bytes: []byte(password),
 		}
 
-		return &v2.CreateAccountResponse_SuccessResult{Resource: rsc}, []*v2.PlaintextData{pass}, outputAnnotations, nil
+		return &v2.CreateAccountResponse_SuccessResult{Resource: rsc, IsCreateAccountResult: true}, []*v2.PlaintextData{pass}, outputAnnotations, nil
 	}
 
 	return &v2.CreateAccountResponse_SuccessResult{
-		Resource: rsc,
+		Resource:              rsc,
+		IsCreateAccountResult: true,
 	}, nil, outputAnnotations, nil
 }
 
