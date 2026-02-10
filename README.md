@@ -1,6 +1,6 @@
 ![Baton Logo](./docs/images/baton-logo.png)
 
-# `baton-confluence-datacenter` [![Go Reference](https://pkg.go.dev/badge/github.com/conductorone/baton-confluence-datacenter.svg)](https://pkg.go.dev/github.com/conductorone/baton-confluence-datacenter) ![main ci](https://github.com/conductorone/baton-confluence-datacenter/actions/workflows/main.yaml/badge.svg)
+# `baton-confluence-datacenter` [![Go Reference](https://pkg.go.dev/badge/github.com/conductorone/baton-confluence-datacenter.svg)](https://pkg.go.dev/github.com/conductorone/baton-confluence-datacenter) ![ci](https://github.com/conductorone/baton-confluence-datacenter/actions/workflows/ci.yaml/badge.svg) ![verify](https://github.com/conductorone/baton-confluence-datacenter/actions/workflows/verify.yaml/badge.svg)
 
 `baton-confluence-datacenter` is an example connector built using the [Baton SDK](https://github.com/conductorone/baton-sdk). It uses hardcoded data to provide a simple example of how to build your own connector with Baton.
 
@@ -29,11 +29,11 @@ docker run --rm -v $(pwd):/out ghcr.io/conductorone/baton:latest -f "/out/sync.c
 go install github.com/conductorone/baton/cmd/baton@main
 go install github.com/conductorone/baton-confluence-datacenter/cmd/baton-confluence-datacenter@main
 
-BATON_ACCESS_TOKEN=access_token BATON_HOSTNAME=hostname baton-confluence-datacenter 
+BATON_ACCESS_TOKEN=access_token BATON_HOSTNAME=hostname baton-confluence-datacenter
 baton resources
 ```
 
-# 
+#
 
 # Contributing, Support and Issues
 
