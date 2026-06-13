@@ -26,9 +26,9 @@ const (
 )
 
 var (
-	accessTokenField    = field.StringField(accessToken, field.WithDescription("The personal access token for your Confluence Data Center account."))
+	accessTokenField    = field.StringField(accessToken, field.WithDescription("The personal access token for your Confluence Data Center account."), field.WithIsSecret(true))
 	hostnameField       = field.StringField(hostname, field.WithRequired(true), field.WithDescription("The hostname (URL) for your Confluence Data Center."))
-	passwordField       = field.StringField(password, field.WithDescription("The password for your Confluence Data Center account."))
+	passwordField       = field.StringField(password, field.WithDescription("The password for your Confluence Data Center account."), field.WithIsSecret(true))
 	usernameField       = field.StringField(username, field.WithDescription("The username for your Confluence Data Center account."))
 	configurationFields = []field.SchemaField{accessTokenField, hostnameField, passwordField, usernameField}
 	fieldRelationships  = []field.SchemaFieldRelationship{
