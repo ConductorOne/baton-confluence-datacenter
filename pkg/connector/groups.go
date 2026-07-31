@@ -239,14 +239,13 @@ func groupResource(_ context.Context, group *client.ConfluenceGroup) (*v2.Resour
 		group.Name,
 		groupResourceType,
 		group.Name,
-		[]resource.GroupTraitOption{
-			resource.WithGroupProfile(
-				map[string]interface{}{
-					"group_name": group.Name,
-					"group_type": group.Type,
-				},
-			),
-		},
+		[]resource.GroupTraitOption{},
+		resource.WithResourceProfile(
+			map[string]interface{}{
+				"group_name": group.Name,
+				"group_type": group.Type,
+			},
+		),
 	)
 	if err != nil {
 		return nil, err

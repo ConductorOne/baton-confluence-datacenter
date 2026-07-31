@@ -184,16 +184,15 @@ func userResource(_ context.Context, user *client.ConfluenceUser) (*v2.Resource,
 		user.DisplayName,
 		userResourceType,
 		user.UserKey,
-		[]resource.UserTraitOption{
-			resource.WithUserProfile(
-				map[string]interface{}{
-					"user_name":    user.Username,
-					"account_type": user.Type,
-					"id":           user.UserKey,
-				},
-			),
-			resource.WithStatus(v2.UserTrait_Status_STATUS_ENABLED),
-		},
+		[]resource.UserTraitOption{},
+		resource.WithResourceProfile(
+			map[string]interface{}{
+				"user_name":    user.Username,
+				"account_type": user.Type,
+				"id":           user.UserKey,
+			},
+		),
+		resource.WithResourceStatus(v2.Status_RESOURCE_STATUS_ENABLED, ""),
 	)
 	if err != nil {
 		return nil, err
