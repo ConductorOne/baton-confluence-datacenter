@@ -28,7 +28,7 @@ jobs:
       - name: Run baton-confluence-datacenter
         run: ./baton-confluence-datacenter
       - name: Install baton
-        run: ./scripts/get-baton.sh && mv baton /usr/local/bin
+        uses: ConductorOne/github-workflows/actions/get-baton@v4
       - name: List Grants
         run: baton grants
       - name: Test granting/revoking
