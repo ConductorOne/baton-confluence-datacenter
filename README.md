@@ -20,7 +20,7 @@ baton resources
 
 ## docker
 ```
-docker run --rm -v $(pwd):/out -e BATON_ACCESS_TOKEN=access_token -e BATON_HOSTNAME=hostname ghcr.io/conductorone/baton-confluence-datacenter:latest -f "/out/sync.c1z"
+docker run --rm -v $(pwd):/out -e BATON_ACCESS_TOKEN=access_token -e BATON_HOSTNAME=hostname public.ecr.aws/conductorone/baton-confluence-datacenter:latest -f "/out/sync.c1z"
 docker run --rm -v $(pwd):/out ghcr.io/conductorone/baton:latest -f "/out/sync.c1z" resources
 ```
 
